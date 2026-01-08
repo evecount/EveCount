@@ -14,7 +14,7 @@ export default function ServicesPage() {
           <div className="container">
             <div className="mb-12 text-center">
               <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                Our Professional Services Partners
+                Our Professional Service Partners
               </h1>
               <p className="mx-auto mt-4 max-w-3xl text-lg text-muted-foreground sm:text-xl">
                 When you build with Eve Count, you get more than just code. You get a full suite of services from our trusted partners to accelerate your journey from MVP to market leader.
@@ -32,7 +32,7 @@ export default function ServicesPage() {
                     </div>
                   </CardHeader>
                   <CardContent className="flex flex-grow flex-col justify-between">
-                    <CardDescription>{partner.description}</CardDescription>
+                    <CardDescription className="text-base text-muted-foreground">{partner.description}</CardDescription>
                   </CardContent>
                 </Card>
               ))}
