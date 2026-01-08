@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Scale, ShieldCheck, Calculator, Rocket } from 'lucide-react';
+import { Scale, ShieldCheck, Calculator, Rocket, Building, Users, Megaphone } from 'lucide-react';
 
 export interface ServicePartner {
   name: string;
@@ -24,8 +24,18 @@ export const servicePartners: ServicePartner[] = [
     Icon: Calculator,
   },
   {
-    name: "Go-to-Market Execution",
-    description: "An idea is nothing without users. We provide a dedicated team to craft and execute your GTM strategy, from brand positioning to your first customer acquisition campaigns.",
+    name: "GTM, Marketing & PR",
+    description: "An idea is nothing without users. We provide a dedicated team to craft and execute your GTM, marketing, and PR strategy, from brand positioning to your first customer acquisition campaigns.",
     Icon: Rocket,
+  },
+  {
+    name: "Co-working Space Partner",
+    description: "Hit the ground running with a dedicated space for your team. We provide access to premier co-working environments to foster collaboration and innovation from day one.",
+    Icon: Building,
+  },
+  {
+    name: "Talent Acquisition",
+    description: "Building a world-class team is paramount. Our talent partners help you source, vet, and hire the key personnel needed to scale your operations and build your vision.",
+    Icon: Users,
   },
 ];
