@@ -11,9 +11,9 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
+        <LeadIntake />
         <Portfolio />
         <Engine />
-        <LeadIntake />
       </main>
       <Footer />
     </div>

@@ -11,7 +11,7 @@ interface ProjectCardProps {
 export function ProjectCard({ venture }: ProjectCardProps) {
   return (
     <Link href={venture.url} target="_blank" rel="noopener noreferrer" className="group block">
-      <Card className="flex h-full flex-col transition-all duration-300 ease-in-out group-hover:border-primary group-hover:shadow-lg group-hover:shadow-primary/10">
+      <Card className="flex h-full flex-col transition-all duration-300 ease-in-out group-hover:border-primary group-hover:shadow-lg group-hover:shadow-primary/10 bg-secondary/20 text-foreground">
         <CardHeader>
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
