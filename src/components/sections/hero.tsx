@@ -4,7 +4,7 @@ import Link from "next/link";
 export function Hero() {
   return (
     <section className="border-b border-border/40 bg-gradient-to-b from-background to-background/80">
-      <div className="container text-center">
+      <div className="container py-24 text-center md:py-32 lg:py-48">
         <div className="flex flex-col items-center space-y-4">
           <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             We don't invest capital.
