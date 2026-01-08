@@ -1,10 +1,14 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useChatbot } from "@/hooks/use-chatbot";
 
 export function Hero() {
+  const { setOpen } = useChatbot();
   return (
     <section className="border-b border-border/40 bg-gradient-to-b from-background to-background/80">
-      <div className="container py-24 text-center md:py-32 lg:py-48">
+      <div className="container py-32 text-center md:py-40 lg:py-56">
         <div className="flex flex-col items-center space-y-4">
           <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             We don't invest capital.
@@ -23,8 +27,8 @@ export function Hero() {
             <Button size="lg" asChild>
               <Link href="#ventures">Our Ventures</Link>
             </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="#partner-up">Partner With Us</Link>
+            <Button size="lg" variant="outline" onClick={() => setOpen(true)}>
+              Chat with our AI Partner
             </Button>
           </div>
         </div>

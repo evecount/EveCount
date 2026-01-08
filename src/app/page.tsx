@@ -4,6 +4,7 @@ import { Hero } from "@/components/sections/hero";
 import { Portfolio } from "@/components/sections/portfolio";
 import { Engine } from "@/components/sections/engine";
 import { LeadIntake } from "@/components/sections/lead-intake";
+import { Chatbot } from "@/components/chatbot";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Engine />
       </main>
       <Footer />
+      <Chatbot />
     </div>
   );
 }

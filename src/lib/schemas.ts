@@ -71,3 +71,15 @@ export const MultilingualOcrFactExtractionInputSchema = z.object({
 export const MultilingualOcrFactExtractionOutputSchema = z.object({
   extractedFacts: z.string().describe('The extracted facts from the document.'),
 });
+
+
+export const AiPartnerChatInputSchema = z.object({
+  history: z.array(z.object({
+    role: z.enum(['user', 'model']),
+    content: z.string(),
+  })).describe("The chat history."),
+});
+
+export const AiPartnerChatOutputSchema = z.object({
+  response: z.string().describe("The AI partner's response."),
+});
