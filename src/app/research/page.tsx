@@ -47,7 +47,7 @@ export default function ResearchPage() {
                 Quantum Research & Innovation Hub
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-                This is our open-source initiative to empower the next generation of builders. We believe in learning by doing, providing a central hub for quantum research, community engagement, and a launchpad for innovation.
+                This is our open-source initiative to empower the next generation of builders. We are giving away a road map to some of the most specialized and valuable skills in the tech world because we believe in learning by doing. We provide a central hub for quantum research, community engagement, and a launchpad for innovation.
               </p>
                <Button size="lg" className="mt-8" asChild>
                 <Link href="https://github.com/evecount/quantum-research-101" target="_blank" rel="noopener noreferrer">
