@@ -10,7 +10,7 @@ const processSteps = [
   {
     icon: Code,
     title: "2. AI-Accelerated Build",
-    description: "We invest our 'Code, AI, and Architecture.' Our team and your vision merge to rapidly construct a market-ready MVP in record time."
+    description: "We invest our 'Code, AI, and Architecture.' Our team works as your own in complete stealth, providing white-label development to rapidly construct a market-ready MVP in record time."
   },
   {
     icon: Scale,
