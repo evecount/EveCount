@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Lock, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useState } from 'react';
 
 const navLinks = [
@@ -64,21 +64,25 @@ export function Header() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left">
-            <Link href="/" className="mr-6 flex items-center space-x-2">
-               <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-6 w-6"
-              >
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-              <span className="font-bold">Eve Count</span>
-            </Link>
+            <SheetHeader>
+              <SheetTitle>
+                <Link href="/" onClick={() => setSheetOpen(false)} className="flex items-center space-x-2">
+                   <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-6 w-6"
+                  >
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                  </svg>
+                  <span className="font-bold">Eve Count</span>
+                </Link>
+              </SheetTitle>
+            </SheetHeader>
             <div className="mt-6 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <Link
