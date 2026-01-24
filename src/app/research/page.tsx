@@ -1,9 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { ResearchCard } from "@/components/research-card";
-import { researchProjects } from "@/lib/research-projects";
-import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers } from 'lucide-react';
+import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers, Atom, BrainCircuit, FlaskConical } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -89,18 +87,54 @@ export default function ResearchPage() {
             </div>
         </section>
 
-        <section id="projects" className="border-t border-border/40 bg-background py-16 md:py-24">
+        <section id="ideas" className="border-t border-border/40 bg-background py-16 md:py-24">
             <div className="container">
                 <div className="mb-12 text-center">
-                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Showcased Research Projects</h2>
+                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Example Tracks & Ideas</h2>
                     <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                        Explore a selection of projects developed through the Quantum Research Workshop. Fork them, learn from them, and build your own.
+                        Our open-source repo is a launchpad. Here are some project tracks you can explore to start building and learning.
                     </p>
                 </div>
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {researchProjects.map((project) => (
-                        <ResearchCard key={project.name} project={project} />
-                    ))}
+                <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
+                    <Card className="bg-secondary/20">
+                        <CardHeader>
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                    <Atom className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle>Quantum Simulators</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Build a web-based simulator for core quantum concepts like entanglement or superposition. Use Firebase for real-time state management and Qiskit or Cirq for the backend logic. This is a great way to visualize complex quantum behaviors.</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-secondary/20">
+                        <CardHeader>
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                    <BrainCircuit className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle>Quantum Machine Learning</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Explore the intersection of AI and quantum computing. Create a project that uses a quantum algorithm for a machine learning task, like classification. Use Colab notebooks for experimentation and connect your findings to a web interface.</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-secondary/20">
+                        <CardHeader>
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                    <FlaskConical className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle>Computational Chemistry</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Develop a cloud-native application that models chemical reactions or molecular structures. This could involve creating an API with serverless functions that runs quantum chemistry simulations and displays the results in a user-friendly frontend.</p>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </section>
