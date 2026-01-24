@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 interface ResearchCardProps {
-  project: ResearchProject;
+  project: ResearchProject & { Icon: React.ElementType };
 }
 
 export function ResearchCard({ project }: ResearchCardProps) {
