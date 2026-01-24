@@ -14,7 +14,7 @@ export interface ResearchProject {
 export const researchProjects: ResearchProject[] = [
   {
     name: "Quantum Entanglement Simulator",
-    repoUrl: "https://github.com/Quantum-Research-101/student-project-1",
+    repoUrl: "https://github.com/evecount/quantum-research-101",
     field: "Quantum Computing",
     authors: "Ada Lovelace",
     description: "A web-based simulator demonstrating the principles of quantum entanglement using Firebase for state management.",
@@ -23,7 +23,7 @@ export const researchProjects: ResearchProject[] = [
   },
   {
     name: "AI-Powered Drug Discovery",
-    repoUrl: "https://github.com/Quantum-Research-101/student-project-2",
+    repoUrl: "https://github.com/evecount/quantum-research-101",
     field: "Bio-Informatics / AI",
     authors: "Alan Turing",
     description: "Utilizing Colab notebooks to run machine learning models that predict protein folding for drug discovery.",
@@ -32,7 +32,7 @@ export const researchProjects: ResearchProject[] = [
   },
   {
     name: "Algorithmic Chemistry",
-    repoUrl: "https://github.com/Quantum-Research-101/student-project-3",
+    repoUrl: "https://github.com/evecount/quantum-research-101",
     field: "Computational Chemistry",
     authors: "Marie Curie",
     description: "A cloud-native application that models chemical reactions based on input parameters, deployed on Firebase.",

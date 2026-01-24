@@ -20,7 +20,7 @@ export default function ResearchPage() {
               </p>
               <p className="mx-auto mt-2 max-w-3xl text-base text-muted-foreground">
                 Inspired by the{" "}
-                <Link href="https://github.com/Quantum-Research-101" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
+                <Link href="https://github.com/evecount/quantum-research-101" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary">
                   Quantum Research 101
                 </Link>{" "}
                 methodology.
