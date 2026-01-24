@@ -106,7 +106,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Build a web-based simulator for core quantum concepts like entanglement or superposition. Use Firebase for real-time state management and Qiskit or Cirq for the backend logic. This is a great way to visualize complex quantum behaviors.</p>
+                            <p className="text-muted-foreground">Build a web-based simulator for core quantum concepts like entanglement or superposition. This provides an intuitive, visual way to grasp the non-intuitive behaviors that are the foundation of quantum computing's power. Use Firebase for real-time state management and Qiskit or Cirq for the backend logic.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Ada Lovelace would have built.</p>
                         </CardContent>
                     </Card>
@@ -120,7 +120,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Explore the intersection of AI and quantum computing. Create a project that uses a quantum algorithm for a machine learning task, like classification. Use Colab notebooks for experimentation and connect your findings to a web interface.</p>
+                            <p className="text-muted-foreground">Explore the intersection of AI and quantum computing. Create a project that uses a quantum algorithm (like a Quantum Support Vector Machine) for a complex classification task. This demonstrates how quantum parallelism can potentially offer speedups for certain machine learning problems. Use Colab notebooks for experimentation and connect your findings to a web interface.</p>
                              <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Alan Turing would have built.</p>
                         </CardContent>
                     </Card>
@@ -134,7 +134,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Develop a cloud-native application that models chemical reactions or molecular structures. This could involve creating an API with serverless functions that runs quantum chemistry simulations and displays the results in a user-friendly frontend.</p>
+                            <p className="text-muted-foreground">Develop a cloud-native application that models molecular structures, a task where quantum mechanics is fundamental. Simulating molecules is notoriously difficult for classical computers. This project could use quantum algorithms to calculate molecular ground states, crucial for drug discovery and materials science.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Marie Curie would have built.</p>
                         </CardContent>
                     </Card>
@@ -148,7 +148,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Design a system to model complex financial instruments, like option pricing in volatile markets. Use quantum-inspired algorithms to explore vast possibility spaces and find optimal trading strategies. Connect it to a real-time data feed and visualize risk/reward profiles.</p>
+                            <p className="text-muted-foreground">Use quantum-inspired algorithms to model complex financial instruments like option pricing. Quantum computing's ability to explore vast possibility spaces can help find optimal trading strategies that are intractable for classical computers. Connect it to a real-time data feed and visualize risk/reward profiles.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What John von Neumann would have built.</p>
                         </CardContent>
                     </Card>
@@ -162,7 +162,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Build an intelligent lead generation and scoring system. Use GenAI to analyze unstructured data from sources like company websites or news to predict which prospects are most likely to convert. This is a classic problem ripe for an AI-first solution.</p>
+                            <p className="text-muted-foreground">Build an intelligent lead scoring system that uses Quantum Machine Learning (QML) to identify subtle patterns in vast customer datasets that classical algorithms might miss. Use GenAI to enrich the data, then apply a quantum classifier to predict which prospects are most likely to convert.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What a Y Combinator founder would build.</p>
                         </CardContent>
                     </Card>
@@ -176,7 +176,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Tackle a classic hard problem: the Traveling Salesperson. Build an application that ingests a list of destinations and calculates the most efficient route. Use heuristic algorithms or explore quantum annealing concepts to find solutions for complex logistical challenges.</p>
+                            <p className="text-muted-foreground">Tackle a classic hard problem: the Traveling Salesperson. Build an application that ingests a list of destinations and calculates the most efficient route. Use quantum annealing concepts to find solutions for complex logistical challenges that overwhelm classical computers.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What George Dantzig would have built.</p>
                         </CardContent>
                     </Card>
