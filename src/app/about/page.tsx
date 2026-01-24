@@ -2,6 +2,12 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Zap, Code, Share2 } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Eve Count",
+  description: "Learn about the Eve Count philosophy: Growth by Engineering. We are a venture studio that uses engineering as its primary tool for growth.",
+};
 
 export default function AboutPage() {
   return (

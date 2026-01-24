@@ -3,6 +3,12 @@ import { Footer } from "@/components/layout/footer";
 import { servicePartners } from "@/lib/services";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Our Venture Partners",
+  description: "Eve Count works with a curated network of best-in-class service providers who act as venture partners alongside us.",
+};
 
 export default function PartnersPage() {
   return (

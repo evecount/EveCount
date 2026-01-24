@@ -7,8 +7,12 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'EveCount.com - AI Venture Studio',
+  title: {
+    default: 'EveCount.com - AI Venture Studio',
+    template: '%s | EveCount.com',
+  },
   description: 'We don\'t invest capital; we invest Code, AI, and Architecture.',
+  metadataBase: new URL('https://www.evecount.com'),
 };
 
 export default function RootLayout({

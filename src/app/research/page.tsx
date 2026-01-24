@@ -1,9 +1,14 @@
-
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Github } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Quantum Research 101",
+  description: "An open-source initiative to empower the next generation of builders. Clone, replicate, and create your own learning systems.",
+};
 
 export default function ResearchPage() {
   return (
