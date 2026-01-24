@@ -4,23 +4,23 @@ import { Users, Code, Scale, Rocket } from "lucide-react";
 const processSteps = [
   {
     icon: Users,
-    title: "1. The Foundry Session",
-    description: "An intensive, in-person deep-dive to forge the core vision, architecture, and roadmap. We align on first principles and define the mission."
+    title: "1. You Bring the Vision",
+    description: "The process begins with you. In an intensive, in-person Foundry Session, you provide the domain expertise and vision. We provide the architects to forge it into a concrete technical roadmap."
   },
   {
     icon: Code,
-    title: "2. AI-Accelerated Build",
-    description: "We invest our 'Code, AI, and Architecture.' Our team works as your own in complete stealth, providing white-label development to rapidly construct a market-ready MVP in record time."
+    title: "2. We Provide the Engine",
+    description: "We act as your dedicated technical co-founder. While our team builds the MVP in stealth, you provide critical feedback and guidance, ensuring the product aligns perfectly with your market insight."
   },
   {
     icon: Scale,
-    title: "3. Corporate & IP Foundation",
-    description: "While we build, our integrated service partners handle incorporation, legal frameworks, and IP protection to prepare you for institutional scale."
+    title: "3. You Make the Decisions",
+    description: "A product needs a company. As we build, our partners handle the complex legal and corporate setup, but you make the key decisions, ensuring you are in control and ready for institutional scale."
   },
   {
     icon: Rocket,
-    title: "4. Go-to-Market Activation",
-    description: "With a solid product and foundation, we activate your GTM strategy, secure initial users, and position you for a successful seed round."
+    title: "4. You Lead the Venture",
+    description: "We launch together. We help you activate your GTM strategy and secure initial users, but you are the founder. We position you to lead the company and confidently pitch for your seed round."
   }
 ];
 
@@ -33,7 +33,7 @@ export function Engine() {
             The Engine: From Vision to Venture
           </h2>
           <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-xl">
-            Our proprietary process is built for speed and precision. We don't just fund ideas; we build them into market-ready companies. Here's how.
+            Our process is a partnership. We don't just fund ideas; we build them into market-ready companies alongside you. Here's what to expect.
           </p>
         </div>
         
