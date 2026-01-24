@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers, Atom, BrainCircuit, FlaskConical, TrendingUp, Filter, Truck } from 'lucide-react';
+import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers, Atom, BrainCircuit, FlaskConical, TrendingUp, Filter, Truck, Combine, Shield, GaugeCircle } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -120,7 +120,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Explore the intersection of AI and quantum computing. Create a project that uses a quantum algorithm (like a Quantum Support Vector Machine) for a complex classification task. This demonstrates how quantum parallelism can potentially offer speedups for certain machine learning problems. Use Colab notebooks for experimentation and connect your findings to a web interface.</p>
+                            <p className="text-muted-foreground">Explore the intersection of AI and quantum computing. Create a project that uses a quantum algorithm (like a Quantum Support Vector Machine) for a complex classification task. Quantum parallelism can offer speedups for certain machine learning problems by exploring high-dimensional data in ways classical computers can't.</p>
                              <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Alan Turing would have built.</p>
                         </CardContent>
                     </Card>
@@ -134,7 +134,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Develop a cloud-native application that models molecular structures, a task where quantum mechanics is fundamental. Simulating molecules is notoriously difficult for classical computers. This project could use quantum algorithms to calculate molecular ground states, crucial for drug discovery and materials science.</p>
+                            <p className="text-muted-foreground">Simulating molecules is notoriously difficult for classical computers. This project could use quantum algorithms to calculate molecular ground states—a fundamental quantum mechanical problem—which is crucial for drug discovery and materials science. Develop a cloud-native app that models molecular structures.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Marie Curie would have built.</p>
                         </CardContent>
                     </Card>
@@ -148,7 +148,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Use quantum-inspired algorithms to model complex financial instruments like option pricing. Quantum computing's ability to explore vast possibility spaces can help find optimal trading strategies that are intractable for classical computers. Connect it to a real-time data feed and visualize risk/reward profiles.</p>
+                            <p className="text-muted-foreground">Use quantum-inspired algorithms for complex financial modeling, like option pricing. Quantum computing's ability to explore vast possibility spaces can help find optimal trading strategies or assess risk in ways that are intractable for classical computers. Connect it to a real-time data feed and visualize risk profiles.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What John von Neumann would have built.</p>
                         </CardContent>
                     </Card>
@@ -162,7 +162,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Build an intelligent lead scoring system that uses Quantum Machine Learning (QML) to identify subtle patterns in vast customer datasets that classical algorithms might miss. Use GenAI to enrich the data, then apply a quantum classifier to predict which prospects are most likely to convert.</p>
+                            <p className="text-muted-foreground">Build an intelligent lead scoring system. A Quantum Machine Learning (QML) model could identify subtle patterns in vast customer datasets that classical algorithms might miss. Use GenAI to enrich the data, then apply a quantum classifier to predict which prospects are most likely to convert, optimizing the sales pipeline.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What a Y Combinator founder would build.</p>
                         </CardContent>
                     </Card>
@@ -176,8 +176,50 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Tackle a classic hard problem: the Traveling Salesperson. Build an application that ingests a list of destinations and calculates the most efficient route. Use quantum annealing concepts to find solutions for complex logistical challenges that overwhelm classical computers.</p>
+                            <p className="text-muted-foreground">Tackle a classic hard problem: the Traveling Salesperson. Build an application that calculates the most efficient route for complex logistics. Quantum annealing concepts are perfectly suited for such optimization problems, finding near-optimal solutions in a vast search space that would overwhelm classical computers.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What George Dantzig would have built.</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-secondary/20 text-foreground">
+                        <CardHeader>
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                    <Combine className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle className="text-foreground">Multimodal Diagnostic Assistant</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Build an AI that synthesizes multiple data types—like text-based symptoms, medical images, and audio clips—to form a more holistic preliminary diagnosis. Quantum Machine Learning can be key here. QML algorithms could analyze the incredibly complex, high-dimensional data created by fusing these different inputs, potentially uncovering subtle, non-linear relationships between symptoms that classical models would miss.</p>
+                            <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Rosalind Franklin would have built.</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-secondary/20 text-foreground">
+                        <CardHeader>
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                    <Shield className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle className="text-foreground">Real-time Anomaly Detection</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Develop a system that processes high-volume data streams, like live video or network traffic, to identify anomalous patterns in real time. This is a classic challenge where speed is critical. Quantum-enhanced perception could process vast amounts of data in parallel, allowing the system to detect faint signals or complex deviations from normal behavior that would be computationally prohibitive for classical systems.</p>
+                            <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Grace Hopper would have built.</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-secondary/20 text-foreground">
+                        <CardHeader>
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                    <GaugeCircle className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle className="text-foreground">Low-Latency Arbitrage Engine</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Create a financial engine that identifies and acts on market arbitrage opportunities in microseconds. This is a high-frequency optimization problem. Quantum algorithms like QAOA excel at rapidly exploring a massive number of potential trading strategies to find the optimal one, enabling execution at speeds impossible for classical computers, capturing value before it vanishes.</p>
+                            <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Richard Feynman would have built.</p>
                         </CardContent>
                     </Card>
                 </div>
