@@ -107,6 +107,7 @@ export default function ResearchPage() {
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground">Build a web-based simulator for core quantum concepts like entanglement or superposition. Use Firebase for real-time state management and Qiskit or Cirq for the backend logic. This is a great way to visualize complex quantum behaviors.</p>
+                            <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Ada Lovelace would have built.</p>
                         </CardContent>
                     </Card>
                     <Card className="bg-secondary/20">
@@ -120,6 +121,7 @@ export default function ResearchPage() {
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground">Explore the intersection of AI and quantum computing. Create a project that uses a quantum algorithm for a machine learning task, like classification. Use Colab notebooks for experimentation and connect your findings to a web interface.</p>
+                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Alan Turing would have built.</p>
                         </CardContent>
                     </Card>
                     <Card className="bg-secondary/20">
@@ -133,6 +135,7 @@ export default function ResearchPage() {
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground">Develop a cloud-native application that models chemical reactions or molecular structures. This could involve creating an API with serverless functions that runs quantum chemistry simulations and displays the results in a user-friendly frontend.</p>
+                            <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Marie Curie would have built.</p>
                         </CardContent>
                     </Card>
                 </div>
