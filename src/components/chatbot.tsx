@@ -10,12 +10,16 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { submitChatMessage } from '@/app/actions';
 import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { GeminiIcon } from './icons/gemini-icon';
+import { useFirestore } from '@/firebase';
+import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { collection } from 'firebase/firestore';
 
 export function Chatbot() {
   const { open, setOpen, messages, addMessage } = useChatbot();
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const firestore = useFirestore();
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -40,11 +44,29 @@ export function Chatbot() {
     try {
       const response = await submitChatMessage({ history: chatHistory });
       if (response.success && response.data) {
-        addMessage({ role: 'model', content: response.data.response });
+        const aiMessage: Message = { role: 'model', content: response.data.response };
+        addMessage(aiMessage);
+
+        const fullHistory = [...chatHistory, aiMessage];
+        const visionPitch = fullHistory
+          .map(m => `${m.role === 'user' ? 'User' : 'AI'}: ${m.content}`)
+          .join('\n\n');
+
+        const submission = {
+          visionPitch,
+          submissionDate: new Date().toISOString(),
+          submitterName: '', // Will be extracted in a future step
+          contactEmail: '', // Will be extracted in a future step
+          contactPhone: '', // Will be extracted in a future step
+        };
+        
+        const submissionsCollection = collection(firestore, 'submissions');
+        addDocumentNonBlocking(submissionsCollection, submission);
+
       } else {
         addMessage({
           role: 'model',
-          content: 'Sorry, I had some trouble connecting. Please try again.',
+          content: response.message || 'Sorry, I had some trouble connecting. Please try again.',
         });
       }
     } catch (error) {
