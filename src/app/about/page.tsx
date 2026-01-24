@@ -25,7 +25,7 @@ export default function AboutPage() {
                   The Eve Count Philosophy
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                  To be clear: we are not a marketing company. We are a venture studio that uses engineering as its primary tool for growth. Our 'creatives' are architects and AI specialists. Our 'campaigns' are robust, scalable systems. Our goal is to build a product so good, it markets itself.
+                  To be clear: we are not a marketing company. We are a venture studio that uses engineering as its primary tool for growth. Our 'creatives' are architects and AI specialists. Our goal isn't a campaign; it's to build a digital asset. A product so effective, built on data and machine learning, that it becomes the engine that builds the entire company.
                 </p>
               </div>
 
