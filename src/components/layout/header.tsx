@@ -7,7 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 
 const navLinks = [
-  { href: '/#ventures', label: 'Ventures' },
+  { href: '/ventures', label: 'Ventures' },
   { href: '/#engine', label: 'Engine' },
   { href: '/services', label: 'Services' },
   { href: '/research', label: 'Research' },
@@ -50,7 +50,7 @@ export function Header() {
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
           <Button variant="ghost" size="sm" asChild>
-            <Link href="#">
+            <Link href="/ventures">
               <Lock className="mr-2 h-4 w-4" />
               Admin
             </Link>

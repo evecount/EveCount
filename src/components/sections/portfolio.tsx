@@ -3,7 +3,7 @@ import { ProjectCard } from "@/components/project-card";
 
 export function Portfolio() {
   return (
-    <section id="ventures" className="bg-background">
+    <section className="bg-background">
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">

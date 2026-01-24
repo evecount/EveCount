@@ -1,7 +1,6 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/sections/hero";
-import { Portfolio } from "@/components/sections/portfolio";
 import { Engine } from "@/components/sections/engine";
 import { LeadIntake } from "@/components/sections/lead-intake";
 import { Chatbot } from "@/components/chatbot";
@@ -13,7 +12,6 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <LeadIntake />
-        <Portfolio />
         <Engine />
       </main>
       <Footer />

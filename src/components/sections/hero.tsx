@@ -25,7 +25,7 @@ export function Hero() {
           </p>
           <div className="flex gap-4">
             <Button size="lg" asChild>
-              <Link href="#ventures">Our Ventures</Link>
+              <Link href="/ventures">Our Ventures</Link>
             </Button>
             <Button size="lg" variant="outline" onClick={() => setOpen(true)}>
               Chat with our AI Partner
