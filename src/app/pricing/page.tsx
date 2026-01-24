@@ -7,12 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Users, Code, Scale, Rocket, Check } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useChatbot } from "@/hooks/use-chatbot";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-    title: "Our Investment Model",
-    description: "We operate on a venture-partnership model, taking an equity-equivalent stake for our investment of Code, AI, and Architecture.",
-};
 
 const pricingTiers: {
   icon: LucideIcon;

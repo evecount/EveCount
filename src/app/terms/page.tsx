@@ -3,17 +3,12 @@
 import React from 'react';
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: 'Terms & Conditions',
-    description: 'Terms and Conditions for using EveCount.com. Please read carefully before using our services.',
-};
 
 export default function TermsPage() {
     const [currentDate, setCurrentDate] = React.useState('');
 
     React.useEffect(() => {
+        document.title = 'Terms & Conditions | EveCount.com';
         setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
     }, []);
 

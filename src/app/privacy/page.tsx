@@ -3,17 +3,12 @@
 import React from 'react';
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: 'Privacy Policy',
-    description: 'Privacy Policy for Eve Count Pte Ltd. Learn how we collect, use, and protect your information.',
-};
 
 export default function PrivacyPage() {
   const [currentDate, setCurrentDate] = React.useState('');
 
   React.useEffect(() => {
+    document.title = 'Privacy Policy | EveCount.com';
     setCurrentDate(new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }));
   }, []);
 

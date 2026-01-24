@@ -8,12 +8,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Lock } from 'lucide-react';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-    title: 'Protected Ventures',
-    description: 'Confidential portfolio of AI-accelerated ventures built by Eve Count.',
-};
 
 // IMPORTANT: This is a simple client-side password protection for demonstration purposes.
 // For a production application, you should use a proper authentication system.
