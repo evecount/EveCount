@@ -4,7 +4,7 @@ import { servicePartners } from "@/lib/services";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-export default function ServicesPage() {
+export default function PartnersPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -13,10 +13,10 @@ export default function ServicesPage() {
           <div className="container">
             <div className="mb-12 text-center">
               <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                The Eve Count Partner Marketplace
+                Our Venture Partners
               </h1>
               <p className="mx-auto mt-4 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                We build ventures with a curated network of best-in-class partners. This ecosystem provides our portfolio companies with a critical advantage. We are always looking for new partners to join our marketplace.
+                We don't just build ventures; we build ecosystems. Eve Count works with a curated network of best-in-class providers who act as venture partners alongside us, providing our portfolio companies with a critical advantage.
               </p>
             </div>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
