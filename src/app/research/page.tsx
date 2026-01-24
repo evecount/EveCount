@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers, Atom, BrainCircuit, FlaskConical } from 'lucide-react';
+import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers, Atom, BrainCircuit, FlaskConical, TrendingUp, Filter, Truck } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -95,14 +95,14 @@ export default function ResearchPage() {
                         Our open-source repo is a launchpad. Here are some project tracks you can explore to start building and learning.
                     </p>
                 </div>
-                <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
+                <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-3">
                     <Card className="bg-secondary/20 text-foreground">
                         <CardHeader>
                             <div className="flex items-center gap-4">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
                                     <Atom className="h-6 w-6 text-primary" />
                                 </div>
-                                <CardTitle>Quantum Simulators</CardTitle>
+                                <CardTitle className="text-foreground">Quantum Simulators</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent>
@@ -116,7 +116,7 @@ export default function ResearchPage() {
                                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
                                     <BrainCircuit className="h-6 w-6 text-primary" />
                                 </div>
-                                <CardTitle>Quantum Machine Learning</CardTitle>
+                                <CardTitle className="text-foreground">Quantum Machine Learning</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent>
@@ -130,12 +130,54 @@ export default function ResearchPage() {
                                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
                                     <FlaskConical className="h-6 w-6 text-primary" />
                                 </div>
-                                <CardTitle>Computational Chemistry</CardTitle>
+                                <CardTitle className="text-foreground">Computational Chemistry</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent>
                             <p className="text-muted-foreground">Develop a cloud-native application that models chemical reactions or molecular structures. This could involve creating an API with serverless functions that runs quantum chemistry simulations and displays the results in a user-friendly frontend.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Marie Curie would have built.</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-secondary/20 text-foreground">
+                        <CardHeader>
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                    <TrendingUp className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle className="text-foreground">Quantum Finance Models</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Design a system to model complex financial instruments, like option pricing in volatile markets. Use quantum-inspired algorithms to explore vast possibility spaces and find optimal trading strategies. Connect it to a real-time data feed and visualize risk/reward profiles.</p>
+                            <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What John von Neumann would have built.</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-secondary/20 text-foreground">
+                        <CardHeader>
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                    <Filter className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle className="text-foreground">AI Lead Scoring Engine</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Build an intelligent lead generation and scoring system. Use GenAI to analyze unstructured data from sources like company websites or news to predict which prospects are most likely to convert. This is a classic problem ripe for an AI-first solution.</p>
+                            <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What a Y Combinator founder would build.</p>
+                        </CardContent>
+                    </Card>
+                    <Card className="bg-secondary/20 text-foreground">
+                        <CardHeader>
+                            <div className="flex items-center gap-4">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                    <Truck className="h-6 w-6 text-primary" />
+                                </div>
+                                <CardTitle className="text-foreground">Supply Chain Optimization</CardTitle>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Tackle a classic hard problem: the Traveling Salesperson. Build an application that ingests a list of destinations and calculates the most efficient route. Use heuristic algorithms or explore quantum annealing concepts to find solutions for complex logistical challenges.</p>
+                            <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What George Dantzig would have built.</p>
                         </CardContent>
                     </Card>
                 </div>
