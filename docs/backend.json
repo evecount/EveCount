@@ -1,0 +1,126 @@
+{
+  "entities": {
+    "Venture": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Venture",
+      "type": "object",
+      "description": "Represents a venture within the EveCount portfolio.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Venture entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the venture."
+        },
+        "sector": {
+          "type": "string",
+          "description": "The sector the venture operates in (e.g., FinTech, Health)."
+        },
+        "eveCountInjection": {
+          "type": "string",
+          "description": "Description of Eve Count's contribution (MVP)."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the venture (e.g., Live)."
+        },
+        "url": {
+          "type": "string",
+          "description": "URL associated with the venture.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "sector",
+        "eveCountInjection",
+        "status"
+      ]
+    },
+    "Submission": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Submission",
+      "type": "object",
+      "description": "Represents an idea submission from a potential partner.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Submission entity."
+        },
+        "visionPitch": {
+          "type": "string",
+          "description": "The vision pitched by the potential partner."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "Date the submission was received.",
+          "format": "date-time"
+        },
+        "submitterName": {
+          "type": "string",
+          "description": "Name of the person who submitted the idea.  May be anonymous."
+        },
+        "contactEmail": {
+          "type": "string",
+          "description": "Contact email of the submitter.",
+          "format": "email"
+        },
+        "ventureId": {
+          "type": "string",
+          "description": "Reference to Venture, if the submission led to a venture. (Relationship: Venture 1:N Submission)"
+        }
+      },
+      "required": [
+        "id",
+        "visionPitch",
+        "submissionDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "ventures/{ventureId}",
+        "definition": {
+          "entityName": "Venture",
+          "schema": {
+            "$ref": "#/backend/entities/Venture"
+          },
+          "description": "Collection for storing venture data.  Each document represents a single venture.",
+          "params": [
+            {
+              "name": "ventureId",
+              "description": "Unique identifier for the venture."
+            }
+          ]
+        }
+      },
+      {
+        "path": "submissions/{submissionId}",
+        "definition": {
+          "entityName": "Submission",
+          "schema": {
+            "$ref": "#/backend/entities/Submission"
+          },
+          "description": "Collection for storing submissions from potential partners. Includes submission details such as vision pitch, submission date, submitter name, and contact email.",
+          "params": [
+            {
+              "name": "submissionId",
+              "description": "Unique identifier for the submission."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to manage ventures and submissions within the EveCount platform, emphasizing security, scalability, and ease of maintenance. It prioritizes authorization independence by avoiding hierarchical authorization dependencies and denormalizing authorization contexts where necessary. The structure segregates data with different access needs into separate collections to simplify security rules and ensure that rules are not used as filters.  Access is modeled using path-based ownership for user-related data and membership maps for collaborative data, following consistent patterns to enhance clarity and predictability. Submissions are stored in a single collection, even from anonymous users, to provide a streamlined approach to data capture. This design choice simplifies security rules by avoiding the need to differentiate between authenticated and anonymous submissions. This supports required QAPs by avoiding filtering data based on authentication state and instead, focusing on securing data at rest with appropriate security rules."
+  }
+}
