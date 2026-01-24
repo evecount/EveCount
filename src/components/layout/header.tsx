@@ -7,10 +7,11 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 
 const navLinks = [
-  { href: '#ventures', label: 'Ventures' },
-  { href: '#engine', label: 'Engine' },
+  { href: '/#ventures', label: 'Ventures' },
+  { href: '/#engine', label: 'Engine' },
   { href: '/services', label: 'Services' },
-  { href: '#partner-up', label: 'Partner Up' },
+  { href: '/research', label: 'Research' },
+  { href: '/#partner-up', label: 'Partner Up' },
 ];
 
 export function Header() {
