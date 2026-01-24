@@ -4,7 +4,6 @@ import { Hero } from "@/components/sections/hero";
 import { Engine } from "@/components/sections/engine";
 import { LeadIntake } from "@/components/sections/lead-intake";
 import { Chatbot } from "@/components/chatbot";
-import { VentureSummary } from "@/components/sections/venture-summary";
 
 export default function Home() {
   return (
@@ -13,7 +12,6 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <LeadIntake />
-        <VentureSummary />
         <Engine />
       </main>
       <Footer />
