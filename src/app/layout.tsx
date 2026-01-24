@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     default: 'EveCount.com - AI Venture Studio',
     template: '%s | EveCount.com',
   },
-  description: 'We don\'t invest capital; we invest Code, AI, and Architecture.',
+  description: 'Eve Count is a venture studio that builds companies by investing Code, AI, and Architecture instead of capital. We partner with founders to take ideas from vision to market-ready ventures.',
   metadataBase: new URL('https://www.evecount.com'),
 };
 
