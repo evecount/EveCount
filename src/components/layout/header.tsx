@@ -3,14 +3,14 @@
 import Link from 'next/link';
 import { Lock, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { useState } from 'react';
 
 const navLinks = [
   { href: '/ventures', label: 'Ventures' },
   { href: '/#engine', label: 'Engine' },
   { href: '/services', label: 'Partners' },
-  { href: '/pricing', label: 'Pricing' },
+  { href: '/#funding', label: 'Funding' },
   { href: '/research', label: 'Research' },
 ];
 
