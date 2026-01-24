@@ -10,6 +10,7 @@ const navLinks = [
   { href: '/ventures', label: 'Ventures' },
   { href: '/#engine', label: 'Engine' },
   { href: '/services', label: 'Services' },
+  { href: '/pricing', label: 'Pricing' },
   { href: '/research', label: 'Research' },
   { href: '/#partner-up', label: 'Partner Up' },
 ];
