@@ -3,7 +3,6 @@ import { Footer } from "@/components/layout/footer";
 import { servicePartners } from "@/lib/services";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
 export default function ServicesPage() {
   return (
@@ -14,10 +13,10 @@ export default function ServicesPage() {
           <div className="container">
             <div className="mb-12 text-center">
               <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                Our Professional Service Partners
+                The Eve Count Partner Marketplace
               </h1>
               <p className="mx-auto mt-4 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                When you build with Eve Count, you get more than just code. You get a full suite of services from our trusted partners to accelerate your journey from MVP to market leader.
+                We build ventures with a curated network of best-in-class partners. This ecosystem provides our portfolio companies with a critical advantage. We are always looking for new partners to join our marketplace.
               </p>
             </div>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -39,7 +38,7 @@ export default function ServicesPage() {
             </div>
             <div className="mt-12 text-center">
               <Button size="lg" asChild>
-                <Link href="/#partner-up">Partner With Us</Link>
+                <a href="mailto:partnerships@evecount.com">Become a Service Partner</a>
               </Button>
             </div>
           </div>

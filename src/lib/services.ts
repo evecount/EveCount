@@ -24,9 +24,14 @@ export const servicePartners: ServicePartner[] = [
     Icon: Calculator,
   },
   {
-    name: "GTM, Marketing & PR",
-    description: "An idea is nothing without users. We provide a dedicated team to craft and execute your GTM, marketing, and PR strategy, from brand positioning to your first customer acquisition campaigns.",
+    name: "Go-to-Market Strategy",
+    description: "We craft and execute your GTM strategy, from brand positioning to your first customer acquisition campaigns, ensuring a successful launch.",
     Icon: Rocket,
+  },
+  {
+    name: "Marketing & PR",
+    description: "An idea is nothing without users. Our partners build your brand's voice and drive awareness through targeted marketing and public relations.",
+    Icon: Megaphone,
   },
   {
     name: "Co-working Space Partner",
