@@ -69,7 +69,7 @@ export default function ResearchPage() {
                 </div>
                 <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
                     {visionElements.map((element) => (
-                        <Card key={element.title} className="bg-background/50">
+                        <Card key={element.title} className="bg-background/50 text-foreground">
                             <CardHeader>
                                 <div className="flex items-center gap-4">
                                     <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
@@ -96,7 +96,7 @@ export default function ResearchPage() {
                     </p>
                 </div>
                 <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
-                    <Card className="bg-secondary/20">
+                    <Card className="bg-secondary/20 text-foreground">
                         <CardHeader>
                             <div className="flex items-center gap-4">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
@@ -110,7 +110,7 @@ export default function ResearchPage() {
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Ada Lovelace would have built.</p>
                         </CardContent>
                     </Card>
-                    <Card className="bg-secondary/20">
+                    <Card className="bg-secondary/20 text-foreground">
                         <CardHeader>
                             <div className="flex items-center gap-4">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
@@ -124,7 +124,7 @@ export default function ResearchPage() {
                              <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Alan Turing would have built.</p>
                         </CardContent>
                     </Card>
-                    <Card className="bg-secondary/20">
+                    <Card className="bg-secondary/20 text-foreground">
                         <CardHeader>
                             <div className="flex items-center gap-4">
                                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
