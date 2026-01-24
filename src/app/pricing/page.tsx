@@ -1,10 +1,12 @@
+'use client';
+
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { Users, Code, Scale, Rocket, Check } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useChatbot } from "@/hooks/use-chatbot";
 
 const pricingTiers: {
   icon: LucideIcon;
@@ -69,6 +71,8 @@ const pricingTiers: {
 ];
 
 export default function PricingPage() {
+  const { setOpen } = useChatbot();
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -118,8 +122,8 @@ export default function PricingPage() {
                 <p className="mx-auto max-w-3xl text-muted-foreground">
                   Note: The prices above are illustrative market-rate benchmarks. Our preferred method is to operate as a venture partner for an equity equivalent. We also offer introductory one-off strategy sessions starting at $2k for teams looking to refine their vision before committing to a full Foundry Session.
                 </p>
-              <Button size="lg" asChild className="mt-6">
-                <Link href="/#partner-up">Discuss Your Venture</Link>
+              <Button size="lg" className="mt-6" onClick={() => setOpen(true)}>
+                Discuss Your Venture
               </Button>
             </div>
           </div>

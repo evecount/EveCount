@@ -1,29 +1,5 @@
 import { z } from 'zod';
 
-export const visionPitchSchema = z.object({
-  partnerName: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  partnerEmail: z.string().email({ message: "Please enter a valid email address." }),
-  visionPitch: z.string().min(50, { message: "Vision pitch must be at least 50 characters." }).max(5000, { message: "Pitch cannot exceed 5000 characters." }),
-});
-
-export const AiLeadGatekeeperInputSchema = z.object({
-  visionPitch: z
-    .string()
-    .describe('The potential partner’s vision pitch submitted through the lead intake form.'),
-  partnerName: z.string().describe('The name of the potential partner.'),
-  partnerEmail: z.string().describe('The email of the potential partner.'),
-});
-
-export const AiLeadGatekeeperOutputSchema = z.object({
-  shouldScheduleSession: z
-    .boolean()
-    .describe(
-      'Whether or not a Foundry Session should be scheduled based on the vision pitch.'
-    ),
-  reason: z.string().describe('The reason for the decision to schedule or not.'),
-  openHoursUrl: z.string().optional().describe('The OpenHours.ai URL to schedule a session, if applicable.'),
-});
-
 export const AiMenuAutoGenInputSchema = z.object({
   photoDataUri: z
     .string()

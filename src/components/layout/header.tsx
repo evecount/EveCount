@@ -12,7 +12,6 @@ const navLinks = [
   { href: '/services', label: 'Partners' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/research', label: 'Research' },
-  { href: '/#partner-up', label: 'Partner Up' },
 ];
 
 export function Header() {
