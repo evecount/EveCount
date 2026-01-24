@@ -1,7 +1,6 @@
 'use server';
 
 import { aiPartnerChat, type AiPartnerChatInput } from '@/ai/flows/ai-partner-chat';
-import type { z } from 'zod';
 
 export async function submitChatMessage(input: AiPartnerChatInput) {
     try {

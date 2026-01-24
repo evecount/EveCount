@@ -61,12 +61,16 @@
         },
         "submitterName": {
           "type": "string",
-          "description": "Name of the person who submitted the idea.  May be anonymous."
+          "description": "Name of the person who submitted the idea. May be anonymous."
         },
         "contactEmail": {
           "type": "string",
           "description": "Contact email of the submitter.",
           "format": "email"
+        },
+        "contactPhone": {
+            "type": "string",
+            "description": "Contact phone number of the submitter."
         },
         "ventureId": {
           "type": "string",
@@ -95,7 +99,7 @@
           "schema": {
             "$ref": "#/backend/entities/Venture"
           },
-          "description": "Collection for storing venture data.  Each document represents a single venture.",
+          "description": "Collection for storing venture data. Each document represents a single venture.",
           "params": [
             {
               "name": "ventureId",
@@ -121,6 +125,6 @@
         }
       }
     ],
-    "reasoning": "The Firestore structure is designed to manage ventures and submissions within the EveCount platform, emphasizing security, scalability, and ease of maintenance. It prioritizes authorization independence by avoiding hierarchical authorization dependencies and denormalizing authorization contexts where necessary. The structure segregates data with different access needs into separate collections to simplify security rules and ensure that rules are not used as filters.  Access is modeled using path-based ownership for user-related data and membership maps for collaborative data, following consistent patterns to enhance clarity and predictability. Submissions are stored in a single collection, even from anonymous users, to provide a streamlined approach to data capture. This design choice simplifies security rules by avoiding the need to differentiate between authenticated and anonymous submissions. This supports required QAPs by avoiding filtering data based on authentication state and instead, focusing on securing data at rest with appropriate security rules."
+    "reasoning": "The Firestore structure is designed to manage ventures and submissions within the EveCount platform, emphasizing security, scalability, and ease of maintenance. It prioritizes authorization independence by avoiding hierarchical authorization dependencies and denormalizing authorization contexts where necessary. The structure segregates data with different access needs into separate collections to simplify security rules and ensure that rules are not used as filters. Access is modeled using path-based ownership for user-related data and membership maps for collaborative data, following consistent patterns to enhance clarity and predictability. Submissions are stored in a single collection, even from anonymous users, to provide a streamlined approach to data capture. This design choice simplifies security rules by avoiding the need to differentiate between authenticated and anonymous submissions. This supports required QAPs by avoiding filtering data based on authentication state and instead, focusing on securing data at rest with appropriate security rules."
   }
 }
