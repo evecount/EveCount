@@ -13,7 +13,7 @@ export function Hero() {
           <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             We don't invest capital.
             <br />
-            <span className="steel-gradient bg-clip-text text-transparent">
+            <span className="inline-block steel-gradient bg-clip-text text-transparent">
               We invest Code, AI, and Architecture.
             </span>
           </h1>
