@@ -12,10 +12,10 @@ export default function AboutPage() {
           <div className="container">
             <div className="mb-12 text-center">
               <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                Marketing by Other Means
+                Growth by Engineering
               </h1>
               <p className="mx-auto mt-4 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                Traditional firms market with ads. We market with assets. We believe the most powerful form of marketing isn't a campaign; it's a category-defining product.
+                Traditional firms chase growth with marketing campaigns. We build it with code. We believe the most powerful form of marketing isn't an ad; it's a category-defining product.
               </p>
             </div>
 
@@ -25,7 +25,7 @@ export default function AboutPage() {
                   The Eve Count Philosophy
                 </h2>
                 <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                  Think of us as a marketing company where the "creatives" are engineers and the "campaigns" are machine learning pipelines. Our goal is the same: build a brand that people love. Our method is just different. We build the thing that builds the hype.
+                  To be clear: we are not a marketing company. We are a venture studio that uses engineering as its primary tool for growth. Our 'creatives' are architects and AI specialists. Our 'campaigns' are robust, scalable systems. Our goal is to build a product so good, it markets itself.
                 </p>
               </div>
 
