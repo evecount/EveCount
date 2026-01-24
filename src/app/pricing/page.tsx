@@ -80,7 +80,7 @@ export default function PricingPage() {
                 Our Investment Model
               </h1>
               <p className="mx-auto mt-4 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                We invest our 'Code, AI, and Architecture' at highly accelerated timelines. Below are market benchmarks to provide transparency on the value we deliver.
+                We operate on a venture-partnership model, typically taking an equity-equivalent stake for our investment of Code, AI, and Architecture. For partners who prefer a fee-for-service arrangement, the market benchmarks below provide transparency on the value we deliver at an accelerated pace.
               </p>
             </div>
             <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -116,7 +116,7 @@ export default function PricingPage() {
             </div>
             <div className="mt-16 text-center">
                 <p className="mx-auto max-w-3xl text-muted-foreground">
-                    Note: The prices above are illustrative market-rate benchmarks. Eve Count operates on a venture-partnership model, not a fee-for-service basis. Our investment is our expert execution.
+                  Note: The prices above are illustrative market-rate benchmarks. Our preferred method is to operate as a venture partner for an equity equivalent. We also offer introductory one-off strategy sessions starting at $2k for teams looking to refine their vision before committing to a full Foundry Session.
                 </p>
               <Button size="lg" asChild className="mt-6">
                 <Link href="/#partner-up">Discuss Your Venture</Link>
