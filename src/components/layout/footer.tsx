@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Footer() {
   return (
     <footer className="border-t border-border/40">
@@ -19,9 +21,14 @@ export function Footer() {
             Eve Count Pte Ltd, Singapore.
           </p>
         </div>
-        <p className="text-center text-sm text-muted-foreground md:text-left">
-          DPO: Gwendalynn Lim Wan Ting.
-        </p>
+        <div className="flex gap-4 text-sm text-muted-foreground">
+            <Link href="/privacy" className="transition-colors hover:text-foreground">
+                Privacy Policy
+            </Link>
+            <Link href="/terms" className="transition-colors hover:text-foreground">
+                Terms & Conditions
+            </Link>
+        </div>
       </div>
     </footer>
   );

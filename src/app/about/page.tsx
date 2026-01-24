@@ -80,6 +80,22 @@ export default function AboutPage() {
 
           </div>
         </section>
+        <section className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
+            <div className="container text-center">
+                <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
+                    Get in Touch
+                </h2>
+                <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
+                    For direct inquiries or to discuss a potential partnership, you can reach our founder.
+                </p>
+                <div className="mt-8 font-medium">
+                    <p className="text-xl text-foreground">Gwendalynn Lim Wan Ting</p>
+                    <a href="tel:+6586081377" className="text-lg text-muted-foreground hover:text-primary transition-colors">
+                        +65 8608 1377
+                    </a>
+                </div>
+            </div>
+        </section>
       </main>
       <Footer />
     </div>
