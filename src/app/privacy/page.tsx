@@ -21,8 +21,7 @@ export default function PrivacyPage() {
 
             <div className="mt-8 space-y-6 text-muted-foreground">
                 <p>Eve Count Pte Ltd. ("we," "us," or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, EveCount.com, and use our services. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the site.</p>
-                <p className="font-bold text-foreground">Note: This is a template and not legal advice. You should consult with a legal professional to ensure compliance with all applicable laws, including those in Singapore and Canada.</p>
-
+                
 
                 <h2 className="font-headline pt-4 text-2xl font-bold text-foreground border-t border-border/40">1. Information We Collect</h2>
                 <p>We may collect information about you in a variety of ways. The information we may collect on the Site includes:</p>

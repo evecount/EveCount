@@ -21,8 +21,7 @@ export default function TermsPage() {
 
             <div className="mt-8 space-y-6 text-muted-foreground">
                 <p>Welcome to EveCount.com. These Terms and Conditions ("Terms") govern your use of our website and services. By accessing or using the website, you agree to be bound by these Terms.</p>
-                <p className="font-bold text-foreground">Note: This is a template and not legal advice. You should consult with a legal professional to finalize these terms for your business.</p>
-
+                
 
                 <h2 className="font-headline pt-4 text-2xl font-bold text-foreground border-t border-border/40">1. Acceptance of Terms</h2>
                 <p>By accessing our Site, you confirm that you have read, understood, and agree to be bound by these Terms. If you do not agree with these Terms, you must not use this website.</p>
