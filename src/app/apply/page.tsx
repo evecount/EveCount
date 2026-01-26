@@ -26,7 +26,7 @@ const applicationSchema = z.object({
     applicationType: z.enum(applicationTypes, { required_error: "Please select an application type." }),
     submitterName: z.string().min(1, "Please enter your name."),
     contactEmail: z.string().email("Please enter a valid email address."),
-    contactPhone: z.string().optional(),
+    contactPhone: z.string().min(10, "Please enter a valid phone number."),
     terms: z.boolean().refine(val => val === true, {
         message: "You must review and agree to the terms and privacy policy to proceed."
     }),
@@ -37,6 +37,7 @@ const applicationSchema = z.object({
     roleInterest: z.string().optional(),
     resumeUrl: z.string().optional(),
     partnershipInterest: z.string().optional(),
+    message: z.string().optional(),
 }).superRefine((data, ctx) => {
     if (data.applicationType === 'Venture Pitch' && (!data.visionPitch || data.visionPitch.length < 20)) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your vision (min 20 characters).", path: ['visionPitch'] });
@@ -58,6 +59,9 @@ const applicationSchema = z.object({
         }
         if (data.portfolioUrl && !z.string().url().safeParse(data.portfolioUrl).success) {
             ctx.addIssue({ code: z.ZodIssueCode.custom, message: "If providing a portfolio link, it must be a valid URL.", path: ['portfolioUrl'] });
+        }
+        if (!data.message || data.message.length < 20) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please provide a brief message (min 20 characters).", path: ['message'] });
         }
     }
     if (data.applicationType === 'Partnership Inquiry') {
@@ -86,6 +90,7 @@ export default function ApplyPage() {
             roleInterest: "",
             resumeUrl: "",
             partnershipInterest: "",
+            message: "",
             terms: false,
         },
     });
@@ -196,7 +201,7 @@ export default function ApplyPage() {
                                                 name="contactPhone"
                                                 render={({ field }) => (
                                                     <FormItem>
-                                                        <FormLabel>Contact Phone (Optional)</FormLabel>
+                                                        <FormLabel>Contact Phone *</FormLabel>
                                                         <FormControl><Input type="tel" placeholder="Your phone number" {...field} /></FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -288,6 +293,17 @@ export default function ApplyPage() {
                                                             <FormItem>
                                                                 <FormLabel>Portfolio Link (Optional)</FormLabel>
                                                                 <FormControl><Input placeholder="https://github.com/yourprofile" {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="message"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Message / Cover Letter *</FormLabel>
+                                                                <FormControl><Textarea placeholder="Tell us a bit about yourself and why you're a good fit." rows={5} {...field} /></FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}

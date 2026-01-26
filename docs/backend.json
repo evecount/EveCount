@@ -104,6 +104,10 @@
           "type": "string",
           "description": "Details about the partnership or sponsorship interest."
         },
+        "message": {
+          "type": "string",
+          "description": "A general message or cover letter, primarily for career inquiries."
+        },
         "ventureId": {
           "type": "string",
           "description": "Reference to Venture, if the submission led to a venture. (Relationship: Venture 1:N Submission)"
@@ -114,6 +118,7 @@
         "applicationType",
         "submitterName",
         "contactEmail",
+        "contactPhone",
         "submissionDate"
       ]
     }
