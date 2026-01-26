@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
@@ -11,13 +12,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { useFirestore } from "@/firebase";
 import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
 import { collection } from "firebase/firestore";
 import { Send } from 'lucide-react';
-import type { Metadata } from 'next';
 
 const applicationTypes = ["Venture Pitch", "Incubator Application", "Career Inquiry", "Partnership Inquiry"] as const;
 
@@ -26,6 +27,9 @@ const applicationSchema = z.object({
     submitterName: z.string().min(1, "Please enter your name."),
     contactEmail: z.string().email("Please enter a valid email address."),
     contactPhone: z.string().optional(),
+    terms: z.boolean().refine(val => val === true, {
+        message: "You must review and agree to the terms and privacy policy to proceed."
+    }),
     // Conditional fields
     companyName: z.string().optional(),
     visionPitch: z.string().optional(),
@@ -82,6 +86,7 @@ export default function ApplyPage() {
             roleInterest: "",
             resumeUrl: "",
             partnershipInterest: "",
+            terms: false,
         },
     });
 
@@ -97,8 +102,10 @@ export default function ApplyPage() {
             return;
         }
 
+        const { terms, ...submissionValues } = values;
+
         const submissionData = {
-            ...values,
+            ...submissionValues,
             submissionDate: new Date().toISOString(),
         };
         
@@ -107,7 +114,7 @@ export default function ApplyPage() {
 
         toast({
             title: "Application Received",
-            description: "Thank you for your interest! We've received your submission and will be in touch shortly.",
+            description: "Thank you for your interest! We've received your submission and will be in touch via email shortly.",
         });
         form.reset();
     }
@@ -184,6 +191,17 @@ export default function ApplyPage() {
                                                     )}
                                                 />
                                             </div>
+                                             <FormField
+                                                control={form.control}
+                                                name="contactPhone"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel>Contact Phone (Optional)</FormLabel>
+                                                        <FormControl><Input type="tel" placeholder="Your phone number" {...field} /></FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
 
                                             {applicationType === 'Venture Pitch' && (
                                                 <>
@@ -303,6 +321,33 @@ export default function ApplyPage() {
                                                     />
                                                 </>
                                             )}
+
+                                            <FormField
+                                                control={form.control}
+                                                name="terms"
+                                                render={({ field }) => (
+                                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-input bg-background/50 p-4 shadow">
+                                                        <FormControl>
+                                                            <Checkbox
+                                                                checked={field.value}
+                                                                onCheckedChange={field.onChange}
+                                                            />
+                                                        </FormControl>
+                                                        <div className="space-y-1 leading-none">
+                                                            <FormLabel>
+                                                                Acknowledge and Agree
+                                                            </FormLabel>
+                                                            <FormDescription>
+                                                                By submitting this form, you acknowledge that you have read and agree to our{' '}
+                                                                <Link href="/terms" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Terms & Conditions</Link> and{' '}
+                                                                <Link href="/privacy" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>.
+                                                                You agree to be contacted by Eve Count regarding your application.
+                                                            </FormDescription>
+                                                            <FormMessage />
+                                                        </div>
+                                                    </FormItem>
+                                                )}
+                                            />
 
                                             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
                                                 <Send className="mr-2 h-4 w-4" />
