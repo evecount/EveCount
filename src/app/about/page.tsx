@@ -1,17 +1,28 @@
+'use client';
+
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Zap, Code, Share2, Mail } from "lucide-react";
+import { Zap, Code, Share2, Mail, Bot } from "lucide-react";
 import type { Metadata } from "next";
+import { useChatbot } from "@/hooks/use-chatbot";
+import React from "react";
 
+// Note: Metadata is still supported in client components
 export const metadata: Metadata = {
   title: "About & Contact Eve Count",
   description: "Learn about the Eve Count philosophy and how to get in touch to pitch your venture. We are a venture studio that uses engineering as its primary tool for growth.",
 };
 
 export default function AboutPage() {
-  const mailtoLink = "mailto:gwen@evecount.com?subject=Venture%20Pitch:%20[Your%20Company%20Name]&body=1.%20What%20is%20your%20vision%3F%0D%0A%0D%0A2.%20What%20problem%20are%20you%20solving%3F%0D%0A%0D%0A3.%20What%20is%20your%20unique%20insight%3F%0D%0A%0D%0AOr%20you%20can%20always%20call%20at%20%2B65%208608%201377.";
+  const { setOpen } = useChatbot();
+
+  React.useEffect(() => {
+    // We can still set the title for client components if needed, though metadata is preferred.
+    document.title = "About & Contact Eve Count | EveCount.com";
+  }, []);
+
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -120,17 +131,15 @@ export default function AboutPage() {
                     <Card className="bg-background/50">
                         <CardHeader>
                             <CardTitle>Pitch Your Venture</CardTitle>
-                            <CardDescription>Ready to build? Send us the outline of your vision.</CardDescription>
+                            <CardDescription>Ready to build? Chat with our AI Partner to start.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <Button asChild size="lg" className="w-full">
-                                <a href={mailtoLink}>
-                                    <Mail className="mr-2 h-4 w-4" />
-                                    Start the Conversation
-                                </a>
+                            <Button size="lg" className="w-full" onClick={() => setOpen(true)}>
+                                <Bot className="mr-2 h-4 w-4" />
+                                Start the Conversation
                             </Button>
                             <p className="mt-4 text-xs text-muted-foreground">
-                                Clicking will open your email client with a pre-filled template to guide your pitch.
+                                Our AI will guide you through the key questions to structure your pitch and save it for our review.
                             </p>
                         </CardContent>
                     </Card>
