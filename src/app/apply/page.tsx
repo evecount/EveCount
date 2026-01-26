@@ -123,7 +123,7 @@ export default function ApplyPage() {
                             Whether you're pitching a new venture, looking to join our incubator, seeking a new career, or wanting to partner with us, this is the right place to start.
                         </p>
                     </div>
-                    <Card className="bg-secondary/20">
+                    <Card className="bg-secondary/20 text-foreground">
                         <CardHeader>
                             <CardTitle>Universal Application</CardTitle>
                             <CardDescription>Tell us how you'd like to get involved.</CardDescription>
