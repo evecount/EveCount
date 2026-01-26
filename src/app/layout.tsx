@@ -8,10 +8,10 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: {
-    default: 'EveCount.com - AI Venture Studio',
+    default: 'Eve Count | Quantum & AI Venture Studio, Singapore',
     template: '%s | EveCount.com',
   },
-  description: 'Eve Count is a venture studio that builds companies by investing Code, AI, and Architecture instead of capital. We partner with founders to take ideas from vision to market-ready ventures.',
+  description: 'Eve Count is a Singapore-based venture studio specializing in Quantum (PQC, QKD) & AI. We build ventures by investing Code and Architecture, not just capital, turning complex ideas into market-ready products.',
   metadataBase: new URL('https://www.evecount.com'),
 };
 

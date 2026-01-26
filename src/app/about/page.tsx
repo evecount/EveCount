@@ -89,6 +89,16 @@ export default function AboutPage() {
                   </CardContent>
                 </Card>
               </div>
+
+              <div className="border-t border-border/40 pt-12 text-center">
+                 <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
+                  What's in a Name?
+                </h2>
+                 <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
+                    In cryptography, 'Eve' is the eavesdropper, the observer. In quantum mechanics, the act of observation fundamentally changes the outcome. <span className="font-semibold text-foreground">Eve Count</span> is a nod to this principle. We believe that by intently observing a problem and 'counting' its components, we can build systems—from quantum-secure communications (QKD) to AI—that don't just solve it, but change the landscape entirely. We are the observers who build.
+                </p>
+              </div>
+
             </div>
 
           </div>

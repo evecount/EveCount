@@ -7,8 +7,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Quantum Research Hub",
-  description: "A central hub for quantum research, innovation, and community engagement, amplifying the efforts of the Quantum Research Workshop.",
+  title: "Quantum Research Hub | PQC, QKD & QML",
+  description: "Explore Eve Count's Quantum Research Hub. An open-source initiative with tracks in Post-Quantum Cryptography (PQC), Quantum Key Distribution (QKD), and Quantum Machine Learning (QML).",
 };
 
 const visionElements = [
@@ -47,7 +47,7 @@ export default function ResearchPage() {
                 Quantum Research & Innovation Hub
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-                This is our open-source initiative to empower the next generation of builders. We are giving away a road map to some of the most specialized and valuable skills in the tech world because we believe in learning by doing. We provide a central hub for quantum research, community engagement, and a launchpad for innovation.
+                Our open-source initiative to build the future of secure, intelligent systems. We provide a launchpad for deep-tech exploration into Post-Quantum Cryptography (PQC), Quantum Key Distribution (QKD), and Quantum Machine Learning (QML). This is where we learn by building.
               </p>
                <Button size="lg" className="mt-8" asChild>
                 <Link href="https://github.com/evecount/quantum-research-101" target="_blank" rel="noopener noreferrer">
