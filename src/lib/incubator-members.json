@@ -1,0 +1,27 @@
+
+[
+  {
+    "name": "Alex Chen",
+    "expertise": "Quantum Machine Learning, Financial Modeling"
+  },
+  {
+    "name": "Brenda Tan",
+    "expertise": "Natural Language Processing, Healthcare AI"
+  },
+  {
+    "name": "Charlie Lim",
+    "expertise": "Computer Vision, Autonomous Systems"
+  },
+  {
+    "name": "Diana Wong",
+    "expertise": "Reinforcement Learning, Robotics"
+  },
+  {
+    "name": "Ethan Kumar",
+    "expertise": "AI Ethics, Explainable AI (XAI)"
+  },
+  {
+    "name": "Fiona Goode",
+    "expertise": "Multimodal AI, Generative Art"
+  }
+]

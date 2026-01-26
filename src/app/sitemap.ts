@@ -1,3 +1,4 @@
+
 import { MetadataRoute } from 'next'
  
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -34,6 +35,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
         url: `${baseUrl}/terms`,
+        lastModified: new Date(),
+    },
+    {
+        url: `${baseUrl}/incubator`,
         lastModified: new Date(),
     }
   ]
