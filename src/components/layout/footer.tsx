@@ -1,5 +1,6 @@
 
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const footerSections = {
   company: [
@@ -43,6 +44,9 @@ export function Footer() {
             <p className="text-sm text-muted-foreground">
               Eve Count Pte Ltd, Singapore.
             </p>
+             <Button asChild className="mt-4 w-full bg-foreground text-background hover:bg-foreground/90">
+                <Link href="/incubator#submit-problem">Apply Here</Link>
+            </Button>
           </div>
           <div className="grid grid-cols-2 gap-8 md:col-span-3 md:grid-cols-3">
             <div>
