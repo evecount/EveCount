@@ -1,10 +1,11 @@
 'use client';
 
-import React, { DependencyList, createContext, useContext, ReactNode, useMemo, useState, useEffect } from 'react';
+import React, { DependencyList, createContext, useContext, ReactNode, useMemo, useState, useEffect, useRef } from 'react';
 import { FirebaseApp } from 'firebase/app';
 import { Firestore } from 'firebase/firestore';
 import { Auth, User, onAuthStateChanged } from 'firebase/auth';
 import { FirebaseErrorListener } from '@/components/FirebaseErrorListener'
+import { initiateAnonymousSignIn } from '@/firebase/non-blocking-login';
 
 interface FirebaseProviderProps {
   children: ReactNode;
@@ -67,6 +68,8 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
     userError: null,
   });
 
+  const isInitialAuthCheck = useRef(true);
+
   // Effect to subscribe to Firebase auth state changes
   useEffect(() => {
     if (!auth) { // If no Auth service instance, cannot determine user state
@@ -74,16 +77,24 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
       return;
     }
 
-    setUserAuthState({ user: null, isUserLoading: true, userError: null }); // Reset on auth instance change
-
     const unsubscribe = onAuthStateChanged(
       auth,
       (firebaseUser) => { // Auth state determined
-        setUserAuthState({ user: firebaseUser, isUserLoading: false, userError: null });
+        if (!firebaseUser && isInitialAuthCheck.current) {
+          // No user on initial page load, so sign in anonymously.
+          // The listener will fire again with the anonymous user.
+          initiateAnonymousSignIn(auth);
+        } else {
+          // A user exists, or it's a subsequent event (like sign-out).
+          setUserAuthState({ user: firebaseUser, isUserLoading: false, userError: null });
+        }
+        // This ensures we only attempt anonymous sign-in on the very first check.
+        isInitialAuthCheck.current = false;
       },
       (error) => { // Auth listener error
         console.error("FirebaseProvider: onAuthStateChanged error:", error);
         setUserAuthState({ user: null, isUserLoading: false, userError: error });
+        isInitialAuthCheck.current = false;
       }
     );
     return () => unsubscribe(); // Cleanup
