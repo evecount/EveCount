@@ -13,7 +13,7 @@ const footerSections = {
   explore: [
     { href: "/#engine", label: "Engine" },
     { href: "/pricing", label: "Pricing" },
-    { href: "/research", label: "Research" },
+    { href: "/research", label: "Quantum Research 101" },
   ],
   legal: [
     { href: "/privacy", label: "Privacy Policy" },
