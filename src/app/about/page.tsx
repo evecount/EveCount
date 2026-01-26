@@ -2,7 +2,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Zap, Code, Share2, Mail, Phone } from "lucide-react";
+import { Zap, Code, Share2, Mail } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  const mailtoLink = "mailto:gwen@evecount.com?subject=Venture%20Pitch:%20[Your%20Company%20Name]&body=1.%20What%20is%20your%20vision%3F%0D%0A%0D%0A2.%20What%20problem%20are%20you%20solving%3F%0D%0A%0D%0A3.%20What%20is%20your%20unique%20insight%3F%0D%0A";
+  const mailtoLink = "mailto:gwen@evecount.com?subject=Venture%20Pitch:%20[Your%20Company%20Name]&body=1.%20What%20is%20your%20vision%3F%0D%0A%0D%0A2.%20What%20problem%20are%20you%20solving%3F%0D%0A%0D%0A3.%20What%20is%20your%20unique%20insight%3F%0D%0A%0D%0AOr%20you%20can%20always%20call%20at%20%2B65%208608%201377.";
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -112,10 +112,6 @@ export default function AboutPage() {
                                 <a href="mailto:gwen@evecount.com" className="flex items-center gap-2 transition-colors hover:text-primary">
                                     <Mail className="h-4 w-4" />
                                     <span>gwen@evecount.com</span>
-                                </a>
-                                <a href="tel:+6586081377" className="flex items-center gap-2 transition-colors hover:text-primary">
-                                    <Phone className="h-4 w-4" />
-                                    <span>+65 8608 1377</span>
                                 </a>
                             </div>
                         </CardContent>
