@@ -44,15 +44,25 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Submission",
       "type": "object",
-      "description": "Represents an idea submission from a potential partner.",
+      "description": "Represents a general application or submission to EveCount, for ventures, incubator, careers, or partnerships.",
       "properties": {
         "id": {
           "type": "string",
           "description": "Unique identifier for the Submission entity."
         },
+        "applicationType": {
+          "type": "string",
+          "description": "The type of application being submitted.",
+          "enum": [
+            "Venture Pitch",
+            "Incubator Application",
+            "Career Inquiry",
+            "Partnership Inquiry"
+          ]
+        },
         "visionPitch": {
           "type": "string",
-          "description": "The vision pitched by the potential partner."
+          "description": "The vision pitched by the potential partner, or a statement of interest."
         },
         "submissionDate": {
           "type": "string",
@@ -60,12 +70,12 @@
           "format": "date-time"
         },
         "companyName": {
-            "type": "string",
-            "description": "Name of the company submitting the idea."
+          "type": "string",
+          "description": "Name of the company submitting the idea or inquiry."
         },
         "submitterName": {
           "type": "string",
-          "description": "Name of the person who submitted the idea. May be anonymous."
+          "description": "Name of the person who submitted the application."
         },
         "contactEmail": {
           "type": "string",
@@ -73,8 +83,26 @@
           "format": "email"
         },
         "contactPhone": {
-            "type": "string",
-            "description": "Contact phone number of the submitter."
+          "type": "string",
+          "description": "Contact phone number of the submitter."
+        },
+        "portfolioUrl": {
+          "type": "string",
+          "description": "URL to a portfolio, LinkedIn, or GitHub profile.",
+          "format": "uri"
+        },
+        "resumeUrl": {
+          "type": "string",
+          "description": "URL to a resume or CV.",
+          "format": "uri"
+        },
+        "roleInterest": {
+          "type": "string",
+          "description": "The role or area of interest for a career application."
+        },
+        "partnershipInterest": {
+          "type": "string",
+          "description": "Details about the partnership or sponsorship interest."
         },
         "ventureId": {
           "type": "string",
@@ -83,7 +111,9 @@
       },
       "required": [
         "id",
-        "visionPitch",
+        "applicationType",
+        "submitterName",
+        "contactEmail",
         "submissionDate"
       ]
     }

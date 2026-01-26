@@ -8,6 +8,7 @@ const footerSections = {
     { href: "/ventures", label: "Ventures" },
     { href: "/incubator", label: "Incubator" },
     { href: "/services", label: "Partners" },
+    { href: "/apply", label: "Apply" },
   ],
   explore: [
     { href: "/#engine", label: "Engine" },
@@ -45,7 +46,7 @@ export function Footer() {
               Eve Count Pte Ltd, Singapore.
             </p>
              <Button asChild className="mt-4 w-full bg-foreground text-background hover:bg-foreground/90">
-                <Link href="/incubator#submit-problem">Apply Here</Link>
+                <Link href="/apply">Apply Here</Link>
             </Button>
           </div>
           <div className="grid grid-cols-2 gap-8 md:col-span-3 md:grid-cols-3">

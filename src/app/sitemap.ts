@@ -40,6 +40,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
         url: `${baseUrl}/incubator`,
         lastModified: new Date(),
+    },
+    {
+        url: `${baseUrl}/apply`,
+        lastModified: new Date(),
     }
   ]
 }

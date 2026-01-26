@@ -1,0 +1,322 @@
+'use client';
+
+import { useState } from 'react';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
+import { useFirestore } from "@/firebase";
+import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
+import { collection } from "firebase/firestore";
+import { Send } from 'lucide-react';
+import type { Metadata } from 'next';
+
+const applicationTypes = ["Venture Pitch", "Incubator Application", "Career Inquiry", "Partnership Inquiry"] as const;
+
+const applicationSchema = z.object({
+    applicationType: z.enum(applicationTypes, { required_error: "Please select an application type." }),
+    submitterName: z.string().min(1, "Please enter your name."),
+    contactEmail: z.string().email("Please enter a valid email address."),
+    contactPhone: z.string().optional(),
+    // Conditional fields
+    companyName: z.string().optional(),
+    visionPitch: z.string().optional(),
+    portfolioUrl: z.string().optional(),
+    roleInterest: z.string().optional(),
+    resumeUrl: z.string().optional(),
+    partnershipInterest: z.string().optional(),
+}).superRefine((data, ctx) => {
+    if (data.applicationType === 'Venture Pitch' && (!data.visionPitch || data.visionPitch.length < 20)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your vision (min 20 characters).", path: ['visionPitch'] });
+    }
+    if (data.applicationType === 'Incubator Application') {
+        if (!data.portfolioUrl || !z.string().url().safeParse(data.portfolioUrl).success) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please provide a valid URL to your portfolio, LinkedIn, or GitHub.", path: ['portfolioUrl'] });
+        }
+        if (!data.visionPitch || data.visionPitch.length < 20) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please tell us why you want to join (min 20 characters).", path: ['visionPitch'] });
+        }
+    }
+    if (data.applicationType === 'Career Inquiry') {
+        if (!data.roleInterest || data.roleInterest.length < 1) {
+             ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please specify your role or area of interest.", path: ['roleInterest'] });
+        }
+        if (!data.resumeUrl || !z.string().url().safeParse(data.resumeUrl).success) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please provide a valid link to your resume/CV.", path: ['resumeUrl'] });
+        }
+        if (data.portfolioUrl && !z.string().url().safeParse(data.portfolioUrl).success) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "If providing a portfolio link, it must be a valid URL.", path: ['portfolioUrl'] });
+        }
+    }
+    if (data.applicationType === 'Partnership Inquiry') {
+        if (!data.companyName || data.companyName.length < 1) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please enter your company name.", path: ['companyName'] });
+        }
+        if (!data.partnershipInterest || data.partnershipInterest.length < 20) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your interest in partnering (min 20 characters).", path: ['partnershipInterest'] });
+        }
+    }
+});
+
+export default function ApplyPage() {
+    const { toast } = useToast();
+    const firestore = useFirestore();
+
+    const form = useForm<z.infer<typeof applicationSchema>>({
+        resolver: zodResolver(applicationSchema),
+        defaultValues: {
+            submitterName: "",
+            contactEmail: "",
+            contactPhone: "",
+            companyName: "",
+            visionPitch: "",
+            portfolioUrl: "",
+            roleInterest: "",
+            resumeUrl: "",
+            partnershipInterest: "",
+        },
+    });
+
+    const applicationType = form.watch("applicationType");
+
+    async function onSubmit(values: z.infer<typeof applicationSchema>) {
+        if (!firestore) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Could not connect to the database. Please try again later.",
+            });
+            return;
+        }
+
+        const submissionData = {
+            ...values,
+            submissionDate: new Date().toISOString(),
+        };
+        
+        const submissionsCollection = collection(firestore, 'submissions');
+        addDocumentNonBlocking(submissionsCollection, submissionData);
+
+        toast({
+            title: "Application Received",
+            description: "Thank you for your interest! We've received your submission and will be in touch shortly.",
+        });
+        form.reset();
+    }
+
+    return (
+        <div className="flex min-h-screen flex-col">
+            <Header />
+            <main className="flex-1 py-16 md:py-24">
+                <div className="container max-w-4xl">
+                    <div className="mb-12 text-center">
+                        <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">Apply to Eve Count</h1>
+                        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
+                            Whether you're pitching a new venture, looking to join our incubator, seeking a new career, or wanting to partner with us, this is the right place to start.
+                        </p>
+                    </div>
+                    <Card className="bg-secondary/20">
+                        <CardHeader>
+                            <CardTitle>Universal Application</CardTitle>
+                            <CardDescription>Tell us how you'd like to get involved.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                           <Form {...form}>
+                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                                    <FormField
+                                        control={form.control}
+                                        name="applicationType"
+                                        render={({ field }) => (
+                                            <FormItem className="space-y-3">
+                                                <FormLabel>How would you like to engage with us? *</FormLabel>
+                                                <FormControl>
+                                                    <RadioGroup
+                                                        onValueChange={field.onChange}
+                                                        defaultValue={field.value}
+                                                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                                                    >
+                                                        {applicationTypes.map(type => (
+                                                            <FormItem key={type} className="flex items-center space-x-3 space-y-0">
+                                                                <FormControl>
+                                                                    <RadioGroupItem value={type} />
+                                                                </FormControl>
+                                                                <FormLabel className="font-normal">{type}</FormLabel>
+                                                            </FormItem>
+                                                        ))}
+                                                    </RadioGroup>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+
+                                    {applicationType && (
+                                        <>
+                                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                <FormField
+                                                    control={form.control}
+                                                    name="submitterName"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Your Name *</FormLabel>
+                                                            <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    control={form.control}
+                                                    name="contactEmail"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Contact Email *</FormLabel>
+                                                            <FormControl><Input type="email" placeholder="you@company.com" {...field} /></FormControl>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
+
+                                            {applicationType === 'Venture Pitch' && (
+                                                <>
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="companyName"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Company Name (Optional)</FormLabel>
+                                                                <FormControl><Input placeholder="Your Company Inc." {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="visionPitch"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>The Vision Pitch *</FormLabel>
+                                                                <FormControl><Textarea placeholder="Describe the problem, your solution, and the core insight..." rows={5} {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </>
+                                            )}
+
+                                            {applicationType === 'Incubator Application' && (
+                                                <>
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="portfolioUrl"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Portfolio Link (LinkedIn, GitHub, etc) *</FormLabel>
+                                                                <FormControl><Input placeholder="https://linkedin.com/in/yourprofile" {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="visionPitch"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Why do you want to join the incubator? *</FormLabel>
+                                                                <FormControl><Textarea placeholder="Tell us about your domain expertise, your goals, and what you hope to build." rows={5} {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </>
+                                            )}
+
+                                            {applicationType === 'Career Inquiry' && (
+                                                <>
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="roleInterest"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Role / Area of Interest *</FormLabel>
+                                                                <FormControl><Input placeholder="e.g., AI Engineer, Full-Stack Developer" {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="resumeUrl"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Resume / CV Link *</FormLabel>
+                                                                <FormControl><Input placeholder="https://example.com/your-resume.pdf" {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="portfolioUrl"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Portfolio Link (Optional)</FormLabel>
+                                                                <FormControl><Input placeholder="https://github.com/yourprofile" {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </>
+                                            )}
+                                            
+                                            {applicationType === 'Partnership Inquiry' && (
+                                                <>
+                                                     <FormField
+                                                        control={form.control}
+                                                        name="companyName"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Company Name *</FormLabel>
+                                                                <FormControl><Input placeholder="Your Company Inc." {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="partnershipInterest"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Partnership / Sponsorship Interest *</FormLabel>
+                                                                <FormControl><Textarea placeholder="How would you like to partner with us? e.g., Service Partner, Event Sponsor, etc." rows={5} {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </>
+                                            )}
+
+                                            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                                                <Send className="mr-2 h-4 w-4" />
+                                                {form.formState.isSubmitting ? "Submitting..." : "Submit Application"}
+                                            </Button>
+                                        </>
+                                    )}
+                                </form>
+                            </Form>
+                        </CardContent>
+                    </Card>
+                </div>
+            </main>
+            <Footer />
+        </div>
+    );
+}
