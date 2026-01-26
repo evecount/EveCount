@@ -121,7 +121,9 @@ export default function AboutPage() {
                             <CardDescription>For general questions or media requests.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-lg font-semibold text-foreground">Gwendalynn Lim Wan Ting</p>
+                            <a href="https://www.linkedin.com/in/gwendalynnlim/" target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-foreground transition-colors hover:text-primary">
+                                Gwendalynn Lim Wan Ting
+                            </a>
                             <div className="mt-2 space-y-2 text-muted-foreground">
                                 <a href="mailto:gwen@evecount.com" className="flex items-center gap-2 transition-colors hover:text-primary">
                                     <Mail className="h-4 w-4" />
