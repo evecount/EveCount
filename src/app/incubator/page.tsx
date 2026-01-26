@@ -1,5 +1,6 @@
 'use client';
 
+import React from "react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
@@ -9,6 +10,9 @@ import { incubatorMembers } from "@/lib/incubator-members";
 import Link from "next/link";
 
 export default function IncubatorPage() {
+  React.useEffect(() => {
+    document.title = "NTU x Eve Count AI Incubator | EveCount.com";
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col">

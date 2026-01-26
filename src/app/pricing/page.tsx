@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -72,6 +73,10 @@ const pricingTiers: {
 
 export default function PricingPage() {
   const { setOpen } = useChatbot();
+
+  React.useEffect(() => {
+    document.title = "Our Investment Model | EveCount.com";
+  }, []);
 
   return (
     <div className="flex min-h-screen flex-col">

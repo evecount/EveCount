@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -77,6 +77,10 @@ const applicationSchema = z.object({
 export default function ApplyPage() {
     const { toast } = useToast();
     const firestore = useFirestore();
+
+    useEffect(() => {
+      document.title = "Apply to Eve Count | EveCount.com";
+    }, []);
 
     const form = useForm<z.infer<typeof applicationSchema>>({
         resolver: zodResolver(applicationSchema),
