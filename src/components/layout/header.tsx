@@ -8,12 +8,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { useState } from 'react';
 
 const navLinks = [
-  { href: '/ventures', label: 'Ventures' },
   { href: '/about', label: 'About' },
   { href: '/#engine', label: 'Engine' },
-  { href: '/services', label: 'Partners' },
-  { href: '/#funding', label: 'Funding' },
-  { href: '/research', label: 'Research' },
   { href: '/incubator', label: 'Incubator' },
 ];
 

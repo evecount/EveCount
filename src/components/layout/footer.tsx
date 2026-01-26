@@ -1,33 +1,96 @@
+
 import Link from "next/link";
+
+const footerSections = {
+  company: [
+    { href: "/about", label: "About" },
+    { href: "/ventures", label: "Ventures" },
+    { href: "/incubator", label: "Incubator" },
+    { href: "/services", label: "Partners" },
+  ],
+  explore: [
+    { href: "/#engine", label: "Engine" },
+    { href: "/pricing", label: "Pricing" },
+    { href: "/research", label: "Research" },
+  ],
+  legal: [
+    { href: "/privacy", label: "Privacy Policy" },
+    { href: "/terms", label: "Terms & Conditions" },
+  ],
+};
 
 export function Footer() {
   return (
     <footer className="border-t border-border/40">
-      <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
-        <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-6 w-6"
-          >
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-          </svg>
-          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
-            Eve Count Pte Ltd, Singapore.
-          </p>
-        </div>
-        <div className="flex gap-4 text-sm text-muted-foreground">
-            <Link href="/privacy" className="transition-colors hover:text-foreground">
-                Privacy Policy
+      <div className="container py-12">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
+          <div className="flex flex-col items-start gap-4 md:col-span-1">
+            <Link href="/" className="flex items-center space-x-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-6 w-6"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg>
+              <span className="font-bold">Eve Count</span>
             </Link>
-            <Link href="/terms" className="transition-colors hover:text-foreground">
-                Terms & Conditions
-            </Link>
+            <p className="text-sm text-muted-foreground">
+              Eve Count Pte Ltd, Singapore.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-8 md:col-span-3 md:grid-cols-3">
+            <div>
+              <h3 className="font-semibold text-foreground">Company</h3>
+              <ul className="mt-4 space-y-2">
+                {footerSections.company.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">Explore</h3>
+              <ul className="mt-4 space-y-2">
+                {footerSections.explore.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-foreground">Legal</h3>
+              <ul className="mt-4 space-y-2">
+                {footerSections.legal.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
