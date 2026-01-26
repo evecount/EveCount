@@ -1,3 +1,4 @@
+'use client';
 
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -5,17 +6,67 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { User, Mail } from "lucide-react";
 import { incubatorMembers } from "@/lib/incubator-members";
 import type { Metadata } from "next";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
+import { useFirestore } from "@/firebase";
+import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
+import { collection } from "firebase/firestore";
 
-export const metadata: Metadata = {
-  title: "Incubator",
-  description: "Eve Count Incubator in partnership with NTU's SCTP Programme for Advanced AI and Machine Learning.",
-};
+const submissionSchema = z.object({
+    companyName: z.string().optional(),
+    submitterName: z.string().min(1, "Please enter your name."),
+    contactEmail: z.string().email("Please enter a valid email address."),
+    contactPhone: z.string().optional(),
+    visionPitch: z.string().min(10, "Please provide a brief problem statement."),
+});
 
 export default function IncubatorPage() {
+    const { toast } = useToast();
+    const firestore = useFirestore();
+
+    const form = useForm<z.infer<typeof submissionSchema>>({
+        resolver: zodResolver(submissionSchema),
+        defaultValues: {
+            companyName: "",
+            submitterName: "",
+            contactEmail: "",
+            contactPhone: "",
+            visionPitch: "",
+        },
+    });
+
+    async function onSubmit(values: z.infer<typeof submissionSchema>) {
+        if (!firestore) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Could not connect to the database. Please try again later.",
+            });
+            return;
+        }
+
+        const submissionData = {
+            ...values,
+            submissionDate: new Date().toISOString(),
+        };
+        
+        const submissionsCollection = collection(firestore, 'submissions');
+        addDocumentNonBlocking(submissionsCollection, submissionData);
+
+        toast({
+            title: "Submission Received",
+            description: "Thank you! We've received your problem statement and will be in touch shortly.",
+        });
+        form.reset();
+    }
+
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -82,26 +133,87 @@ export default function IncubatorPage() {
                         <CardDescription>Outline your challenge and we'll be in touch.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <form className="space-y-4">
-                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label htmlFor="companyName">Company Name</Label>
-                                    <Input id="companyName" placeholder="Your Company Inc." />
+                       <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                     <FormField
+                                        control={form.control}
+                                        name="submitterName"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Contact Name</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Your Name" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="companyName"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Company Name (Optional)</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Your Company Inc." {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="contactEmail">Contact Email</Label>
-                                    <Input id="contactEmail" type="email" placeholder="you@company.com" />
+                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                    <FormField
+                                        control={form.control}
+                                        name="contactEmail"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Contact Email</FormLabel>
+                                                <FormControl>
+                                                    <Input type="email" placeholder="you@company.com" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={form.control}
+                                        name="contactPhone"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Contact Phone (Optional)</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="+1 (555) 123-4567" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
                                 </div>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="problemStatement">Problem Statement</Label>
-                                <Textarea id="problemStatement" placeholder="Describe the problem you're trying to solve, the current process, and what a successful outcome would look like." rows={5} />
-                            </div>
-                            <Button type="submit" className="w-full">
-                                <Mail className="mr-2 h-4 w-4" />
-                                Submit for Review
-                            </Button>
-                        </form>
+                                <FormField
+                                    control={form.control}
+                                    name="visionPitch"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Problem Statement</FormLabel>
+                                            <FormControl>
+                                                <Textarea
+                                                    placeholder="Describe the problem you're trying to solve, the current process, and what a successful outcome would look like."
+                                                    rows={5}
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                                    <Mail className="mr-2 h-4 w-4" />
+                                    {form.formState.isSubmitting ? "Submitting..." : "Submit for Review"}
+                                </Button>
+                            </form>
+                        </Form>
                     </CardContent>
                 </Card>
             </div>

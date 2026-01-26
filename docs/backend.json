@@ -59,6 +59,10 @@
           "description": "Date the submission was received.",
           "format": "date-time"
         },
+        "companyName": {
+            "type": "string",
+            "description": "Name of the company submitting the idea."
+        },
         "submitterName": {
           "type": "string",
           "description": "Name of the person who submitted the idea. May be anonymous."

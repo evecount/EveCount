@@ -66,13 +66,13 @@ export function Chatbot() {
       } else {
         addMessage({
           role: 'model',
-          content: response.message || 'Sorry, I had some trouble connecting. Please try again.',
+          content: response.message || 'Sorry, I had some trouble connecting. Please use the form on our Incubator page to submit your idea.',
         });
       }
     } catch (error) {
       addMessage({
         role: 'model',
-        content: 'Sorry, an unexpected error occurred. Please try again later.',
+        content: 'Sorry, I\'m having trouble connecting right now. Please use the form on our Incubator page to submit your idea.',
       });
     } finally {
       setIsLoading(false);
