@@ -1,15 +1,18 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Zap, Code, Share2 } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Zap, Code, Share2, Mail, Phone } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Eve Count",
-  description: "Learn about the Eve Count philosophy: Growth by Engineering. We are a venture studio that uses engineering as its primary tool for growth.",
+  title: "About & Contact Eve Count",
+  description: "Learn about the Eve Count philosophy and how to get in touch to pitch your venture. We are a venture studio that uses engineering as its primary tool for growth.",
 };
 
 export default function AboutPage() {
+  const mailtoLink = "mailto:gwen@evecount.com?subject=Venture%20Pitch:%20[Your%20Company%20Name]&body=1.%20What%20is%20your%20vision%3F%0D%0A%0D%0A2.%20What%20problem%20are%20you%20solving%3F%0D%0A%0D%0A3.%20What%20is%20your%20unique%20insight%3F%0D%0A";
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -86,19 +89,55 @@ export default function AboutPage() {
 
           </div>
         </section>
-        <section className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
-            <div className="container text-center">
-                <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
-                    Get in Touch
-                </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                    For direct inquiries or to discuss a potential partnership, you can reach our founder.
-                </p>
-                <div className="mt-8 font-medium">
-                    <p className="text-xl text-foreground">Gwendalynn Lim Wan Ting</p>
-                    <a href="tel:+6586081377" className="text-lg text-muted-foreground hover:text-primary transition-colors">
-                        +65 8608 1377
-                    </a>
+        <section id="contact" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
+            <div className="container">
+                <div className="mb-12 text-center">
+                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
+                        Get in Touch
+                    </h2>
+                    <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
+                        We're always open to new ideas and partnerships.
+                    </p>
+                </div>
+
+                <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
+                    <Card className="bg-background/50">
+                        <CardHeader>
+                            <CardTitle>Direct Inquiries</CardTitle>
+                            <CardDescription>For general questions or media requests.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-lg font-semibold text-foreground">Gwendalynn Lim Wan Ting</p>
+                            <div className="mt-2 space-y-2 text-muted-foreground">
+                                <a href="mailto:gwen@evecount.com" className="flex items-center gap-2 transition-colors hover:text-primary">
+                                    <Mail className="h-4 w-4" />
+                                    <span>gwen@evecount.com</span>
+                                </a>
+                                <a href="tel:+6586081377" className="flex items-center gap-2 transition-colors hover:text-primary">
+                                    <Phone className="h-4 w-4" />
+                                    <span>+65 8608 1377</span>
+                                </a>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-background/50">
+                        <CardHeader>
+                            <CardTitle>Pitch Your Venture</CardTitle>
+                            <CardDescription>Ready to build? Send us the outline of your vision.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <Button asChild size="lg" className="w-full">
+                                <a href={mailtoLink}>
+                                    <Mail className="mr-2 h-4 w-4" />
+                                    Start the Conversation
+                                </a>
+                            </Button>
+                            <p className="mt-4 text-xs text-muted-foreground">
+                                Clicking will open your email client with a pre-filled template to guide your pitch.
+                            </p>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </section>
