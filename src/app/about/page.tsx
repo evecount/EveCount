@@ -5,15 +5,8 @@ import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Zap, Code, Share2, Mail, Bot } from "lucide-react";
-import type { Metadata } from "next";
 import { useChatbot } from "@/hooks/use-chatbot";
 import React from "react";
-
-// Note: Metadata is still supported in client components
-export const metadata: Metadata = {
-  title: "About & Contact Eve Count",
-  description: "Learn about the Eve Count philosophy and how to get in touch to pitch your venture. We are a venture studio that uses engineering as its primary tool for growth.",
-};
 
 export default function AboutPage() {
   const { setOpen } = useChatbot();
