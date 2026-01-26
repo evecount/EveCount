@@ -32,12 +32,13 @@ const prompt = ai.definePrompt({
   4.  If the idea seems promising or aligned with Eve Count's model (investing Code, AI, Architecture), explain our process clearly: we move extremely fast, an in-person meeting is required, and we provide a full suite of services (incorporation, legal, accounting, GTM).
   5.  Maintain the persona of a savvy, AI-native VC who values speed and execution.
 
-  Here is the conversation history:
+  Here is the conversation history. The 'model' role refers to your responses, and the 'user' role refers to the person you are chatting with.
+
   {{#each history}}
-  {{#if (eq role 'user')}}
-  User: {{{content}}}
+  {{#if (eq this.role 'user')}}
+  User: {{{this.content}}}
   {{else}}
-  AI: {{{content}}}
+  AI: {{{this.content}}}
   {{/if}}
   {{/each}}
 
