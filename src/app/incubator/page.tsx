@@ -9,6 +9,7 @@ import { User, Send, Lock } from "lucide-react";
 import { incubatorMembers } from "@/lib/incubator-members";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 // IMPORTANT: This is a simple client-side password protection for demonstration purposes.
 // For a production application, you should use a proper authentication system.
@@ -121,8 +122,69 @@ export default function IncubatorPage() {
                 </div>
             </section>
 
+            {/* Workflow Section */}
+            <section id="workflow" className="border-t border-border/40 bg-background py-16 md:py-24">
+              <div className="container">
+                <div className="mb-12 text-center">
+                  <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Our Incubation Workflow</h2>
+                  <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
+                    From a promising idea to a market-ready venture, here’s a look at our structured, accelerated process.
+                  </p>
+                </div>
+                <Card className="bg-secondary/20">
+                  <CardContent className="p-6">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-[150px] font-semibold text-foreground">Phase</TableHead>
+                          <TableHead className="font-semibold text-foreground">Stage</TableHead>
+                          <TableHead className="font-semibold text-foreground">Timeline</TableHead>
+                          <TableHead className="text-right font-semibold text-foreground">Key Deliverables</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 1: Foundation</TableCell>
+                          <TableCell>Submission Review</TableCell>
+                          <TableCell>1 Week</TableCell>
+                          <TableCell className="text-right">Initial screening and partner alignment call.</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>The Foundry Session</TableCell>
+                          <TableCell>1-2 Weeks</TableCell>
+                          <TableCell className="text-right">In-person deep-dive, core architecture design, technical roadmap.</TableCell>
+                        </TableRow>
+                        <TableRow className="border-t border-border/40">
+                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 2: Development</TableCell>
+                          <TableCell>AI-Accelerated Build</TableCell>
+                          <TableCell>6-8 Weeks</TableCell>
+                          <TableCell className="text-right">Full-stack MVP development with integrated AI/ML features.</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Weekly Demos</TableCell>
+                          <TableCell>Continuous</TableCell>
+                          <TableCell className="text-right">Iterative feedback loops, CI/CD, progress tracking.</TableCell>
+                        </TableRow>
+                         <TableRow className="border-t border-border/40">
+                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 3: Activation</TableCell>
+                          <TableCell>Corporate & IP Foundation</TableCell>
+                          <TableCell>2 Weeks (Parallel)</TableCell>
+                          <TableCell className="text-right">Company incorporation, legal setup, IP protection strategy.</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Go-to-Market (GTM) Activation</TableCell>
+                          <TableCell>2-4 Weeks</TableCell>
+                          <TableCell className="text-right">Brand strategy, user acquisition, investor pitch deck refinement.</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+              </div>
+            </section>
+
             {/* Problem Statement Submission */}
-            <section id="submit-problem" className="border-t border-border/40 py-16 md:py-24">
+            <section id="submit-problem" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
                 <div className="container max-w-3xl text-center">
                     <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Have a Challenge for Us?</h2>
                     <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
