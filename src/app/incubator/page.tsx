@@ -13,7 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 
 // IMPORTANT: This is a simple client-side password protection for demonstration purposes.
 // For a production application, you should use a proper authentication system.
-const PASSWORD = 'NTU-SCTP';
+const PASSWORD = 'ntusctp';
 
 export default function IncubatorPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
