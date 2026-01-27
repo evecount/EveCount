@@ -42,7 +42,7 @@ export default function IncubatorPage() {
         {!isAuthenticated ? (
           <section className="bg-background py-16 md:py-24 lg:py-32">
             <div className="container flex h-full min-h-[calc(100vh-250px)] items-center justify-center">
-                <div className="w-full max-w-md">
+                <div className="w-full max-w-lg space-y-8">
                     <Card className="bg-card text-card-foreground">
                         <CardHeader className="text-center">
                             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
@@ -68,6 +68,23 @@ export default function IncubatorPage() {
                                 Unlock Incubator
                             </Button>
                             </form>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-secondary/20">
+                        <CardHeader>
+                            <CardTitle className="text-center">Our Incubator Partners</CardTitle>
+                            <CardDescription className="text-center text-muted-foreground">
+                                Proudly supported by industry leaders providing credits, expertise, and GTM support.
+                            </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid grid-cols-2 gap-4 text-center text-sm font-semibold text-muted-foreground md:grid-cols-4">
+                                <div className="rounded-lg bg-background/50 p-4">Google for Startups</div>
+                                <div className="rounded-lg bg-background/50 p-4">NVIDIA Inception</div>
+                                <div className="rounded-lg bg-background/50 p-4">AWS Activate</div>
+                                <div className="rounded-lg bg-background/50 p-4">Firebase</div>
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
