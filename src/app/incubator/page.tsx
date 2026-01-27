@@ -161,37 +161,37 @@ export default function IncubatorPage() {
                       </TableHeader>
                       <TableBody>
                         <TableRow>
-                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 1: Foundation</TableCell>
-                          <TableCell>Submission Review</TableCell>
-                          <TableCell>1 Week</TableCell>
-                          <TableCell className="text-right">Our partners conduct an initial screening to assess fit. Promising ideas lead to an alignment call to discuss your vision.</TableCell>
+                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 1: Foundation<br/>(Weeks 1-2)</TableCell>
+                          <TableCell>Submission Review & Alignment</TableCell>
+                          <TableCell>Week 1</TableCell>
+                          <TableCell className="text-right">Review of your submission. An alignment call to confirm project scope and goals. We'll use "Project Sentient," an AI Lead Scorer, as our example.</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>The Foundry Session</TableCell>
-                          <TableCell>1-2 Weeks</TableCell>
-                          <TableCell className="text-right">A 2-day in-person workshop to deconstruct the vision, define the core product loop, design the system architecture, and establish a detailed 8-week technical roadmap.</TableCell>
+                          <TableCell>Week 2</TableCell>
+                          <TableCell className="text-right">A 2-day workshop to deconstruct the vision, define the "Enrich-Score-Route" product loop, and design the system architecture (Next.js, Firebase, Genkit). An 8-week technical roadmap is established.</TableCell>
                         </TableRow>
                         <TableRow className="border-t border-border/40">
-                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 2: Development</TableCell>
-                          <TableCell>AI-Accelerated Build</TableCell>
-                          <TableCell>6-8 Weeks</TableCell>
-                          <TableCell className="text-right">Head-down development of the full-stack MVP. We build out the user-facing application, backend services, and integrate foundational AI/ML features using Genkit.</TableCell>
+                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 2: AI-Accelerated Build<br/>(Weeks 3-10)</TableCell>
+                          <TableCell>Core MVP Development</TableCell>
+                          <TableCell>8 Weeks</TableCell>
+                          <TableCell className="text-right">Full-stack MVP build of the "Project Sentient" platform, including a dashboard for lead visualization and backend services for data ingestion. Genkit integration for data enrichment.</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell>Weekly Demos</TableCell>
+                          <TableCell>Weekly Demos & Iteration</TableCell>
                           <TableCell>Continuous</TableCell>
-                          <TableCell className="text-right">Mandatory weekly syncs to demo progress, gather founder feedback, and refine the build. We maintain a CI/CD pipeline for rapid, iterative deployments.</TableCell>
+                          <TableCell className="text-right">Mandatory weekly syncs to demo progress on the lead scoring model and dashboard. Founder feedback is incorporated continuously via a CI/CD pipeline to a staging environment.</TableCell>
                         </TableRow>
                          <TableRow className="border-t border-border/40">
-                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 3: Activation</TableCell>
+                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 3: Activation<br/>(Weeks 9-12)</TableCell>
                           <TableCell>Corporate & IP Foundation</TableCell>
-                          <TableCell>2 Weeks (Parallel)</TableCell>
-                          <TableCell className="text-right">Parallel legal track. We handle company incorporation in Singapore, draft IP assignment agreements, and establish a clean cap table structure.</TableCell>
+                          <TableCell>Weeks 9-10 (Parallel)</TableCell>
+                          <TableCell className="text-right">"Sentient AI Pte. Ltd." is incorporated in Singapore. IP assignment agreements for the proprietary scoring algorithm are drafted. A clean cap table structure is established.</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell>Go-to-Market (GTM) Activation</TableCell>
-                          <TableCell>2-4 Weeks</TableCell>
-                          <TableCell className="text-right">Final phase to prepare for launch. This includes brand messaging, building a pre-launch landing page, and refining the investor pitch deck for the seed round.</TableCell>
+                          <TableCell>Go-to-Market (GTM) Launch</TableCell>
+                          <TableCell>Weeks 11-12</TableCell>
+                          <TableCell className="text-right">Preparation for launch. Brand messaging for "Project Sentient" is finalized, a pre-launch landing page is built to capture early interest, and the investor pitch deck is refined for the seed round.</TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
