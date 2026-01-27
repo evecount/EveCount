@@ -55,7 +55,7 @@ export default function IncubatorPage() {
                             <form onSubmit={handlePasswordSubmit} className="space-y-4">
                             <div className="space-y-2">
                                 <Input
-                                    type="password"
+                                    type="text"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Password"
