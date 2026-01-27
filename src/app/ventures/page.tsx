@@ -54,7 +54,7 @@ export default function VenturesPage() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Password"
                                     autoFocus
-                                    className="text-center text-foreground"
+                                    className="text-center"
                                 />
                                 {error && <p className="text-sm text-destructive">{error}</p>}
                             </div>
