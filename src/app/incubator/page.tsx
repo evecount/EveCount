@@ -60,7 +60,7 @@ export default function IncubatorPage() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Password"
                                     autoFocus
-                                    className="text-center"
+                                    className="text-center text-foreground"
                                 />
                                 {error && <p className="text-sm text-destructive">{error}</p>}
                             </div>
@@ -147,34 +147,34 @@ export default function IncubatorPage() {
                           <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 1: Foundation</TableCell>
                           <TableCell>Submission Review</TableCell>
                           <TableCell>1 Week</TableCell>
-                          <TableCell className="text-right">Initial screening and partner alignment call.</TableCell>
+                          <TableCell className="text-right">Our partners conduct an initial screening to assess fit. Promising ideas lead to an alignment call to discuss your vision.</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>The Foundry Session</TableCell>
                           <TableCell>1-2 Weeks</TableCell>
-                          <TableCell className="text-right">In-person deep-dive, core architecture design, technical roadmap.</TableCell>
+                          <TableCell className="text-right">A 2-day in-person workshop to deconstruct the vision, define the core product loop, design the system architecture, and establish a detailed 8-week technical roadmap.</TableCell>
                         </TableRow>
                         <TableRow className="border-t border-border/40">
                           <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 2: Development</TableCell>
                           <TableCell>AI-Accelerated Build</TableCell>
                           <TableCell>6-8 Weeks</TableCell>
-                          <TableCell className="text-right">Full-stack MVP development with integrated AI/ML features.</TableCell>
+                          <TableCell className="text-right">Head-down development of the full-stack MVP. We build out the user-facing application, backend services, and integrate foundational AI/ML features using Genkit.</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Weekly Demos</TableCell>
                           <TableCell>Continuous</TableCell>
-                          <TableCell className="text-right">Iterative feedback loops, CI/CD, progress tracking.</TableCell>
+                          <TableCell className="text-right">Mandatory weekly syncs to demo progress, gather founder feedback, and refine the build. We maintain a CI/CD pipeline for rapid, iterative deployments.</TableCell>
                         </TableRow>
                          <TableRow className="border-t border-border/40">
                           <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 3: Activation</TableCell>
                           <TableCell>Corporate & IP Foundation</TableCell>
                           <TableCell>2 Weeks (Parallel)</TableCell>
-                          <TableCell className="text-right">Company incorporation, legal setup, IP protection strategy.</TableCell>
+                          <TableCell className="text-right">Parallel legal track. We handle company incorporation in Singapore, draft IP assignment agreements, and establish a clean cap table structure.</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Go-to-Market (GTM) Activation</TableCell>
                           <TableCell>2-4 Weeks</TableCell>
-                          <TableCell className="text-right">Brand strategy, user acquisition, investor pitch deck refinement.</TableCell>
+                          <TableCell className="text-right">Final phase to prepare for launch. This includes brand messaging, building a pre-launch landing page, and refining the investor pitch deck for the seed round.</TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
