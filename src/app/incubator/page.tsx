@@ -80,10 +80,10 @@ export default function IncubatorPage() {
                         </CardHeader>
                         <CardContent>
                             <div className="grid grid-cols-2 gap-4 text-center text-sm font-semibold text-muted-foreground md:grid-cols-4">
-                                <div className="rounded-lg bg-background/50 p-4">Google for Startups</div>
-                                <div className="rounded-lg bg-background/50 p-4">NVIDIA Inception</div>
-                                <div className="rounded-lg bg-background/50 p-4">AWS Activate</div>
-                                <div className="rounded-lg bg-background/50 p-4">Firebase</div>
+                                <div className="rounded-lg bg-background/50 p-4">[SPONSOR LOGO]</div>
+                                <div className="rounded-lg bg-background/50 p-4">[SPONSOR LOGO]</div>
+                                <div className="rounded-lg bg-background/50 p-4">[SPONSOR LOGO]</div>
+                                <div className="rounded-lg bg-background/50 p-4">[SPONSOR LOGO]</div>
                             </div>
                         </CardContent>
                     </Card>
