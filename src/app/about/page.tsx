@@ -12,8 +12,7 @@ export default function AboutPage() {
   const { setOpen } = useChatbot();
 
   React.useEffect(() => {
-    // We can still set the title for client components if needed, though metadata is preferred.
-    document.title = "About & Contact Eve Count | EveCount.com";
+    document.title = "About Eve Count | Our Deep-Tech Focus on Quantum & AI | EveCount.com";
   }, []);
 
 
