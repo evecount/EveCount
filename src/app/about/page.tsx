@@ -4,7 +4,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Zap, Code, Share2, Mail, Bot } from "lucide-react";
+import { Zap, Code, Share2, Mail, Bot, ShieldCheck, BrainCircuit } from "lucide-react";
 import { useChatbot } from "@/hooks/use-chatbot";
 import React from "react";
 
@@ -89,6 +89,65 @@ export default function AboutPage() {
                   </CardContent>
                 </Card>
               </div>
+
+              <div className="border-t border-border/40 pt-12">
+                <div className="text-center">
+                  <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
+                    Our Deep-Tech Focus
+                  </h2>
+                  <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
+                    "Deep tech" isn't just a buzzword for us. It's our foundation. We build ventures rooted in significant scientific and engineering innovation. Our core focus areas are at the frontier of what's possible.
+                  </p>
+                </div>
+                <div className="mx-auto mt-10 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
+                  <Card className="flex flex-col bg-secondary/20 text-foreground">
+                    <CardHeader>
+                      <div className="flex items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                          <ShieldCheck className="h-6 w-6 text-primary" />
+                        </div>
+                        <CardTitle>Post-Quantum Cryptography (PQC)</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">
+                        As quantum computers emerge, today's encryption standards will become obsolete. We are building the next generation of cryptographic systems that are secure against attacks from both classical and quantum computers.
+                      </p>
+                    </CardContent>
+                  </Card>
+                  <Card className="flex flex-col bg-secondary/20 text-foreground">
+                    <CardHeader>
+                      <div className="flex items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                          <Share2 className="h-6 w-6 text-primary" />
+                        </div>
+                        <CardTitle>Quantum Key Distribution (QKD)</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">
+                        Leveraging the principles of quantum mechanics, we build communication networks where security is guaranteed by the laws of physics. Any attempt to eavesdrop on a QKD channel is instantly detectable.
+                      </p>
+                    </CardContent>
+                  </Card>
+                  <Card className="flex flex-col bg-secondary/20 text-foreground">
+                    <CardHeader>
+                      <div className="flex items-center gap-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                          <BrainCircuit className="h-6 w-6 text-primary" />
+                        </div>
+                        <CardTitle>Quantum Machine Learning (QML)</CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">
+                        We explore the intersection of quantum computing and AI. By using quantum algorithms, we aim to solve complex machine learning problems that are intractable for even the most powerful classical supercomputers.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+
 
               <div className="border-t border-border/40 pt-12 text-center">
                  <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
