@@ -23,15 +23,15 @@ export function Header() {
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
+              viewBox="0 0 100 100"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="6"
               strokeLinecap="round"
               strokeLinejoin="round"
               className="h-6 w-6"
             >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              <path d="M10,50 C 30,25 70,75 90,50" />
             </svg>
             <span className="font-bold">Eve Count</span>
           </Link>
@@ -68,15 +68,15 @@ export function Header() {
                 <Link href="/" onClick={() => setSheetOpen(false)} className="flex items-center space-x-2">
                    <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
+                    viewBox="0 0 100 100"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="6"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="h-6 w-6"
                   >
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    <path d="M10,50 C 30,25 70,75 90,50" />
                   </svg>
                   <span className="font-bold">Eve Count</span>
                 </Link>
