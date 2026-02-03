@@ -48,12 +48,6 @@ export function Header() {
           </nav>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <Button variant="ghost" size="sm" asChild>
-            <Link href="/ventures">
-              <Lock className="mr-2 h-4 w-4" />
-              Admin
-            </Link>
-          </Button>
         </div>
         <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
           <SheetTrigger asChild>
