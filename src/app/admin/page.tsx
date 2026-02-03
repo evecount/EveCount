@@ -20,44 +20,70 @@ interface UserProfile {
 }
 
 function AdminDashboard() {
+  const { user } = useUser();
   return (
-    <Card className="bg-secondary/20">
-      <CardHeader>
-        <div className="flex items-center gap-4">
-          <BadgeCheck className="h-8 w-8 text-green-500" />
-          <div>
-            <CardTitle>Command Center</CardTitle>
-            <CardDescription>Welcome, Admin. The Agentic Command Center is under development.</CardDescription>
-          </div>
+    <div className="space-y-8">
+        <div className="flex items-center justify-between">
+            <div>
+                <h1 className="text-3xl font-bold">Command Center</h1>
+                <p className="text-muted-foreground">Welcome back, {user?.displayName || 'Admin'}.</p>
+            </div>
+            <BadgeCheck className="h-10 w-10 text-green-500" />
         </div>
-      </CardHeader>
-      <CardContent>
-        <p className="text-muted-foreground">This dashboard will provide a real-time overview of incoming venture pitches, AI-driven analysis, and routing recommendations. Human partners will be able to review, approve, or override agentic decisions from here.</p>
-      </CardContent>
-    </Card>
+        
+        <Card className="bg-secondary/20">
+          <CardHeader>
+            <CardTitle>Agentic Pipeline Overview</CardTitle>
+            <CardDescription>Real-time status of incoming venture submissions.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">This dashboard is under construction. It will soon provide a real-time overview of incoming venture pitches, the AI Co-Founder's analysis, and routing recommendations. Human partners will be able to review, approve, and override agentic decisions from this command center.</p>
+          </CardContent>
+        </Card>
+    </div>
   );
 }
 
 function AccessDenied() {
   const auth = useAuth();
   return (
-    <Card className="border-destructive bg-destructive/10">
-      <CardHeader>
-         <div className="flex items-center gap-4">
-            <ShieldAlert className="h-8 w-8 text-destructive" />
-            <div>
-                <CardTitle>Access Denied</CardTitle>
-                <CardDescription>You do not have administrative privileges.</CardDescription>
+    <div className="space-y-8">
+        <Card className="border-destructive bg-destructive/10">
+          <CardHeader>
+             <div className="flex items-center gap-4">
+                <ShieldAlert className="h-8 w-8 text-destructive" />
+                <div>
+                    <CardTitle>Access Denied</CardTitle>
+                    <CardDescription>Your account does not have administrative privileges.</CardDescription>
+                </div>
             </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <p className="text-muted-foreground">
-          This area is restricted to authorized personnel. If you believe this is an error, please contact the system administrator to have your role updated.
-        </p>
-        <Button variant="destructive" className="mt-4" onClick={() => auth.signOut()}>Sign Out</Button>
-      </CardContent>
-    </Card>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">
+              This area is restricted. If you are a team member, please contact an existing administrator to have your role elevated.
+            </p>
+            <Button variant="destructive" className="mt-4" onClick={() => auth.signOut()}>Sign Out</Button>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-secondary/20">
+            <CardHeader>
+                <CardTitle>First-Time Admin Setup</CardTitle>
+                <CardDescription>Is this your first time setting up an admin?</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <p className="text-muted-foreground">For security, the first admin account must be assigned manually. This is a one-time process.</p>
+                <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
+                    <li>Make sure you have signed in here at least once with your Google account.</li>
+                    <li>Go to your project's <span className="font-semibold text-foreground">Firebase Console</span>.</li>
+                    <li>Navigate to <span className="font-semibold text-foreground">Firestore Database</span>.</li>
+                    <li>In the `users` collection, find the document with your email.</li>
+                    <li>Edit that document and change the `role` field from `"user"` to `"admin"`.</li>
+                </ol>
+                <p className="text-sm text-muted-foreground">After completing these steps, refresh this page. This manual step ensures that only the project owner can create the first administrator.</p>
+            </CardContent>
+        </Card>
+    </div>
   );
 }
 
