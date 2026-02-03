@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "Venture": {
@@ -62,7 +63,7 @@
         },
         "visionPitch": {
           "type": "string",
-          "description": "The vision pitched by the potential partner, or a statement of interest."
+          "description": "The vision pitched for a Venture, or a statement of interest for an Incubator application."
         },
         "submissionDate": {
           "type": "string",
@@ -71,7 +72,7 @@
         },
         "companyName": {
           "type": "string",
-          "description": "Name of the company submitting the idea or inquiry."
+          "description": "Name of the company, primarily for Venture Pitches and Partnership Inquiries."
         },
         "submitterName": {
           "type": "string",
@@ -88,25 +89,25 @@
         },
         "portfolioUrl": {
           "type": "string",
-          "description": "URL to a portfolio, LinkedIn, or GitHub profile.",
+          "description": "URL to a portfolio, LinkedIn, or GitHub profile. Required for Incubator applications and optional for Career Inquiries.",
           "format": "uri"
         },
         "resumeUrl": {
           "type": "string",
-          "description": "URL to a resume or CV.",
+          "description": "URL to a resume or CV. Required for Career Inquiries.",
           "format": "uri"
         },
         "roleInterest": {
           "type": "string",
-          "description": "The role or area of interest for a career application."
+          "description": "The role or area of interest. Required for Career Inquiries."
         },
         "partnershipInterest": {
           "type": "string",
-          "description": "Details about the partnership or sponsorship interest."
+          "description": "Details about the partnership or sponsorship interest. Required for Partnership Inquiries."
         },
         "message": {
           "type": "string",
-          "description": "A general message or cover letter, primarily for career inquiries."
+          "description": "A general message or cover letter. Required for Career Inquiries."
         },
         "ventureId": {
           "type": "string",
