@@ -8,9 +8,10 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
+import { agentCrew } from '@/lib/agents';
 
 interface UserProfile {
   uid: string;
@@ -97,6 +98,36 @@ function AdminDashboard() {
             <BadgeCheck className="h-10 w-10 text-green-500" />
         </div>
         
+        <Card className="bg-secondary">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2"><Users2 className="h-6 w-6" /> The Command Center Crew</CardTitle>
+            <CardDescription>Your autonomous team, reflecting the core facets of the Eve Count operational strategy.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+              {agentCrew.map(agent => (
+                <Card key={agent.id} className="bg-background flex flex-col">
+                  <CardHeader className="flex-row items-center gap-4 space-y-0 pb-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                      <agent.Icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-bold text-foreground">{agent.name}</p>
+                      <p className="text-sm text-muted-foreground">{agent.role}</p>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                    <p className="text-sm text-muted-foreground">{agent.focus}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Badge variant="outline">{agent.cluster}</Badge>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
         <Card className="bg-secondary">
           <CardHeader>
             <CardTitle>Sovereign Engine: Outreach Proposals</CardTitle>
