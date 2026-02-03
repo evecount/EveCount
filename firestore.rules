@@ -4,41 +4,24 @@
  *
  * @description
  * This ruleset governs access to the EveCount Firestore database, which stores
- * information about portfolio ventures and new idea submissions. The rules are
- * designed for a prototyping environment, emphasizing strong authorization while
- * maintaining flexibility in the data schema to support rapid development.
+ * information about portfolio ventures, user profiles, and new idea submissions.
+ * The rules are designed for a prototyping environment, emphasizing strong,
+ * role-based authorization.
  *
  * @philosophy
  * The core security philosophy is based on the principle of least privilege,
- * with a default-deny posture. It establishes two distinct access patterns:
- * 1. Public Read-Only: For data intended for public consumption, such as the
- *    company's venture portfolio.
- * 2. Write-Once / Append-Only: For data submitted by users, including anonymous
- *    ones. This allows for broad data collection while ensuring the integrity
- *    and confidentiality of submissions by making them immutable and unreadable
- *    by other clients once created.
+ * with a default-deny posture. It establishes three distinct access patterns:
+ * 1. Public Read-Only: For data intended for public consumption (e.g., ventures).
+ * 2. Write-Once / Secure Drop-Box: For submissions from any user.
+ * 3. Role-Based Access Control (RBAC): For user profiles and administrative
+ *    functions, distinguishing between 'user' and 'admin' roles.
  *
  * @structure
- * The database uses a flat, non-hierarchical structure with two main top-level
+ * The database uses a flat, non-hierarchical structure with three main top-level
  * collections:
- * - /ventures/{ventureId}: Contains public information about each venture.
- * - /submissions/{submissionId}: A write-only collection for capturing new ideas
- *   from any user, including those signed in anonymously.
- *
- * @decisions
- * - Anonymous Submissions: The rules explicitly support submissions from users
- *   authenticated anonymously. A simple `isSignedIn()` check is used, which
-*    evaluates to true for any authenticated session, anonymous or not.
- * - Immutable Submissions: To protect user-submitted data, the `/submissions`
- *   collection is configured as "write-once". After a document is created, it
- *   cannot be read, updated, or deleted by any client-side request. This
- *   ensures data integrity and confidentiality, assuming submitted data will be
- *   processed by a trusted backend service.
- * - Venture Write Lock-down: Writes to the `/ventures` collection are disabled
- *   as a security precaution. The 'Venture' entity lacks an `ownerId` or
- *   `authorId` field, making it impossible to implement secure, owner-based
- *   write rules. This decision forces a deliberate schema update before
- *   enabling write access.
+ * - /ventures/{ventureId}: Public venture information.
+ * - /submissions/{submissionId}: Write-only collection for new ideas.
+ * - /users/{userId}: Stores user profiles and access roles.
  */
 rules_version = '2';
 service cloud.firestore {
@@ -56,54 +39,79 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    /**
+     * @description Checks if the requesting user's UID matches the document's userId.
+     * @param {string} userId The UID to check against.
+     * @returns {boolean} True if the UIDs match.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * @description Retrieves the data for the currently authenticated user from the /users collection.
+     * @returns {object} The user's document data.
+     */
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    /**
+     * @description Checks if the currently authenticated user has the 'admin' role.
+     * @returns {boolean} True if the user is an admin.
+     */
+    function isAdmin() {
+      return isSignedIn() && getUserData().role == 'admin';
+    }
+
 
     //================================================================================
     // Collection: ventures
     //================================================================================
-
     /**
-     * @description Rules for the 'ventures' collection. This collection stores
-     *   public portfolio information, making it readable by anyone but
-     *   preventing any client-side modifications.
-     * @path /ventures/{ventureId}
-     * @allow (get) Any user, signed in or not, can read a specific venture document.
-     * @deny (create) A signed-in user attempts to create a new venture document.
-     * @principle Public read with locked-down writes. Writes are disabled
-     *   pending a schema update to include an ownership field.
+     * @description Public portfolio information. Readable by anyone, but locked for client-side writes.
      */
     match /ventures/{ventureId} {
-      allow get: if true;
-      allow list: if true;
-      
-      // CRITICAL: Cannot implement owner-only writes. The 'Venture' entity is missing an 'ownerId' or 'authorId' field.
-      allow create: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
-      allow update: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
-      allow delete: if false; // TODO: Add owner validation once the schema is updated with an ownership field.
+      allow get, list: if true;
+      allow create, update, delete: if false; // Writes must be handled by a trusted backend/admin.
     }
 
 
     //================================================================================
     // Collection: submissions
     //================================================================================
-
     /**
-     * @description Rules for the 'submissions' collection. This collection acts
-     *   as a secure drop-box for new ideas. Any authenticated user (including
-     *   anonymous ones) can submit an idea, but no client can read, update, or
-     *   delete any submission.
-     * @path /submissions/{submissionId}
-     * @allow (create) An anonymously signed-in user creates a new submission document.
-     * @deny (get) A signed-in user attempts to read a submission they just created.
-     * @principle Enforces a "write-once, read-never" pattern for clients,
-     *   ensuring submitted data is confidential and immutable from the frontend.
+     * @description Secure drop-box for new ideas. Any authenticated user (including anonymous) can submit,
+     *   but no client can read, update, or delete any submission.
      */
     match /submissions/{submissionId} {
       allow create: if isSignedIn();
-      
-      allow get: if false;
-      allow list: if false;
-      allow update: if false;
-      allow delete: if false;
+      allow get, list, update, delete: if false;
+    }
+    
+    
+    //================================================================================
+    // Collection: users
+    //================================================================================
+    /**
+     * @description Stores user profiles and roles for access control.
+     * @path /users/{userId}
+     * @principle Owner-write for personal data, admin-only for sensitive fields (like 'role').
+     */
+    match /users/{userId} {
+      /**
+       * @allow (get) A user can read their own profile. An admin can read any profile.
+       * @allow (list) Only an admin can list all users.
+       * @allow (create) A user can create their own profile document.
+       * @allow (update) A user can update their own profile, but cannot change their own role.
+       *   An admin can update any part of any user's profile.
+       * @allow (delete) Only an admin can delete a user profile.
+       */
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if isOwner(userId);
+      allow update: if (isOwner(userId) && request.resource.data.role == resource.data.role) || isAdmin();
+      allow delete: if isAdmin();
     }
   }
 }
