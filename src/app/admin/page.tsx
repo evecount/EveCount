@@ -5,9 +5,9 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection } from '@/firebase';
-import { GoogleAuthProvider, signInWithPopup, setDoc } from 'firebase/auth';
-import { collection, doc, updateDoc } from 'firebase/firestore';
+import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking } from '@/firebase';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { collection, doc, setDoc } from 'firebase/firestore';
 import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
@@ -58,16 +58,16 @@ function AdminDashboard() {
 
   const { data: sources, isLoading: sourcesLoading } = useCollection<Source>(sourcesQuery);
 
-  const handleUpdateProposalStatus = async (proposalId: string, status: OutreachProposal['status']) => {
+  const handleUpdateProposalStatus = (proposalId: string, status: OutreachProposal['status']) => {
     if (!firestore) return;
     const proposalRef = doc(firestore, 'outreachProposals', proposalId);
-    await updateDoc(proposalRef, { status });
+    updateDocumentNonBlocking(proposalRef, { status });
   };
   
-  const handleUpdateSourceStatus = async (sourceId: string, status: Source['status']) => {
+  const handleUpdateSourceStatus = (sourceId: string, status: Source['status']) => {
     if (!firestore) return;
     const sourceRef = doc(firestore, 'sources', sourceId);
-    await updateDoc(sourceRef, { status });
+    updateDocumentNonBlocking(sourceRef, { status });
   };
 
   const getStatusVariant = (status: OutreachProposal['status'] | Source['status']) => {
@@ -149,7 +149,7 @@ function AdminDashboard() {
         <Card className="bg-secondary/20">
           <CardHeader>
             <CardTitle>Sovereign Engine: Data Sources</CardTitle>
-            <CardDescription>Review and approve new data sources suggested by agents.</CardDescription>
+            <CardDescription>Monitor and manage the data sources for the Sovereign Engine. Agents add sources as 'active' by default, and you can deactivate them here.</CardDescription>
           </CardHeader>
           <CardContent>
             {sourcesLoading && (
@@ -181,13 +181,23 @@ function AdminDashboard() {
                         {source.url}
                       </a>
                     </CardContent>
-                    <CardFooter className="flex justify-end gap-2">
-                        <Button variant="outline" size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'rejected')} disabled={source.status !== 'pending'}>
-                            <X className="h-4 w-4 mr-1" /> Reject
-                        </Button>
-                        <Button size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'active')} disabled={source.status !== 'pending'}>
-                            <Check className="h-4 w-4 mr-1" /> Approve
-                        </Button>
+                    <CardFooter className="flex justify-end gap-2 pt-4">
+                        {source.status === 'pending' && (
+                            <>
+                                <Button variant="outline" size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'rejected')}>
+                                    <X className="h-4 w-4 mr-1" /> Reject
+                                </Button>
+                                <Button size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'active')}>
+                                    <Check className="h-4 w-4 mr-1" /> Approve
+                                </Button>
+                            </>
+                        )}
+                        {source.status === 'active' && (
+                            <Button variant="destructive" size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'rejected')}>
+                                <X className="h-4 w-4 mr-1" /> Deactivate
+                            </Button>
+                        )}
+                        {/* No actions for rejected sources, they are just logged */}
                     </CardFooter>
                   </Card>
                 ))}
@@ -255,7 +265,7 @@ function AdminSignIn() {
             const user = result.user;
             
             const userRef = doc(firestore, 'users', user.uid);
-            await updateDoc(userRef, {
+            await setDoc(userRef, {
                 uid: user.uid,
                 email: user.email,
                 displayName: user.displayName,
