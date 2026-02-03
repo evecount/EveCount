@@ -7,8 +7,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Quantum Research Hub | PQC, QKD & QML",
-  description: "Explore Eve Count's Quantum Research Hub. An open-source initiative with tracks in Post-Quantum Cryptography (PQC), Quantum Key Distribution (QKD), and Quantum Machine Learning (QML).",
+  title: "Quantum Training System | Building Quantum Practitioners",
+  description: "Eve Count's Quantum Hybrid Training System is designed to solve the talent gap. Explore our open-source workbooks, including how to build your first quantum circuit, and become a quantum practitioner.",
 };
 
 const visionElements = [
@@ -44,15 +44,15 @@ export default function ResearchPage() {
           <div className="container">
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                Quantum Research & Innovation Hub
+                The Quantum Hybrid Training System
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-                Our open-source initiative to build the future of secure, intelligent systems. We provide a launchpad for deep-tech exploration into Post-Quantum Cryptography (PQC), Quantum Key Distribution (QKD), and Quantum Machine Learning (QML). This is where we learn by building.
+                We are solving the quantum talent gap. Our open-source "Quantum Research 101" repo is a hybrid training system designed to create the next wave of quantum practitioners. Explore our workbooks, like our latest on building your first quantum circuit, and start learning by building.
               </p>
                <Button size="lg" className="mt-8" asChild>
                 <Link href="https://github.com/evecount/quantum-research-101" target="_blank" rel="noopener noreferrer">
                   <Github className="mr-2 h-5 w-5" />
-                  View Master Repo on GitHub
+                  Explore the Quantum Circuit Workbook
                 </Link>
               </Button>
             </div>
@@ -102,12 +102,11 @@ export default function ResearchPage() {
                                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
                                     <Atom className="h-6 w-6 text-primary" />
                                 </div>
-                                <CardTitle className="text-foreground">Quantum Simulators</CardTitle>
+                                <CardTitle className="text-foreground">Build a Quantum Circuit</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">Build a web-based simulator for core quantum concepts like entanglement or superposition. This provides an intuitive, visual way to grasp the non-intuitive behaviors that are the foundation of quantum computing's power. Use Firebase for real-time state management and Qiskit or Cirq for the backend logic.</p>
-                            <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Ada Lovelace would have built.</p>
+                            <p className="text-muted-foreground">Our hands-on workbook teaches you how to build a real quantum circuit. Learn the fundamentals of quantum gates, superposition, and entanglement in a practical way. It's the perfect starting point for any aspiring quantum practitioner.</p>
                         </CardContent>
                     </Card>
                     <Card className="bg-secondary/20 text-foreground">
