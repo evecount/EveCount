@@ -116,6 +116,15 @@ service cloud.firestore {
       allow create: if isOwner(userId);
       allow update: if (isOwner(userId) && request.resource.data.role == resource.data.role) || isAdmin();
       allow delete: if isAdmin();
+      
+      /**
+       * @description Stores the chat history for a specific user with a specific command center agent.
+       * @path /users/{userId}/agentConversations/{agentId}
+       * @principle Owner-read and Owner-write. Admins can also manage conversations.
+       */
+      match /agentConversations/{agentId} {
+        allow read, write: if isOwner(userId) || isAdmin();
+      }
     }
 
     //================================================================================
