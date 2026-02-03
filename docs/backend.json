@@ -213,6 +213,43 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["id", "url", "type", "status", "suggestedById", "createdAt"]
+    },
+    "AgentConversation": {
+      "title": "Agent Conversation",
+      "description": "The entire chat history between a user and a specific command center agent.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user having the conversation."
+        },
+        "agentId": {
+          "type": "string",
+          "description": "The ID of the agent."
+        },
+        "history": {
+          "type": "array",
+          "description": "An array of chat messages.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string",
+                "enum": ["user", "model"]
+              },
+              "content": {
+                "type": "string"
+              }
+            },
+            "required": ["role", "content"]
+          }
+        },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "agentId", "history", "lastUpdated"]
     }
   },
   "auth": {
@@ -298,8 +335,30 @@
                 { "name": "sourceId", "description": "Unique identifier for the source." }
             ]
         }
+      },
+      {
+        "path": "users/{userId}/agentConversations/{agentId}",
+        "definition": {
+          "entityName": "AgentConversation",
+          "schema": {
+            "$ref": "#/backend/entities/AgentConversation"
+          },
+          "description": "Stores the chat history for a specific user with a specific command center agent.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "Unique identifier for the user, matching their Firebase Auth UID."
+            },
+            {
+              "name": "agentId",
+              "description": "The unique identifier for the agent."
+            }
+          ]
+        }
       }
     ],
     "reasoning": "The Firestore structure is designed to support the Clear-Box Intelligence Blueprint. It uses a flat, non-hierarchical collection model to ensure that agent-driven actions are independent and auditable. Each primary entity (ventures, submissions, users, proposals, sources) is segregated into its own collection to enforce strict, granular security rules and maintain data integrity. This design facilitates the core logic of `Action = (External Pulse) + (Internal Resonance) + (Traceable Rationale)` by creating clear, referenceable data points for each step of an agent's operation. For example, an OutreachProposal can be directly traced back to its triggering Source, and the agent's ID is stamped on every action, providing a clear audit trail for all operations within the Clear-Box Dashboard."
   }
 }
+
+    
