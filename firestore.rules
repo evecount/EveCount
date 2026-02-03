@@ -4,26 +4,28 @@
  * @author EveCount Security Rules Architect
  *
  * @description
- * This ruleset governs access to the EveCount Firestore database, which stores
- * information about portfolio ventures, user profiles, and new idea submissions.
- * The rules are designed for a prototyping environment, emphasizing strong,
- * role-based authorization.
+ * This ruleset governs access to the EveCount Firestore database. It is a core
+ * component of our Clear-Box Intelligence Blueprint, designed to enable and
+ * protect our autonomous agentic operations.
  *
  * @philosophy
- * The core security philosophy is based on the principle of least privilege,
- * with a default-deny posture. It establishes three distinct access patterns:
+ * The security philosophy is built on the principle of least privilege and is
+ * designed to support a system of **Traceable Intelligence**. It enforces strict
+ * data access patterns that ensure the integrity and auditability of every
+ * agent-driven action. The rules establish three primary access patterns:
  * 1. Public Read-Only: For data intended for public consumption (e.g., ventures).
- * 2. Write-Once / Secure Drop-Box: For submissions from any user.
- * 3. Role-Based Access Control (RBAC): For user profiles and administrative
- *    functions, distinguishing between 'user' and 'admin' roles.
+ * 2. Secure Write-Only Drop-Box: For all inbound submissions, protecting data at ingress.
+ * 3. Role-Based Access Control (RBAC): For human oversight and administrative control
+ *    within the Command Center, distinguishing between 'user' and 'admin' roles.
  *
  * @structure
- * The database uses a flat, non-hierarchical structure with four main top-level
- * collections:
- * - /ventures/{ventureId}: Public venture information.
- * - /submissions/{submissionId}: Write-only collection for new ideas.
- * - /users/{userId}: Stores user profiles and access roles.
- * - /outreachProposals/{proposalId}: Admin-only collection for the Sovereign Engine.
+ * The database uses a flat, non-hierarchical structure to enable traceable,
+ * independent agent actions. The main collections include:
+ * - /ventures: Public venture information.
+ * - /submissions: Secure drop-box for all inbound inquiries.
+ * - /users: User profiles and access roles (the "Human Handshake").
+ * - /outreachProposals: Admin-only "Outbox" for agent-generated proposals.
+ * - /sources: Admin-managed intelligence sources for the Seeker agent.
  */
 rules_version = '2';
 service cloud.firestore {
@@ -120,7 +122,8 @@ service cloud.firestore {
     // Collection: outreachProposals
     //================================================================================
     /**
-     * @description Admin-only collection for the Sovereign Engine's proposals. Serves as the "Outbox".
+     * @description Admin-only collection for the agent-generated proposals. Serves as the "Outbox"
+     * for the Clear-Box Dashboard.
      * @path /outreachProposals/{proposalId}
      * @principle Only admins can read, create, update, or delete proposals.
      */
@@ -132,7 +135,7 @@ service cloud.firestore {
     // Collection: sources
     //================================================================================
     /**
-     * @description Admin-only collection for managing the Sovereign Engine's data sources.
+     * @description Admin-managed collection for the Intelligence cluster's data sources.
      * @path /sources/{sourceId}
      * @principle Only admins can manage the list of active and pending sources.
      */

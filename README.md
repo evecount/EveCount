@@ -1,4 +1,4 @@
-# EveCount.com - Quantum & AI Venture Studio
+# EveCount.com - AI Venture Studio
 
 This repository contains the source code for the official website of Eve Count, a Singapore-based venture studio that invests Code, AI, and Architecture into new ventures.
 
@@ -16,13 +16,14 @@ This project is built with a modern, scalable tech stack:
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
 - **UI:** [React](https://react.dev/), [ShadCN UI](https://ui.shadcn.com/), and [Tailwind CSS](https://tailwindcss.com/)
 - **Backend:** [Firebase](https://firebase.google.com/) (Firestore for database, Firebase Authentication)
-- **Generative AI:** [Genkit](https://firebase.google.com/docs/genkit) for the AI Partner Chatbot
+- **Generative AI:** [Genkit](https://firebase.google.com/docs/genkit) for Traceable AI Operations
 
 ## Key Features
 
 - **Dynamic Content:** Pages for About, Ventures, Incubator, Research, and more.
+- **Clear-Box Command Center:** An admin dashboard that provides a transparent, auditable view into our autonomous agent operations. Every decision is logged with its "Birth-Logic" for true Explainable AI (XAI).
 - **AI Partner Chatbot:** An integrated AI chatbot (`/src/components/chatbot.tsx`) that engages with visitors, captures venture pitches, and saves them directly to Firestore.
-- **Universal Application Form:** A comprehensive form at `/apply` that handles various inquiry types (Venture Pitches, Incubator Applications, Career Inquiries, and Partnerships), with conditional fields and validation, submitting data to Firestore.
+- **Universal Application Form:** A comprehensive form at `/apply` that handles various inquiry types (Venture Pitches, Incubator Applications, Career Inquiries, and Partnerships).
 - **Protected Ventures Page:** A password-protected section at `/ventures` to showcase portfolio companies.
 - **SEO Optimized:** Includes dynamic page titles, a `sitemap.ts`, and `robots.ts` for improved search engine visibility.
 
@@ -47,14 +48,14 @@ The application will be available at `http://localhost:9002`.
 - **`src/app`**: Contains all the pages and layouts for the Next.js App Router.
 - **`src/components`**: Reusable React components, including UI components from ShadCN and custom layout/section components.
 - **`src/firebase`**: Firebase configuration, providers, and custom hooks (`useCollection`, `useUser`, etc.).
-- **`src/ai`**: Genkit flows that power the AI features, such as the `ai-partner-chat`.
+- **`src/ai`**: Genkit flows that power our agentic clusters.
 - **`src/lib`**: Helper functions, data definitions (e.g., `ventures.ts`), and schemas.
-- **`docs/backend.json`**: The data blueprint defining the application's entities and Firestore structure.
+- **`docs/backend.json`**: The data blueprint defining the application's entities and Firestore structure, designed for traceable AI operations.
 - **`firestore.rules`**: Security rules for the Firestore database.
 
 ## Future Vision: Project BroadcastPeople
 
-Beyond the Sovereign Engine, the next evolution is **Project BroadcastPeople**. This future build will focus on creating a system for synthetic human data designed for agentic augmentation.
+The next evolution is **Project BroadcastPeople**. This future build will focus on creating a system for synthetic human data designed for agentic augmentation.
 
 The core concept is to bridge the gap between machine logic and human intuition. It involves creating an "incomplete archive" of human expertise which is then augmented by the best-of-class agentic thought processes we are developing. The system will broadcast these fused data points via an API (e.g., `api.whatwould.work`), providing our agentic systems with a constant stream of common-sense reasoning and nuanced decision-making capabilities.
 
