@@ -133,7 +133,7 @@ export default function ResearchPage() {
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">This track focuses on creating a high-fidelity dataset of human intuition, judgment, and behavior. By modeling "what a human would do," we can train agentic systems to move beyond pure logic and develop a nuanced, common-sense understanding of the world, making their decisions more robust and aligned with human values.</p>
+                            <p className="text-muted-foreground">This track focuses on creating a high-fidelity dataset of human intuition and behavior. This 'synthetic human' data is then broadcast to our agentic systems, providing them with a constant stream of common-sense reasoning, making their decisions more robust and aligned with human values.</p>
                             <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; What Daniel Kahneman would have built.</p>
                         </CardContent>
                     </Card>
