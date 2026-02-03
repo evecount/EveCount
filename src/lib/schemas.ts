@@ -72,3 +72,28 @@ export const StrategistOutputSchema = z.object({
     proposalBody: z.string().describe("The full text of the Direct Action Proposal."),
     strategicRationale: z.string().describe("The 'Sentient Rationale' explaining why this proposal is strategic, linking the triggering news to Eve Count's value proposition."),
 });
+
+
+export const CommandCenterChatInputSchema = z.object({
+  agentId: z.string().describe("The ID of the agent to chat with."),
+  history: z.array(z.object({
+    role: z.enum(['user', 'model']),
+    content: z.string(),
+  })).describe("The chat history."),
+});
+
+export const CommandCenterChatPromptInputSchema = z.object({
+  agentName: z.string(),
+  agentId: z.string(),
+  agentRole: z.string(),
+  agentCluster: z.string(),
+  agentFocus: z.string(),
+  history: z.array(z.object({
+    role: z.enum(['user', 'model']),
+    content: z.string(),
+  })),
+});
+
+export const CommandCenterChatOutputSchema = z.object({
+  response: z.string().describe("The agent's response."),
+});

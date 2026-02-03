@@ -12,6 +12,7 @@ import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, 
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
+import { CommandCenterChat } from '@/components/CommandCenterChat';
 
 interface UserProfile {
   uid: string;
@@ -124,6 +125,18 @@ function AdminDashboard() {
                   </CardFooter>
                 </Card>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-secondary">
+          <CardHeader>
+            <CardTitle>Agent Communications</CardTitle>
+            <CardDescription>Speak directly with your autonomous crew members.</CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="h-[600px] border-t">
+                <CommandCenterChat />
             </div>
           </CardContent>
         </Card>
