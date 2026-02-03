@@ -97,7 +97,7 @@ function AdminDashboard() {
             <BadgeCheck className="h-10 w-10 text-green-500" />
         </div>
         
-        <Card className="bg-secondary/20">
+        <Card className="bg-secondary">
           <CardHeader>
             <CardTitle>Sovereign Engine: Outreach Proposals</CardTitle>
             <CardDescription>Review and approve agent-generated proposals before they are sent.</CardDescription>
@@ -114,7 +114,7 @@ function AdminDashboard() {
             {!proposalsLoading && proposals && proposals.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {proposals.map(proposal => (
-                        <Card key={proposal.id} className="bg-background/50 flex flex-col">
+                        <Card key={proposal.id} className="bg-background flex flex-col">
                             <CardHeader>
                                 <div className="flex justify-between items-start">
                                     <div>
@@ -155,10 +155,10 @@ function AdminDashboard() {
           </CardContent>
         </Card>
         
-        <Card className="bg-secondary/20">
+        <Card className="bg-secondary">
           <CardHeader>
             <CardTitle>Sovereign Engine: Data Sources</CardTitle>
-            <CardDescription>Monitor and manage the data sources for the Sovereign Engine. Agents add sources as 'active' by default, and you can deactivate them here.</CardDescription>
+            <CardDescription>The 'Seeker' agent will autonomously add new intelligence sources aligned with its core mandate. This is your hub to monitor its activity and override any source by deactivating it.</CardDescription>
           </CardHeader>
           <CardContent>
             {sourcesLoading && (
@@ -172,7 +172,7 @@ function AdminDashboard() {
             {!sourcesLoading && sources && sources.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {sources.map(source => (
-                  <Card key={source.id} className="bg-background/50 flex flex-col">
+                  <Card key={source.id} className="bg-background flex flex-col">
                     <CardHeader>
                       <div className="flex justify-between items-start">
                           <div>
