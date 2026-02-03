@@ -59,3 +59,15 @@ export const AiPartnerChatInputSchema = z.object({
 export const AiPartnerChatOutputSchema = z.object({
   response: z.string().describe("The AI partner's response."),
 });
+
+
+export const StrategistInputSchema = z.object({
+    companyName: z.string().describe("The name of the target company."),
+    triggeringNews: z.string().describe("The summary or headline of the news/trend that triggered the outreach."),
+    sovereignDirective: z.string().describe("The core strategic goal for the agent."),
+});
+
+export const StrategistOutputSchema = z.object({
+    proposalTitle: z.string().describe("A compelling, direct title for the proposal."),
+    proposalBody: z.string().describe("The full text of the Direct Action Proposal."),
+});

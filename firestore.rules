@@ -17,11 +17,12 @@
  *    functions, distinguishing between 'user' and 'admin' roles.
  *
  * @structure
- * The database uses a flat, non-hierarchical structure with three main top-level
+ * The database uses a flat, non-hierarchical structure with four main top-level
  * collections:
  * - /ventures/{ventureId}: Public venture information.
  * - /submissions/{submissionId}: Write-only collection for new ideas.
  * - /users/{userId}: Stores user profiles and access roles.
+ * - /outreachProposals/{proposalId}: Admin-only collection for the Sovereign Engine.
  */
 rules_version = '2';
 service cloud.firestore {
@@ -112,6 +113,18 @@ service cloud.firestore {
       allow create: if isOwner(userId);
       allow update: if (isOwner(userId) && request.resource.data.role == resource.data.role) || isAdmin();
       allow delete: if isAdmin();
+    }
+
+    //================================================================================
+    // Collection: outreachProposals
+    //================================================================================
+    /**
+     * @description Admin-only collection for the Sovereign Engine's proposals. Serves as the "Outbox".
+     * @path /outreachProposals/{proposalId}
+     * @principle Only admins can read, create, update, or delete proposals.
+     */
+    match /outreachProposals/{proposalId} {
+      allow read, write: if isAdmin();
     }
   }
 }
