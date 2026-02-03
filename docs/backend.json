@@ -190,6 +190,20 @@
         }
       },
       "required": ["id", "companyName", "status", "proposalTitle", "proposalBody", "createdAt"]
+    },
+    "Source": {
+      "title": "Source",
+      "description": "Represents a data source (e.g., RSS feed, subreddit) for the Sovereign Engine's Seeker agent to monitor.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "type": { "type": "string", "enum": ["RSS", "Reddit", "NewsAPI"] },
+        "status": { "type": "string", "enum": ["pending", "active", "rejected"] },
+        "suggestedBy": { "type": "string", "description": "UID of user or 'agent' who suggested it." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "url", "type", "status", "createdAt"]
     }
   },
   "auth": {
@@ -263,6 +277,17 @@
               "description": "Unique identifier for the outreach proposal."
             }
           ]
+        }
+      },
+      {
+        "path": "sources/{sourceId}",
+        "definition": {
+            "entityName": "Source",
+            "schema": { "$ref": "#/backend/entities/Source" },
+            "description": "Collection for storing data sources for the Sovereign Engine to monitor. Includes sources suggested by agents pending admin approval.",
+            "params": [
+                { "name": "sourceId", "description": "Unique identifier for the source." }
+            ]
         }
       }
     ],

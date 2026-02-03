@@ -1,3 +1,4 @@
+
 /**
  * @fileoverview Firestore Security Rules for the EveCount Platform
  * @author EveCount Security Rules Architect
@@ -124,6 +125,18 @@ service cloud.firestore {
      * @principle Only admins can read, create, update, or delete proposals.
      */
     match /outreachProposals/{proposalId} {
+      allow read, write: if isAdmin();
+    }
+
+    //================================================================================
+    // Collection: sources
+    //================================================================================
+    /**
+     * @description Admin-only collection for managing the Sovereign Engine's data sources.
+     * @path /sources/{sourceId}
+     * @principle Only admins can manage the list of active and pending sources.
+     */
+    match /sources/{sourceId} {
       allow read, write: if isAdmin();
     }
   }
