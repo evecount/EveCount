@@ -63,11 +63,12 @@ export const AiPartnerChatOutputSchema = z.object({
 
 export const StrategistInputSchema = z.object({
     companyName: z.string().describe("The name of the target company."),
-    triggeringNews: z.string().describe("The summary or headline of the news/trend that triggered the outreach."),
+    triggeringNews: z.string().describe("The summary or headline of the news/trend that triggered the outreach (The External Pulse)."),
     sovereignDirective: z.string().describe("The core strategic goal for the agent."),
 });
 
 export const StrategistOutputSchema = z.object({
     proposalTitle: z.string().describe("A compelling, direct title for the proposal."),
     proposalBody: z.string().describe("The full text of the Direct Action Proposal."),
+    strategicRationale: z.string().describe("The 'Sentient Rationale' explaining why this proposal is strategic, linking the triggering news to Eve Count's value proposition."),
 });

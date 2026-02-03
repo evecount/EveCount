@@ -8,7 +8,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 
@@ -23,10 +23,12 @@ interface UserProfile {
 interface OutreachProposal {
   id: string;
   companyName: string;
-  triggeringNewsUrl: string;
+  sourceUrl: string;
   status: "draft" | "approved" | "sent" | "rejected";
   proposalTitle: string;
   proposalBody: string;
+  strategicRationale: string;
+  agentId: string;
   createdAt: string; // ISO String
 }
 
@@ -118,20 +120,27 @@ function AdminDashboard() {
                                     <div>
                                         <CardTitle className="text-lg">{proposal.companyName}</CardTitle>
                                         <CardDescription>
-                                            Generated on {format(new Date(proposal.createdAt), "PPP")}
+                                            Generated on {format(new Date(proposal.createdAt), "PPP")} by {proposal.agentId}
                                         </CardDescription>
                                     </div>
                                     <Badge variant={getStatusVariant(proposal.status)}>{proposal.status}</Badge>
                                 </div>
                             </CardHeader>
-                            <CardContent className="flex-grow">
-                                <h3 className="font-semibold text-foreground mb-2">{proposal.proposalTitle}</h3>
-                                <p className="text-sm text-muted-foreground line-clamp-4">{proposal.proposalBody}</p>
-                                <a href={proposal.triggeringNewsUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline mt-2 block">
-                                  Triggering News
-                                </a>
+                            <CardContent className="flex-grow space-y-4">
+                                <div>
+                                    <h3 className="font-semibold text-foreground mb-1">{proposal.proposalTitle}</h3>
+                                    <p className="text-sm text-muted-foreground line-clamp-3">{proposal.proposalBody}</p>
+                                </div>
+                                <div className="border-t border-border/40 pt-4">
+                                     <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><Lightbulb className="h-4 w-4 text-primary" /> Sentient Rationale</h4>
+                                     <p className="text-sm text-muted-foreground italic">"{proposal.strategicRationale}"</p>
+                                      <a href={proposal.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline mt-2 flex items-center gap-1">
+                                        <LinkIcon className="h-3 w-3" />
+                                        External Pulse
+                                      </a>
+                                </div>
                             </CardContent>
-                            <CardFooter className="flex justify-end gap-2">
+                            <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-4">
                                 <Button variant="outline" size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'rejected')} disabled={proposal.status !== 'draft'}>
                                     <X className="h-4 w-4 mr-1" /> Reject
                                 </Button>
