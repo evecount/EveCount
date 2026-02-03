@@ -63,7 +63,7 @@
         },
         "visionPitch": {
           "type": "string",
-          "description": "The vision pitched for a Venture, or a statement of interest for an Incubator application."
+          "description": "The vision, problem statement, or challenge being pitched for a Venture, or a statement of interest for an Incubator application."
         },
         "submissionDate": {
           "type": "string",
@@ -103,7 +103,7 @@
         },
         "partnershipInterest": {
           "type": "string",
-          "description": "Details about the partnership or sponsorship interest. Required for Partnership Inquiries."
+          "description": "Details about a business challenge, or interest in partnership/sponsorship. Required for Partnership Inquiries."
         },
         "message": {
           "type": "string",

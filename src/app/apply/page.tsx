@@ -40,7 +40,7 @@ const applicationSchema = z.object({
     message: z.string().optional(),
 }).superRefine((data, ctx) => {
     if (data.applicationType === 'Venture Pitch' && (!data.visionPitch || data.visionPitch.length < 20)) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your vision (min 20 characters).", path: ['visionPitch'] });
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your vision or problem (min 20 characters).", path: ['visionPitch'] });
     }
     if (data.applicationType === 'Incubator Application') {
         if (!data.portfolioUrl || !z.string().url().safeParse(data.portfolioUrl).success) {
@@ -69,7 +69,7 @@ const applicationSchema = z.object({
             ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please enter your company name.", path: ['companyName'] });
         }
         if (!data.partnershipInterest || data.partnershipInterest.length < 20) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your interest in partnering (min 20 characters).", path: ['partnershipInterest'] });
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your challenge or interest in partnering (min 20 characters).", path: ['partnershipInterest'] });
         }
     }
 });
@@ -230,8 +230,8 @@ export default function ApplyPage() {
                                                         name="visionPitch"
                                                         render={({ field }) => (
                                                             <FormItem>
-                                                                <FormLabel>The Vision Pitch *</FormLabel>
-                                                                <FormControl><Textarea placeholder="Describe the problem, your solution, and the core insight..." rows={5} {...field} /></FormControl>
+                                                                <FormLabel>The Vision or Problem *</FormLabel>
+                                                                <FormControl><Textarea placeholder="Describe the problem you're solving, your proposed solution, and the core insight..." rows={5} {...field} /></FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}
@@ -333,8 +333,8 @@ export default function ApplyPage() {
                                                         name="partnershipInterest"
                                                         render={({ field }) => (
                                                             <FormItem>
-                                                                <FormLabel>Partnership / Sponsorship Interest *</FormLabel>
-                                                                <FormControl><Textarea placeholder="How would you like to partner with us? e.g., Service Partner, Event Sponsor, etc." rows={5} {...field} /></FormControl>
+                                                                <FormLabel>Challenge or Partnership Interest *</FormLabel>
+                                                                <FormControl><Textarea placeholder="Describe your business challenge, or how you'd like to partner with us (e.g., Service Partner, Event Sponsor)." rows={5} {...field} /></FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}
