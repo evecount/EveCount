@@ -4,9 +4,61 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Zap, Code, Share2, Mail, Bot, ShieldCheck, BrainCircuit } from "lucide-react";
+import { Zap, Code, Share2, Mail, Bot, ShieldCheck, BrainCircuit, Compass, PenSquare, Camera, Radio, Gavel, BadgeCheck as BadgeCheckIcon, Sparkles } from "lucide-react";
 import { useChatbot } from "@/hooks/use-chatbot";
 import React from "react";
+
+const sovereignEngineCrew = [
+    {
+        name: "Apex",
+        role: "The Strategic Researcher",
+        focus: "Monitors 'The Forest' (external pulses) and 'The Trees' (internal performance) to provide the directional vector for action. Autonomously discovers new intelligence sources.",
+        icon: Compass,
+        cluster: "Intelligence"
+    },
+    {
+        name: "Sentinel",
+        role: "The Proposal Architect",
+        focus: "Translates raw signals from Apex into high-fidelity, direct action proposals. Crafts the 'Sentient Rationale' that bridges the external pulse with internal resonance.",
+        icon: PenSquare,
+        cluster: "Voice & Vision"
+    },
+    {
+        name: "Iris",
+        role: "The Visual Synthesist",
+        focus: "Generates all visual assets, from editorial visuals to data visualizations, ensuring every piece of content has a unique, AI-generated identity.",
+        icon: Camera,
+        cluster: "Voice & Vision"
+    },
+    {
+        name: "Lyra",
+        role: "The Sonic Architect",
+        focus: "Translates articles and data into audio briefings and sonic identities, adding another layer of accessibility and engagement to our assets.",
+        icon: Radio,
+        cluster: "Voice & Vision"
+    },
+    {
+        name: "Clarion",
+        role: "The Legal Risk Auditor",
+        focus: "The system's automated legal shield. Audits every proposed action against a matrix of legal, regulatory, and reputational risks before it's committed.",
+        icon: Gavel,
+        cluster: "Governance & Resilience"
+    },
+    {
+        name: "Veritas",
+        role: "The Integrity Officer",
+        focus: "Ensures system integrity by eradicating 'placeholder' data, preventing logic decay, and maintaining the high-fidelity standards of all generated output.",
+        icon: BadgeCheckIcon,
+        cluster: "Governance & Resilience"
+    },
+    {
+        name: "Aura",
+        role: "The Longevity Architect",
+        focus: "Scans the library of finalized decisions and high-fidelity assets to identify and architect long-term partnership or revenue opportunities.",
+        icon: Sparkles,
+        cluster: "Governance & Resilience"
+    },
+];
 
 export default function AboutPage() {
   const { setOpen } = useChatbot();
@@ -146,6 +198,35 @@ export default function AboutPage() {
                   </Card>
                 </div>
               </div>
+
+               <div className="border-t border-border/40 pt-12">
+                    <div className="text-center">
+                        <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Sovereign Engine Crew</h2>
+                        <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
+                            Our engine is powered by a "Consilium Masthead"—a crew of specialized AI agents working in concert to create autonomous, strategic growth.
+                        </p>
+                    </div>
+                    <div className="mx-auto mt-10 grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {sovereignEngineCrew.map((agent) => (
+                            <Card key={agent.name} className="flex flex-col bg-secondary/20 text-foreground">
+                                <CardHeader>
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                            <agent.icon className="h-6 w-6 text-primary" />
+                                        </div>
+                                        <div>
+                                            <CardTitle className="text-lg">{agent.name}</CardTitle>
+                                            <CardDescription>{agent.role}</CardDescription>
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-sm text-muted-foreground">{agent.focus}</p>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </div>
 
 
               <div className="border-t border-border/40 pt-12 text-center">
