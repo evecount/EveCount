@@ -51,3 +51,11 @@ The application will be available at `http://localhost:9002`.
 - **`src/lib`**: Helper functions, data definitions (e.g., `ventures.ts`), and schemas.
 - **`docs/backend.json`**: The data blueprint defining the application's entities and Firestore structure.
 - **`firestore.rules`**: Security rules for the Firestore database.
+
+## Future Vision: Project BroadcastPeople
+
+Beyond the Sovereign Engine, the next evolution is **Project BroadcastPeople**. This future build will focus on creating a system for synthetic human data designed for agentic augmentation.
+
+The core concept is to bridge the gap between machine logic and human intuition. It involves creating an "incomplete archive" of human expertise which is then augmented by the best-of-class agentic thought processes we are developing. The system will broadcast these fused data points via an API (e.g., `api.whatwould.work`), providing our agentic systems with a constant stream of common-sense reasoning and nuanced decision-making capabilities.
+
+This represents the next step in our mission: creating not just Autonomous AI, but **Wise AI (AGI + Human)**.
