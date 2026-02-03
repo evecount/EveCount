@@ -6,9 +6,9 @@ import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection } from '@/firebase';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, setDoc } from 'firebase/auth';
 import { collection, doc, updateDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 
@@ -30,6 +30,16 @@ interface OutreachProposal {
   createdAt: string; // ISO String
 }
 
+interface Source {
+  id: string;
+  url: string;
+  type: "RSS" | "Reddit" | "NewsAPI";
+  status: "pending" | "active" | "rejected";
+  suggestedBy: string;
+  createdAt: string; // ISO String
+}
+
+
 function AdminDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
@@ -39,21 +49,36 @@ function AdminDashboard() {
     return collection(firestore, 'outreachProposals');
   }, [firestore]);
 
-  const { data: proposals, isLoading } = useCollection<OutreachProposal>(proposalsQuery);
+  const { data: proposals, isLoading: proposalsLoading } = useCollection<OutreachProposal>(proposalsQuery);
   
-  const handleUpdateStatus = async (proposalId: string, status: OutreachProposal['status']) => {
+  const sourcesQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'sources');
+  }, [firestore]);
+
+  const { data: sources, isLoading: sourcesLoading } = useCollection<Source>(sourcesQuery);
+
+  const handleUpdateProposalStatus = async (proposalId: string, status: OutreachProposal['status']) => {
     if (!firestore) return;
     const proposalRef = doc(firestore, 'outreachProposals', proposalId);
     await updateDoc(proposalRef, { status });
   };
   
-  const getStatusVariant = (status: OutreachProposal['status']) => {
+  const handleUpdateSourceStatus = async (sourceId: string, status: Source['status']) => {
+    if (!firestore) return;
+    const sourceRef = doc(firestore, 'sources', sourceId);
+    await updateDoc(sourceRef, { status });
+  };
+
+  const getStatusVariant = (status: OutreachProposal['status'] | Source['status']) => {
     switch (status) {
       case 'approved':
+      case 'active':
         return 'default';
       case 'rejected':
         return 'destructive';
       case 'sent':
+      case 'pending':
         return 'secondary';
       default:
         return 'outline';
@@ -76,15 +101,15 @@ function AdminDashboard() {
             <CardDescription>Review and approve agent-generated proposals before they are sent.</CardDescription>
           </CardHeader>
           <CardContent>
-            {isLoading && (
+            {proposalsLoading && (
               <div className="flex justify-center items-center h-40">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
             )}
-            {!isLoading && (!proposals || proposals.length === 0) && (
+            {!proposalsLoading && (!proposals || proposals.length === 0) && (
               <p className="text-center text-muted-foreground py-8">No outreach proposals pending review.</p>
             )}
-            {!isLoading && proposals && proposals.length > 0 && (
+            {!proposalsLoading && proposals && proposals.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {proposals.map(proposal => (
                         <Card key={proposal.id} className="bg-background/50 flex flex-col">
@@ -107,10 +132,10 @@ function AdminDashboard() {
                                 </a>
                             </CardContent>
                             <CardFooter className="flex justify-end gap-2">
-                                <Button variant="outline" size="sm" onClick={() => handleUpdateStatus(proposal.id, 'rejected')} disabled={proposal.status !== 'draft'}>
+                                <Button variant="outline" size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'rejected')} disabled={proposal.status !== 'draft'}>
                                     <X className="h-4 w-4 mr-1" /> Reject
                                 </Button>
-                                <Button size="sm" onClick={() => handleUpdateStatus(proposal.id, 'approved')} disabled={proposal.status !== 'draft'}>
+                                <Button size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'approved')} disabled={proposal.status !== 'draft'}>
                                     <Check className="h-4 w-4 mr-1" /> Approve
                                 </Button>
                             </CardFooter>
@@ -120,6 +145,57 @@ function AdminDashboard() {
             )}
           </CardContent>
         </Card>
+        
+        <Card className="bg-secondary/20">
+          <CardHeader>
+            <CardTitle>Sovereign Engine: Data Sources</CardTitle>
+            <CardDescription>Review and approve new data sources suggested by agents.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {sourcesLoading && (
+              <div className="flex justify-center items-center h-40">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            )}
+            {!sourcesLoading && (!sources || sources.length === 0) && (
+              <p className="text-center text-muted-foreground py-8">No new data sources suggested.</p>
+            )}
+            {!sourcesLoading && sources && sources.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {sources.map(source => (
+                  <Card key={source.id} className="bg-background/50 flex flex-col">
+                    <CardHeader>
+                      <div className="flex justify-between items-start">
+                          <div>
+                              <CardTitle className="text-lg flex items-center gap-2">
+                                {source.type === 'RSS' ? <Rss className="h-5 w-5 text-primary"/> : <Newspaper className="h-5 w-5 text-primary" />}
+                                {source.type} Feed
+                              </CardTitle>
+                              <CardDescription>Suggested by {source.suggestedBy} on {format(new Date(source.createdAt), "PPP")}</CardDescription>
+                          </div>
+                          <Badge variant={getStatusVariant(source.status)}>{source.status}</Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="flex-grow">
+                      <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm text-foreground hover:underline break-all">
+                        {source.url}
+                      </a>
+                    </CardContent>
+                    <CardFooter className="flex justify-end gap-2">
+                        <Button variant="outline" size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'rejected')} disabled={source.status !== 'pending'}>
+                            <X className="h-4 w-4 mr-1" /> Reject
+                        </Button>
+                        <Button size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'active')} disabled={source.status !== 'pending'}>
+                            <Check className="h-4 w-4 mr-1" /> Approve
+                        </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
     </div>
   );
 }
@@ -179,7 +255,7 @@ function AdminSignIn() {
             const user = result.user;
             
             const userRef = doc(firestore, 'users', user.uid);
-            await setDoc(userRef, {
+            await updateDoc(userRef, {
                 uid: user.uid,
                 email: user.email,
                 displayName: user.displayName,
@@ -187,8 +263,20 @@ function AdminSignIn() {
                 role: 'user' 
             }, { merge: true });
 
-        } catch (error) {
-            console.error("Error during Google sign-in:", error);
+        } catch (error: any) {
+             if (error.code === 'not-found') {
+                const user = (await signInWithPopup(auth, provider)).user;
+                const userRef = doc(firestore, 'users', user.uid);
+                await setDoc(userRef, {
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL,
+                    role: 'user'
+                });
+            } else {
+                console.error("Error during Google sign-in:", error);
+            }
         }
     };
 
