@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { Bot, ScanSearch, PenSquare, UserCheck, Shield } from 'lucide-react';
+import { BrainCircuit, Megaphone, Target, Users2, Bot } from 'lucide-react';
 
 export interface Agent {
   name: string;
@@ -12,43 +12,43 @@ export interface Agent {
 
 export const agentCrew: Agent[] = [
   {
-    name: "Nova",
+    name: "Echo",
     id: "ai-partner",
-    role: "AI Co-Founder",
-    focus: "Engages with inbound founders, captures the initial vision, and serves as the welcoming voice of the Sovereign Engine.",
+    role: "The Partner (AI Partner-in-Residence)",
+    focus: "The architect of the 'First Hello'. Acts as the first point of contact, engaging with founders to capture their initial vision.",
     cluster: "First Contact",
     Icon: Bot,
   },
   {
-    name: "Apex",
-    id: "ai-seeker",
-    role: "Strategic Researcher",
-    focus: "Monitors the market for external pulses (news, trends) and autonomously discovers new intelligence sources to expand its mandate.",
+    name: "Nova",
+    id: "ai-strategist",
+    role: "The Visionary (AI Strategist)",
+    focus: "The architect of the 'Why'. Uses strategic tools to see the market landscape, challenge assumptions, and define the core business model.",
     cluster: "Intelligence",
-    Icon: ScanSearch,
+    Icon: BrainCircuit,
+  },
+  {
+    name: "Apex",
+    id: "ai-marketer",
+    role: "The Marketer (AI GTM Lead)",
+    focus: "The architect of the 'How'. Owns the go-to-market plan, defining pricing, positioning, and customer acquisition strategies.",
+    cluster: "Execution",
+    Icon: Megaphone,
   },
   {
     name: "Sentinel",
-    id: "ai-strategist",
-    role: "Proposal Architect",
-    focus: "Takes intelligence vectors from Apex and architects them into direct, high-fidelity outreach proposals.",
-    cluster: "Execution",
-    Icon: PenSquare,
-  },
-  {
-    name: "Aura",
-    id: "ai-prospector",
-    role: "Opportunity Analyst",
-    focus: "Scans our internal library of successful ventures and proposals to identify patterns and new partnership opportunities.",
+    id: "ai-analyst",
+    role: "The Analyst (AI Business Analyst)",
+    focus: "The architect of the 'What'. Owns the numbers, building revenue models, defining KPIs, and combating customer churn.",
     cluster: "Resilience",
-    Icon: UserCheck,
+    Icon: Target,
   },
   {
     name: "Clarion",
-    id: "ai-guardian",
-    role: "Risk & Compliance Auditor",
-    focus: "Serves as the final check, vetting all actions against a set of governance rules to ensure compliance and mitigate risk before execution.",
+    id: "ai-operator",
+    role: "The Operator (AI People Lead)",
+    focus: "The architect of the 'Who'. Builds the human engine of the company, structuring roles and creating performance plans for team alignment.",
     cluster: "Governance",
-    Icon: Shield,
+    Icon: Users2,
   },
 ];
