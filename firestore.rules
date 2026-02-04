@@ -16,7 +16,7 @@
  * 1. Public Read-Only: For data intended for public consumption (e.g., ventures).
  * 2. Secure Write-Only Drop-Box: For all inbound submissions, protecting data at ingress.
  * 3. Role-Based Access Control (RBAC): For human oversight and administrative control
- *    within the Command Center, distinguishing between 'user' and 'admin' roles.
+ *    within the Command Center, distinguishing between 'admin', 'partner', and 'user' roles.
  *
  * @structure
  * The database uses a flat, non-hierarchical structure to enable traceable,
@@ -66,6 +66,14 @@ service cloud.firestore {
      */
     function isAdmin() {
       return isSignedIn() && getUserData().role == 'admin';
+    }
+
+    /**
+     * @description Checks if the currently authenticated user has the 'partner' role.
+     * @returns {boolean} True if the user is a partner.
+     */
+    function isPartner() {
+      return isSignedIn() && getUserData().role == 'partner';
     }
 
 
@@ -134,7 +142,7 @@ service cloud.firestore {
      * @description Admin-only collection for the agent-generated proposals. Serves as the "Outbox"
      * for the Clear-Box Dashboard.
      * @path /outreachProposals/{proposalId}
-     * @principle Only admins can read, create, update, or delete proposals.
+     * @principle Only admins can read, write, update, or delete proposals.
      */
     match /outreachProposals/{proposalId} {
       allow read, write: if isAdmin();

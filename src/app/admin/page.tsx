@@ -9,7 +9,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, setDocumentNonBlocking, addDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
@@ -28,7 +28,7 @@ interface UserProfile {
   email: string;
   displayName?: string;
   photoURL?: string;
-  role: 'admin' | 'user';
+  role: 'admin' | 'partner' | 'user';
 }
 
 interface OutreachProposal {
@@ -51,6 +51,29 @@ interface Source {
   suggestedBy: string;
   suggestedById: string;
   createdAt: string; // ISO String
+}
+
+type StatusVariant = "default" | "destructive" | "secondary" | "outline";
+
+function getStatusVariant(status: OutreachProposal['status'] | Source['status'] | string): StatusVariant {
+    switch (status) {
+      case 'approved':
+      case 'active':
+      case 'Live':
+      case 'Completed':
+      case 'Assigned':
+        return 'default';
+      case 'rejected':
+      case 'recalled':
+        return 'destructive';
+      case 'sent':
+      case 'Open':
+        return 'secondary';
+       case 'pending':
+        return 'outline';
+      default:
+        return 'outline';
+    }
 }
 
 function SourceEditor({ source, onSave, onCancel }: { source: Partial<Source>, onSave: (sourceData: Partial<Source>) => void, onCancel: () => void }) {
@@ -176,27 +199,6 @@ function AdminDashboard() {
     setEditingSource(null);
   };
 
-  const getStatusVariant = (status: OutreachProposal['status'] | Source['status'] | string) => {
-    switch (status) {
-      case 'approved':
-      case 'active':
-      case 'Live':
-      case 'Completed':
-      case 'Assigned':
-        return 'default';
-      case 'rejected':
-      case 'recalled':
-        return 'destructive';
-      case 'sent':
-      case 'Open':
-        return 'secondary';
-       case 'pending':
-        return 'outline';
-      default:
-        return 'outline';
-    }
-  }
-
   return (
     <div className="space-y-8">
         <div className="flex items-center justify-between">
@@ -215,7 +217,7 @@ function AdminDashboard() {
           </TabsList>
           
           <TabsContent value="operations" className="mt-6 space-y-8">
-            <Card className="bg-secondary">
+            <Card className="bg-secondary/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2"><Users2 className="h-6 w-6" /> The Command Center Crew</CardTitle>
                 <CardDescription>Your autonomous team, reflecting the core facets of the Eve Count operational strategy.</CardDescription>
@@ -245,9 +247,9 @@ function AdminDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-secondary">
+            <Card className="bg-secondary/20">
               <CardHeader>
-                <CardTitle>Agent Communications</CardTitle>
+                <CardTitle className="flex items-center gap-2"><Bot className="h-6 w-6" /> Agent Communications</CardTitle>
                 <CardDescription>Speak directly with your autonomous crew members.</CardDescription>
               </CardHeader>
               <CardContent className="p-0">
@@ -257,7 +259,7 @@ function AdminDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-secondary">
+            <Card className="bg-secondary/20">
               <CardHeader>
                 <CardTitle>Sovereign Engine: Autonomous Outreach</CardTitle>
                 <CardDescription>Monitor agent-initiated outreach. Your role is to enable, not control. Intervene only to recall a proposal that deviates from your strategic intent.</CardDescription>
@@ -291,8 +293,8 @@ function AdminDashboard() {
                                         <h3 className="font-semibold text-foreground mb-1">{proposal.proposalTitle}</h3>
                                         <p className="text-sm text-muted-foreground line-clamp-3">{proposal.proposalBody}</p>
                                     </div>
-                                    <div className="border-t border-border/40 pt-4">
-                                        <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><Lightbulb className="h-4 w-4 text-primary" /> Sentient Rationale</h4>
+                                    <div className="border-t pt-4 mt-4">
+                                        <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><Lightbulb className="h-4 w-4 text-primary" /> Strategic Rationale</h4>
                                         <p className="text-sm text-muted-foreground italic">"{proposal.strategicRationale}"</p>
                                         <a href={proposal.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline mt-2 flex items-center gap-1">
                                             <LinkIcon className="h-3 w-3" />
@@ -300,7 +302,10 @@ function AdminDashboard() {
                                         </a>
                                     </div>
                                 </CardContent>
-                                <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-4">
+                                <CardFooter className="flex justify-end gap-2 border-t pt-4">
+                                    <Button variant="outline" size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'sent')} disabled={proposal.status === 'sent'}>
+                                        <Check className="h-4 w-4 mr-1" /> Send
+                                    </Button>
                                     <Button variant="destructive" size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'recalled')} disabled={proposal.status !== 'sent'}>
                                         <X className="h-4 w-4 mr-1" /> Recall
                                     </Button>
@@ -318,7 +323,7 @@ function AdminDashboard() {
                 </DialogContent>
             </Dialog>
 
-            <Card className="bg-secondary">
+            <Card className="bg-secondary/20">
               <CardHeader>
                 <div className="flex items-center justify-between">
                     <div>
@@ -361,10 +366,10 @@ function AdminDashboard() {
                             {source.url}
                           </a>
                         </CardContent>
-                        <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-4">
-                          <Button variant="outline" size="sm" onClick={() => handleEditSource(source)}>
-                              <Edit className="h-4 w-4 mr-1" /> Edit
-                          </Button>
+                        <CardFooter className="flex justify-end gap-2 border-t pt-4">
+                            <Button variant="outline" size="sm" onClick={() => handleEditSource(source)}>
+                                <Edit className="h-4 w-4 mr-1" /> Edit
+                            </Button>
                         </CardFooter>
                       </Card>
                     ))}
@@ -375,7 +380,7 @@ function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="challenges" className="mt-6 space-y-6">
-             <Card className="bg-secondary">
+             <Card className="bg-secondary/20">
                 <CardHeader>
                     <CardTitle>Incubator Challenges</CardTitle>
                     <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
@@ -408,7 +413,7 @@ function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="roster" className="mt-6">
-            <Card className="bg-secondary">
+            <Card className="bg-secondary/20">
                 <CardHeader>
                     <CardTitle>AI Practitioner Roster</CardTitle>
                     <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
@@ -440,6 +445,87 @@ function AdminDashboard() {
   );
 }
 
+function PartnerDashboard() {
+    const { user } = useUser();
+    return (
+    <div className="space-y-8">
+        <div className="flex items-center justify-between">
+            <div>
+                <h1 className="text-3xl font-bold">Incubator Dashboard</h1>
+                <p className="text-muted-foreground">Welcome back, {user?.displayName || 'Partner'}.</p>
+            </div>
+            <Users2 className="h-10 w-10 text-primary" />
+        </div>
+        <Tabs defaultValue="roster" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="roster">Roster</TabsTrigger>
+            <TabsTrigger value="challenges">Challenges</TabsTrigger>
+          </TabsList>
+          <TabsContent value="roster" className="mt-6">
+            <Card className="bg-secondary/20">
+                <CardHeader>
+                    <CardTitle>AI Practitioner Roster</CardTitle>
+                    <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead><Users2 className="h-4 w-4 inline-block mr-2" />Name</TableHead>
+                                <TableHead><Code className="h-4 w-4 inline-block mr-2" />Domain Expertise</TableHead>
+                                <TableHead><Briefcase className="h-4 w-4 inline-block mr-2" />Status</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {incubatorMembers.map(member => (
+                                <TableRow key={member.name}>
+                                    <TableCell className="font-medium text-foreground">{member.name}</TableCell>
+                                    <TableCell className="text-muted-foreground">{member.expertise}</TableCell>
+                                    <TableCell><Badge variant="outline">Available</Badge></TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="challenges" className="mt-6 space-y-6">
+             <Card className="bg-secondary/20">
+                <CardHeader>
+                    <CardTitle>Incubator Challenges</CardTitle>
+                    <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {challenges.map(challenge => (
+                            <Card key={challenge.id} className="bg-background flex flex-col">
+                                <CardHeader>
+                                    <div className="flex justify-between items-start">
+                                        <CardTitle className="text-lg">{challenge.title}</CardTitle>
+                                        <Badge variant={getStatusVariant(challenge.status)}>{challenge.status}</Badge>
+                                    </div>
+                                    <CardDescription>{challenge.domain}</CardDescription>
+                                </CardHeader>
+                                <CardContent className="flex-grow">
+                                    <p className="text-sm text-muted-foreground">{challenge.description}</p>
+                                </CardContent>
+                                <CardFooter>
+                                    <Button disabled={challenge.status !== 'Open'} className="w-full">
+                                        <Hand className="mr-2 h-4 w-4" />
+                                        Assign to Practitioner
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        ))}
+                    </div>
+                </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+    </div>
+  );
+}
+
 function AccessDenied() {
   const auth = useAuth();
   return (
@@ -450,13 +536,13 @@ function AccessDenied() {
                 <ShieldAlert className="h-8 w-8 text-destructive" />
                 <div>
                     <CardTitle>Access Denied</CardTitle>
-                    <CardDescription>Your account does not have administrative privileges.</CardDescription>
+                    <CardDescription>Your account does not have sufficient privileges.</CardDescription>
                 </div>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              This area is restricted. If you are a team member, please contact an existing administrator to have your role elevated.
+              This area is restricted. If you believe you should have access, please contact an administrator.
             </p>
             <Button variant="destructive" className="mt-4" onClick={() => auth?.signOut()}>Sign Out</Button>
           </CardContent>
@@ -464,19 +550,19 @@ function AccessDenied() {
         
         <Card className="bg-secondary/20">
             <CardHeader>
-                <CardTitle>First-Time Admin Setup</CardTitle>
-                <CardDescription>Is this your first time setting up an admin?</CardDescription>
+                <CardTitle>First-Time Admin/Partner Setup</CardTitle>
+                <CardDescription>Is this your first time setting up an admin or partner account?</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-                <p className="text-muted-foreground">For security, the first admin account must be assigned manually. This is a one-time process.</p>
+                <p className="text-muted-foreground">For security, the first accounts must be assigned manually. This is a one-time process.</p>
                 <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
                     <li>Make sure you have signed in here at least once with your Google account.</li>
                     <li>Go to your project's <span className="font-semibold text-foreground">Firebase Console</span>.</li>
                     <li>Navigate to <span className="font-semibold text-foreground">Firestore Database</span>.</li>
-                    <li>In the `users` collection, find the document with your email.</li>
-                    <li>Edit that document and change the `role` field from `"user"` to `"admin"`.</li>
+                    <li>In the `users` collection, find the document with your email address.</li>
+                    <li>Edit that document and change the `role` field from `"user"` to `"admin"` or `"partner"`, as appropriate.</li>
                 </ol>
-                <p className="text-sm text-muted-foreground">After completing these steps, refresh this page. This manual step ensures that only the project owner can create the first administrator.</p>
+                <p className="text-sm text-muted-foreground">After completing these steps, refresh this page. This manual step ensures that only the project owner can create the first privileged accounts.</p>
             </CardContent>
         </Card>
     </div>
@@ -523,8 +609,8 @@ function AdminSignIn() {
     return (
         <Card className="max-w-md mx-auto bg-card text-card-foreground">
             <CardHeader className="text-center">
-                <CardTitle>Admin Access</CardTitle>
-                <CardDescription>Sign in to access the Command Center.</CardDescription>
+                <CardTitle>Dashboard Access</CardTitle>
+                <CardDescription>Sign in to access the Eve Count dashboard.</CardDescription>
             </CardHeader>
             <CardContent>
                 <Button className="w-full" onClick={handleGoogleSignIn}>
@@ -555,11 +641,16 @@ export default function AdminPage() {
             return <AdminSignIn />;
         }
         
-        if (userProfile && userProfile.role === 'admin') {
-            return <AdminDashboard />;
-        } else {
-            return <AccessDenied />;
+        if (userProfile) {
+            if (userProfile.role === 'admin') {
+                return <AdminDashboard />;
+            }
+            if (userProfile.role === 'partner') {
+                return <PartnerDashboard />;
+            }
         }
+        
+        return <AccessDenied />;
     };
 
     return (
@@ -574,5 +665,3 @@ export default function AdminPage() {
         </div>
     );
 }
-
-    

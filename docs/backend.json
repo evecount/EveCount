@@ -146,7 +146,7 @@
         "role": {
           "type": "string",
           "description": "The user's role, which determines their access level.",
-          "enum": ["admin", "user"]
+          "enum": ["admin", "partner", "user"]
         }
       },
       "required": ["uid", "email", "role"]
