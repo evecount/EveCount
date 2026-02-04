@@ -14,6 +14,7 @@ const footerSections = {
     { href: "/#engine", label: "Engine" },
     { href: "/pricing", label: "Pricing" },
     { href: "/research", label: "Quantum Research 101" },
+    { href: "https://github.com/evecount/OperationNightfall", label: "Operation Nightfall" },
   ],
   legal: [
     { href: "/privacy", label: "Privacy Policy" },
@@ -73,6 +74,8 @@ export function Footer() {
                     <Link
                       href={link.href}
                       className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      target={link.href.startsWith("http") ? "_blank" : undefined}
+                      rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
                     >
                       {link.label}
                     </Link>
