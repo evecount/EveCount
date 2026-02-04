@@ -6,7 +6,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, setDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
+import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, setDocumentNonBlocking, addDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase } from 'lucide-react';
@@ -49,6 +49,7 @@ interface Source {
   type: "RSS" | "Reddit" | "NewsAPI";
   status: "pending" | "active" | "rejected";
   suggestedBy: string;
+  suggestedById: string;
   createdAt: string; // ISO String
 }
 
@@ -160,20 +161,15 @@ function AdminDashboard() {
     const sourceToSave = { ...sourceData };
 
     if (sourceToSave.id) {
-        // This is an update
         const sourceRef = doc(firestore, 'sources', sourceToSave.id);
-        // Firestore update doesn't accept 'id' in the data payload
         const { id, ...dataToUpdate } = sourceToSave;
         updateDocumentNonBlocking(sourceRef, dataToUpdate);
     } else {
-        // This is a new document
         const sourcesCollection = collection(firestore, 'sources');
-        const newSource = {
+        addDocumentNonBlocking(sourcesCollection, {
             ...sourceData,
-            suggestedById: user.uid, // ensure this is set
-        }
-        // Let Firestore generate the ID, don't include an 'id' field in the data
-        addDocumentNonBlocking(sourcesCollection, newSource);
+            suggestedById: user.uid,
+        });
     }
     
     setIsSourceEditorOpen(false);
@@ -578,3 +574,5 @@ export default function AdminPage() {
         </div>
     );
 }
+
+    
