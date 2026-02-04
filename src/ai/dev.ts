@@ -10,3 +10,4 @@ import '@/ai/flows/command-center-chat.ts';
 import '@/ai/tools/web-search.ts';
 import '@/ai/tools/internal-resonance.ts';
 import '@/ai/tools/dynamic-persona-adjustment.ts';
+import '@/ai/tools/business-consultant.ts';
