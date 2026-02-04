@@ -1,18 +1,22 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking } from '@/firebase';
+import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, setDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2 } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
 import { CommandCenterChat } from '@/components/CommandCenterChat';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface UserProfile {
   uid: string;
@@ -26,7 +30,7 @@ interface OutreachProposal {
   id: string;
   companyName: string;
   sourceUrl: string;
-  status: "draft" | "approved" | "sent" | "rejected";
+  status: "sent" | "recalled";
   proposalTitle: string;
   proposalBody: string;
   strategicRationale: string;
@@ -43,10 +47,73 @@ interface Source {
   createdAt: string; // ISO String
 }
 
+function SourceEditor({ source, onSave, onCancel }: { source: Partial<Source>, onSave: (sourceData: Partial<Source>) => void, onCancel: () => void }) {
+    const [sourceData, setSourceData] = useState(source);
+
+    const handleSave = () => {
+        onSave(sourceData);
+    };
+
+    return (
+        <>
+            <DialogHeader>
+                <DialogTitle>{source.id ? 'Edit Source' : 'Add New Source'}</DialogTitle>
+                <DialogDescription>
+                    {source.id ? 'Modify the details of this intelligence source.' : 'Add a new intelligence source for the agents to monitor.'}
+                </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="url" className="text-right">URL</Label>
+                    <Input id="url" value={sourceData.url || ''} onChange={(e) => setSourceData({ ...sourceData, url: e.target.value })} className="col-span-3" />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="type" className="text-right">Type</Label>
+                     <Select
+                        value={sourceData.type}
+                        onValueChange={(value: Source['type']) => setSourceData({ ...sourceData, type: value })}
+                    >
+                        <SelectTrigger className="col-span-3">
+                            <SelectValue placeholder="Select source type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="RSS">RSS</SelectItem>
+                            <SelectItem value="Reddit">Reddit</SelectItem>
+                            <SelectItem value="NewsAPI">NewsAPI</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                 <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="status" className="text-right">Status</Label>
+                     <Select
+                        value={sourceData.status}
+                        onValueChange={(value: Source['status']) => setSourceData({ ...sourceData, status: value })}
+                    >
+                        <SelectTrigger className="col-span-3">
+                            <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="active">Active</SelectItem>
+                            <SelectItem value="rejected">Rejected</SelectItem>
+                            <SelectItem value="pending">Pending</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+            <DialogFooter>
+                <Button variant="outline" onClick={onCancel}>Cancel</Button>
+                <Button onClick={handleSave}>Save Source</Button>
+            </DialogFooter>
+        </>
+    );
+}
 
 function AdminDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
+  const [isSourceEditorOpen, setIsSourceEditorOpen] = useState(false);
+  const [editingSource, setEditingSource] = useState<Partial<Source> | null>(null);
+
 
   const proposalsQuery = useMemoFirebase(() => {
     if (!firestore) return null;
@@ -68,10 +135,37 @@ function AdminDashboard() {
     updateDocumentNonBlocking(proposalRef, { status });
   };
   
-  const handleUpdateSourceStatus = (sourceId: string, status: Source['status']) => {
-    if (!firestore) return;
-    const sourceRef = doc(firestore, 'sources', sourceId);
-    updateDocumentNonBlocking(sourceRef, { status });
+  const handleEditSource = (source: Source) => {
+    setEditingSource(source);
+    setIsSourceEditorOpen(true);
+  };
+
+  const handleAddNewSource = () => {
+    setEditingSource({
+        type: 'RSS',
+        status: 'active',
+        suggestedBy: user?.displayName || 'Admin',
+        createdAt: new Date().toISOString(),
+    });
+    setIsSourceEditorOpen(true);
+  };
+
+ const handleSaveSource = (sourceData: Partial<Source>) => {
+    if (!firestore || !user) return;
+    const sourceToSave = { ...sourceData };
+
+    if (sourceToSave.id) {
+        const sourceRef = doc(firestore, 'sources', sourceToSave.id);
+        const { id, ...dataToUpdate } = sourceToSave;
+        updateDocumentNonBlocking(sourceRef, dataToUpdate);
+    } else {
+        const sourcesCollection = collection(firestore, 'sources');
+        // Let firestore generate the ID
+        addDocumentNonBlocking(sourcesCollection, sourceToSave);
+    }
+    
+    setIsSourceEditorOpen(false);
+    setEditingSource(null);
   };
 
   const getStatusVariant = (status: OutreachProposal['status'] | Source['status']) => {
@@ -80,10 +174,12 @@ function AdminDashboard() {
       case 'active':
         return 'default';
       case 'rejected':
+      case 'recalled':
         return 'destructive';
       case 'sent':
-      case 'pending':
         return 'secondary';
+       case 'pending':
+        return 'outline';
       default:
         return 'outline';
     }
@@ -143,8 +239,8 @@ function AdminDashboard() {
 
         <Card className="bg-secondary">
           <CardHeader>
-            <CardTitle>Sovereign Engine: Outreach Proposals</CardTitle>
-            <CardDescription>Review and approve agent-generated proposals before they are sent.</CardDescription>
+            <CardTitle>Sovereign Engine: Autonomous Outreach</CardTitle>
+            <CardDescription>Monitor agent-initiated outreach. Your role is to enable, not control. Intervene only to recall a proposal that deviates from your strategic intent.</CardDescription>
           </CardHeader>
           <CardContent>
             {proposalsLoading && (
@@ -153,7 +249,7 @@ function AdminDashboard() {
               </div>
             )}
             {!proposalsLoading && (!proposals || proposals.length === 0) && (
-              <p className="text-center text-muted-foreground py-8">No outreach proposals pending review.</p>
+              <p className="text-center text-muted-foreground py-8">No outreach proposals initiated by agents yet.</p>
             )}
             {!proposalsLoading && proposals && proposals.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -185,11 +281,8 @@ function AdminDashboard() {
                                 </div>
                             </CardContent>
                             <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-4">
-                                <Button variant="outline" size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'rejected')} disabled={proposal.status !== 'draft'}>
-                                    <X className="h-4 w-4 mr-1" /> Reject
-                                </Button>
-                                <Button size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'approved')} disabled={proposal.status !== 'draft'}>
-                                    <Check className="h-4 w-4 mr-1" /> Approve
+                                <Button variant="destructive" size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'recalled')} disabled={proposal.status !== 'sent'}>
+                                    <X className="h-4 w-4 mr-1" /> Recall
                                 </Button>
                             </CardFooter>
                         </Card>
@@ -199,10 +292,24 @@ function AdminDashboard() {
           </CardContent>
         </Card>
         
+        <Dialog open={isSourceEditorOpen} onOpenChange={setIsSourceEditorOpen}>
+            <DialogContent>
+                {editingSource && <SourceEditor source={editingSource} onSave={handleSaveSource} onCancel={() => setIsSourceEditorOpen(false)} />}
+            </DialogContent>
+        </Dialog>
+
         <Card className="bg-secondary">
           <CardHeader>
-            <CardTitle>Sovereign Engine: Data Sources</CardTitle>
-            <CardDescription>The Sovereign Engine is autonomous. The 'Seeker' agent adds intelligence sources directly to the active feed based on its mandate. This is your hub to monitor its decisions and override any source by deactivating it.</CardDescription>
+            <div className="flex items-center justify-between">
+                <div>
+                    <CardTitle>Sovereign Engine: Data Sources</CardTitle>
+                    <CardDescription>Manage the intelligence sources fueling the Sovereign Engine.</CardDescription>
+                </div>
+                <Button size="sm" onClick={handleAddNewSource}>
+                    <PlusCircle className="h-4 w-4 mr-2" />
+                    Add Source
+                </Button>
+            </div>
           </CardHeader>
           <CardContent>
             {sourcesLoading && (
@@ -211,7 +318,7 @@ function AdminDashboard() {
               </div>
             )}
             {!sourcesLoading && (!sources || sources.length === 0) && (
-              <p className="text-center text-muted-foreground py-8">No new data sources suggested.</p>
+              <p className="text-center text-muted-foreground py-8">No data sources configured.</p>
             )}
             {!sourcesLoading && sources && sources.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -235,15 +342,9 @@ function AdminDashboard() {
                       </a>
                     </CardContent>
                     <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-4">
-                      {source.status === 'active' && (
-                          <Button variant="destructive" size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'rejected')}>
-                              <X className="h-4 w-4 mr-1" /> Deactivate
-                          </Button>
-                      )}
-                      {source.status === 'rejected' && (
-                          <p className="text-xs text-destructive font-semibold">OVERRIDDEN</p>
-                      )}
-                      {/* If a 'pending' source appears, it has no controls. The agent must promote it. */}
+                      <Button variant="outline" size="sm" onClick={() => handleEditSource(source)}>
+                          <Edit className="h-4 w-4 mr-1" /> Edit
+                      </Button>
                     </CardFooter>
                   </Card>
                 ))}
@@ -390,3 +491,5 @@ export default function AdminPage() {
         </div>
     );
 }
+
+    
