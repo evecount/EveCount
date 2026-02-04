@@ -9,8 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { submitCommandCenterMessage } from '@/app/actions';
 import { Send, User, Loader2 } from 'lucide-react';
 import { agentCrew } from '@/lib/agents';
-import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
+import { doc, collection } from 'firebase/firestore';
 
 type Message = {
   role: 'user' | 'model';
@@ -85,6 +85,24 @@ export function CommandCenterChat() {
       if (response.success && response.data) {
         const aiMessage: Message = { role: 'model', content: response.data.response };
         finalHistory.push(aiMessage);
+
+        if (response.data.actions && firestore && user) {
+            response.data.actions.forEach(action => {
+                if (action.type === 'addSource') {
+                    const sourcesCollection = collection(firestore, 'sources');
+                    // Rationale is not part of the core Source schema, so it's omitted here.
+                    addDocumentNonBlocking(sourcesCollection, {
+                        url: action.payload.url,
+                        type: action.payload.type,
+                        status: 'active',
+                        suggestedById: selectedAgent.id,
+                        suggestedBy: selectedAgent.name,
+                        createdAt: new Date().toISOString(),
+                    });
+                }
+            });
+        }
+
       } else {
         const errorMessage: Message = {
           role: 'model',

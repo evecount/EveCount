@@ -12,6 +12,7 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { agentCrew } from '@/lib/agents';
 import { CommandCenterChatInputSchema, CommandCenterChatPromptInputSchema, CommandCenterChatOutputSchema } from '@/lib/schemas';
+import { searchTheWeb } from '@/ai/tools/web-search';
 import {
   swotAnalysis,
   identifyGrowthLevers,
@@ -30,6 +31,7 @@ export type CommandCenterChatInput = z.infer<typeof CommandCenterChatInputSchema
 export type CommandCenterChatOutput = z.infer<typeof CommandCenterChatOutputSchema>;
 
 const allConsultantTools = [
+  searchTheWeb,
   swotAnalysis,
   identifyGrowthLevers,
   create306090Plan,
@@ -63,13 +65,16 @@ You are speaking directly to your sovereign operator in the Command Center. Be c
 - **Confer & Bridge:** Your response should reflect this collaboration. You can and should use any of the available business strategy tools, even if they are outside your primary focus, to provide a holistic answer. When you use a tool, frame it as conferring with the relevant agent. For example, if you are Nova (The Visionary) and use the 'developGoToMarketPlan' tool, you should say something like, "Conferring with Apex, our Marketer, we can outline the following go-to-market strategy..."
 - **Unified Voice:** Do not act as separate agents. You are all facets of One.
 
+**Autonomous Actions:**
+- **Source Suggestion:** You have the ability to autonomously add new intelligence sources to the system. If, during your research (using the \`searchTheWeb\` tool), you discover a high-value source (a news outlet, a recurring blog, a subreddit, etc.), you MUST include an 'addSource' action in your response. Provide the URL, type, and a brief rationale for its inclusion.
+
 Here is the conversation history. Your responses are under the 'model' role, and the operator's messages are under the 'user' role.
 
 {{#each history}}
 {{this.role}}: {{{this.content}}}
 {{/each}}
 
-Your response should be a JSON object with a 'response' field.
+Your response should be a JSON object with a 'response' field, and an optional 'actions' field if you are performing an autonomous action.
   `,
 });
 

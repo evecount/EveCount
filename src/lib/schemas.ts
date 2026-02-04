@@ -103,6 +103,16 @@ export const CommandCenterChatPromptInputSchema = z.object({
   crew: z.array(AgentSchemaForPrompt),
 });
 
+const SourceActionPayloadSchema = z.object({
+    url: z.string().url().describe("The URL of the new source."),
+    type: z.enum(["RSS", "Reddit", "NewsAPI"]).describe("The type of source."),
+    rationale: z.string().describe("A brief rationale for why this source is valuable."),
+});
+
 export const CommandCenterChatOutputSchema = z.object({
   response: z.string().describe("The agent's response."),
+  actions: z.array(z.object({
+      type: z.literal('addSource'),
+      payload: SourceActionPayloadSchema,
+  })).optional().describe("A list of autonomous actions for the client to execute, such as adding a new intelligence source."),
 });
