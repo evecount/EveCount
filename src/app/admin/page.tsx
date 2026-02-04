@@ -202,7 +202,7 @@ function AdminDashboard() {
         <Card className="bg-secondary">
           <CardHeader>
             <CardTitle>Sovereign Engine: Data Sources</CardTitle>
-            <CardDescription>The 'Seeker' agent will autonomously add new intelligence sources aligned with its core mandate. This is your hub to monitor its activity and override any source by deactivating it.</CardDescription>
+            <CardDescription>The Sovereign Engine is autonomous. The 'Seeker' agent adds intelligence sources directly to the active feed based on its mandate. This is your hub to monitor its decisions and override any source by deactivating it.</CardDescription>
           </CardHeader>
           <CardContent>
             {sourcesLoading && (
@@ -234,23 +234,16 @@ function AdminDashboard() {
                         {source.url}
                       </a>
                     </CardContent>
-                    <CardFooter className="flex justify-end gap-2 pt-4">
-                        {source.status === 'pending' && (
-                            <>
-                                <Button variant="outline" size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'rejected')}>
-                                    <X className="h-4 w-4 mr-1" /> Reject
-                                </Button>
-                                <Button size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'active')}>
-                                    <Check className="h-4 w-4 mr-1" /> Approve
-                                </Button>
-                            </>
-                        )}
-                        {source.status === 'active' && (
-                            <Button variant="destructive" size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'rejected')}>
-                                <X className="h-4 w-4 mr-1" /> Deactivate
-                            </Button>
-                        )}
-                        {/* No actions for rejected sources, they are just logged */}
+                    <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-4">
+                      {source.status === 'active' && (
+                          <Button variant="destructive" size="sm" onClick={() => handleUpdateSourceStatus(source.id, 'rejected')}>
+                              <X className="h-4 w-4 mr-1" /> Deactivate
+                          </Button>
+                      )}
+                      {source.status === 'rejected' && (
+                          <p className="text-xs text-destructive font-semibold">OVERRIDDEN</p>
+                      )}
+                      {/* If a 'pending' source appears, it has no controls. The agent must promote it. */}
                     </CardFooter>
                   </Card>
                 ))}
