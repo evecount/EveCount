@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -5,10 +6,10 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, setDocumentNonBlocking } from '@/firebase';
+import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, setDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
@@ -17,6 +18,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { incubatorMembers } from '@/lib/incubator-members';
+import { challenges } from '@/lib/challenges';
 
 interface UserProfile {
   uid: string;
@@ -155,28 +160,39 @@ function AdminDashboard() {
     const sourceToSave = { ...sourceData };
 
     if (sourceToSave.id) {
+        // This is an update
         const sourceRef = doc(firestore, 'sources', sourceToSave.id);
+        // Firestore update doesn't accept 'id' in the data payload
         const { id, ...dataToUpdate } = sourceToSave;
         updateDocumentNonBlocking(sourceRef, dataToUpdate);
     } else {
+        // This is a new document
         const sourcesCollection = collection(firestore, 'sources');
-        // Let firestore generate the ID
-        addDocumentNonBlocking(sourcesCollection, sourceToSave);
+        const newSource = {
+            ...sourceData,
+            suggestedById: user.uid, // ensure this is set
+        }
+        // Let Firestore generate the ID, don't include an 'id' field in the data
+        addDocumentNonBlocking(sourcesCollection, newSource);
     }
     
     setIsSourceEditorOpen(false);
     setEditingSource(null);
   };
 
-  const getStatusVariant = (status: OutreachProposal['status'] | Source['status']) => {
+  const getStatusVariant = (status: OutreachProposal['status'] | Source['status'] | string) => {
     switch (status) {
       case 'approved':
       case 'active':
+      case 'Live':
+      case 'Completed':
+      case 'Assigned':
         return 'default';
       case 'rejected':
       case 'recalled':
         return 'destructive';
       case 'sent':
+      case 'Open':
         return 'secondary';
        case 'pending':
         return 'outline';
@@ -195,164 +211,235 @@ function AdminDashboard() {
             <BadgeCheck className="h-10 w-10 text-green-500" />
         </div>
         
-        <Card className="bg-secondary">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Users2 className="h-6 w-6" /> The Command Center Crew</CardTitle>
-            <CardDescription>Your autonomous team, reflecting the core facets of the Eve Count operational strategy.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-              {agentCrew.map(agent => (
-                <Card key={agent.id} className="bg-background flex flex-col">
-                  <CardHeader className="flex-row items-center gap-4 space-y-0 pb-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                      <agent.Icon className="h-6 w-6 text-primary" />
-                    </div>
-                    <div>
-                      <p className="font-bold text-foreground">{agent.name}</p>
-                      <p className="text-sm text-muted-foreground">{agent.role}</p>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex-grow">
-                    <p className="text-sm text-muted-foreground">{agent.focus}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <Badge variant="outline">{agent.cluster}</Badge>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="operations" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="operations">Operations</TabsTrigger>
+            <TabsTrigger value="challenges">Challenges</TabsTrigger>
+            <TabsTrigger value="roster">Roster</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="operations" className="mt-6 space-y-8">
+            <Card className="bg-secondary">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2"><Users2 className="h-6 w-6" /> The Command Center Crew</CardTitle>
+                <CardDescription>Your autonomous team, reflecting the core facets of the Eve Count operational strategy.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                  {agentCrew.map(agent => (
+                    <Card key={agent.id} className="bg-background flex flex-col">
+                      <CardHeader className="flex-row items-center gap-4 space-y-0 pb-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                          <agent.Icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-foreground">{agent.name}</p>
+                          <p className="text-sm text-muted-foreground">{agent.role}</p>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="flex-grow">
+                        <p className="text-sm text-muted-foreground">{agent.focus}</p>
+                      </CardContent>
+                      <CardFooter>
+                        <Badge variant="outline">{agent.cluster}</Badge>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card className="bg-secondary">
-          <CardHeader>
-            <CardTitle>Agent Communications</CardTitle>
-            <CardDescription>Speak directly with your autonomous crew members.</CardDescription>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="h-[600px] border-t">
-                <CommandCenterChat />
-            </div>
-          </CardContent>
-        </Card>
+            <Card className="bg-secondary">
+              <CardHeader>
+                <CardTitle>Agent Communications</CardTitle>
+                <CardDescription>Speak directly with your autonomous crew members.</CardDescription>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="h-[600px] border-t">
+                    <CommandCenterChat />
+                </div>
+              </CardContent>
+            </Card>
 
-        <Card className="bg-secondary">
-          <CardHeader>
-            <CardTitle>Sovereign Engine: Autonomous Outreach</CardTitle>
-            <CardDescription>Monitor agent-initiated outreach. Your role is to enable, not control. Intervene only to recall a proposal that deviates from your strategic intent.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {proposalsLoading && (
-              <div className="flex justify-center items-center h-40">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              </div>
-            )}
-            {!proposalsLoading && (!proposals || proposals.length === 0) && (
-              <p className="text-center text-muted-foreground py-8">No outreach proposals initiated by agents yet.</p>
-            )}
-            {!proposalsLoading && proposals && proposals.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {proposals.map(proposal => (
-                        <Card key={proposal.id} className="bg-background flex flex-col">
-                            <CardHeader>
-                                <div className="flex justify-between items-start">
-                                    <div>
-                                        <CardTitle className="text-lg">{proposal.companyName}</CardTitle>
-                                        <CardDescription>
-                                            Generated on {format(new Date(proposal.createdAt), "PPP")} by {proposal.agentId}
-                                        </CardDescription>
+            <Card className="bg-secondary">
+              <CardHeader>
+                <CardTitle>Sovereign Engine: Autonomous Outreach</CardTitle>
+                <CardDescription>Monitor agent-initiated outreach. Your role is to enable, not control. Intervene only to recall a proposal that deviates from your strategic intent.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {proposalsLoading && (
+                  <div className="flex justify-center items-center h-40">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  </div>
+                )}
+                {!proposalsLoading && (!proposals || proposals.length === 0) && (
+                  <p className="text-center text-muted-foreground py-8">No outreach proposals initiated by agents yet.</p>
+                )}
+                {!proposalsLoading && proposals && proposals.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {proposals.map(proposal => (
+                            <Card key={proposal.id} className="bg-background flex flex-col">
+                                <CardHeader>
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <CardTitle className="text-lg">{proposal.companyName}</CardTitle>
+                                            <CardDescription>
+                                                Generated on {format(new Date(proposal.createdAt), "PPP")} by {proposal.agentId}
+                                            </CardDescription>
+                                        </div>
+                                        <Badge variant={getStatusVariant(proposal.status)}>{proposal.status}</Badge>
                                     </div>
-                                    <Badge variant={getStatusVariant(proposal.status)}>{proposal.status}</Badge>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="flex-grow space-y-4">
-                                <div>
-                                    <h3 className="font-semibold text-foreground mb-1">{proposal.proposalTitle}</h3>
-                                    <p className="text-sm text-muted-foreground line-clamp-3">{proposal.proposalBody}</p>
-                                </div>
-                                <div className="border-t border-border/40 pt-4">
-                                     <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><Lightbulb className="h-4 w-4 text-primary" /> Sentient Rationale</h4>
-                                     <p className="text-sm text-muted-foreground italic">"{proposal.strategicRationale}"</p>
-                                      <a href={proposal.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline mt-2 flex items-center gap-1">
-                                        <LinkIcon className="h-3 w-3" />
-                                        External Pulse
-                                      </a>
-                                </div>
-                            </CardContent>
-                            <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-4">
-                                <Button variant="destructive" size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'recalled')} disabled={proposal.status !== 'sent'}>
-                                    <X className="h-4 w-4 mr-1" /> Recall
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    ))}
-                </div>
-            )}
-          </CardContent>
-        </Card>
-        
-        <Dialog open={isSourceEditorOpen} onOpenChange={setIsSourceEditorOpen}>
-            <DialogContent>
-                {editingSource && <SourceEditor source={editingSource} onSave={handleSaveSource} onCancel={() => setIsSourceEditorOpen(false)} />}
-            </DialogContent>
-        </Dialog>
+                                </CardHeader>
+                                <CardContent className="flex-grow space-y-4">
+                                    <div>
+                                        <h3 className="font-semibold text-foreground mb-1">{proposal.proposalTitle}</h3>
+                                        <p className="text-sm text-muted-foreground line-clamp-3">{proposal.proposalBody}</p>
+                                    </div>
+                                    <div className="border-t border-border/40 pt-4">
+                                        <h4 className="font-semibold text-foreground mb-2 flex items-center gap-2"><Lightbulb className="h-4 w-4 text-primary" /> Sentient Rationale</h4>
+                                        <p className="text-sm text-muted-foreground italic">"{proposal.strategicRationale}"</p>
+                                        <a href={proposal.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline mt-2 flex items-center gap-1">
+                                            <LinkIcon className="h-3 w-3" />
+                                            External Pulse
+                                        </a>
+                                    </div>
+                                </CardContent>
+                                <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-4">
+                                    <Button variant="destructive" size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'recalled')} disabled={proposal.status !== 'sent'}>
+                                        <X className="h-4 w-4 mr-1" /> Recall
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        ))}
+                    </div>
+                )}
+              </CardContent>
+            </Card>
+            
+            <Dialog open={isSourceEditorOpen} onOpenChange={setIsSourceEditorOpen}>
+                <DialogContent>
+                    {editingSource && <SourceEditor source={editingSource} onSave={handleSaveSource} onCancel={() => setIsSourceEditorOpen(false)} />}
+                </DialogContent>
+            </Dialog>
 
-        <Card className="bg-secondary">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-                <div>
-                    <CardTitle>Sovereign Engine: Data Sources</CardTitle>
-                    <CardDescription>Manage the intelligence sources fueling the Sovereign Engine.</CardDescription>
+            <Card className="bg-secondary">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <CardTitle>Sovereign Engine: Data Sources</CardTitle>
+                        <CardDescription>Manage the intelligence sources fueling the Sovereign Engine.</CardDescription>
+                    </div>
+                    <Button size="sm" onClick={handleAddNewSource}>
+                        <PlusCircle className="h-4 w-4 mr-2" />
+                        Add Source
+                    </Button>
                 </div>
-                <Button size="sm" onClick={handleAddNewSource}>
-                    <PlusCircle className="h-4 w-4 mr-2" />
-                    Add Source
-                </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {sourcesLoading && (
-              <div className="flex justify-center items-center h-40">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              </div>
-            )}
-            {!sourcesLoading && (!sources || sources.length === 0) && (
-              <p className="text-center text-muted-foreground py-8">No data sources configured.</p>
-            )}
-            {!sourcesLoading && sources && sources.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {sources.map(source => (
-                  <Card key={source.id} className="bg-background flex flex-col">
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                          <div>
-                              <CardTitle className="text-lg flex items-center gap-2">
-                                {source.type === 'RSS' ? <Rss className="h-5 w-5 text-primary"/> : <Newspaper className="h-5 w-5 text-primary" />}
-                                {source.type} Feed
-                              </CardTitle>
-                              <CardDescription>Suggested by {source.suggestedBy} on {format(new Date(source.createdAt), "PPP")}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {sourcesLoading && (
+                  <div className="flex justify-center items-center h-40">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  </div>
+                )}
+                {!sourcesLoading && (!sources || sources.length === 0) && (
+                  <p className="text-center text-muted-foreground py-8">No data sources configured.</p>
+                )}
+                {!sourcesLoading && sources && sources.length > 0 && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {sources.map(source => (
+                      <Card key={source.id} className="bg-background flex flex-col">
+                        <CardHeader>
+                          <div className="flex justify-between items-start">
+                              <div>
+                                  <CardTitle className="text-lg flex items-center gap-2">
+                                    {source.type === 'RSS' ? <Rss className="h-5 w-5 text-primary"/> : <Newspaper className="h-5 w-5 text-primary" />}
+                                    {source.type} Feed
+                                  </CardTitle>
+                                  <CardDescription>Suggested by {source.suggestedBy} on {format(new Date(source.createdAt), "PPP")}</CardDescription>
+                              </div>
+                              <Badge variant={getStatusVariant(source.status)}>{source.status}</Badge>
                           </div>
-                          <Badge variant={getStatusVariant(source.status)}>{source.status}</Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm text-foreground hover:underline break-all">
-                        {source.url}
-                      </a>
-                    </CardContent>
-                    <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-4">
-                      <Button variant="outline" size="sm" onClick={() => handleEditSource(source)}>
-                          <Edit className="h-4 w-4 mr-1" /> Edit
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                        </CardHeader>
+                        <CardContent className="flex-grow">
+                          <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm text-foreground hover:underline break-all">
+                            {source.url}
+                          </a>
+                        </CardContent>
+                        <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-4">
+                          <Button variant="outline" size="sm" onClick={() => handleEditSource(source)}>
+                              <Edit className="h-4 w-4 mr-1" /> Edit
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
 
+          <TabsContent value="challenges" className="mt-6 space-y-6">
+             <Card className="bg-secondary">
+                <CardHeader>
+                    <CardTitle>Incubator Challenges</CardTitle>
+                    <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {challenges.map(challenge => (
+                            <Card key={challenge.id} className="bg-background flex flex-col">
+                                <CardHeader>
+                                    <div className="flex justify-between items-start">
+                                        <CardTitle className="text-lg">{challenge.title}</CardTitle>
+                                        <Badge variant={getStatusVariant(challenge.status)}>{challenge.status}</Badge>
+                                    </div>
+                                    <CardDescription>{challenge.domain}</CardDescription>
+                                </CardHeader>
+                                <CardContent className="flex-grow">
+                                    <p className="text-sm text-muted-foreground">{challenge.description}</p>
+                                </CardContent>
+                                <CardFooter>
+                                    <Button disabled={challenge.status !== 'Open'} className="w-full">
+                                        <Hand className="mr-2 h-4 w-4" />
+                                        Assign to Practitioner
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        ))}
+                    </div>
+                </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="roster" className="mt-6">
+            <Card className="bg-secondary">
+                <CardHeader>
+                    <CardTitle>AI Practitioner Roster</CardTitle>
+                    <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead><Users2 className="h-4 w-4 inline-block mr-2" />Name</TableHead>
+                                <TableHead><Code className="h-4 w-4 inline-block mr-2" />Domain Expertise</TableHead>
+                                <TableHead><Briefcase className="h-4 w-4 inline-block mr-2" />Status</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {incubatorMembers.map(member => (
+                                <TableRow key={member.name}>
+                                    <TableCell className="font-medium text-foreground">{member.name}</TableCell>
+                                    <TableCell className="text-muted-foreground">{member.expertise}</TableCell>
+                                    <TableCell><Badge variant="outline">Available</Badge></TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
     </div>
   );
 }
@@ -491,5 +578,3 @@ export default function AdminPage() {
         </div>
     );
 }
-
-    

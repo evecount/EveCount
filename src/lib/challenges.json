@@ -1,0 +1,31 @@
+
+[
+  {
+    "id": "challenge-001",
+    "title": "AI Lead Scoring Engine",
+    "description": "Develop an intelligent lead scoring system using QML to identify high-value prospects from vast customer datasets. The system should enrich data via GenAI and predict conversion probability.",
+    "status": "Open",
+    "domain": "Sales & Marketing"
+  },
+  {
+    "id": "challenge-002",
+    "title": "Multimodal Diagnostic Assistant",
+    "description": "Build an AI that synthesizes text-based symptoms, medical images, and audio clips to form a more holistic preliminary diagnosis, leveraging QML for complex pattern recognition.",
+    "status": "Open",
+    "domain": "Healthcare"
+  },
+  {
+    "id": "challenge-003",
+    "title": "Low-Latency Arbitrage Engine",
+    "description": "Create a financial engine using quantum algorithms (like QAOA) to identify and act on market arbitrage opportunities in microseconds, optimizing trading strategies at speeds impossible for classical computers.",
+    "status": "Assigned",
+    "domain": "FinTech"
+  },
+    {
+    "id": "challenge-004",
+    "title": "Supply Chain Optimization",
+    "description": "Tackle the Traveling Salesperson Problem for complex logistics. Build an application using quantum annealing concepts to calculate the most efficient routes in a vast search space.",
+    "status": "Open",
+    "domain": "Logistics"
+  }
+]
