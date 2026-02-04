@@ -9,7 +9,6 @@ import { User, Send, Lock } from "lucide-react";
 import { incubatorMembers } from "@/lib/incubator-members";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 // IMPORTANT: This is a simple client-side password protection for demonstration purposes.
 // For a production application, you should use a proper authentication system.
@@ -55,7 +54,7 @@ export default function IncubatorPage() {
                             <form onSubmit={handlePasswordSubmit} className="space-y-4">
                             <div className="space-y-2">
                                 <Input
-                                    type="text"
+                                    type="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     placeholder="Password"
@@ -139,64 +138,47 @@ export default function IncubatorPage() {
                 </div>
             </section>
 
-            {/* Workflow Section */}
-            <section id="workflow" className="border-t border-border/40 bg-background py-16 md:py-24">
+            {/* High-level process */}
+            <section id="process" className="border-t border-border/40 bg-background py-16 md:py-24">
               <div className="container">
                 <div className="mb-12 text-center">
-                  <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Our Incubation Workflow</h2>
+                  <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Our Incubation Process</h2>
                   <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                    From a promising idea to a market-ready venture, here’s a look at our structured, accelerated process.
+                    We turn high-potential AI practitioners into venture-ready founders through a structured, hands-on program.
                   </p>
                 </div>
-                <Card className="bg-secondary/20">
-                  <CardContent className="p-6">
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead className="w-[150px] font-semibold text-foreground">Phase</TableHead>
-                          <TableHead className="font-semibold text-foreground">Stage</TableHead>
-                          <TableHead className="font-semibold text-foreground">Timeline</TableHead>
-                          <TableHead className="text-right font-semibold text-foreground">Key Deliverables</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 1: Foundation<br/>(Weeks 1-2)</TableCell>
-                          <TableCell>Submission Review & Alignment</TableCell>
-                          <TableCell>Week 1</TableCell>
-                          <TableCell className="text-right">Review of your submission. An alignment call to confirm project scope and goals. We'll use "Project Sentient," an AI Lead Scorer, as our example.</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>The Foundry Session</TableCell>
-                          <TableCell>Week 2</TableCell>
-                          <TableCell className="text-right">A 2-day workshop to deconstruct the vision, define the "Enrich-Score-Route" product loop, and design the system architecture (Next.js, Firebase, Genkit). An 8-week technical roadmap is established.</TableCell>
-                        </TableRow>
-                        <TableRow className="border-t border-border/40">
-                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 2: AI-Accelerated Build<br/>(Weeks 3-10)</TableCell>
-                          <TableCell>Core MVP Development</TableCell>
-                          <TableCell>8 Weeks</TableCell>
-                          <TableCell className="text-right">Full-stack MVP build of the "Project Sentient" platform, including a dashboard for lead visualization and backend services for data ingestion. Genkit integration for data enrichment.</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Weekly Demos & Iteration</TableCell>
-                          <TableCell>Continuous</TableCell>
-                          <TableCell className="text-right">Mandatory weekly syncs to demo progress on the lead scoring model and dashboard. Founder feedback is incorporated continuously via a CI/CD pipeline to a staging environment.</TableCell>
-                        </TableRow>
-                         <TableRow className="border-t border-border/40">
-                          <TableCell className="font-medium text-foreground align-top pt-4" rowSpan={2}>Phase 3: Activation<br/>(Weeks 9-12)</TableCell>
-                          <TableCell>Corporate & IP Foundation</TableCell>
-                          <TableCell>Weeks 9-10 (Parallel)</TableCell>
-                          <TableCell className="text-right">"Sentient AI Pte. Ltd." is incorporated in Singapore. IP assignment agreements for the proprietary scoring algorithm are drafted. A clean cap table structure is established.</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Go-to-Market (GTM) Launch</TableCell>
-                          <TableCell>Weeks 11-12</TableCell>
-                          <TableCell className="text-right">Preparation for launch. Brand messaging for "Project Sentient" is finalized, a pre-launch landing page is built to capture early interest, and the investor pitch deck is refined for the seed round.</TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </CardContent>
-                </Card>
+                <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
+                   <Card className="flex flex-col bg-secondary/20 text-foreground text-center">
+                    <CardHeader>
+                        <CardTitle>1. Challenge Matching</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground">
+                            Practitioners are matched with high-value business problems submitted by our corporate partners.
+                        </p>
+                    </CardContent>
+                   </Card>
+                   <Card className="flex flex-col bg-secondary/20 text-foreground text-center">
+                    <CardHeader>
+                        <CardTitle>2. AI-Accelerated MVP</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground">
+                            Working alongside Eve Count architects, practitioners build a functional MVP to solve the core problem.
+                        </p>
+                    </CardContent>
+                   </Card>
+                   <Card className="flex flex-col bg-secondary/20 text-foreground text-center">
+                    <CardHeader>
+                        <CardTitle>3. Venture Activation</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground">
+                            Successful MVPs are spun out into new ventures, with corporate backing and a clear go-to-market strategy.
+                        </p>
+                    </CardContent>
+                   </Card>
+                </div>
               </div>
             </section>
 
