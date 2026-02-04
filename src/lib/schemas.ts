@@ -82,6 +82,14 @@ export const CommandCenterChatInputSchema = z.object({
   })).describe("The chat history."),
 });
 
+const AgentSchemaForPrompt = z.object({
+  name: z.string(),
+  id: z.string(),
+  role: z.string(),
+  cluster: z.string(),
+  focus: z.string(),
+});
+
 export const CommandCenterChatPromptInputSchema = z.object({
   agentName: z.string(),
   agentId: z.string(),
@@ -92,6 +100,7 @@ export const CommandCenterChatPromptInputSchema = z.object({
     role: z.enum(['user', 'model']),
     content: z.string(),
   })),
+  crew: z.array(AgentSchemaForPrompt),
 });
 
 export const CommandCenterChatOutputSchema = z.object({

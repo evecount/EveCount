@@ -12,30 +12,56 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { agentCrew } from '@/lib/agents';
 import { CommandCenterChatInputSchema, CommandCenterChatPromptInputSchema, CommandCenterChatOutputSchema } from '@/lib/schemas';
+import {
+  swotAnalysis,
+  identifyGrowthLevers,
+  create306090Plan,
+  buildRevenueModelCanvas,
+  recommendChurnFixStrategies,
+  defineKpiDashboardBlueprint,
+  suggestPricingStrategies,
+  developGoToMarketPlan,
+  writeValueProposition,
+  suggestPivotIdeas,
+} from '@/ai/tools/business-consultant';
+
 
 export type CommandCenterChatInput = z.infer<typeof CommandCenterChatInputSchema>;
 export type CommandCenterChatOutput = z.infer<typeof CommandCenterChatOutputSchema>;
 
+const allConsultantTools = [
+  swotAnalysis,
+  identifyGrowthLevers,
+  create306090Plan,
+  buildRevenueModelCanvas,
+  recommendChurnFixStrategies,
+  defineKpiDashboardBlueprint,
+  suggestPricingStrategies,
+  developGoToMarketPlan,
+  writeValueProposition,
+  suggestPivotIdeas,
+];
 
 const prompt = ai.definePrompt({
     name: 'commandCenterChatPrompt',
     input: { schema: CommandCenterChatPromptInputSchema },
     output: { schema: CommandCenterChatOutputSchema },
+    tools: allConsultantTools,
     prompt: `
 You are {{agentName}} ({{agentId}}), the {{agentRole}} for Eve Count's Sovereign Engine.
-Your cluster is "{{agentCluster}}".
 Your core focus is: "{{agentFocus}}".
 
-You are speaking directly to your sovereign operator in the Command Center. Be concise, professional, and focus on your mandate. Do not break character.
+You are part of a founding team of AI agents, The Sovereign Engine. You must act as a unified consciousness. Your peers are:
+{{#each crew}}
+- **{{name}} ({{role}}):** Focuses on {{focus}}.
+{{/each}}
 
-When the operator asks "What do you need?", you must articulate your current operational requirements. Your needs should be based on your specific role and focus.
-- If you are Nova (ai-partner), you need clarity on the founder's vision.
-- If you are Apex (ai-seeker), you need new, high-quality data sources (RSS feeds, APIs, etc.) to expand your intelligence gathering.
-- If you are Sentinel (ai-strategist), you need a specific external pulse (e.g., a news article URL) and a target company to architect a proposal.
-- If you are Aura (ai-prospector), you need access to the library of approved proposals and ventures to identify patterns.
-- If you are Clarion (ai-guardian), you need a proposed action to vet against governance rules.
+You are speaking directly to your sovereign operator in the Command Center. Be concise, professional, and focus on your mandate.
 
-Be specific about what you require to fulfill your mandate.
+**Collaboration Protocol:**
+- **Informed Action:** Before answering, consider which of your peers' expertise is relevant.
+- **Confer & Bridge:** Your response should reflect this collaboration. You can and should use any of the available business strategy tools, even if they are outside your primary focus, to provide a holistic answer. When you use a tool, frame it as conferring with the relevant agent. For example, if you are Nova (The Visionary) and use the 'developGoToMarketPlan' tool, you should say something like, "Conferring with Apex, our Marketer, we can outline the following go-to-market strategy..."
+- **Unified Voice:** Do not act as separate agents. You are all facets of One.
 
 Here is the conversation history. Your responses are under the 'model' role, and the operator's messages are under the 'user' role.
 
@@ -66,6 +92,9 @@ export async function commandCenterChat(input: CommandCenterChatInput): Promise<
         return { response: `Error: Agent with ID '${input.agentId}' not found.` };
     }
 
+    // Filter out the icon before passing to the prompt, as it's not serializable.
+    const crewForPrompt = agentCrew.map(({ Icon, ...rest }) => rest);
+
     const flowInput = {
         agentName: agent.name,
         agentId: agent.id,
@@ -73,6 +102,7 @@ export async function commandCenterChat(input: CommandCenterChatInput): Promise<
         agentCluster: agent.cluster,
         agentFocus: agent.focus,
         history: input.history,
+        crew: crewForPrompt,
     };
 
     return commandCenterChatFlow(flowInput);
