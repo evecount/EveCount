@@ -21,7 +21,7 @@ export default function SponsorPage() {
           <div className="container">
             <div className="mx-auto max-w-3xl text-center">
               <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                Sponsor a Build for a Non-Profit
+                Sponsor a Build <br /> for a Non-Profit
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
                 Amplify your impact. Fund the development of a world-class technology solution for a non-profit organization, built by the expert architects and AI specialists at Eve Count.
