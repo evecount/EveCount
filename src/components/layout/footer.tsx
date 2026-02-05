@@ -14,6 +14,7 @@ const footerSections = {
     { href: "/#engine", label: "Engine" },
     { href: "/pricing", label: "Pricing" },
     { href: "/research", label: "Quantum Research 101" },
+    { href: "/sponsor", label: "Sponsor a Build" },
     { href: "https://github.com/evecount/OperationNightfall", label: "Operation Nightfall" },
   ],
   legal: [

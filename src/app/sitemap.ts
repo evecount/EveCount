@@ -44,6 +44,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
         url: `${baseUrl}/apply`,
         lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/sponsor`,
+      lastModified: new Date(),
     }
   ]
 }
