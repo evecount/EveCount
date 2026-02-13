@@ -97,6 +97,23 @@ const SubmissionSchemaForAgent = z.object({
   message: z.string().optional(),
 });
 
+const IncubatorMemberSchemaForAgent = z.object({
+    id: z.string(),
+    name: z.string(),
+    expertise: z.string(),
+    status: z.enum(['Available', 'Assigned']),
+    submissionId: z.string().optional(),
+});
+
+const ChallengeSchemaForAgent = z.object({
+    id: z.string(),
+    title: z.string(),
+    description: z.string(),
+    status: z.enum(['Open', 'Assigned', 'Completed']),
+    domain: z.string(),
+    submissionId: z.string().optional(),
+});
+
 export const CommandCenterChatInputSchema = z.object({
   agentId: z.string().describe("The ID of the agent to chat with."),
   history: z.array(z.object({
@@ -104,6 +121,8 @@ export const CommandCenterChatInputSchema = z.object({
     content: z.string(),
   })).describe("The chat history."),
   submissions: z.array(SubmissionSchemaForAgent).optional().describe("A list of current submissions from Firestore."),
+  roster: z.array(IncubatorMemberSchemaForAgent).optional().describe("A list of current incubator members from Firestore."),
+  challenges: z.array(ChallengeSchemaForAgent).optional().describe("A list of current challenges from Firestore."),
 });
 
 const AgentSchemaForPrompt = z.object({
@@ -126,6 +145,8 @@ export const CommandCenterChatPromptInputSchema = z.object({
   })),
   crew: z.array(AgentSchemaForPrompt),
   submissions: z.array(SubmissionSchemaForAgent).optional(),
+  roster: z.array(IncubatorMemberSchemaForAgent).optional(),
+  challenges: z.array(ChallengeSchemaForAgent).optional(),
 });
 
 const SourceActionPayloadSchema = z.object({
