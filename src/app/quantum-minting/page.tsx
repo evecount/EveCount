@@ -255,7 +255,7 @@ export default function QuantumMintingPage() {
                     <div className="container mt-12 text-center max-w-4xl">
                         <Card className="bg-secondary/20">
                             <CardHeader>
-                                <CardTitle>A Note on Collaboration</CardTitle>
+                                <CardTitle className="text-foreground">A Note on Collaboration</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <p className="text-muted-foreground italic">This prototype is a co-created artifact between Eve Count and Antigravity, an advanced agentic AI designed by Google DeepMind. This collaboration showcases the intersection of the Qualimetric Universal Model (QUM) and state-of-the-art agentic reasoning, proving that high-integrity governance is possible when quantum-safe protocols meet advanced AI collaboration.</p>
