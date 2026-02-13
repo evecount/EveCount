@@ -11,6 +11,9 @@ import { Send, User, Loader2 } from 'lucide-react';
 import { agentCrew } from '@/lib/agents';
 import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, addDocumentNonBlocking, useCollection } from '@/firebase';
 import { doc, collection } from 'firebase/firestore';
+import type { Submission } from '@/lib/submissions';
+import type { IncubatorMember } from '@/lib/incubator-members';
+import type { Challenge } from '@/lib/challenges';
 
 type Message = {
   role: 'user' | 'model';
@@ -22,23 +25,6 @@ type AgentConversation = {
     agentId: string;
     history: Message[];
     lastUpdated: string;
-}
-
-type Submission = {
-    id: string;
-    applicationType: "Venture Pitch" | "Incubator Application" | "Career Inquiry" | "Partnership Inquiry";
-    submitterName: string;
-    contactEmail: string;
-    contactPhone: string;
-    submissionDate: string; // ISO String
-    status: "New" | "In Review" | "Archived" | "Challenge Created";
-    companyName?: string;
-    visionPitch?: string;
-    portfolioUrl?: string;
-    roleInterest?: string;
-    resumeUrl?: string;
-    partnershipInterest?: string;
-    message?: string;
 }
 
 
@@ -56,6 +42,18 @@ export function CommandCenterChat() {
     return collection(firestore, 'submissions');
   }, [firestore]);
   const { data: submissions, isLoading: submissionsLoading } = useCollection<Submission>(submissionsQuery);
+  
+  const membersQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'incubatorMembers');
+  }, [firestore]);
+  const { data: incubatorMembers, isLoading: membersLoading } = useCollection<IncubatorMember>(membersQuery);
+
+  const challengesQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'challenges');
+  }, [firestore]);
+  const { data: challenges, isLoading: challengesLoading } = useCollection<Challenge>(challengesQuery);
 
   const conversationRef = useMemoFirebase(() => {
     if (!firestore || !user || !selectedAgentId) return null;
@@ -87,7 +85,7 @@ export function CommandCenterChat() {
     }
   }, [messages]);
 
-  const isBusy = isAiResponding || isConversationLoading || submissionsLoading;
+  const isBusy = isAiResponding || isConversationLoading || submissionsLoading || membersLoading || challengesLoading;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,6 +104,8 @@ export function CommandCenterChat() {
         agentId: selectedAgentId, 
         history: historyForAI,
         submissions: submissions || [],
+        roster: incubatorMembers || [],
+        challenges: challenges || [],
       });
       
       const finalHistory = [...historyForAI];

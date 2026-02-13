@@ -12,7 +12,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { agentCrew } from '@/lib/agents';
-import { CommandCenterChatInputSchema, CommandCenterChatPromptInputSchema, CommandCenterChatOutputSchema } from '@/lib/schemas';
+import { CommandCenterChatInputSchema, CommandCenterChatPromptInputSchema, CommandCenterChatOutputSchema, AiPartnerChatInputSchema, AiPartnerChatOutputSchema } from '@/lib/schemas';
 import { searchTheWeb } from '@/ai/tools/web-search';
 import {
   swotAnalysis,
@@ -26,6 +26,9 @@ import {
   writeValueProposition,
   suggestPivotIdeas,
 } from '@/ai/tools/business-consultant';
+import { aiPartnerChat } from './ai-partner-chat';
+import type { Challenge } from '@/lib/challenges';
+import type { IncubatorMember } from '@/lib/incubator-members';
 
 
 export type CommandCenterChatInput = z.infer<typeof CommandCenterChatInputSchema>;
@@ -105,6 +108,14 @@ const commandCenterChatFlow = ai.defineFlow(
 );
 
 export async function commandCenterChat(input: CommandCenterChatInput): Promise<CommandCenterChatOutput> {
+    // Route to the correct agent flow. The AI Partner has a simpler, public-facing flow.
+    if (input.agentId === 'ai-partner') {
+        const partnerInput = { history: input.history };
+        const partnerOutput = await aiPartnerChat(partnerInput);
+        // Adapt the output to match the expected schema for the command center.
+        return { response: partnerOutput.response };
+    }
+
     const agent = agentCrew.find(a => a.id === input.agentId);
 
     if (!agent) {
