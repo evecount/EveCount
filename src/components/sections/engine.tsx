@@ -1,26 +1,28 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Code, Scale, Rocket } from "lucide-react";
+import { Target, BrainCircuit, Users, Puzzle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const processSteps = [
   {
+    icon: Target,
+    title: "1. Define The \"Why\": Vision & Success",
+    description: "We start by translating your vision into a clear 'Definition of Done.' We'll ask the 'Magic Wand' question—if it was finished tomorrow, what would you do with it?—and define the single most important KPI you want to change."
+  },
+  {
+    icon: BrainCircuit,
+    title: "2. Map The \"What\": Data & Inputs",
+    description: "We open the 'black box' of your data. We trace its lineage (where does it live?), assess its quality (how 'clean' is it?), and identify sensitive information to ensure security is built-in from day one."
+  },
+  {
     icon: Users,
-    title: "1. You Bring the Vision",
-    description: "The process begins with you. In an intensive, in-person Foundry Session, you provide the domain expertise and vision. We provide the architects to forge it into a concrete technical roadmap."
+    title: "3. Frame The \"How\": User & Environment",
+    description: "We build for the person clicking the buttons. We'll define the primary user persona—are they a tech-savvy power user or someone who needs a 'one-click' solution? And we'll consider the environment, from warehouse phones to boardroom monitors."
   },
   {
-    icon: Code,
-    title: "2. We Provide the Engine",
-    description: "We act as your dedicated technical co-founder. While our team builds the MVP in stealth, you provide critical feedback and guidance, ensuring the product aligns perfectly with your market insight."
-  },
-  {
-    icon: Scale,
-    title: "3. You Make the Decisions",
-    description: "A product needs a company. As we build, our partners handle the complex legal and corporate setup, but you make the key decisions, ensuring you are in control and ready for institutional scale."
-  },
-  {
-    icon: Rocket,
-    title: "4. You Lead the Venture",
-    description: "We launch together. We help you activate your GTM strategy and secure initial users, but you are the founder. We position you to lead the company and confidently pitch for your seed round."
+    icon: Puzzle,
+    title: "4. Set The \"Rules\": Constraints & Integration",
+    description: "To prevent surprises, we define the boundaries. What other software must this talk to? Who will maintain it after launch? We create a 'No-Go' zone to ensure we're all on the same page before a single line of code is written."
   }
 ];
 
@@ -30,10 +32,10 @@ export function Engine() {
       <div className="container">
         <div className="mb-12 text-center">
           <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-            The Engine: From Vision to Venture
+            The Engine: The Bridge Document
           </h2>
           <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-xl">
-            Our process is a partnership. We don't just fund ideas; we build them into market-ready companies alongside you. Here's what to expect.
+            We bridge the gap between "business speak" and "coder speak." Our process is designed to translate your vision into a concrete technical roadmap, ensuring we build exactly what you need. This is how we build the Bridge Document together.
           </p>
         </div>
         
@@ -54,6 +56,15 @@ export function Engine() {
             </Card>
           ))}
         </div>
+
+        <div className="mt-12 text-center">
+            <Button size="lg" asChild>
+                <Link href="/apply">
+                    Start Building Your Bridge Document
+                </Link>
+            </Button>
+        </div>
+
       </div>
     </section>
   );
