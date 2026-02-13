@@ -75,7 +75,7 @@ export default function QuantumMintingPage() {
                         <div className="mx-auto max-w-4xl text-center">
                         <p className="font-semibold text-primary">Qualimetric Universal Model (QUM)</p>
                         <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                            Minting Quantum Tokens for Real
+                            Minting Quantum Tokens <br /> for Real
                         </h1>
                         <p className="mx-auto mt-6 max-w-3xl text-lg text-muted-foreground sm:text-xl">
                             This repository demonstrates the world's first protocol for forging non-deterministic digital assets directly from physical quantum entropy.
