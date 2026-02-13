@@ -13,9 +13,9 @@ const footerSections = {
     { href: "/#engine", label: "Engine" },
     { href: "/pricing", label: "Pricing" },
     { href: "/research", label: "Quantum Research 101" },
-    { href: "/sponsor", label: <span>Sponsor<br />a Build</span> },
+    { href: "/sponsor", label: "Sponsor a Build" },
     { href: "https://github.com/evecount/OperationNightfall", label: "Operation Nightfall" },
-    { href: "https://github.com/evecount/Qualimetric-Universal-Model", label: "Qualimetric Universal Model" },
+    { href: "https://github.com/evecount/Qualimetric-Universal-Model", label: "Quantum Minting" },
   ],
   legal: [
     { href: "/privacy", label: "Privacy Policy" },
