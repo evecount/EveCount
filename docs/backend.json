@@ -178,7 +178,7 @@
         "status": {
           "type": "string",
           "description": "The current status of the proposal.",
-          "enum": ["sent", "recalled"]
+          "enum": ["draft", "sent", "recalled"]
         },
         "proposalTitle": {
           "type": "string",
@@ -365,5 +365,3 @@
     "reasoning": "The Firestore structure is designed to support the Clear-Box Intelligence Blueprint. It uses a flat, non-hierarchical collection model to ensure that agent-driven actions are independent and auditable. Each primary entity (ventures, submissions, users, proposals, sources) is segregated into its own collection to enforce strict, granular security rules and maintain data integrity. This design facilitates the core logic of `Action = (External Pulse) + (Internal Resonance) + (Traceable Rationale)` by creating clear, referenceable data points for each step of an agent's operation. For example, an OutreachProposal can be directly traced back to its triggering Source, and the agent's ID is stamped on every action, providing a clear audit trail for all operations within the Clear-Box Dashboard."
   }
 }
-
-    

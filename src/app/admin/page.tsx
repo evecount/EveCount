@@ -6,10 +6,10 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, setDocumentNonBlocking, addDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase';
+import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
@@ -23,6 +23,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { incubatorMembers } from '@/lib/incubator-members';
 import { challenges } from '@/lib/challenges';
 import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { generateProposalAction } from '@/app/actions';
 
 interface UserProfile {
   uid: string;
@@ -36,7 +38,7 @@ interface OutreachProposal {
   id: string;
   companyName: string;
   sourceUrl: string;
-  status: "sent" | "recalled";
+  status: "draft" | "sent" | "recalled";
   proposalTitle: string;
   proposalBody: string;
   strategicRationale: string;
@@ -92,6 +94,7 @@ function getStatusVariant(status: OutreachProposal['status'] | Source['status'] 
         return 'secondary';
        case 'pending':
        case 'New':
+       case 'draft':
         return 'outline';
       default:
         return 'outline';
@@ -162,9 +165,12 @@ function SourceEditor({ source, onSave, onCancel }: { source: Partial<Source>, o
 function AdminDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
+  const { toast } = useToast();
   const [isSourceEditorOpen, setIsSourceEditorOpen] = useState(false);
   const [editingSource, setEditingSource] = useState<Partial<Source> | null>(null);
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [activeTab, setActiveTab] = useState("operations");
 
 
   const proposalsQuery = useMemoFirebase(() => {
@@ -235,17 +241,70 @@ function AdminDashboard() {
     updateDocumentNonBlocking(submissionRef, { status });
   };
 
+    const handleGenerateProposal = async (submission: Submission) => {
+        if (!firestore) return;
+        setIsGenerating(true);
+
+        const result = await generateProposalAction({
+            companyName: submission.companyName || submission.submitterName,
+            triggeringNews: `New Venture Pitch Submission: "${submission.visionPitch?.substring(0, 150)}..."`,
+            sovereignDirective: "Analyze this venture pitch and formulate a direct action proposal for internal review.",
+        });
+
+        if (result.success && result.data) {
+            const proposalsCollection = collection(firestore, 'outreachProposals');
+            addDocumentNonBlocking(proposalsCollection, {
+                companyName: submission.companyName || submission.submitterName,
+                sourceUrl: `/admin?submission=${submission.id}`,
+                status: 'draft',
+                proposalTitle: result.data.proposalTitle,
+                proposalBody: result.data.proposalBody,
+                strategicRationale: result.data.strategicRationale,
+                agentId: 'ai-strategist',
+                createdAt: new Date().toISOString(),
+            });
+            toast({
+                title: "Proposal Generated",
+                description: "The Strategist has drafted a new proposal. You can review it in the Operations tab.",
+            });
+            setSelectedSubmission(null);
+            setActiveTab("operations");
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Proposal Generation Failed",
+                description: result.message || "The agent could not generate a proposal.",
+            });
+        }
+        setIsGenerating(false);
+    };
+
+    const handleCopyPrompt = (submission: Submission) => {
+        const prompt = `Please review and provide your strategic analysis on this submission:\n\n${JSON.stringify({
+            id: submission.id,
+            applicationType: submission.applicationType,
+            submitterName: submission.submitterName,
+            companyName: submission.companyName,
+            visionPitch: submission.visionPitch,
+        }, null, 2)}`;
+        navigator.clipboard.writeText(prompt);
+        toast({
+            title: "Prompt Copied",
+            description: "Paste the prompt into the chat with an agent to discuss this submission.",
+        });
+    };
+
   return (
     <div className="space-y-8">
         <div className="flex items-center justify-between">
             <div>
-                <h1 className="text-3xl font-bold">Command Center</h1>
+                <h1 className="text-3xl font-bold text-foreground">Command Center</h1>
                 <p className="text-muted-foreground">Welcome back, {user?.displayName || 'Admin'}.</p>
             </div>
             <BadgeCheck className="h-10 w-10 text-green-500" />
         </div>
         
-        <Tabs defaultValue="operations" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="operations" className="w-full">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="operations">Operations</TabsTrigger>
             <TabsTrigger value="submissions">Submissions</TabsTrigger>
@@ -256,7 +315,7 @@ function AdminDashboard() {
           <TabsContent value="operations" className="mt-6 space-y-8">
             <Card className="bg-secondary/20 text-foreground">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2"><Users2 className="h-6 w-6" /> The Command Center Crew</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-foreground"><Users2 className="h-6 w-6" /> The Command Center Crew</CardTitle>
                 <CardDescription>Your autonomous team, reflecting the core facets of the Eve Count operational strategy.</CardDescription>
               </CardHeader>
               <CardContent>
@@ -286,7 +345,7 @@ function AdminDashboard() {
 
             <Card className="bg-secondary/20 text-foreground">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2"><Bot className="h-6 w-6" /> Agent Communications</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-foreground"><Bot className="h-6 w-6" /> Agent Communications</CardTitle>
                 <CardDescription>Speak directly with your autonomous crew members.</CardDescription>
               </CardHeader>
               <CardContent className="p-0">
@@ -298,7 +357,7 @@ function AdminDashboard() {
 
             <Card className="bg-secondary/20 text-foreground">
               <CardHeader>
-                <CardTitle>Sovereign Engine: Autonomous Outreach</CardTitle>
+                <CardTitle className="text-foreground">Sovereign Engine: Autonomous Outreach</CardTitle>
                 <CardDescription>Monitor agent-initiated outreach. Your role is to enable, not control. Intervene only to recall a proposal that deviates from your strategic intent.</CardDescription>
               </CardHeader>
               <CardContent>
@@ -317,7 +376,7 @@ function AdminDashboard() {
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
                                         <div>
-                                            <CardTitle className="text-lg">{proposal.companyName}</CardTitle>
+                                            <CardTitle className="text-lg text-foreground">{proposal.companyName}</CardTitle>
                                             <CardDescription>
                                                 Generated on {format(new Date(proposal.createdAt), "PPP")} by {proposal.agentId}
                                             </CardDescription>
@@ -335,7 +394,7 @@ function AdminDashboard() {
                                         <p className="text-sm text-muted-foreground italic">"{proposal.strategicRationale}"</p>
                                         <a href={proposal.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline mt-2 flex items-center gap-1">
                                             <LinkIcon className="h-3 w-3" />
-                                            External Pulse
+                                            Source Submission
                                         </a>
                                     </div>
                                 </CardContent>
@@ -364,7 +423,7 @@ function AdminDashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                     <div>
-                        <CardTitle>Sovereign Engine: Data Sources</CardTitle>
+                        <CardTitle className="text-foreground">Sovereign Engine: Data Sources</CardTitle>
                         <CardDescription>Manage the intelligence sources fueling the Sovereign Engine.</CardDescription>
                     </div>
                     <Button size="sm" onClick={handleAddNewSource}>
@@ -389,7 +448,7 @@ function AdminDashboard() {
                         <CardHeader>
                           <div className="flex justify-between items-start">
                               <div>
-                                  <CardTitle className="text-lg flex items-center gap-2">
+                                  <CardTitle className="text-lg flex items-center gap-2 text-foreground">
                                     {source.type === 'RSS' ? <Rss className="h-5 w-5 text-primary"/> : <Newspaper className="h-5 w-5 text-primary" />}
                                     {source.type} Feed
                                   </CardTitle>
@@ -419,7 +478,7 @@ function AdminDashboard() {
           <TabsContent value="submissions" className="mt-6 space-y-6">
             <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
-                    <CardTitle>Submissions Inbox</CardTitle>
+                    <CardTitle className="text-foreground">Submissions Inbox</CardTitle>
                     <CardDescription>Review and manage all incoming applications and inquiries.</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -446,7 +505,7 @@ function AdminDashboard() {
                                     <TableRow key={sub.id}>
                                         <TableCell>{format(new Date(sub.submissionDate), "PPP")}</TableCell>
                                         <TableCell>{sub.applicationType}</TableCell>
-                                        <TableCell className="font-medium">{sub.submitterName}</TableCell>
+                                        <TableCell className="font-medium text-foreground">{sub.submitterName}</TableCell>
                                         <TableCell>{sub.companyName || 'N/A'}</TableCell>
                                         <TableCell><Badge variant={getStatusVariant(sub.status)}>{sub.status}</Badge></TableCell>
                                         <TableCell className="text-right">
@@ -467,7 +526,7 @@ function AdminDashboard() {
           <TabsContent value="challenges" className="mt-6 space-y-6">
              <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
-                    <CardTitle>Incubator Challenges</CardTitle>
+                    <CardTitle className="text-foreground">Incubator Challenges</CardTitle>
                     <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -476,7 +535,7 @@ function AdminDashboard() {
                             <Card key={challenge.id} className="bg-background flex flex-col text-foreground">
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
-                                        <CardTitle className="text-lg">{challenge.title}</CardTitle>
+                                        <CardTitle className="text-lg text-foreground">{challenge.title}</CardTitle>
                                         <Badge variant={getStatusVariant(challenge.status)}>{challenge.status}</Badge>
                                     </div>
                                     <CardDescription>{challenge.domain}</CardDescription>
@@ -500,7 +559,7 @@ function AdminDashboard() {
           <TabsContent value="roster" className="mt-6">
             <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
-                    <CardTitle>AI Practitioner Roster</CardTitle>
+                    <CardTitle className="text-foreground">AI Practitioner Roster</CardTitle>
                     <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -533,7 +592,7 @@ function AdminDashboard() {
                 {selectedSubmission && (
                     <>
                         <DialogHeader>
-                            <DialogTitle>{selectedSubmission.applicationType}</DialogTitle>
+                            <DialogTitle className="text-foreground">{selectedSubmission.applicationType}</DialogTitle>
                             <DialogDescription>
                                 Submitted by {selectedSubmission.submitterName} on {format(new Date(selectedSubmission.submissionDate), "PPP")}
                             </DialogDescription>
@@ -561,33 +620,33 @@ function AdminDashboard() {
                             <div className="grid grid-cols-4 items-start gap-4">
                                 <Label className="text-right pt-2">Submitter</Label>
                                 <div className="col-span-3 space-y-1">
-                                    <p>{selectedSubmission.submitterName}</p>
-                                    <p>{selectedSubmission.contactEmail}</p>
-                                    <p>{selectedSubmission.contactPhone}</p>
+                                    <p className="text-foreground">{selectedSubmission.submitterName}</p>
+                                    <p className="text-foreground">{selectedSubmission.contactEmail}</p>
+                                    <p className="text-foreground">{selectedSubmission.contactPhone}</p>
                                 </div>
                             </div>
                              {selectedSubmission.companyName && (
                                 <div className="grid grid-cols-4 items-center gap-4">
                                     <Label htmlFor="companyName" className="text-right">Company</Label>
-                                    <p className="col-span-3">{selectedSubmission.companyName}</p>
+                                    <p className="col-span-3 text-foreground">{selectedSubmission.companyName}</p>
                                 </div>
                             )}
                              {selectedSubmission.visionPitch && (
                                 <div className="grid grid-cols-4 items-start gap-4">
                                     <Label className="text-right pt-2">Vision/Interest</Label>
-                                    <Textarea readOnly value={selectedSubmission.visionPitch} className="col-span-3 bg-muted" rows={6}/>
+                                    <Textarea readOnly value={selectedSubmission.visionPitch} className="col-span-3 bg-muted text-foreground" rows={6}/>
                                 </div>
                             )}
                              {selectedSubmission.partnershipInterest && (
                                 <div className="grid grid-cols-4 items-start gap-4">
                                     <Label className="text-right pt-2">Partnership Interest</Label>
-                                    <Textarea readOnly value={selectedSubmission.partnershipInterest} className="col-span-3 bg-muted" rows={6}/>
+                                    <Textarea readOnly value={selectedSubmission.partnershipInterest} className="col-span-3 bg-muted text-foreground" rows={6}/>
                                 </div>
                             )}
                              {selectedSubmission.message && (
                                 <div className="grid grid-cols-4 items-start gap-4">
                                     <Label className="text-right pt-2">Message</Label>
-                                    <Textarea readOnly value={selectedSubmission.message} className="col-span-3 bg-muted" rows={6}/>
+                                    <Textarea readOnly value={selectedSubmission.message} className="col-span-3 bg-muted text-foreground" rows={6}/>
                                 </div>
                             )}
                              {selectedSubmission.portfolioUrl && (
@@ -603,8 +662,15 @@ function AdminDashboard() {
                                 </div>
                             )}
                         </div>
-                        <DialogFooter>
-                            <Button variant="outline" onClick={() => setSelectedSubmission(null)}>Close</Button>
+                        <DialogFooter className="gap-2">
+                             <Button variant="outline" onClick={() => handleCopyPrompt(selectedSubmission)}>
+                                <Copy className="h-4 w-4 mr-2"/> Copy Analysis Prompt
+                            </Button>
+                             <Button onClick={() => handleGenerateProposal(selectedSubmission)} disabled={isGenerating}>
+                                {isGenerating ? <Loader2 className="h-4 w-4 mr-2 animate-spin"/> : <Sparkles className="h-4 w-4 mr-2"/>}
+                                Engage Strategist
+                            </Button>
+                            <Button variant="secondary" onClick={() => setSelectedSubmission(null)}>Close</Button>
                         </DialogFooter>
                     </>
                 )}
@@ -621,7 +687,7 @@ function PartnerDashboard() {
     <div className="space-y-8">
         <div className="flex items-center justify-between">
             <div>
-                <h1 className="text-3xl font-bold">Incubator Dashboard</h1>
+                <h1 className="text-3xl font-bold text-foreground">Incubator Dashboard</h1>
                 <p className="text-muted-foreground">Welcome back, {user?.displayName || 'Partner'}.</p>
             </div>
             <Users2 className="h-10 w-10 text-primary" />
@@ -634,7 +700,7 @@ function PartnerDashboard() {
           <TabsContent value="roster" className="mt-6">
             <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
-                    <CardTitle>AI Practitioner Roster</CardTitle>
+                    <CardTitle className="text-foreground">AI Practitioner Roster</CardTitle>
                     <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -662,7 +728,7 @@ function PartnerDashboard() {
           <TabsContent value="challenges" className="mt-6 space-y-6">
              <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
-                    <CardTitle>Incubator Challenges</CardTitle>
+                    <CardTitle className="text-foreground">Incubator Challenges</CardTitle>
                     <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -671,7 +737,7 @@ function PartnerDashboard() {
                             <Card key={challenge.id} className="bg-background flex flex-col text-foreground">
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
-                                        <CardTitle className="text-lg">{challenge.title}</CardTitle>
+                                        <CardTitle className="text-lg text-foreground">{challenge.title}</CardTitle>
                                         <Badge variant={getStatusVariant(challenge.status)}>{challenge.status}</Badge>
                                     </div>
                                     <CardDescription>{challenge.domain}</CardDescription>
@@ -705,7 +771,7 @@ function AccessDenied() {
              <div className="flex items-center gap-4">
                 <ShieldAlert className="h-8 w-8 text-destructive" />
                 <div>
-                    <CardTitle>Access Denied</CardTitle>
+                    <CardTitle className="text-foreground">Access Denied</CardTitle>
                     <CardDescription>Your account does not have sufficient privileges.</CardDescription>
                 </div>
             </div>
@@ -720,7 +786,7 @@ function AccessDenied() {
         
         <Card className="bg-secondary/20 text-foreground">
             <CardHeader>
-                <CardTitle>First-Time Admin/Partner Setup</CardTitle>
+                <CardTitle className="text-foreground">First-Time Admin/Partner Setup</CardTitle>
                 <CardDescription>Is this your first time setting up an admin or partner account?</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -779,7 +845,7 @@ function AdminSignIn() {
     return (
         <Card className="max-w-md mx-auto bg-card text-card-foreground">
             <CardHeader className="text-center">
-                <CardTitle>Dashboard Access</CardTitle>
+                <CardTitle className="text-foreground">Dashboard Access</CardTitle>
                 <CardDescription>Sign in to access the Eve Count dashboard.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -835,4 +901,3 @@ export default function AdminPage() {
         </div>
     );
 }
-
