@@ -79,12 +79,30 @@ export const StrategistOutputSchema = z.object({
 });
 
 
+const SubmissionSchemaForAgent = z.object({
+  id: z.string(),
+  applicationType: z.enum(["Venture Pitch", "Incubator Application", "Career Inquiry", "Partnership Inquiry"]),
+  submitterName: z.string(),
+  contactEmail: z.string(),
+  contactPhone: z.string(),
+  submissionDate: z.string(),
+  status: z.enum(["New", "In Review", "Archived", "Challenge Created"]),
+  companyName: z.string().optional(),
+  visionPitch: z.string().optional(),
+  portfolioUrl: z.string().optional(),
+  roleInterest: z.string().optional(),
+  resumeUrl: z.string().optional(),
+  partnershipInterest: z.string().optional(),
+  message: z.string().optional(),
+});
+
 export const CommandCenterChatInputSchema = z.object({
   agentId: z.string().describe("The ID of the agent to chat with."),
   history: z.array(z.object({
     role: z.enum(['user', 'model']),
     content: z.string(),
   })).describe("The chat history."),
+  submissions: z.array(SubmissionSchemaForAgent).optional().describe("A list of current submissions from Firestore."),
 });
 
 const AgentSchemaForPrompt = z.object({
@@ -106,6 +124,7 @@ export const CommandCenterChatPromptInputSchema = z.object({
     content: z.string(),
   })),
   crew: z.array(AgentSchemaForPrompt),
+  submissions: z.array(SubmissionSchemaForAgent).optional(),
 });
 
 const SourceActionPayloadSchema = z.object({

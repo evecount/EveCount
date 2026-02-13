@@ -1,3 +1,4 @@
+'use client';
 import { config } from 'dotenv';
 config();
 
@@ -11,3 +12,4 @@ import '@/ai/tools/web-search.ts';
 import '@/ai/tools/internal-resonance.ts';
 import '@/ai/tools/dynamic-persona-adjustment.ts';
 import '@/ai/tools/business-consultant.ts';
+import '@/ai/tools/roster-and-challenges.ts';

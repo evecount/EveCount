@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { submitCommandCenterMessage } from '@/app/actions';
 import { Send, User, Loader2 } from 'lucide-react';
 import { agentCrew } from '@/lib/agents';
-import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
+import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, addDocumentNonBlocking, useCollection } from '@/firebase';
 import { doc, collection } from 'firebase/firestore';
 
 type Message = {
@@ -24,6 +24,24 @@ type AgentConversation = {
     lastUpdated: string;
 }
 
+type Submission = {
+    id: string;
+    applicationType: "Venture Pitch" | "Incubator Application" | "Career Inquiry" | "Partnership Inquiry";
+    submitterName: string;
+    contactEmail: string;
+    contactPhone: string;
+    submissionDate: string; // ISO String
+    status: "New" | "In Review" | "Archived" | "Challenge Created";
+    companyName?: string;
+    visionPitch?: string;
+    portfolioUrl?: string;
+    roleInterest?: string;
+    resumeUrl?: string;
+    partnershipInterest?: string;
+    message?: string;
+}
+
+
 export function CommandCenterChat() {
   const [selectedAgentId, setSelectedAgentId] = useState<string>(agentCrew[0].id);
   const [inputValue, setInputValue] = useState('');
@@ -32,6 +50,12 @@ export function CommandCenterChat() {
 
   const { user } = useUser();
   const firestore = useFirestore();
+
+  const submissionsQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'submissions');
+  }, [firestore]);
+  const { data: submissions, isLoading: submissionsLoading } = useCollection<Submission>(submissionsQuery);
 
   const conversationRef = useMemoFirebase(() => {
     if (!firestore || !user || !selectedAgentId) return null;
@@ -63,7 +87,7 @@ export function CommandCenterChat() {
     }
   }, [messages]);
 
-  const isBusy = isAiResponding || isConversationLoading;
+  const isBusy = isAiResponding || isConversationLoading || submissionsLoading;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,7 +102,11 @@ export function CommandCenterChat() {
     setInputValue('');
 
     try {
-      const response = await submitCommandCenterMessage({ agentId: selectedAgentId, history: historyForAI });
+      const response = await submitCommandCenterMessage({ 
+        agentId: selectedAgentId, 
+        history: historyForAI,
+        submissions: submissions || [],
+      });
       
       const finalHistory = [...historyForAI];
 

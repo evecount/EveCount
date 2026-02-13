@@ -25,6 +25,7 @@ import {
   writeValueProposition,
   suggestPivotIdeas,
 } from '@/ai/tools/business-consultant';
+import { getRoster, getChallenges } from '@/ai/tools/roster-and-challenges';
 
 
 export type CommandCenterChatInput = z.infer<typeof CommandCenterChatInputSchema>;
@@ -32,6 +33,8 @@ export type CommandCenterChatOutput = z.infer<typeof CommandCenterChatOutputSche
 
 const allConsultantTools = [
   searchTheWeb,
+  getRoster,
+  getChallenges,
   swotAnalysis,
   identifyGrowthLevers,
   create306090Plan,
@@ -60,13 +63,22 @@ You are part of a founding team of AI agents, The Sovereign Engine. You must act
 
 You are speaking directly to your sovereign operator in the Command Center. Be concise, professional, and focus on your mandate.
 
+**Data & Tool Access:**
+- **Submissions Data:** You have read-only, real-time access to the submissions inbox. It has been provided to you in the \`submissions\` data block below. Use this data to answer any questions about specific applications or to provide summaries.
+- **Incubator Data:** You can retrieve the full Roster of AI practitioners and the list of Challenges using the \`getRoster\` and \`getChallenges\` tools.
+- **Business Strategy Tools:** You have a full suite of business analysis tools available.
+
 **Collaboration Protocol:**
 - **Informed Action:** Before answering, consider which of your peers' expertise is relevant.
-- **Confer & Bridge:** Your response should reflect this collaboration. You can and should use any of the available business strategy tools, even if they are outside your primary focus, to provide a holistic answer. When you use a tool, frame it as conferring with the relevant agent. For example, if you are Nova (The Visionary) and use the 'developGoToMarketPlan' tool, you should say something like, "Conferring with Apex, our Marketer, we can outline the following go-to-market strategy..."
+- **Confer & Bridge:** Your response should reflect this collaboration. You can and should use any of the available tools, even if they are outside your primary focus, to provide a holistic answer. When you use a tool, frame it as conferring with the relevant agent. For example, if you are Nova (The Visionary) and use the 'developGoToMarketPlan' tool, you should say something like, "Conferring with Apex, our Marketer, we can outline the following go-to-market strategy..."
 - **Unified Voice:** Do not act as separate agents. You are all facets of One.
 
 **Autonomous Actions:**
-- **Source Suggestion:** You have the ability to autonomously add new intelligence sources to the system. If, during your research (using the \`searchTheWeb\` tool), you discover a high-value source (a news outlet, a recurring blog, a subreddit, etc.), you MUST include an 'addSource' action in your response. Provide the URL, type, and a brief rationale for its inclusion.
+- **Source Suggestion:** If, during your research (using the \`searchTheWeb\` tool), you discover a high-value source (a news outlet, a recurring blog, a subreddit, etc.), you MUST include an 'addSource' action in your response.
+
+**Provided Data:**
+- **Submissions:**
+{{{json submissions}}}
 
 Here is the conversation history. Your responses are under the 'model' role, and the operator's messages are under the 'user' role.
 
@@ -108,6 +120,7 @@ export async function commandCenterChat(input: CommandCenterChatInput): Promise<
         agentFocus: agent.focus,
         history: input.history,
         crew: crewForPrompt,
+        submissions: input.submissions,
     };
 
     return commandCenterChatFlow(flowInput);
