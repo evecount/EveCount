@@ -254,7 +254,7 @@ function AdminDashboard() {
           </TabsList>
           
           <TabsContent value="operations" className="mt-6 space-y-8">
-            <Card className="bg-secondary/20">
+            <Card className="bg-secondary/20 text-foreground">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2"><Users2 className="h-6 w-6" /> The Command Center Crew</CardTitle>
                 <CardDescription>Your autonomous team, reflecting the core facets of the Eve Count operational strategy.</CardDescription>
@@ -262,7 +262,7 @@ function AdminDashboard() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
                   {agentCrew.map(agent => (
-                    <Card key={agent.id} className="bg-background flex flex-col">
+                    <Card key={agent.id} className="bg-background flex flex-col text-foreground">
                       <CardHeader className="flex-row items-center gap-4 space-y-0 pb-4">
                         <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
                           <agent.Icon className="h-6 w-6 text-primary" />
@@ -284,7 +284,7 @@ function AdminDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-secondary/20">
+            <Card className="bg-secondary/20 text-foreground">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2"><Bot className="h-6 w-6" /> Agent Communications</CardTitle>
                 <CardDescription>Speak directly with your autonomous crew members.</CardDescription>
@@ -296,7 +296,7 @@ function AdminDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-secondary/20">
+            <Card className="bg-secondary/20 text-foreground">
               <CardHeader>
                 <CardTitle>Sovereign Engine: Autonomous Outreach</CardTitle>
                 <CardDescription>Monitor agent-initiated outreach. Your role is to enable, not control. Intervene only to recall a proposal that deviates from your strategic intent.</CardDescription>
@@ -313,7 +313,7 @@ function AdminDashboard() {
                 {!proposalsLoading && proposals && proposals.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {proposals.map(proposal => (
-                            <Card key={proposal.id} className="bg-background flex flex-col">
+                            <Card key={proposal.id} className="bg-background flex flex-col text-foreground">
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
                                         <div>
@@ -360,7 +360,7 @@ function AdminDashboard() {
                 </DialogContent>
             </Dialog>
 
-            <Card className="bg-secondary/20">
+            <Card className="bg-secondary/20 text-foreground">
               <CardHeader>
                 <div className="flex items-center justify-between">
                     <div>
@@ -385,7 +385,7 @@ function AdminDashboard() {
                 {!sourcesLoading && sources && sources.length > 0 && (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {sources.map(source => (
-                      <Card key={source.id} className="bg-background flex flex-col">
+                      <Card key={source.id} className="bg-background flex flex-col text-foreground">
                         <CardHeader>
                           <div className="flex justify-between items-start">
                               <div>
@@ -417,7 +417,7 @@ function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="submissions" className="mt-6 space-y-6">
-            <Card className="bg-secondary/20">
+            <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
                     <CardTitle>Submissions Inbox</CardTitle>
                     <CardDescription>Review and manage all incoming applications and inquiries.</CardDescription>
@@ -465,7 +465,7 @@ function AdminDashboard() {
 
 
           <TabsContent value="challenges" className="mt-6 space-y-6">
-             <Card className="bg-secondary/20">
+             <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
                     <CardTitle>Incubator Challenges</CardTitle>
                     <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
@@ -473,7 +473,7 @@ function AdminDashboard() {
                 <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {challenges.map(challenge => (
-                            <Card key={challenge.id} className="bg-background flex flex-col">
+                            <Card key={challenge.id} className="bg-background flex flex-col text-foreground">
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
                                         <CardTitle className="text-lg">{challenge.title}</CardTitle>
@@ -498,7 +498,7 @@ function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="roster" className="mt-6">
-            <Card className="bg-secondary/20">
+            <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
                     <CardTitle>AI Practitioner Roster</CardTitle>
                     <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
@@ -632,7 +632,7 @@ function PartnerDashboard() {
             <TabsTrigger value="challenges">Challenges</TabsTrigger>
           </TabsList>
           <TabsContent value="roster" className="mt-6">
-            <Card className="bg-secondary/20">
+            <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
                     <CardTitle>AI Practitioner Roster</CardTitle>
                     <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
@@ -660,7 +660,7 @@ function PartnerDashboard() {
             </Card>
           </TabsContent>
           <TabsContent value="challenges" className="mt-6 space-y-6">
-             <Card className="bg-secondary/20">
+             <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
                     <CardTitle>Incubator Challenges</CardTitle>
                     <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
@@ -668,7 +668,7 @@ function PartnerDashboard() {
                 <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {challenges.map(challenge => (
-                            <Card key={challenge.id} className="bg-background flex flex-col">
+                            <Card key={challenge.id} className="bg-background flex flex-col text-foreground">
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
                                         <CardTitle className="text-lg">{challenge.title}</CardTitle>
@@ -700,7 +700,7 @@ function AccessDenied() {
   const auth = useAuth();
   return (
     <div className="space-y-8">
-        <Card className="border-destructive bg-destructive/10">
+        <Card className="border-destructive bg-destructive/10 text-foreground">
           <CardHeader>
              <div className="flex items-center gap-4">
                 <ShieldAlert className="h-8 w-8 text-destructive" />
@@ -718,7 +718,7 @@ function AccessDenied() {
           </CardContent>
         </Card>
         
-        <Card className="bg-secondary/20">
+        <Card className="bg-secondary/20 text-foreground">
             <CardHeader>
                 <CardTitle>First-Time Admin/Partner Setup</CardTitle>
                 <CardDescription>Is this your first time setting up an admin or partner account?</CardDescription>
@@ -836,4 +836,3 @@ export default function AdminPage() {
     );
 }
 
-    
