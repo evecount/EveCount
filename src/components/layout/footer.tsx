@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -16,6 +15,7 @@ const footerSections = {
     { href: "/research", label: "Quantum Research 101" },
     { href: "/sponsor", label: <span>Sponsor<br />a Build</span> },
     { href: "https://github.com/evecount/OperationNightfall", label: "Operation Nightfall" },
+    { href: "https://github.com/evecount/Qualimetric-Universal-Model", label: "Qualimetric Universal Model" },
   ],
   legal: [
     { href: "/privacy", label: "Privacy Policy" },
