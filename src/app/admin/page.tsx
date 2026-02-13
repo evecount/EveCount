@@ -9,7 +9,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, setDocumentNonBlocking, addDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
@@ -22,6 +22,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { incubatorMembers } from '@/lib/incubator-members';
 import { challenges } from '@/lib/challenges';
+import { Textarea } from '@/components/ui/textarea';
 
 interface UserProfile {
   uid: string;
@@ -53,23 +54,44 @@ interface Source {
   createdAt: string; // ISO String
 }
 
+interface Submission {
+    id: string;
+    applicationType: "Venture Pitch" | "Incubator Application" | "Career Inquiry" | "Partnership Inquiry";
+    submitterName: string;
+    contactEmail: string;
+    contactPhone: string;
+    submissionDate: string; // ISO String
+    status: "New" | "In Review" | "Archived" | "Challenge Created";
+    companyName?: string;
+    visionPitch?: string;
+    portfolioUrl?: string;
+    roleInterest?: string;
+    resumeUrl?: string;
+    partnershipInterest?: string;
+    message?: string;
+}
+
 type StatusVariant = "default" | "destructive" | "secondary" | "outline";
 
-function getStatusVariant(status: OutreachProposal['status'] | Source['status'] | string): StatusVariant {
+function getStatusVariant(status: OutreachProposal['status'] | Source['status'] | Submission['status'] | string): StatusVariant {
     switch (status) {
       case 'approved':
       case 'active':
       case 'Live':
       case 'Completed':
       case 'Assigned':
+      case 'Challenge Created':
         return 'default';
       case 'rejected':
       case 'recalled':
+      case 'Archived':
         return 'destructive';
       case 'sent':
       case 'Open':
+      case 'In Review':
         return 'secondary';
        case 'pending':
+       case 'New':
         return 'outline';
       default:
         return 'outline';
@@ -142,6 +164,7 @@ function AdminDashboard() {
   const firestore = useFirestore();
   const [isSourceEditorOpen, setIsSourceEditorOpen] = useState(false);
   const [editingSource, setEditingSource] = useState<Partial<Source> | null>(null);
+  const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
 
 
   const proposalsQuery = useMemoFirebase(() => {
@@ -157,6 +180,13 @@ function AdminDashboard() {
   }, [firestore]);
 
   const { data: sources, isLoading: sourcesLoading } = useCollection<Source>(sourcesQuery);
+
+  const submissionsQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'submissions');
+  }, [firestore]);
+
+  const { data: submissions, isLoading: submissionsLoading } = useCollection<Submission>(submissionsQuery);
 
   const handleUpdateProposalStatus = (proposalId: string, status: OutreachProposal['status']) => {
     if (!firestore) return;
@@ -199,6 +229,12 @@ function AdminDashboard() {
     setEditingSource(null);
   };
 
+  const handleUpdateSubmissionStatus = (submissionId: string, status: Submission['status']) => {
+    if (!firestore) return;
+    const submissionRef = doc(firestore, 'submissions', submissionId);
+    updateDocumentNonBlocking(submissionRef, { status });
+  };
+
   return (
     <div className="space-y-8">
         <div className="flex items-center justify-between">
@@ -210,8 +246,9 @@ function AdminDashboard() {
         </div>
         
         <Tabs defaultValue="operations" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="operations">Operations</TabsTrigger>
+            <TabsTrigger value="submissions">Submissions</TabsTrigger>
             <TabsTrigger value="challenges">Challenges</TabsTrigger>
             <TabsTrigger value="roster">Roster</TabsTrigger>
           </TabsList>
@@ -379,6 +416,54 @@ function AdminDashboard() {
             </Card>
           </TabsContent>
 
+          <TabsContent value="submissions" className="mt-6 space-y-6">
+            <Card className="bg-secondary/20">
+                <CardHeader>
+                    <CardTitle>Submissions Inbox</CardTitle>
+                    <CardDescription>Review and manage all incoming applications and inquiries.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    {submissionsLoading ? (
+                        <div className="flex justify-center items-center h-40">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : !submissions || submissions.length === 0 ? (
+                        <p className="text-center text-muted-foreground py-8">No submissions yet.</p>
+                    ) : (
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Date</TableHead>
+                                    <TableHead>Type</TableHead>
+                                    <TableHead>Submitter</TableHead>
+                                    <TableHead>Company</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {submissions.map(sub => (
+                                    <TableRow key={sub.id}>
+                                        <TableCell>{format(new Date(sub.submissionDate), "PPP")}</TableCell>
+                                        <TableCell>{sub.applicationType}</TableCell>
+                                        <TableCell className="font-medium">{sub.submitterName}</TableCell>
+                                        <TableCell>{sub.companyName || 'N/A'}</TableCell>
+                                        <TableCell><Badge variant={getStatusVariant(sub.status)}>{sub.status}</Badge></TableCell>
+                                        <TableCell className="text-right">
+                                            <Button variant="outline" size="sm" onClick={() => setSelectedSubmission(sub)}>
+                                                <Eye className="h-4 w-4 mr-2"/>View
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    )}
+                </CardContent>
+            </Card>
+          </TabsContent>
+
+
           <TabsContent value="challenges" className="mt-6 space-y-6">
              <Card className="bg-secondary/20">
                 <CardHeader>
@@ -441,6 +526,91 @@ function AdminDashboard() {
             </Card>
           </TabsContent>
         </Tabs>
+        
+        {/* Submission Detail Dialog */}
+        <Dialog open={!!selectedSubmission} onOpenChange={(isOpen) => !isOpen && setSelectedSubmission(null)}>
+            <DialogContent className="sm:max-w-2xl">
+                {selectedSubmission && (
+                    <>
+                        <DialogHeader>
+                            <DialogTitle>{selectedSubmission.applicationType}</DialogTitle>
+                            <DialogDescription>
+                                Submitted by {selectedSubmission.submitterName} on {format(new Date(selectedSubmission.submissionDate), "PPP")}
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto pr-6">
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label className="text-right">Status</Label>
+                                <div className="col-span-3">
+                                    <Select
+                                        value={selectedSubmission.status}
+                                        onValueChange={(value: Submission['status']) => handleUpdateSubmissionStatus(selectedSubmission.id, value)}
+                                    >
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Set status..." />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="New">New</SelectItem>
+                                            <SelectItem value="In Review">In Review</SelectItem>
+                                            <SelectItem value="Challenge Created">Challenge Created</SelectItem>
+                                            <SelectItem value="Archived">Archived</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-4 items-start gap-4">
+                                <Label className="text-right pt-2">Submitter</Label>
+                                <div className="col-span-3 space-y-1">
+                                    <p>{selectedSubmission.submitterName}</p>
+                                    <p>{selectedSubmission.contactEmail}</p>
+                                    <p>{selectedSubmission.contactPhone}</p>
+                                </div>
+                            </div>
+                             {selectedSubmission.companyName && (
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="companyName" className="text-right">Company</Label>
+                                    <p className="col-span-3">{selectedSubmission.companyName}</p>
+                                </div>
+                            )}
+                             {selectedSubmission.visionPitch && (
+                                <div className="grid grid-cols-4 items-start gap-4">
+                                    <Label className="text-right pt-2">Vision/Interest</Label>
+                                    <Textarea readOnly value={selectedSubmission.visionPitch} className="col-span-3 bg-muted" rows={6}/>
+                                </div>
+                            )}
+                             {selectedSubmission.partnershipInterest && (
+                                <div className="grid grid-cols-4 items-start gap-4">
+                                    <Label className="text-right pt-2">Partnership Interest</Label>
+                                    <Textarea readOnly value={selectedSubmission.partnershipInterest} className="col-span-3 bg-muted" rows={6}/>
+                                </div>
+                            )}
+                             {selectedSubmission.message && (
+                                <div className="grid grid-cols-4 items-start gap-4">
+                                    <Label className="text-right pt-2">Message</Label>
+                                    <Textarea readOnly value={selectedSubmission.message} className="col-span-3 bg-muted" rows={6}/>
+                                </div>
+                            )}
+                             {selectedSubmission.portfolioUrl && (
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label className="text-right">Portfolio</Label>
+                                    <a href={selectedSubmission.portfolioUrl} target="_blank" rel="noreferrer noopener" className="col-span-3 text-primary hover:underline truncate">{selectedSubmission.portfolioUrl}</a>
+                                </div>
+                            )}
+                             {selectedSubmission.resumeUrl && (
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label className="text-right">Resume</Label>
+                                    <a href={selectedSubmission.resumeUrl} target="_blank" rel="noreferrer noopener" className="col-span-3 text-primary hover:underline truncate">{selectedSubmission.resumeUrl}</a>
+                                </div>
+                            )}
+                        </div>
+                        <DialogFooter>
+                            <Button variant="outline" onClick={() => setSelectedSubmission(null)}>Close</Button>
+                        </DialogFooter>
+                    </>
+                )}
+            </DialogContent>
+        </Dialog>
+
     </div>
   );
 }
@@ -665,3 +835,5 @@ export default function AdminPage() {
         </div>
     );
 }
+
+    

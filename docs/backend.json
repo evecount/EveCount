@@ -70,6 +70,11 @@
           "description": "Date the submission was received.",
           "format": "date-time"
         },
+        "status": {
+          "type": "string",
+          "description": "The workflow status of the submission.",
+          "enum": ["New", "In Review", "Archived", "Challenge Created"]
+        },
         "companyName": {
           "type": "string",
           "description": "Name of the company. Primarily for 'Venture Pitches' and 'Partnership Inquiries'."

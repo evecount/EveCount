@@ -116,6 +116,7 @@ export default function ApplyPage() {
         const submissionData = {
             ...submissionValues,
             submissionDate: new Date().toISOString(),
+            status: 'New',
         };
         
         const submissionsCollection = collection(firestore, 'submissions');
@@ -385,3 +386,5 @@ export default function ApplyPage() {
         </div>
     );
 }
+
+    

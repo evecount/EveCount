@@ -93,12 +93,13 @@ service cloud.firestore {
     // Collection: submissions
     //================================================================================
     /**
-     * @description Secure drop-box for new ideas. Any authenticated user (including anonymous) can submit,
-     *   but no client can read, update, or delete any submission.
+     * @description Secure drop-box for new ideas. Any authenticated user (including anonymous) can submit.
+     *   Admins and partners can read submissions, but only admins can modify them.
      */
     match /submissions/{submissionId} {
       allow create: if isSignedIn();
-      allow get, list, update, delete: if false;
+      allow get, list: if isAdmin() || isPartner();
+      allow update, delete: if isAdmin();
     }
     
     
@@ -161,3 +162,5 @@ service cloud.firestore {
     }
   }
 }
+
+    
