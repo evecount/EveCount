@@ -102,8 +102,17 @@ const commandCenterChatFlow = ai.defineFlow(
     outputSchema: CommandCenterChatOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input);
-    return output!;
+    const result = await prompt(input);
+
+    if (!result.output) {
+      const rawText = result.text;
+      if (rawText) {
+        return { response: rawText };
+      }
+      return { response: "Apologies, I encountered an internal error and could not generate a valid response." };
+    }
+    
+    return result.output;
   }
 );
 

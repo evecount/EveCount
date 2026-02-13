@@ -66,7 +66,21 @@ const aiPartnerChatFlow = ai.defineFlow(
     outputSchema: AiPartnerChatOutputSchema,
   },
   async (input) => {
-    const { output } = await prompt(input);
-    return output!;
+    const result = await prompt(input);
+    
+    // If the model failed to generate valid JSON, output will be null.
+    if (!result.output) {
+      // Fallback: Check for the raw text response from the model.
+      const rawText = result.text;
+      if (rawText) {
+        // Construct the expected JSON object manually.
+        return { response: rawText };
+      }
+      // If there's no raw text either, return a default error response.
+      return { response: "I'm sorry, I encountered an issue processing your request. Please try again." };
+    }
+    
+    // If output is valid, return it as is.
+    return result.output;
   }
 );
