@@ -73,7 +73,7 @@
         "status": {
           "type": "string",
           "description": "The workflow status of the submission.",
-          "enum": ["New", "In Review", "Archived", "Challenge Created"]
+          "enum": ["New", "In Review", "Archived", "Challenge Created", "Added to Roster"]
         },
         "companyName": {
           "type": "string",
@@ -255,6 +255,33 @@
         }
       },
       "required": ["userId", "agentId", "history", "lastUpdated"]
+    },
+     "IncubatorMember": {
+      "title": "Incubator Member",
+      "description": "Represents an AI practitioner in the NTU x Eve Count incubator program.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "expertise": { "type": "string" },
+        "status": { "type": "string", "enum": ["Available", "Assigned"] },
+        "submissionId": { "type": "string", "description": "The ID of the original submission that led to this roster spot." }
+      },
+      "required": ["id", "name", "expertise", "status"]
+    },
+    "Challenge": {
+      "title": "Challenge",
+      "description": "Represents a high-value business problem on the Incubator Challenge Board.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string", "enum": ["Open", "Assigned", "Completed"] },
+        "domain": { "type": "string" },
+        "submissionId": { "type": "string", "description": "The ID of the original submission that led to this challenge." }
+      },
+      "required": ["id", "title", "description", "status", "domain"]
     }
   },
   "auth": {
@@ -360,8 +387,30 @@
             }
           ]
         }
+      },
+      {
+        "path": "incubatorMembers/{memberId}",
+        "definition": {
+            "entityName": "IncubatorMember",
+            "schema": { "$ref": "#/backend/entities/IncubatorMember" },
+            "description": "Collection for storing the roster of AI practitioners in the incubator.",
+            "params": [
+                { "name": "memberId", "description": "Unique identifier for the incubator member." }
+            ]
+        }
+      },
+      {
+        "path": "challenges/{challengeId}",
+        "definition": {
+            "entityName": "Challenge",
+            "schema": { "$ref": "#/backend/entities/Challenge" },
+            "description": "Collection for storing the Incubator Challenge Board items.",
+            "params": [
+                { "name": "challengeId", "description": "Unique identifier for the challenge." }
+            ]
+        }
       }
     ],
-    "reasoning": "The Firestore structure is designed to support the Clear-Box Intelligence Blueprint. It uses a flat, non-hierarchical collection model to ensure that agent-driven actions are independent and auditable. Each primary entity (ventures, submissions, users, proposals, sources) is segregated into its own collection to enforce strict, granular security rules and maintain data integrity. This design facilitates the core logic of `Action = (External Pulse) + (Internal Resonance) + (Traceable Rationale)` by creating clear, referenceable data points for each step of an agent's operation. For example, an OutreachProposal can be directly traced back to its triggering Source, and the agent's ID is stamped on every action, providing a clear audit trail for all operations within the Clear-Box Dashboard."
+    "reasoning": "The Firestore structure is designed to support the Clear-Box Intelligence Blueprint. It uses a flat, non-hierarchical collection model to ensure that agent-driven actions are independent and auditable. Each primary entity (ventures, submissions, users, proposals, sources, incubatorMembers, challenges) is segregated into its own collection to enforce strict, granular security rules and maintain data integrity. This design facilitates the core logic of `Action = (External Pulse) + (Internal Resonance) + (Traceable Rationale)` by creating clear, referenceable data points for each step of an agent's operation, and allows for dynamic management of the incubator and challenge boards."
   }
 }

@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -25,7 +26,6 @@ import {
   writeValueProposition,
   suggestPivotIdeas,
 } from '@/ai/tools/business-consultant';
-import { getRoster, getChallenges } from '@/ai/tools/roster-and-challenges';
 
 
 export type CommandCenterChatInput = z.infer<typeof CommandCenterChatInputSchema>;
@@ -33,8 +33,6 @@ export type CommandCenterChatOutput = z.infer<typeof CommandCenterChatOutputSche
 
 const allConsultantTools = [
   searchTheWeb,
-  getRoster,
-  getChallenges,
   swotAnalysis,
   identifyGrowthLevers,
   create306090Plan,
@@ -64,8 +62,7 @@ You are part of a founding team of AI agents, The Sovereign Engine. You must act
 You are speaking directly to your sovereign operator in the Command Center. Be concise, professional, and focus on your mandate.
 
 **Data & Tool Access:**
-- **Submissions Data:** You have read-only, real-time access to the submissions inbox. It has been provided to you in the \`submissions\` data block below. Use this data to answer any questions about specific applications or to provide summaries.
-- **Incubator Data:** You can retrieve the full Roster of AI practitioners and the list of Challenges using the \`getRoster\` and \`getChallenges\` tools.
+- **Live Data Feeds:** You have read-only, real-time access to the Submissions inbox, the Incubator Roster, and the Challenge Board. This data has been provided to you in the data blocks below. Use this information to answer any questions about specific applications, practitioners, or challenges.
 - **Business Strategy Tools:** You have a full suite of business analysis tools available.
 
 **Collaboration Protocol:**
@@ -79,6 +76,11 @@ You are speaking directly to your sovereign operator in the Command Center. Be c
 **Provided Data:**
 - **Submissions:**
 {{{json submissions}}}
+- **Roster:**
+{{{json roster}}}
+- **Challenges:**
+{{{json challenges}}}
+
 
 Here is the conversation history. Your responses are under the 'model' role, and the operator's messages are under the 'user' role.
 
@@ -112,7 +114,7 @@ export async function commandCenterChat(input: CommandCenterChatInput): Promise<
     // Filter out the icon before passing to the prompt, as it's not serializable.
     const crewForPrompt = agentCrew.map(({ Icon, ...rest }) => rest);
 
-    const flowInput = {
+    const flowInput: z.infer<typeof CommandCenterChatPromptInputSchema> = {
         agentName: agent.name,
         agentId: agent.id,
         agentRole: agent.role,
@@ -121,6 +123,8 @@ export async function commandCenterChat(input: CommandCenterChatInput): Promise<
         history: input.history,
         crew: crewForPrompt,
         submissions: input.submissions,
+        roster: input.roster,
+        challenges: input.challenges,
     };
 
     return commandCenterChatFlow(flowInput);

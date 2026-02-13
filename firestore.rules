@@ -13,19 +13,14 @@
  * designed to support a system of **Traceable Intelligence**. It enforces strict
  * data access patterns that ensure the integrity and auditability of every
  * agent-driven action. The rules establish three primary access patterns:
- * 1. Public Read-Only: For data intended for public consumption (e.g., ventures).
+ * 1. Public Read-Only: For data intended for public consumption.
  * 2. Secure Write-Only Drop-Box: For all inbound submissions, protecting data at ingress.
  * 3. Role-Based Access Control (RBAC): For human oversight and administrative control
  *    within the Command Center, distinguishing between 'admin', 'partner', and 'user' roles.
  *
  * @structure
  * The database uses a flat, non-hierarchical structure to enable traceable,
- * independent agent actions. The main collections include:
- * - /ventures: Public venture information.
- * - /submissions: Secure drop-box for all inbound inquiries.
- * - /users: User profiles and access roles (the "Human Handshake").
- * - /outreachProposals: Admin-only "Outbox" for agent-generated proposals.
- * - /sources: Admin-managed intelligence sources for the Seeker agent.
+ * independent agent actions.
  */
 rules_version = '2';
 service cloud.firestore {
@@ -108,18 +103,8 @@ service cloud.firestore {
     //================================================================================
     /**
      * @description Stores user profiles and roles for access control.
-     * @path /users/{userId}
-     * @principle Owner-write for personal data, admin-only for sensitive fields (like 'role').
      */
     match /users/{userId} {
-      /**
-       * @allow (get) A user can read their own profile. An admin can read any profile.
-       * @allow (list) Only an admin can list all users.
-       * @allow (create) A user can create their own profile document.
-       * @allow (update) A user can update their own profile, but cannot change their own role.
-       *   An admin can update any part of any user's profile.
-       * @allow (delete) Only an admin can delete a user profile.
-       */
       allow get: if isOwner(userId) || isAdmin();
       allow list: if isAdmin();
       allow create: if isOwner(userId);
@@ -128,8 +113,6 @@ service cloud.firestore {
       
       /**
        * @description Stores the chat history for a specific user with a specific command center agent.
-       * @path /users/{userId}/agentConversations/{agentId}
-       * @principle Owner-read and Owner-write. Admins can also manage conversations.
        */
       match /agentConversations/{agentId} {
         allow read, write: if isOwner(userId) || isAdmin();
@@ -142,8 +125,6 @@ service cloud.firestore {
     /**
      * @description Admin-only collection for the agent-generated proposals. Serves as the "Outbox"
      * for the Clear-Box Dashboard.
-     * @path /outreachProposals/{proposalId}
-     * @principle Only admins can read, write, update, or delete proposals.
      */
     match /outreachProposals/{proposalId} {
       allow read, write: if isAdmin();
@@ -154,13 +135,31 @@ service cloud.firestore {
     //================================================================================
     /**
      * @description Admin-managed collection for the Intelligence cluster's data sources.
-     * @path /sources/{sourceId}
-     * @principle Only admins can manage the list of active and pending sources.
      */
     match /sources/{sourceId} {
       allow read, write: if isAdmin();
     }
+
+    //================================================================================
+    // Collection: incubatorMembers
+    //================================================================================
+    /**
+     * @description Roster of AI practitioners. Publicly readable. Admin-only writes.
+     */
+    match /incubatorMembers/{memberId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    //================================================================================
+    // Collection: challenges
+    //================================================================================
+    /**
+     * @description Incubator challenge board. Publicly readable. Admin-only writes.
+     */
+    match /challenges/{challengeId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
   }
 }
-
-    

@@ -4,6 +4,9 @@
 import { aiPartnerChat, type AiPartnerChatInput } from '@/ai/flows/ai-partner-chat';
 import { commandCenterChat, type CommandCenterChatInput } from '@/ai/flows/command-center-chat';
 import { runStrategist, type StrategistInput, type StrategistOutput } from '@/ai/flows/strategist';
+import { runSubmissionSorter, type SubmissionSorterOutput } from '@/ai/flows/submission-sorter';
+import type { Submission } from '@/lib/submissions';
+
 
 export async function submitChatMessage(input: AiPartnerChatInput) {
     try {
@@ -34,6 +37,17 @@ export async function generateProposalAction(input: StrategistInput): Promise<{ 
     } catch (error) {
         console.error("Strategist flow failed:", error);
         const message = error instanceof Error ? error.message : "An unexpected error occurred while generating the proposal.";
+        return { success: false, message };
+    }
+}
+
+export async function sortSubmissionAction(submission: Submission): Promise<{ success: boolean; data?: SubmissionSorterOutput; message?: string; }> {
+    try {
+        const result = await runSubmissionSorter(submission);
+        return { success: true, data: result };
+    } catch (error) {
+        console.error("Submission Sorter flow failed:", error);
+        const message = error instanceof Error ? error.message : "An unexpected error occurred while sorting the submission.";
         return { success: false, message };
     }
 }

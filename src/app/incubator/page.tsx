@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from "react";
@@ -5,10 +6,12 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Send, Lock } from "lucide-react";
-import { incubatorMembers } from "@/lib/incubator-members";
+import { User, Send, Lock, Loader2 } from "lucide-react";
+import type { IncubatorMember } from "@/lib/incubator-members";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
+import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
+import { collection } from "firebase/firestore";
 
 // IMPORTANT: This is a simple client-side password protection for demonstration purposes.
 // For a production application, you should use a proper authentication system.
@@ -18,6 +21,16 @@ export default function IncubatorPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  
+  const firestore = useFirestore();
+
+  const membersQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'incubatorMembers');
+  }, [firestore]);
+
+  const { data: incubatorMembers, isLoading: membersLoading } = useCollection<IncubatorMember>(membersQuery);
+
 
   React.useEffect(() => {
     document.title = "NTU x Eve Count AI Incubator | EveCount.com";
@@ -112,29 +125,35 @@ export default function IncubatorPage() {
                             A roster of talent ready to transform industries with AI.
                         </p>
                     </div>
-                    <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        {incubatorMembers.map((member) => (
-                            <Card key={member.name} className="flex flex-col bg-background/50 text-foreground">
-                                <CardHeader>
-                                    <div className="flex items-center gap-4">
-                                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
-                                            <User className="h-8 w-8 text-primary" />
+                     {membersLoading ? (
+                        <div className="flex justify-center">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : (
+                        <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                            {incubatorMembers?.map((member) => (
+                                <Card key={member.id} className="flex flex-col bg-background/50 text-foreground">
+                                    <CardHeader>
+                                        <div className="flex items-center gap-4">
+                                            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
+                                                <User className="h-8 w-8 text-primary" />
+                                            </div>
+                                            <div>
+                                            <CardTitle className="text-xl">{member.name}</CardTitle>
+                                            <CardDescription>AI Practitioner</CardDescription>
+                                            </div>
                                         </div>
-                                        <div>
-                                          <CardTitle className="text-xl">{member.name}</CardTitle>
-                                          <CardDescription>AI Practitioner</CardDescription>
-                                        </div>
-                                    </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-muted-foreground">
-                                      <span className="font-semibold text-foreground">Domain Expertise: </span>
-                                      {member.expertise}
-                                    </p>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-muted-foreground">
+                                        <span className="font-semibold text-foreground">Domain Expertise: </span>
+                                        {member.expertise}
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
 

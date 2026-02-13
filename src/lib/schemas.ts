@@ -1,3 +1,4 @@
+
 import { z } from 'zod';
 
 export const AiMenuAutoGenInputSchema = z.object({
@@ -86,7 +87,7 @@ const SubmissionSchemaForAgent = z.object({
   contactEmail: z.string(),
   contactPhone: z.string(),
   submissionDate: z.string(),
-  status: z.enum(["New", "In Review", "Archived", "Challenge Created"]),
+  status: z.enum(["New", "In Review", "Archived", "Challenge Created", "Added to Roster"]),
   companyName: z.string().optional(),
   visionPitch: z.string().optional(),
   portfolioUrl: z.string().optional(),
@@ -140,3 +141,26 @@ export const CommandCenterChatOutputSchema = z.object({
       payload: SourceActionPayloadSchema,
   })).optional().describe("A list of autonomous actions for the client to execute, such as adding a new intelligence source."),
 });
+
+export const SubmissionSorterInputSchema = SubmissionSchemaForAgent;
+
+export const SubmissionSorterOutputSchema = z.object({
+  decision: z.enum(['addToRoster', 'createChallenge', 'archive']).describe("The agent's decision on how to classify the submission."),
+  payload: z.union([
+    z.object({
+      name: z.string(),
+      expertise: z.string(),
+    }),
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      domain: z.string(),
+    }),
+    z.object({
+      reason: z.string(),
+    }),
+  ]).describe("The data payload corresponding to the decision. Contains roster details, challenge details, or an archive reason."),
+  rationale: z.string().describe("The reasoning behind the agent's decision."),
+});
+
+export type SubmissionSorterOutput = z.infer<typeof SubmissionSorterOutputSchema>;
