@@ -58,6 +58,11 @@ export const AiPartnerChatInputSchema = z.object({
 
 export const AiPartnerChatOutputSchema = z.object({
   response: z.string().describe("The AI partner's response."),
+  submissionDetails: z.object({
+      submitterName: z.string().describe("The full name of the person submitting the idea."),
+      contactEmail: z.string().email().describe("The contact email of the submitter."),
+      contactPhone: z.string().describe("The contact phone number of the submitter.")
+  }).optional().describe("The contact details collected from the user. Only include this object when all details have been successfully gathered.")
 });
 
 

@@ -13,6 +13,7 @@ import { GeminiIcon } from './icons/gemini-icon';
 import { useFirestore } from '@/firebase';
 import { addDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { collection } from 'firebase/firestore';
+import { useToast } from '@/hooks/use-toast';
 
 export function Chatbot() {
   const { open, setOpen, messages, addMessage } = useChatbot();
@@ -20,6 +21,7 @@ export function Chatbot() {
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const firestore = useFirestore();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -47,21 +49,35 @@ export function Chatbot() {
         const aiMessage: Message = { role: 'model', content: response.data.response };
         addMessage(aiMessage);
 
-        const fullHistory = [...chatHistory, aiMessage];
-        const visionPitch = fullHistory
-          .map(m => `${m.role === 'user' ? 'User' : 'AI'}: ${m.content}`)
-          .join('\n\n');
+        // Check if the AI has returned the final submission details
+        if (response.data.submissionDetails && firestore) {
+          const { submitterName, contactEmail, contactPhone } = response.data.submissionDetails;
 
-        const submission = {
-          visionPitch,
-          submissionDate: new Date().toISOString(),
-          submitterName: '', // Will be extracted in a future step
-          contactEmail: '', // Will be extracted in a future step
-          contactPhone: '', // Will be extracted in a future step
-        };
-        
-        const submissionsCollection = collection(firestore, 'submissions');
-        addDocumentNonBlocking(submissionsCollection, submission);
+          // Create the full conversation log for the pitch
+          const fullHistory = [...chatHistory, aiMessage];
+          const visionPitch = fullHistory
+            .map(m => `${m.role === 'user' ? 'User' : 'AI'}: ${m.content}`)
+            .join('\n\n');
+
+          // Create the final submission object
+          const submissionData = {
+            applicationType: 'Venture Pitch' as const,
+            visionPitch,
+            submissionDate: new Date().toISOString(),
+            submitterName,
+            contactEmail,
+            contactPhone,
+            status: 'New' as const
+          };
+          
+          const submissionsCollection = collection(firestore, 'submissions');
+          addDocumentNonBlocking(submissionsCollection, submissionData);
+
+          toast({
+            title: "Pitch Received",
+            description: "Thank you! We've saved your pitch and will be in touch shortly.",
+          });
+        }
 
       } else {
         addMessage({
