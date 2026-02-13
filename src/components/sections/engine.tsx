@@ -39,6 +39,14 @@ export function Engine() {
           </p>
         </div>
         
+        <div className="mb-12 text-center">
+            <Button size="lg" asChild>
+                <Link href="/apply">
+                    Start Building Your Bridge Document
+                </Link>
+            </Button>
+        </div>
+        
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2">
           {processSteps.map((step) => (
             <Card key={step.title} className="bg-secondary/20 text-foreground">
@@ -55,14 +63,6 @@ export function Engine() {
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        <div className="mt-12 text-center">
-            <Button size="lg" asChild>
-                <Link href="/apply">
-                    Start Building Your Bridge Document
-                </Link>
-            </Button>
         </div>
 
       </div>
