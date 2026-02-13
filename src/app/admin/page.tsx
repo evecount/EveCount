@@ -20,8 +20,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { incubatorMembers } from '@/lib/incubator-members';
-import { challenges } from '@/lib/challenges';
+import type { IncubatorMember } from '@/lib/incubator-members';
+import type { Challenge } from '@/lib/challenges';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { generateProposalAction } from '@/app/actions';
@@ -91,6 +91,7 @@ function getStatusVariant(status: OutreachProposal['status'] | Source['status'] 
       case 'sent':
       case 'Open':
       case 'In Review':
+      case 'Available':
         return 'secondary';
        case 'pending':
        case 'New':
@@ -193,6 +194,19 @@ function AdminDashboard() {
   }, [firestore]);
 
   const { data: submissions, isLoading: submissionsLoading } = useCollection<Submission>(submissionsQuery);
+
+  const challengesQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'challenges');
+  }, [firestore]);
+  const { data: challenges, isLoading: challengesLoading } = useCollection<Challenge>(challengesQuery);
+
+  const membersQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'incubatorMembers');
+  }, [firestore]);
+  const { data: incubatorMembers, isLoading: membersLoading } = useCollection<IncubatorMember>(membersQuery);
+
 
   const handleUpdateProposalStatus = (proposalId: string, status: OutreachProposal['status']) => {
     if (!firestore) return;
@@ -530,28 +544,36 @@ function AdminDashboard() {
                     <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {challenges.map(challenge => (
-                            <Card key={challenge.id} className="bg-background flex flex-col text-foreground">
-                                <CardHeader>
-                                    <div className="flex justify-between items-start">
-                                        <CardTitle className="text-lg text-foreground">{challenge.title}</CardTitle>
-                                        <Badge variant={getStatusVariant(challenge.status)}>{challenge.status}</Badge>
-                                    </div>
-                                    <CardDescription>{challenge.domain}</CardDescription>
-                                </CardHeader>
-                                <CardContent className="flex-grow">
-                                    <p className="text-sm text-muted-foreground">{challenge.description}</p>
-                                </CardContent>
-                                <CardFooter>
-                                    <Button disabled={challenge.status !== 'Open'} className="w-full">
-                                        <Hand className="mr-2 h-4 w-4" />
-                                        Assign to Practitioner
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                        ))}
-                    </div>
+                    {challengesLoading ? (
+                         <div className="flex justify-center items-center h-40">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : !challenges || challenges.length === 0 ? (
+                        <p className="text-center text-muted-foreground py-8">No challenges available.</p>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {challenges.map(challenge => (
+                                <Card key={challenge.id} className="bg-background flex flex-col text-foreground">
+                                    <CardHeader>
+                                        <div className="flex justify-between items-start">
+                                            <CardTitle className="text-lg text-foreground">{challenge.title}</CardTitle>
+                                            <Badge variant={getStatusVariant(challenge.status)}>{challenge.status}</Badge>
+                                        </div>
+                                        <CardDescription>{challenge.domain}</CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="flex-grow">
+                                        <p className="text-sm text-muted-foreground">{challenge.description}</p>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Button disabled={challenge.status !== 'Open'} className="w-full">
+                                            <Hand className="mr-2 h-4 w-4" />
+                                            Assign to Practitioner
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            ))}
+                        </div>
+                    )}
                 </CardContent>
             </Card>
           </TabsContent>
@@ -563,24 +585,32 @@ function AdminDashboard() {
                     <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead><Users2 className="h-4 w-4 inline-block mr-2" />Name</TableHead>
-                                <TableHead><Code className="h-4 w-4 inline-block mr-2" />Domain Expertise</TableHead>
-                                <TableHead><Briefcase className="h-4 w-4 inline-block mr-2" />Status</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {incubatorMembers.map(member => (
-                                <TableRow key={member.name}>
-                                    <TableCell className="font-medium text-foreground">{member.name}</TableCell>
-                                    <TableCell className="text-muted-foreground">{member.expertise}</TableCell>
-                                    <TableCell><Badge variant="outline">Available</Badge></TableCell>
+                    {membersLoading ? (
+                        <div className="flex justify-center items-center h-40">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : !incubatorMembers || incubatorMembers.length === 0 ? (
+                        <p className="text-center text-muted-foreground py-8">No members on the roster.</p>
+                    ) : (
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead><Users2 className="h-4 w-4 inline-block mr-2" />Name</TableHead>
+                                    <TableHead><Code className="h-4 w-4 inline-block mr-2" />Domain Expertise</TableHead>
+                                    <TableHead><Briefcase className="h-4 w-4 inline-block mr-2" />Status</TableHead>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHeader>
+                            <TableBody>
+                                {incubatorMembers.map(member => (
+                                    <TableRow key={member.id}>
+                                        <TableCell className="font-medium text-foreground">{member.name}</TableCell>
+                                        <TableCell className="text-muted-foreground">{member.expertise}</TableCell>
+                                        <TableCell><Badge variant={getStatusVariant(member.status)}>{member.status}</Badge></TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    )}
                 </CardContent>
             </Card>
           </TabsContent>
@@ -683,6 +713,20 @@ function AdminDashboard() {
 
 function PartnerDashboard() {
     const { user } = useUser();
+    const firestore = useFirestore();
+
+    const membersQuery = useMemoFirebase(() => {
+        if (!firestore) return null;
+        return collection(firestore, 'incubatorMembers');
+    }, [firestore]);
+    const { data: incubatorMembers, isLoading: membersLoading } = useCollection<IncubatorMember>(membersQuery);
+
+    const challengesQuery = useMemoFirebase(() => {
+        if (!firestore) return null;
+        return collection(firestore, 'challenges');
+    }, [firestore]);
+    const { data: challenges, isLoading: challengesLoading } = useCollection<Challenge>(challengesQuery);
+
     return (
     <div className="space-y-8">
         <div className="flex items-center justify-between">
@@ -704,6 +748,13 @@ function PartnerDashboard() {
                     <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
                 </CardHeader>
                 <CardContent>
+                    {membersLoading ? (
+                        <div className="flex justify-center items-center h-40">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : !incubatorMembers || incubatorMembers.length === 0 ? (
+                        <p className="text-center text-muted-foreground py-8">No members on the roster.</p>
+                    ) : (
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -714,14 +765,15 @@ function PartnerDashboard() {
                         </TableHeader>
                         <TableBody>
                             {incubatorMembers.map(member => (
-                                <TableRow key={member.name}>
+                                <TableRow key={member.id}>
                                     <TableCell className="font-medium text-foreground">{member.name}</TableCell>
                                     <TableCell className="text-muted-foreground">{member.expertise}</TableCell>
-                                    <TableCell><Badge variant="outline">Available</Badge></TableCell>
+                                    <TableCell><Badge variant={getStatusVariant(member.status)}>{member.status}</Badge></TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
                     </Table>
+                    )}
                 </CardContent>
             </Card>
           </TabsContent>
@@ -732,6 +784,13 @@ function PartnerDashboard() {
                     <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
                 </CardHeader>
                 <CardContent>
+                    {challengesLoading ? (
+                        <div className="flex justify-center items-center h-40">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : !challenges || challenges.length === 0 ? (
+                        <p className="text-center text-muted-foreground py-8">No challenges available.</p>
+                    ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {challenges.map(challenge => (
                             <Card key={challenge.id} className="bg-background flex flex-col text-foreground">
@@ -754,6 +813,7 @@ function PartnerDashboard() {
                             </Card>
                         ))}
                     </div>
+                    )}
                 </CardContent>
             </Card>
           </TabsContent>
