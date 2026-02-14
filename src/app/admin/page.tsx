@@ -482,8 +482,8 @@ function AdminDashboard() {
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="operations">Operations</TabsTrigger>
             <TabsTrigger value="submissions">Submissions</TabsTrigger>
-            <TabsTrigger value="challenges">Challenges</TabsTrigger>
-            <TabsTrigger value="roster">Roster</TabsTrigger>
+            <TabsTrigger value="challenges">Challenge Board</TabsTrigger>
+            <TabsTrigger value="roster">NTU Roster</TabsTrigger>
           </TabsList>
           
           <TabsContent value="operations" className="mt-6 space-y-8">
@@ -700,8 +700,8 @@ function AdminDashboard() {
           <TabsContent value="challenges" className="mt-6 space-y-6">
              <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
-                    <CardTitle className="text-foreground">Incubator Challenges</CardTitle>
-                    <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
+                    <CardTitle className="text-foreground">Challenge Board</CardTitle>
+                    <CardDescription>A board of high-value business problems and venture ideas, ready to be matched with practitioners from the roster.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {challengesLoading ? (
@@ -741,8 +741,8 @@ function AdminDashboard() {
           <TabsContent value="roster" className="mt-6">
             <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
-                    <CardTitle className="text-foreground">AI Practitioner Roster</CardTitle>
-                    <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
+                    <CardTitle className="text-foreground">NTU Practitioner Roster</CardTitle>
+                    <CardDescription>The current cohort of elite AI talent from the NTU SCTP Programme.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {membersLoading ? (
@@ -923,14 +923,14 @@ function PartnerDashboard() {
         </div>
         <Tabs defaultValue="roster" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="roster">Roster</TabsTrigger>
-            <TabsTrigger value="challenges">Challenges</TabsTrigger>
+            <TabsTrigger value="roster">NTU Roster</TabsTrigger>
+            <TabsTrigger value="challenges">Challenge Board</TabsTrigger>
           </TabsList>
           <TabsContent value="roster" className="mt-6">
             <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
-                    <CardTitle className="text-foreground">AI Practitioner Roster</CardTitle>
-                    <CardDescription>The current cohort of AI talent from the NTU SCTP Programme.</CardDescription>
+                    <CardTitle className="text-foreground">NTU Practitioner Roster</CardTitle>
+                    <CardDescription>The current cohort of elite AI talent from the NTU SCTP Programme.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {membersLoading ? (
@@ -965,8 +965,8 @@ function PartnerDashboard() {
           <TabsContent value="challenges" className="mt-6 space-y-6">
              <Card className="bg-secondary/20 text-foreground">
                 <CardHeader>
-                    <CardTitle className="text-foreground">Incubator Challenges</CardTitle>
-                    <CardDescription>A board of high-value business problems ready to be matched with AI practitioners.</CardDescription>
+                    <CardTitle className="text-foreground">Challenge Board</CardTitle>
+                    <CardDescription>A board of high-value business problems and venture ideas, ready to be matched with practitioners.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {challengesLoading ? (
