@@ -102,7 +102,7 @@ export const IncubatorMemberSchemaForAgent = z.object({
     id: z.string(),
     name: z.string(),
     expertise: z.string(),
-    status: z.enum(['Available', 'Assigned']),
+    status: z.enum(['Available', 'Assigned', 'Completed']),
     submissionId: z.string().optional(),
 });
 
