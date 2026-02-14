@@ -10,7 +10,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github, Mail, BarChart3, TrendingUp, CalendarDays, DollarSign, ShieldX, LayoutDashboard, Tags, Rocket, Heart, GitFork, Send, Layers, FileText, ShieldCheck } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github, Mail, BarChart3, TrendingUp, CalendarDays, DollarSign, ShieldX, LayoutDashboard, Tags, Rocket, Heart, GitFork, Send, Layers, FileText, ShieldCheck as ShieldCheckIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
@@ -21,7 +21,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import type { IncubatorMember } from '@/lib/incubator-members';
+import type { IncubatorMember as IncubatorMemberType } from '@/lib/incubator-members';
 import type { Challenge } from '@/lib/challenges';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
@@ -87,6 +87,15 @@ interface Submission {
     roleInterest?: string;
     resumeContent?: string;
     partnershipInterest?: string;
+}
+
+interface IncubatorMember {
+  id: string;
+  name: string;
+  expertise: string;
+  status: 'Available' | 'Assigned' | 'Completed';
+  submissionId?: string;
+  resume?: string;
 }
 
 type StatusVariant = "default" | "destructive" | "secondary" | "outline";
@@ -259,6 +268,59 @@ function GuardrailSourceEditor({ source, onSave, onCancel }: { source: Partial<G
     );
 }
 
+function MemberEditor({ member, onSave, onCancel }: { member: Partial<IncubatorMember>, onSave: (memberData: Partial<IncubatorMember>) => void, onCancel: () => void }) {
+    const [memberData, setMemberData] = useState(member);
+
+    const handleSave = () => {
+        onSave(memberData);
+    };
+
+    return (
+        <>
+            <DialogHeader>
+                <DialogTitle>Edit Practitioner Profile</DialogTitle>
+                <DialogDescription>
+                    Modify the details for this member of the NTU Practitioner Roster.
+                </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="name" className="text-right">Name</Label>
+                    <Input id="name" value={memberData.name || ''} onChange={(e) => setMemberData({ ...memberData, name: e.target.value })} className="col-span-3" />
+                </div>
+                <div className="grid grid-cols-4 items-start gap-4">
+                    <Label htmlFor="expertise" className="text-right pt-2">Expertise</Label>
+                    <Textarea id="expertise" value={memberData.expertise || ''} onChange={(e) => setMemberData({ ...memberData, expertise: e.target.value })} className="col-span-3" placeholder="e.g., Quantum Machine Learning, NLP..." rows={3}/>
+                </div>
+                 <div className="grid grid-cols-4 items-start gap-4">
+                    <Label htmlFor="resume" className="text-right pt-2">Resume Summary</Label>
+                    <Textarea id="resume" value={memberData.resume || ''} onChange={(e) => setMemberData({ ...memberData, resume: e.target.value })} className="col-span-3" placeholder="Paste resume summary or key achievements." rows={6}/>
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="status" className="text-right">Status</Label>
+                     <Select
+                        value={memberData.status}
+                        onValueChange={(value: IncubatorMember['status']) => setMemberData({ ...memberData, status: value })}
+                    >
+                        <SelectTrigger className="col-span-3">
+                            <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="Available">Available</SelectItem>
+                            <SelectItem value="Assigned">Assigned</SelectItem>
+                            <SelectItem value="Completed">Completed</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+            <DialogFooter>
+                <Button variant="outline" onClick={onCancel}>Cancel</Button>
+                <Button onClick={handleSave}>Save Profile</Button>
+            </DialogFooter>
+        </>
+    );
+}
+
 function AdminDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
@@ -267,6 +329,8 @@ function AdminDashboard() {
   const [editingSource, setEditingSource] = useState<Partial<Source> | null>(null);
   const [isGuardrailEditorOpen, setIsGuardrailEditorOpen] = useState(false);
   const [editingGuardrail, setEditingGuardrail] = useState<Partial<GuardrailSource> | null>(null);
+  const [isMemberEditorOpen, setIsMemberEditorOpen] = useState(false);
+  const [editingMember, setEditingMember] = useState<Partial<IncubatorMember> | null>(null);
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSorting, setIsSorting] = useState(false);
@@ -486,6 +550,27 @@ function AdminDashboard() {
     
     setIsGuardrailEditorOpen(false);
     setEditingGuardrail(null);
+  };
+
+  const handleEditMember = (member: IncubatorMember) => {
+    setEditingMember(member);
+    setIsMemberEditorOpen(true);
+  };
+
+  const handleSaveMember = (memberData: Partial<IncubatorMember>) => {
+    if (!firestore || !memberData.id) return;
+    
+    const memberRef = doc(firestore, 'incubatorMembers', memberData.id);
+    const { id, ...dataToUpdate } = memberData;
+    updateDocumentNonBlocking(memberRef, dataToUpdate);
+    
+    toast({
+        title: "Profile Updated",
+        description: `The profile for ${memberData.name} has been updated.`,
+    });
+
+    setIsMemberEditorOpen(false);
+    setEditingMember(null);
   };
 
   const handleStatusChange = async (submissionId: string, status: Submission['status']) => {
@@ -1069,6 +1154,7 @@ function AdminDashboard() {
                                     <TableHead><Users2 className="h-4 w-4 inline-block mr-2" />Name</TableHead>
                                     <TableHead><Code className="h-4 w-4 inline-block mr-2" />Domain Expertise</TableHead>
                                     <TableHead><Briefcase className="h-4 w-4 inline-block mr-2" />Status</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -1077,6 +1163,11 @@ function AdminDashboard() {
                                         <TableCell className="font-medium text-foreground">{member.name}</TableCell>
                                         <TableCell className="text-muted-foreground">{member.expertise}</TableCell>
                                         <TableCell><Badge variant={getStatusVariant(member.status)}>{member.status}</Badge></TableCell>
+                                        <TableCell className="text-right">
+                                            <Button variant="outline" size="sm" onClick={() => handleEditMember(member)}>
+                                                <Edit className="h-4 w-4 mr-2"/>Edit
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -1088,7 +1179,7 @@ function AdminDashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                     <div>
-                        <CardTitle className="text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6"/> Guardrail Sources</CardTitle>
+                        <CardTitle className="text-foreground flex items-center gap-2"><ShieldCheckIcon className="h-6 w-6"/> Guardrail Sources</CardTitle>
                         <CardDescription>Manage guardrail documents for the incubator's AI agents.</CardDescription>
                     </div>
                     <Button size="sm" onClick={handleAddNewGuardrail}>
@@ -1257,6 +1348,11 @@ function AdminDashboard() {
                 {editingGuardrail && <GuardrailSourceEditor source={editingGuardrail} onSave={handleSaveGuardrail} onCancel={() => setIsGuardrailEditorOpen(false)} />}
             </DialogContent>
         </Dialog>
+        <Dialog open={isMemberEditorOpen} onOpenChange={setIsMemberEditorOpen}>
+            <DialogContent>
+                {editingMember && <MemberEditor member={editingMember} onSave={handleSaveMember} onCancel={() => setIsMemberEditorOpen(false)} />}
+            </DialogContent>
+        </Dialog>
     </div>
   );
 }
@@ -1377,7 +1473,7 @@ function PartnerDashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                     <div>
-                        <CardTitle className="text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6"/> Guardrail Sources</CardTitle>
+                        <CardTitle className="text-foreground flex items-center gap-2"><ShieldCheckIcon className="h-6 w-6"/> Guardrail Sources</CardTitle>
                         <CardDescription>Manage guardrail documents for the incubator's AI agents.</CardDescription>
                     </div>
                     <Button size="sm" onClick={handleAddNewGuardrail}>
@@ -1623,3 +1719,4 @@ export default function AdminPage() {
     
 
     
+
