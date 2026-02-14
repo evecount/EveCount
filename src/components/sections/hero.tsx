@@ -18,7 +18,7 @@ export function Hero() {
             </span>
           </h1>
           <p className="max-w-xl text-lg text-muted-foreground sm:text-xl md:max-w-2xl">
-            Eve Count is a Singapore-based venture studio specializing in Quantum & AI. We operate in stealth mode, taking projects from Vision to Market-Ready MVP in record time.
+            Eve Count is a Singapore-based venture studio specializing in Quantum technologies, AI Architecture, and Agentic Training Systems. We operate in stealth mode, taking projects from Vision to Market-Ready MVP in record time.
           </p>
           <div className="flex gap-4">
             <Button size="lg" asChild>
