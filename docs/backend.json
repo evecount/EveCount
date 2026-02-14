@@ -217,13 +217,14 @@
       "properties": {
         "id": { "type": "string" },
         "url": { "type": "string", "format": "uri" },
-        "type": { "type": "string", "enum": ["RSS", "Reddit", "NewsAPI"] },
+        "type": { "type": "string", "enum": ["RSS", "Reddit", "NewsAPI", "Pasted Document"] },
+        "content": { "type": "string", "description": "The pasted content of the document, if the type is 'Pasted Document'." },
         "status": { "type": "string", "enum": ["pending", "active", "rejected"] },
         "suggestedById": { "type": "string", "description": "UID of user or Agent ID (e.g. 'ai-seeker') who suggested it." },
         "suggestedBy": { "type": "string", "description": "The name of the user or agent." },
         "createdAt": { "type": "string", "format": "date-time" }
       },
-      "required": ["id", "url", "type", "status", "suggestedById", "createdAt"]
+      "required": ["id", "type", "status", "suggestedById", "createdAt"]
     },
     "AgentConversation": {
       "title": "Agent Conversation",
@@ -296,7 +297,7 @@
       "properties": {
         "id": { "type": "string" },
         "name": { "type": "string", "description": "The name of the guardrail document." },
-        "type": { "type": "string", "enum": ["URL", "Text"], "description": "The type of the source material." },
+        "type": { "type": "string", "enum": ["URL", "Pasted Document", "Pasted Spreadsheet (CSV)"], "description": "The type of the source material." },
         "content": { "type": "string", "description": "The URL to the document or the pasted text content." },
         "status": { "type": "string", "enum": ["active", "archived"] },
         "addedById": { "type": "string", "description": "UID of user who added it." },

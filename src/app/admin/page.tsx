@@ -52,7 +52,8 @@ interface OutreachProposal {
 interface Source {
   id: string;
   url: string;
-  type: "RSS" | "Reddit" | "NewsAPI";
+  type: "RSS" | "Reddit" | "NewsAPI" | "Pasted Document";
+  content?: string;
   status: "pending" | "active" | "rejected";
   suggestedBy: string;
   suggestedById: string;
@@ -62,7 +63,7 @@ interface Source {
 interface GuardrailSource {
   id: string;
   name: string;
-  type: "URL" | "Text";
+  type: "URL" | "Pasted Document" | "Pasted Spreadsheet (CSV)";
   content: string;
   status: "active" | "archived";
   addedBy: string;
@@ -136,10 +137,6 @@ function SourceEditor({ source, onSave, onCancel }: { source: Partial<Source>, o
             </DialogHeader>
             <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="url" className="text-right">URL</Label>
-                    <Input id="url" value={sourceData.url || ''} onChange={(e) => setSourceData({ ...sourceData, url: e.target.value })} className="col-span-3" />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="type" className="text-right">Type</Label>
                      <Select
                         value={sourceData.type}
@@ -152,9 +149,23 @@ function SourceEditor({ source, onSave, onCancel }: { source: Partial<Source>, o
                             <SelectItem value="RSS">RSS</SelectItem>
                             <SelectItem value="Reddit">Reddit</SelectItem>
                             <SelectItem value="NewsAPI">NewsAPI</SelectItem>
+                            <SelectItem value="Pasted Document">Pasted Document</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
+
+                {sourceData.type === 'Pasted Document' ? (
+                     <div className="grid grid-cols-4 items-start gap-4">
+                        <Label htmlFor="content" className="text-right pt-2">Content</Label>
+                        <Textarea id="content" value={sourceData.content || ''} onChange={(e) => setSourceData({ ...sourceData, content: e.target.value })} className="col-span-3" placeholder="Paste document content here..." rows={8}/>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="url" className="text-right">URL</Label>
+                        <Input id="url" value={sourceData.url || ''} onChange={(e) => setSourceData({ ...sourceData, url: e.target.value })} className="col-span-3" />
+                    </div>
+                )}
+               
                  <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="status" className="text-right">Status</Label>
                      <Select
@@ -192,7 +203,7 @@ function GuardrailSourceEditor({ source, onSave, onCancel }: { source: Partial<G
             <DialogHeader>
                 <DialogTitle>{source.id ? 'Edit Guardrail' : 'Add New Guardrail'}</DialogTitle>
                 <DialogDescription>
-                    {source.id ? 'Modify this guardrail document.' : 'Add a new guardrail for AI agents. This can be a URL to a document or pasted text.'}
+                    {source.id ? 'Modify this guardrail document.' : 'Add a new guardrail for AI agents. This can be a URL or pasted text from a document.'}
                 </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
@@ -211,7 +222,8 @@ function GuardrailSourceEditor({ source, onSave, onCancel }: { source: Partial<G
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="URL">URL</SelectItem>
-                            <SelectItem value="Text">Text</SelectItem>
+                            <SelectItem value="Pasted Document">Pasted Document</SelectItem>
+                            <SelectItem value="Pasted Spreadsheet (CSV)">Pasted Spreadsheet (CSV)</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -282,15 +294,12 @@ function AdminDashboard() {
   const filteredAndSortedProposals = useMemo(() => {
     if (!proposals) return [];
     
-    const filteredProposals = proposals.filter(p => {
-        if (proposalFilter === 'active') {
-            return p.status === 'draft';
-        }
-        return true; // 'all'
-    });
+    let filteredProposals = proposals;
+    if (proposalFilter === 'active') {
+        filteredProposals = proposals.filter(p => p.status === 'draft');
+    }
 
     return [...filteredProposals].sort((a, b) => {
-        // Only apply special sorting for the 'all' view
         if (proposalFilter === 'all') {
             const isADone = a.status === 'sent' || a.status === 'recalled';
             const isBDone = b.status === 'sent' || b.status === 'recalled';
@@ -450,7 +459,7 @@ function AdminDashboard() {
   const handleAddNewGuardrail = () => {
     setEditingGuardrail({
         name: '',
-        type: 'Text',
+        type: 'Pasted Document',
         content: '',
         status: 'active',
         addedBy: user?.displayName || 'Admin',
@@ -844,7 +853,7 @@ function AdminDashboard() {
                 {!proposalsLoading && filteredAndSortedProposals && filteredAndSortedProposals.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredAndSortedProposals.map(proposal => (
-                            <Card key={proposal.id} className={`bg-background flex flex-col text-foreground transition-all duration-300 ${(proposal.status === 'sent' || proposal.status === 'recalled') ? 'opacity-60 grayscale hover:opacity-100 hover:grayscale-0' : ''}`}>
+                            <Card key={proposal.id} className={`bg-background flex flex-col text-foreground transition-all duration-300`}>
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
                                         <div>
@@ -922,7 +931,7 @@ function AdminDashboard() {
                               <div>
                                   <CardTitle className="text-lg flex items-center gap-2 text-foreground">
                                     {source.type === 'RSS' ? <Rss className="h-5 w-5 text-primary"/> : <Newspaper className="h-5 w-5 text-primary" />}
-                                    {source.type} Feed
+                                    {source.type}
                                   </CardTitle>
                                   <CardDescription>Suggested by {source.suggestedBy} on {format(new Date(source.createdAt), "PPP")}</CardDescription>
                               </div>
@@ -930,9 +939,13 @@ function AdminDashboard() {
                           </div>
                         </CardHeader>
                         <CardContent className="flex-grow">
-                          <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm text-foreground hover:underline break-all">
-                            {source.url}
-                          </a>
+                          {source.type === 'Pasted Document' ? (
+                                <p className="text-sm text-muted-foreground line-clamp-4">{source.content}</p>
+                          ) : (
+                                <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-sm text-foreground hover:underline break-all">
+                                    {source.url}
+                                </a>
+                          )}
                         </CardContent>
                         <CardFooter className="flex justify-end gap-2 border-t pt-4">
                             <Button variant="outline" size="sm" onClick={() => handleEditSource(source)}>
@@ -1282,7 +1295,7 @@ function PartnerDashboard() {
     const handleAddNewGuardrail = () => {
       setEditingGuardrail({
           name: '',
-          type: 'Text',
+          type: 'Pasted Document',
           content: '',
           status: 'active',
           addedBy: user?.displayName || 'Partner',
