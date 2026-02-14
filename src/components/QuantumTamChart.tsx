@@ -7,7 +7,6 @@ const NUM_INNER_POINTS = 12;
 const OUTER_RADIUS = 280;
 const INNER_RADIUS = 80;
 const CENTER = 300;
-const ANIMATION_DURATION_SECONDS = 15;
 
 const AI_LABELS = [
     "Big Data", "Cloud", "SaaS", "Mobile", "Social", "E-commerce",
@@ -23,45 +22,12 @@ const QUANTUM_LABELS = [
 const AI_TECHS = ["LLMs", "CV", "NLP"];
 const QUANTUM_TECHS = ["QRNG", "QML", "PQC", "Sensing", "Simulation"];
 
-
-const getPointOnCircle = (index: number, total: number, radius: number) => {
-    const angle = (index / total) * 2 * Math.PI;
+const getPointOnCircle = (index: number, total: number, radius: number, rotation: number) => {
+    const angle = (index / total) * 2 * Math.PI + rotation;
     return {
         x: CENTER + radius * Math.cos(angle),
         y: CENTER + radius * Math.sin(angle)
     };
-};
-
-const outerPoints = Array.from({ length: NUM_OUTER_POINTS }, (_, i) => getPointOnCircle(i, NUM_OUTER_POINTS, OUTER_RADIUS));
-const innerPoints = Array.from({ length: NUM_INNER_POINTS }, (_, i) => getPointOnCircle(i, NUM_INNER_POINTS, INNER_RADIUS));
-
-const generateLinks = (frameCount: number, progress: number) => {
-    const links = [];
-    const totalLinks = NUM_OUTER_POINTS * 1.5;
-    for (let i = 0; i < totalLinks; i++) {
-        const fromIndex = (i * 3) % NUM_INNER_POINTS;
-        const toIndex = (i * 7) % NUM_OUTER_POINTS;
-
-        const start = innerPoints[fromIndex];
-        const end = outerPoints[toIndex];
-        
-        const pulse = 0.5 + 0.5 * Math.sin((frameCount / 60) + (i * Math.PI / totalLinks));
-        const opacity = 0.1 + (progress * 0.4) * pulse;
-        
-        const isPrimary = fromIndex < QUANTUM_TECHS.length;
-
-        links.push({
-            id: i,
-            x1: start.x,
-            y1: start.y,
-            x2: end.x,
-            y2: end.y,
-            stroke: isPrimary ? "hsl(var(--primary) / 0.8)" : "hsl(var(--border))",
-            strokeWidth: 0.5 + progress * 1.0,
-            opacity: Math.max(0.05, opacity)
-        });
-    }
-    return links;
 };
 
 export function QuantumTamChart() {
@@ -79,24 +45,64 @@ export function QuantumTamChart() {
         return () => cancelAnimationFrame(animationFrameId);
     }, []);
 
+    // 10-second rotation cycle
+    const rotation = useMemo(() => {
+        if (!isClient) return 0;
+        const period = 60 * 10;
+        return (frameCount % period) / period * 2 * Math.PI;
+    }, [isClient, frameCount]);
+    
+    // 15-second morph cycle (triangle wave for linear feel)
     const progress = useMemo(() => {
-        const period = 60 * ANIMATION_DURATION_SECONDS;
-        return (Math.sin((frameCount % period) / (period / Math.PI)) + 1) / 2;
+        const period = 60 * 15;
+        const cycle = (frameCount % period) / period; // Linear from 0 to 1
+        // Triangle wave: 0 -> 1 -> 0
+        return cycle < 0.5 ? cycle * 2 : (1 - cycle) * 2;
     }, [frameCount]);
+
+    const outerPoints = useMemo(() => Array.from({ length: NUM_OUTER_POINTS }, (_, i) => getPointOnCircle(i, NUM_OUTER_POINTS, OUTER_RADIUS, rotation)), [rotation]);
+    const innerPoints = useMemo(() => Array.from({ length: NUM_INNER_POINTS }, (_, i) => getPointOnCircle(i, NUM_INNER_POINTS, INNER_RADIUS, rotation)), [rotation]);
 
     const links = useMemo(() => {
         if (!isClient) return [];
-        return generateLinks(frameCount, progress);
-    }, [frameCount, progress, isClient]);
+        
+        const generatedLinks = [];
+        const totalLinks = NUM_OUTER_POINTS * 1.5;
+        for (let i = 0; i < totalLinks; i++) {
+            const fromIndex = (i * 3) % NUM_INNER_POINTS;
+            const toIndex = (i * 7) % NUM_OUTER_POINTS;
 
-    const renderLabels = (labels: string[], radius: number, pointsArray: {x:number, y:number}[], opacity: number) => {
+            const start = innerPoints[fromIndex];
+            const end = outerPoints[toIndex];
+            
+            const pulse = 0.5 + 0.5 * Math.sin((frameCount / 60) + (i * Math.PI / totalLinks));
+            const opacity = 0.1 + (progress * 0.4) * pulse;
+            
+            const isPrimary = fromIndex < QUANTUM_TECHS.length;
+
+            generatedLinks.push({
+                id: i,
+                x1: start.x,
+                y1: start.y,
+                x2: end.x,
+                y2: end.y,
+                stroke: isPrimary ? "hsl(var(--primary) / 0.8)" : "hsl(var(--border))",
+                strokeWidth: 0.5 + progress * 1.0,
+                opacity: Math.max(0.05, opacity)
+            });
+        }
+        return generatedLinks;
+    }, [frameCount, progress, isClient, innerPoints, outerPoints]);
+
+    const renderLabels = (labels: string[], radius: number, pointsArray: {x:number, y:number}[]) => {
         const totalPoints = pointsArray.length;
         return labels.map((label, index) => {
             const pointIndex = Math.floor(index * (totalPoints / labels.length));
-            const angle = (pointIndex / totalPoints) * 2 * Math.PI;
+            const angle = (pointIndex / totalPoints) * 2 * Math.PI + rotation;
             const x = CENTER + radius * Math.cos(angle);
             const y = CENTER + radius * Math.sin(angle);
-             let textAnchor = "middle";
+            
+            let textAnchor = "middle";
             if (Math.cos(angle) > 0.1) textAnchor = "start";
             if (Math.cos(angle) < -0.1) textAnchor = "end";
 
@@ -109,8 +115,6 @@ export function QuantumTamChart() {
                     textAnchor={textAnchor}
                     fontSize="10"
                     fill="hsl(var(--muted-foreground))"
-                    opacity={opacity}
-                    style={{ transition: 'opacity 0.5s ease-in-out' }}
                 >
                     {label}
                 </text>
@@ -159,26 +163,36 @@ export function QuantumTamChart() {
 
              {/* Centerpiece: Now just shows the core tech labels */}
              <g textAnchor="middle">
-                 <text x={CENTER} y={CENTER - 15} fontSize="14" fill="hsl(var(--muted-foreground))">
-                     {progress > 0.5 ? "Quantum Technologies" : "AI Technologies"}
-                 </text>
-                 <text x={CENTER} y={CENTER + 20} fontSize="24" fontWeight="bold" fill="hsl(var(--foreground))" style={{ filter: 'url(#glow-tam)'}}>
-                     {progress > 0.5 ? "QML & QRNG" : "LLM & CV"}
-                 </text>
+                 <g style={{ transition: 'opacity 0.5s ease-in-out' }} opacity={1 - progress}>
+                    <text x={CENTER} y={CENTER - 15} fontSize="14" fill="hsl(var(--muted-foreground))">
+                        AI Technologies
+                    </text>
+                    <text x={CENTER} y={CENTER + 20} fontSize="24" fontWeight="bold" fill="hsl(var(--foreground))" style={{ filter: 'url(#glow-tam)'}}>
+                        LLM & CV
+                    </text>
+                 </g>
+                 <g style={{ transition: 'opacity 0.5s ease-in-out' }} opacity={progress}>
+                    <text x={CENTER} y={CENTER - 15} fontSize="14" fill="hsl(var(--muted-foreground))">
+                        Quantum Technologies
+                    </text>
+                    <text x={CENTER} y={CENTER + 20} fontSize="24" fontWeight="bold" fill="hsl(var(--foreground))" style={{ filter: 'url(#glow-tam)'}}>
+                        QML & QRNG
+                    </text>
+                 </g>
                  <rect x={CENTER - 50} y={CENTER + 35} width={100} height="2" fill="hsl(var(--primary))" opacity={progress}/>
                  <rect x={CENTER - 50} y={CENTER + 35} width={100} height="2" fill="hsl(var(--muted-foreground))" opacity={1 - progress}/>
              </g>
 
             {/* Labels - AI */}
             <g opacity={1 - progress} style={{ transition: 'opacity 0.5s ease-in-out' }}>
-                {renderLabels(AI_LABELS, OUTER_RADIUS + 15, outerPoints, 1)}
-                {renderLabels(AI_TECHS, INNER_RADIUS - 20, innerPoints, 1)}
+                {renderLabels(AI_LABELS, OUTER_RADIUS + 15, outerPoints)}
+                {renderLabels(AI_TECHS, INNER_RADIUS - 20, innerPoints)}
             </g>
 
             {/* Labels - Quantum */}
             <g opacity={progress} style={{ transition: 'opacity 0.5s ease-in-out' }}>
-                {renderLabels(QUANTUM_LABELS, OUTER_RADIUS + 15, outerPoints, 1)}
-                {renderLabels(QUANTUM_TECHS, INNER_RADIUS + 25, innerPoints, 1)}
+                {renderLabels(QUANTUM_LABELS, OUTER_RADIUS + 15, outerPoints)}
+                {renderLabels(QUANTUM_TECHS, INNER_RADIUS + 25, innerPoints)}
             </g>
         </svg>
     );
