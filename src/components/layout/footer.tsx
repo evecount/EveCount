@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-const footerSections = {
+const footerSections: {
+  company: { href: string; label: string }[];
+  explore: { href: string; label: string; description?: string }[];
+  legal: { href: string; label: string }[];
+} = {
   company: [
     { href: "/about", label: "About" },
     { href: "/ventures", label: "Ventures" },
@@ -14,7 +18,11 @@ const footerSections = {
     { href: "/pricing", label: "Pricing" },
     { href: "/research", label: "Quantum Research 101" },
     { href: "/sponsor", label: "Sponsor a Build" },
-    { href: "https://github.com/evecount/OperationNightfall", label: "Operation Nightfall" },
+    {
+      href: "https://github.com/evecount/OperationNightfall",
+      label: "Operation Nightfall",
+      description: "A basic Pandas tutorial that doubles as a DFIR investigation, which can be activated to form a global reporting network for attack vectors."
+    },
     { href: "/quantum-minting", label: "Quantum Minting" },
   ],
   legal: [
@@ -69,7 +77,7 @@ export function Footer() {
             </div>
             <div>
               <h3 className="font-semibold text-foreground">Explore</h3>
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-4 space-y-4">
                 {footerSections.explore.map((link) => (
                   <li key={link.href}>
                     <Link
@@ -80,6 +88,9 @@ export function Footer() {
                     >
                       {link.label}
                     </Link>
+                    {link.description && (
+                        <p className="text-xs text-muted-foreground/80 pr-4">{link.description}</p>
+                    )}
                   </li>
                 ))}
               </ul>
