@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
@@ -186,6 +186,19 @@ function AdminDashboard() {
 
   const { data: proposals, isLoading: proposalsLoading } = useCollection<OutreachProposal>(proposalsQuery);
   
+  const sortedProposals = useMemo(() => {
+    if (!proposals) return [];
+    return [...proposals].sort((a, b) => {
+        const isARecalled = a.status === 'recalled';
+        const isBRecalled = b.status === 'recalled';
+
+        if (isARecalled && !isBRecalled) return 1;
+        if (!isARecalled && isBRecalled) return -1;
+        
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }, [proposals]);
+
   const sourcesQuery = useMemoFirebase(() => {
     if (!firestore) return null;
     return collection(firestore, 'sources');
@@ -199,6 +212,19 @@ function AdminDashboard() {
   }, [firestore]);
 
   const { data: submissions, isLoading: submissionsLoading } = useCollection<Submission>(submissionsQuery);
+
+  const sortedSubmissions = useMemo(() => {
+    if (!submissions) return [];
+    return [...submissions].sort((a, b) => {
+        const isAArchived = a.status === 'Archived';
+        const isBArchived = b.status === 'Archived';
+
+        if (isAArchived && !isBArchived) return 1;
+        if (!isAArchived && isBArchived) return -1;
+        
+        return new Date(b.submissionDate).getTime() - new Date(a.submissionDate).getTime();
+    });
+  }, [submissions]);
 
   const challengesQuery = useMemoFirebase(() => {
     if (!firestore) return null;
@@ -501,12 +527,12 @@ function AdminDashboard() {
                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
                   </div>
                 )}
-                {!proposalsLoading && (!proposals || proposals.length === 0) && (
+                {!proposalsLoading && (!sortedProposals || sortedProposals.length === 0) && (
                   <p className="text-center text-muted-foreground py-8">No outreach proposals initiated by agents yet.</p>
                 )}
-                {!proposalsLoading && proposals && proposals.length > 0 && (
+                {!proposalsLoading && sortedProposals && sortedProposals.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {proposals.map(proposal => (
+                        {sortedProposals.map(proposal => (
                             <Card key={proposal.id} className="bg-background flex flex-col text-foreground">
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
@@ -621,7 +647,7 @@ function AdminDashboard() {
                         <div className="flex justify-center items-center h-40">
                             <Loader2 className="h-8 w-8 animate-spin text-primary" />
                         </div>
-                    ) : !submissions || submissions.length === 0 ? (
+                    ) : !sortedSubmissions || sortedSubmissions.length === 0 ? (
                         <p className="text-center text-muted-foreground py-8">No submissions yet.</p>
                     ) : (
                         <Table>
@@ -636,7 +662,7 @@ function AdminDashboard() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {submissions.map(sub => (
+                                {sortedSubmissions.map(sub => (
                                     <TableRow key={sub.id}>
                                         <TableCell>{format(new Date(sub.submissionDate), "PPP")}</TableCell>
                                         <TableCell>{sub.applicationType}</TableCell>
