@@ -27,6 +27,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { generateProposalAction, sortSubmissionAction } from '@/app/actions';
 import { SubmissionSorterOutput } from '@/lib/schemas';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 interface UserProfile {
   uid: string;
@@ -538,61 +539,71 @@ function AdminDashboard() {
           </TabsList>
           
           <TabsContent value="operations" className="mt-6 space-y-8">
-            <Card className="bg-secondary/20 text-foreground">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-foreground"><Users2 className="h-6 w-6" /> The Command Center Crew</CardTitle>
-                <CardDescription>Your autonomous team, reflecting the core facets of the Eve Count operational strategy.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-                  {agentCrew.map(agent => (
-                    <Card key={agent.id} className="bg-background flex flex-col text-foreground">
-                      <CardHeader className="flex-row items-center gap-4 space-y-0 pb-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                          <agent.Icon className="h-6 w-6 text-primary" />
-                        </div>
-                        <div>
-                          <p className="font-bold text-foreground">{agent.name}</p>
-                          <p className="text-sm text-muted-foreground">{agent.role}</p>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="flex-grow">
-                        <p className="text-sm text-muted-foreground">{agent.focus}</p>
-                      </CardContent>
-                      <CardFooter>
-                        <Badge variant="outline">{agent.cluster}</Badge>
-                      </CardFooter>
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-secondary/20 text-foreground">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-foreground"><Sparkles className="h-6 w-6" /> Sovereign Engine: Core Capabilities</CardTitle>
-                    <CardDescription>The full suite of business analysis tools available to your agentic crew. Use them in the chat to accelerate your strategic workflow.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {agentCapabilities.map(capability => (
-                            <Card key={capability.title} className="bg-background flex flex-col text-foreground">
-                                <CardHeader>
-                                    <div className="flex items-center gap-4">
-                                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                                            <capability.Icon className="h-6 w-6 text-primary" />
-                                        </div>
-                                        <CardTitle className="text-lg">{capability.title}</CardTitle>
+             <Accordion type="multiple" defaultValue={['item-1', 'item-2']} className="w-full space-y-8">
+                <AccordionItem value="item-1" className="border-b-0">
+                    <Card className="bg-secondary/20 text-foreground">
+                        <AccordionTrigger className="p-6 text-left w-full hover:no-underline">
+                            <div className="flex-1 text-left">
+                                <h3 className="text-lg font-semibold flex items-center gap-2 text-foreground"><Users2 className="h-6 w-6" /> The Command Center Crew</h3>
+                                <p className="text-sm text-muted-foreground">Your autonomous team, reflecting the core facets of the Eve Count operational strategy.</p>
+                            </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="p-6 pt-0">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+                                {agentCrew.map(agent => (
+                                <Card key={agent.id} className="bg-background flex flex-col text-foreground">
+                                    <CardHeader className="flex-row items-center gap-4 space-y-0 pb-4">
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                        <agent.Icon className="h-6 w-6 text-primary" />
                                     </div>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-sm text-muted-foreground">{capability.description}</p>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
+                                    <div>
+                                        <p className="font-bold text-foreground">{agent.name}</p>
+                                        <p className="text-sm text-muted-foreground">{agent.role}</p>
+                                    </div>
+                                    </CardHeader>
+                                    <CardContent className="flex-grow">
+                                    <p className="text-sm text-muted-foreground">{agent.focus}</p>
+                                    </CardContent>
+                                    <CardFooter>
+                                    <Badge variant="outline">{agent.cluster}</Badge>
+                                    </CardFooter>
+                                </Card>
+                                ))}
+                            </div>
+                        </AccordionContent>
+                    </Card>
+                </AccordionItem>
+                <AccordionItem value="item-2" className="border-b-0">
+                    <Card className="bg-secondary/20 text-foreground">
+                        <AccordionTrigger className="p-6 text-left w-full hover:no-underline">
+                            <div className="flex-1 text-left">
+                                <h3 className="text-lg font-semibold flex items-center gap-2 text-foreground"><Sparkles className="h-6 w-6" /> Sovereign Engine: Core Capabilities</h3>
+                                <p className="text-sm text-muted-foreground">The full suite of business analysis tools available to your agentic crew. Use them in the chat to accelerate your strategic workflow.</p>
+                            </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="p-6 pt-0">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {agentCapabilities.map(capability => (
+                                    <Card key={capability.title} className="bg-background flex flex-col text-foreground">
+                                        <CardHeader>
+                                            <div className="flex items-center gap-4">
+                                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                                    <capability.Icon className="h-6 w-6 text-primary" />
+                                                </div>
+                                                <CardTitle className="text-lg">{capability.title}</CardTitle>
+                                            </div>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <p className="text-sm text-muted-foreground">{capability.description}</p>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        </AccordionContent>
+                    </Card>
+                </AccordionItem>
+            </Accordion>
+
 
             <Card className="bg-secondary/20 text-foreground">
               <CardHeader>
