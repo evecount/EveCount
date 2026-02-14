@@ -658,7 +658,7 @@ export default function IncubatorPage() {
                                                 When no internal matches are found, the system's protocol is to create an "Open Call" to attract external specialists. This ensures no dead ends.
                                             </p>
                                             <Button asChild>
-                                                <Link href="/apply">
+                                                <Link href="/open-calls">
                                                     <Megaphone className="mr-2 h-4 w-4" />
                                                     Initiate Open Call
                                                 </Link>

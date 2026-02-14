@@ -1,0 +1,104 @@
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Lightbulb, Send } from "lucide-react";
+import { challenges as allChallenges } from "@/lib/challenges";
+import { Badge } from '@/components/ui/badge';
+
+export default function OpenCallsPage() {
+  React.useEffect(() => {
+    document.title = "Open Calls | EveCount.com";
+  }, []);
+
+  const openChallenges = allChallenges.filter(c => c.status === 'Open');
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <main className="flex-1">
+        <section className="bg-background py-16 md:py-24 lg:py-32">
+          <div className="container">
+            <div className="mx-auto max-w-3xl text-center">
+              <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+                Open Calls for Talent
+              </h1>
+              <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
+                We are seeking elite practitioners to solve high-value business problems. These challenges are sourced from our corporate partners and the open sea. If you have the expertise to build a solution, we invite you to apply to our incubator program.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="challenges" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
+            <div className="container">
+                <div className="mb-12 text-center">
+                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Challenge Board</h2>
+                    <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
+                        Browse the current challenges. Successful solutions may be spun out into new ventures with corporate backing.
+                    </p>
+                </div>
+
+                {openChallenges.length > 0 ? (
+                    <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        {openChallenges.map(challenge => (
+                            <Card key={challenge.id} className="bg-background/50 flex flex-col text-foreground">
+                                <CardHeader>
+                                    <div className="flex justify-between items-start gap-4">
+                                        <div className="flex items-center gap-4">
+                                            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                                <Lightbulb className="h-6 w-6 text-primary" />
+                                            </div>
+                                            <div>
+                                                <CardTitle className="text-lg text-foreground">{challenge.title}</CardTitle>
+                                                <CardDescription>{challenge.domain}</CardDescription>
+                                            </div>
+                                        </div>
+                                        <Badge variant="secondary">{challenge.status}</Badge>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="flex-grow">
+                                    <p className="text-sm text-muted-foreground">{challenge.description}</p>
+                                </CardContent>
+                                <CardFooter>
+                                    <Button asChild className="w-full">
+                                        <Link href="/apply">
+                                            <Send className="mr-2 h-4 w-4" />
+                                            Apply to Solve
+                                        </Link>
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-10">
+                        <p className="text-muted-foreground">There are currently no open calls. Please check back later.</p>
+                    </div>
+                )}
+            </div>
+        </section>
+        
+        <section className="border-t border-border/40 bg-background py-16 md:py-24">
+             <div className="container max-w-3xl text-center">
+                <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">How It Works</h2>
+                <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
+                    When you apply, select "Incubator Application". Mention the challenge you are interested in. Our Sorter AI will review your submission. If your expertise is a match, you will be invited to join the NTU x Eve Count AI Incubator to build out the solution.
+                </p>
+                <Button size="lg" className="mt-8" asChild>
+                    <Link href="/apply">
+                       Go to Application
+                    </Link>
+                </Button>
+            </div>
+        </section>
+
+      </main>
+      <Footer />
+    </div>
+  );
+}

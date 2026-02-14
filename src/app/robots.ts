@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: '/ventures/',
+      disallow: ['/ventures/', '/incubator/', '/admin/'],
     },
     sitemap: 'https://www.evecount.com/sitemap.xml',
   }

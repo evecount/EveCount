@@ -5,7 +5,7 @@ const footerSections = {
   company: [
     { href: "/about", label: "About" },
     { href: "/ventures", label: "Ventures" },
-    { href: "/incubator", label: "Incubator" },
+    { href: "/open-calls", label: "Open Calls" },
     { href: "/services", label: "Partners" },
     { href: "/apply", label: "Apply" },
   ],

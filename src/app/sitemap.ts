@@ -38,7 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: new Date(),
     },
     {
-        url: `${baseUrl}/incubator`,
+        url: `${baseUrl}/open-calls`,
         lastModified: new Date(),
     },
     {
