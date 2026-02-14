@@ -8,23 +8,36 @@ const CENTER_Y = 200;
 
 export function DynamicBlochSphere() {
     const [isClient, setIsClient] = useState(false);
-    const [angle, setAngle] = useState(0);
+    const [time, setTime] = useState(0);
 
     useEffect(() => {
         setIsClient(true);
         let animationFrameId: number;
-        const animate = () => {
-            // Slower rotation
-            setAngle(a => (a + 0.005) % (2 * Math.PI));
+        const animate = (t: number) => {
+            setTime(t);
             animationFrameId = requestAnimationFrame(animate);
         };
         animationFrameId = requestAnimationFrame(animate);
         return () => cancelAnimationFrame(animationFrameId);
     }, []);
 
-    // Vector moving on a 45 degree latitude circle
-    const vector_x = CENTER_X + RADIUS * Math.sin(Math.PI / 3) * Math.cos(angle);
-    const vector_y = CENTER_Y - (RADIUS * Math.sin(Math.PI / 3) * Math.sin(angle)) / 3; // Perspective for y
+    // phi is the azimuthal angle, rotating continuously at one speed
+    const phi = (time / 3000) % (2 * Math.PI);
+    // theta is the polar angle, oscillating up and down at another speed
+    const theta = Math.PI / 2 + (Math.PI / 3) * Math.sin(time / 2000);
+    
+    // 3D coordinates on the unit sphere
+    const x3d = Math.sin(theta) * Math.cos(phi);
+    const y3d = Math.sin(theta) * Math.sin(phi);
+    const z3d = Math.cos(theta);
+
+    // Project to 2D for visualization
+    const vector_x = CENTER_X + RADIUS * x3d;
+    const vector_y = CENTER_Y - RADIUS * z3d;
+
+    // Projection on the equatorial (XY) plane with perspective
+    const proj_x = CENTER_X + RADIUS * x3d;
+    const proj_y = CENTER_Y + RADIUS * y3d * 0.3; // Squash y-axis for perspective
 
     if (!isClient) {
         // Return a static placeholder or nothing to avoid hydration mismatch
@@ -63,6 +76,12 @@ export function DynamicBlochSphere() {
             <line x1={CENTER_X} y1={CENTER_Y - RADIUS - 20} x2={CENTER_X} y2={CENTER_Y + RADIUS + 20} stroke="hsl(var(--border))" strokeWidth="0.5" />
             <text x={CENTER_X} y={CENTER_Y - RADIUS - 25} textAnchor="middle" fontSize="12" fill="hsl(var(--muted-foreground))">|0⟩</text>
             <text x={CENTER_X} y={CENTER_Y + RADIUS + 30} textAnchor="middle" fontSize="12" fill="hsl(var(--muted-foreground))">|1⟩</text>
+
+             {/* Vector's projection on the XY plane */}
+            <g opacity="0.7">
+                <line x1={CENTER_X} y1={CENTER_Y} x2={proj_x} y2={proj_y} stroke="hsl(var(--border))" strokeWidth="1" strokeDasharray="2 2" />
+                <circle cx={proj_x} cy={proj_y} r="2" fill="hsl(var(--border))" />
+            </g>
 
             {/* State Vector */}
             <g style={{ filter: 'url(#glow)' }}>
