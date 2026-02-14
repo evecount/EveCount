@@ -1,8 +1,8 @@
-'use client';
+"use client"
 
 import React, { useState, useEffect, useMemo } from 'react';
 
-const NUM_OUTER_POINTS = 36; // Increased for more label space
+const NUM_OUTER_POINTS = 36;
 const NUM_INNER_POINTS = 12;
 const OUTER_RADIUS = 280;
 const INNER_RADIUS = 80;
@@ -37,16 +37,14 @@ const innerPoints = Array.from({ length: NUM_INNER_POINTS }, (_, i) => getPointO
 
 const generateLinks = (frameCount: number, progress: number) => {
     const links = [];
-    const totalLinks = NUM_OUTER_POINTS * 1.5; // More links
+    const totalLinks = NUM_OUTER_POINTS * 1.5;
     for (let i = 0; i < totalLinks; i++) {
-        // Use a consistent seed but vary connections
         const fromIndex = (i * 3) % NUM_INNER_POINTS;
         const toIndex = (i * 7) % NUM_OUTER_POINTS;
 
         const start = innerPoints[fromIndex];
         const end = outerPoints[toIndex];
         
-        // Make opacity pulse and also grow with quantum progress
         const pulse = 0.5 + 0.5 * Math.sin((frameCount / 60) + (i * Math.PI / totalLinks));
         const opacity = 0.1 + (progress * 0.4) * pulse;
         
@@ -59,7 +57,7 @@ const generateLinks = (frameCount: number, progress: number) => {
             x2: end.x,
             y2: end.y,
             stroke: isPrimary ? "hsl(var(--primary) / 0.8)" : "hsl(var(--border))",
-            strokeWidth: 0.5 + progress * 1.0, // Thicker lines as we move to quantum
+            strokeWidth: 0.5 + progress * 1.0,
             opacity: Math.max(0.05, opacity)
         });
     }
@@ -81,17 +79,15 @@ export function QuantumTamChart() {
         return () => cancelAnimationFrame(animationFrameId);
     }, []);
 
-    // Animation progress: 0 -> 1 -> 0 over ANIMATION_DURATION_SECONDS
     const progress = useMemo(() => {
         const period = 60 * ANIMATION_DURATION_SECONDS;
         return (Math.sin((frameCount % period) / (period / Math.PI)) + 1) / 2;
     }, [frameCount]);
-    
-    const tamValue = (1 + progress * 8).toFixed(1); // Animate from 1.0T to 9.0T
 
     const links = useMemo(() => {
+        if (!isClient) return [];
         return generateLinks(frameCount, progress);
-    }, [frameCount, progress]);
+    }, [frameCount, progress, isClient]);
 
     const renderLabels = (labels: string[], radius: number, pointsArray: {x:number, y:number}[], opacity: number) => {
         const totalPoints = pointsArray.length;
@@ -123,9 +119,6 @@ export function QuantumTamChart() {
     };
 
     if (!isClient) {
-        // Render a static placeholder on the server to prevent hydration mismatch
-        // and avoid layout shift. The parent container has max-w-4xl, and the
-        // svg has a viewBox of 600x600, giving it an aspect ratio of 1.
         return <div style={{ width: '100%', aspectRatio: '1 / 1' }} />;
     }
 
@@ -164,16 +157,16 @@ export function QuantumTamChart() {
                 ))}
             </g>
 
-             {/* Centerpiece: Animated TAM Value */}
+             {/* Centerpiece: Now just shows the core tech labels */}
              <g textAnchor="middle">
                  <text x={CENTER} y={CENTER - 15} fontSize="14" fill="hsl(var(--muted-foreground))">
-                     {progress > 0.5 ? "Quantum TAM" : "AI TAM"}
+                     {progress > 0.5 ? "Quantum Technologies" : "AI Technologies"}
                  </text>
-                 <text x={CENTER} y={CENTER + 20} fontSize="48" fontWeight="bold" fill="hsl(var(--foreground))" style={{ filter: 'url(#glow-tam)'}}>
-                     ${tamValue}T+
+                 <text x={CENTER} y={CENTER + 20} fontSize="24" fontWeight="bold" fill="hsl(var(--foreground))" style={{ filter: 'url(#glow-tam)'}}>
+                     {progress > 0.5 ? "QML & QRNG" : "LLM & CV"}
                  </text>
-                 <rect x={CENTER - 50} y={CENTER + 30} width={100} height="2" fill="hsl(var(--primary))" opacity={progress}/>
-                 <rect x={CENTER - 50} y={CENTER + 30} width={100} height="2" fill="hsl(var(--muted-foreground))" opacity={1 - progress}/>
+                 <rect x={CENTER - 50} y={CENTER + 35} width={100} height="2" fill="hsl(var(--primary))" opacity={progress}/>
+                 <rect x={CENTER - 50} y={CENTER + 35} width={100} height="2" fill="hsl(var(--muted-foreground))" opacity={1 - progress}/>
              </g>
 
             {/* Labels - AI */}
@@ -187,7 +180,6 @@ export function QuantumTamChart() {
                 {renderLabels(QUANTUM_LABELS, OUTER_RADIUS + 15, outerPoints, 1)}
                 {renderLabels(QUANTUM_TECHS, INNER_RADIUS + 25, innerPoints, 1)}
             </g>
-
         </svg>
     );
 }
