@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { DynamicBlochSphere } from "@/components/DynamicBlochSphere";
-import { IdeaBlueprintChart } from "@/components/IdeaBlueprintChart";
 
 export const metadata: Metadata = {
   title: "Quantum Training System | Building Quantum Practitioners",
@@ -173,7 +172,7 @@ export default function ResearchPage() {
                 <div className="mb-12 text-center">
                     <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Quantum Opportunity Blueprints</h2>
                     <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                        Each potential quantum venture has a unique "fingerprint." We visualize these as dynamic opportunity blueprints, representing the structure and potential of each idea based on synthetic data models.
+                        Each potential quantum venture is rooted in the manipulation of quantum states. We visualize this core concept as a Bloch Sphere—the fundamental blueprint of a qubit—representing the vast potential within each idea.
                     </p>
                 </div>
                  <div className="mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -186,7 +185,9 @@ export default function ResearchPage() {
                                 <CardTitle className="pt-2 text-base">{track.title}</CardTitle>
                             </CardHeader>
                             <CardContent className="flex flex-1 flex-col items-center justify-center p-2">
-                               <IdeaBlueprintChart ideaIndex={index} className="w-full max-w-[150px] mx-auto" />
+                               <div className="w-full max-w-[150px] mx-auto">
+                                    <DynamicBlochSphere />
+                                </div>
                             </CardContent>
                             <CardContent className="pt-0">
                                <CardDescription className="text-xs">{track.description}</CardDescription>
