@@ -561,7 +561,7 @@ function AdminDashboard() {
           </TabsList>
           
           <TabsContent value="operations" className="mt-6 space-y-8">
-             <Accordion type="multiple" defaultValue={['item-1', 'item-2', 'item-3']} className="w-full space-y-8">
+             <Accordion type="multiple" className="w-full space-y-8">
                 <AccordionItem value="item-1" className="border-b-0">
                     <Card className="bg-secondary/20 text-foreground">
                         <AccordionTrigger className="p-6 text-left w-full hover:no-underline">
