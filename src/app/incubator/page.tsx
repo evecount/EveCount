@@ -438,7 +438,61 @@ export default function IncubatorPage() {
               </div>
             </section>
 
-            <section id="challenges" className="border-t border-border/40 bg-background py-16 md:py-24">
+            <section id="roster" className="border-t border-border/40 bg-background py-16 md:py-24">
+                <div className="container">
+                    <div className="mb-12 text-center">
+                        <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Practitioner Roster</h2>
+                        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
+                            The current cohort of elite AI talent from the NTU SCTP Programme, available to take on challenges.
+                        </p>
+                    </div>
+                     {membersLoading ? (
+                        <div className="flex justify-center">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : !incubatorMembers || incubatorMembers.length === 0 ? (
+                        <p className="text-center text-muted-foreground py-8">No members on the roster.</p>
+                    ) : (
+                        <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                            {incubatorMembers.map((member) => (
+                                <Card key={member.id} className="flex flex-col bg-secondary/20 text-foreground">
+                                    <CardHeader>
+                                        <div className="flex justify-between items-start gap-4">
+                                            <div className="flex items-center gap-4">
+                                                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background/50">
+                                                    <User className="h-8 w-8 text-primary" />
+                                                </div>
+                                                <div>
+                                                <CardTitle className="text-xl">{member.name}</CardTitle>
+                                                <CardDescription>AI Practitioner</CardDescription>
+                                                </div>
+                                            </div>
+                                            <Badge variant={getStatusVariant(member.status)}>{member.status}</Badge>
+                                        </div>
+                                    </CardHeader>
+                                    <CardContent className="flex-grow">
+                                        <p className="text-muted-foreground">
+                                        <span className="font-semibold text-foreground">Domain Expertise: </span>
+                                        {member.expertise}
+                                        </p>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Button
+                                            className="w-full"
+                                            onClick={() => handleFindMatches('practitioner', member)}
+                                            disabled={member.status !== 'Available'}
+                                        >
+                                            <Sparkles className="mr-2 h-4 w-4" /> Find Challenges
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </section>
+
+            <section id="challenges" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
                 <div className="container">
                     <div className="mb-12 text-center">
                         <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Challenge Board</h2>
@@ -455,7 +509,7 @@ export default function IncubatorPage() {
                     ) : (
                         <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                             {challenges.map(challenge => (
-                                <Card key={challenge.id} className="bg-secondary/20 flex flex-col text-foreground">
+                                <Card key={challenge.id} className="bg-background/50 flex flex-col text-foreground">
                                     <CardHeader>
                                         <div className="flex justify-between items-start gap-4">
                                             <div className="flex items-center gap-4">
@@ -491,60 +545,6 @@ export default function IncubatorPage() {
                 </div>
             </section>
 
-            <section id="roster" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
-                <div className="container">
-                    <div className="mb-12 text-center">
-                        <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Practitioner Roster</h2>
-                        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                            The current cohort of elite AI talent from the NTU SCTP Programme, available to take on challenges.
-                        </p>
-                    </div>
-                     {membersLoading ? (
-                        <div className="flex justify-center">
-                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                        </div>
-                    ) : !incubatorMembers || incubatorMembers.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-8">No members on the roster.</p>
-                    ) : (
-                        <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {incubatorMembers.map((member) => (
-                                <Card key={member.id} className="flex flex-col bg-background/50 text-foreground">
-                                    <CardHeader>
-                                        <div className="flex justify-between items-start gap-4">
-                                            <div className="flex items-center gap-4">
-                                                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
-                                                    <User className="h-8 w-8 text-primary" />
-                                                </div>
-                                                <div>
-                                                <CardTitle className="text-xl">{member.name}</CardTitle>
-                                                <CardDescription>AI Practitioner</CardDescription>
-                                                </div>
-                                            </div>
-                                            <Badge variant={getStatusVariant(member.status)}>{member.status}</Badge>
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="flex-grow">
-                                        <p className="text-muted-foreground">
-                                        <span className="font-semibold text-foreground">Domain Expertise: </span>
-                                        {member.expertise}
-                                        </p>
-                                    </CardContent>
-                                    <CardFooter>
-                                        <Button
-                                            className="w-full"
-                                            onClick={() => handleFindMatches('practitioner', member)}
-                                            disabled={member.status !== 'Available'}
-                                        >
-                                            <Sparkles className="mr-2 h-4 w-4" /> Find Challenges
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </section>
-            
             <section id="join-roster" className="border-t border-border/40 bg-background py-16 md:py-24">
                 <div className="container max-w-3xl">
                     <RosterApplicationForm />
@@ -602,3 +602,5 @@ export default function IncubatorPage() {
     </div>
   );
 }
+
+    
