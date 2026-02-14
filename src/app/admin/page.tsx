@@ -10,7 +10,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github, Mail } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github, Mail, BarChart3, TrendingUp, CalendarDays, DollarSign, ShieldX, LayoutDashboard, Tags, Rocket, Heart, GitFork } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
@@ -238,6 +238,58 @@ function AdminDashboard() {
   }, [firestore]);
   const { data: incubatorMembers, isLoading: membersLoading } = useCollection<IncubatorMember>(membersQuery);
 
+  const agentCapabilities = [
+    {
+        title: "SWOT Analysis",
+        description: "Creates a SWOT analysis for a business in a specific industry using competitive landscape data and internal factors.",
+        Icon: BarChart3
+    },
+    {
+        title: "Growth Levers",
+        description: "Identifies 5 scalable growth levers for a type of business, focusing on revenue expansion, operational leverage, and brand amplification.",
+        Icon: TrendingUp
+    },
+    {
+        title: "30-60-90 Day Plan",
+        description: "Creates a 30-60-90 day performance plan for a new role joining a company, including onboarding goals, KPIs, and early wins.",
+        Icon: CalendarDays
+    },
+    {
+        title: "Revenue Model Canvas",
+        description: "Builds a lean revenue model for a business offering a product/service, including ideal pricing, CAC, LTV, and MRR projections.",
+        Icon: DollarSign
+    },
+    {
+        title: "Churn Fix Strategies",
+        description: "Recommends 3 evidence-based strategies to reduce churn for a SaaS product using customer behavior and feedback loops.",
+        Icon: ShieldX
+    },
+    {
+        title: "KPI Dashboard Blueprint",
+        description: "Lists the 7 most important KPIs for a business type to track across acquisition, retention, product usage, and financial health.",
+        Icon: LayoutDashboard
+    },
+    {
+        title: "Pricing Strategy",
+        description: "Suggests 3 pricing strategies for an offer targeting a segment, using value-based pricing, tiering, and competitive positioning.",
+        Icon: Tags
+    },
+    {
+        title: "Go-to-Market Plan",
+        description: "Develops a go-to-market strategy for launching a product, covering positioning, channels, acquisition, and launch metrics.",
+        Icon: Rocket
+    },
+    {
+        title: "Value Proposition",
+        description: "Writes a compelling value proposition for a brand or product that highlights customer pain, the solution, and key differentiators.",
+        Icon: Heart
+    },
+    {
+        title: "Pivot Ideas",
+        description: "Suggests 3 smart pivot directions for a startup struggling with a specific problem, including new customer segments or use cases.",
+        Icon: GitFork
+    }
+  ];
 
   const handleUpdateProposalStatus = (proposalId: string, status: OutreachProposal['status']) => {
     if (!firestore) return;
@@ -514,6 +566,32 @@ function AdminDashboard() {
                   ))}
                 </div>
               </CardContent>
+            </Card>
+
+            <Card className="bg-secondary/20 text-foreground">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-foreground"><Sparkles className="h-6 w-6" /> Sovereign Engine: Core Capabilities</CardTitle>
+                    <CardDescription>The full suite of business analysis tools available to your agentic crew. Use them in the chat to accelerate your strategic workflow.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {agentCapabilities.map(capability => (
+                            <Card key={capability.title} className="bg-background flex flex-col text-foreground">
+                                <CardHeader>
+                                    <div className="flex items-center gap-4">
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                            <capability.Icon className="h-6 w-6 text-primary" />
+                                        </div>
+                                        <CardTitle className="text-lg">{capability.title}</CardTitle>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-sm text-muted-foreground">{capability.description}</p>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </CardContent>
             </Card>
 
             <Card className="bg-secondary/20 text-foreground">
