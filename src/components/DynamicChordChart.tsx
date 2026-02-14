@@ -56,8 +56,11 @@ const generateLinks = (frameCount: number) => {
 
 export function DynamicChordChart() {
     const [frameCount, setFrameCount] = useState(0);
+    const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
+        setIsClient(true);
+
         let animationFrameId: number;
         const animate = () => {
             setFrameCount(count => count + 1);
@@ -67,7 +70,12 @@ export function DynamicChordChart() {
         return () => cancelAnimationFrame(animationFrameId);
     }, []);
 
-    const links = useMemo(() => generateLinks(frameCount), [frameCount]);
+    const links = useMemo(() => {
+        if (!isClient) {
+            return [];
+        }
+        return generateLinks(frameCount);
+    }, [frameCount, isClient]);
 
     return (
         <svg viewBox="0 0 440 440" width="100%" height="100%">
@@ -91,8 +99,8 @@ export function DynamicChordChart() {
                 })}
             </g>
             
-            {/* The links */}
-            <g>
+            {/* The links - Render only on client */}
+            {isClient && <g>
                 {links.map(link => (
                     <path
                         key={link.id}
@@ -103,7 +111,7 @@ export function DynamicChordChart() {
                         strokeOpacity={link.opacity}
                     />
                 ))}
-            </g>
+            </g>}
 
             {/* The points on the circle */}
             <g>
