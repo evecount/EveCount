@@ -1,13 +1,12 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers, Atom, BrainCircuit, FlaskConical, TrendingUp, Filter, Truck, Combine, ShieldCheck, GaugeCircle, Warehouse, Router } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { DynamicBlochSphere } from "@/components/DynamicBlochSphere";
-import { QuantumTamChart } from "@/components/QuantumTamChart";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { IdeaBlueprintChart } from "@/components/IdeaBlueprintChart";
 
 export const metadata: Metadata = {
   title: "Quantum Training System | Building Quantum Practitioners",
@@ -169,50 +168,32 @@ export default function ResearchPage() {
             </div>
         </section>
 
-        <section id="tam" className="border-t border-border/40 bg-background py-16 md:py-24">
+        <section id="ideas" className="border-t border-border/40 bg-background py-16 md:py-24">
             <div className="container">
                 <div className="mb-12 text-center">
-                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Quantum TAM: A $9 Trillion Beachhead</h2>
+                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Quantum Opportunity Blueprints</h2>
                     <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                        Quantum systems are set to redefine industries. Our analysis shows a Total Addressable Market (TAM) of over $9 trillion based on Quantum Random Number Generator (QRNG) replacement alone. The graph below visualizes the primary sectors of penetration, from finance to defense, and the core quantum technologies driving this change.
+                        Each potential quantum venture has a unique "fingerprint." We visualize these as dynamic opportunity blueprints, representing the structure and potential of each idea based on synthetic data models.
                     </p>
                 </div>
-                <div className="relative mx-auto flex h-[500px] w-full max-w-5xl items-center justify-center md:h-[600px]">
-                    <QuantumTamChart />
-                </div>
-            </div>
-        </section>
-
-        <section id="ideas" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
-            <div className="container">
-                <div className="mb-12 text-center">
-                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Example Tracks & Ideas</h2>
-                    <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                        Our open-source repo is a launchpad. Here are some project tracks you can explore to start building and learning.
-                    </p>
-                </div>
-                 <Accordion type="multiple" className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 items-start">
+                 <div className="mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {exampleTracks.map((track, index) => (
-                        <AccordionItem value={`item-${index}`} key={index} className="border-b-0 bg-background/50 text-foreground rounded-lg shadow-lg">
-                           <AccordionTrigger className="p-6 text-left w-full hover:no-underline">
-                                <div className="flex items-center gap-4">
-                                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                                        <track.icon className="h-6 w-6 text-primary" />
-                                    </div>
-                                    <h3 className="text-xl font-semibold leading-none tracking-tight text-left flex-1">{track.title}</h3>
+                        <Card key={index} className="flex flex-col bg-secondary/20 text-foreground text-center">
+                            <CardHeader>
+                                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                    <track.icon className="h-6 w-6 text-primary" />
                                 </div>
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <div className="px-6 pb-6 pt-0">
-                                    <p className="text-muted-foreground">{track.description}</p>
-                                    {track.authorQuote && (
-                                        <p className="mt-4 text-right text-xs italic text-muted-foreground/80">&mdash; {track.authorQuote}</p>
-                                    )}
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
+                                <CardTitle className="pt-2 text-base">{track.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent className="flex flex-1 flex-col items-center justify-center p-2">
+                               <IdeaBlueprintChart ideaIndex={index} className="w-full max-w-[150px] mx-auto" />
+                            </CardContent>
+                            <CardContent className="pt-0">
+                               <CardDescription className="text-xs">{track.description}</CardDescription>
+                            </CardContent>
+                        </Card>
                     ))}
-                </Accordion>
+                </div>
             </div>
         </section>
 
