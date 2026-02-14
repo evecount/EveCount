@@ -64,8 +64,8 @@ export default function OperationNightfallPage() {
                 {/* The Vision */}
                 <section id="vision" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
                     <div className="container grid max-w-5xl items-center gap-12 md:grid-cols-2">
-                        <div className="flex justify-center">
-                            <Grid className="h-48 w-48 text-primary/50" />
+                        <div className="flex h-48 w-48 items-center justify-center">
+                            <ThreatVectorChart />
                         </div>
                         <div className="space-y-4">
                             <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Project Nightfall: The Open Source Forensic Grid</h2>
