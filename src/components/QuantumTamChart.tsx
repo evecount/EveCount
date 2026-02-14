@@ -83,17 +83,15 @@ export function QuantumTamChart() {
 
     // Animation progress: 0 -> 1 -> 0 over ANIMATION_DURATION_SECONDS
     const progress = useMemo(() => {
-        if (!isClient) return 0;
         const period = 60 * ANIMATION_DURATION_SECONDS;
         return (Math.sin((frameCount % period) / (period / Math.PI)) + 1) / 2;
-    }, [frameCount, isClient]);
+    }, [frameCount]);
     
     const tamValue = (1 + progress * 8).toFixed(1); // Animate from 1.0T to 9.0T
 
     const links = useMemo(() => {
-        if (!isClient) return [];
         return generateLinks(frameCount, progress);
-    }, [frameCount, progress, isClient]);
+    }, [frameCount, progress]);
 
     const renderLabels = (labels: string[], radius: number, pointsArray: {x:number, y:number}[], opacity: number) => {
         const totalPoints = pointsArray.length;
@@ -124,6 +122,13 @@ export function QuantumTamChart() {
         });
     };
 
+    if (!isClient) {
+        // Render a static placeholder on the server to prevent hydration mismatch
+        // and avoid layout shift. The parent container has max-w-4xl, and the
+        // svg has a viewBox of 600x600, giving it an aspect ratio of 1.
+        return <div style={{ width: '100%', aspectRatio: '1 / 1' }} />;
+    }
+
     return (
         <svg viewBox="0 0 600 600" width="100%" height="100%">
             <defs>
@@ -137,22 +142,20 @@ export function QuantumTamChart() {
             </defs>
 
             {/* The animated links */}
-            {isClient && (
-                <g>
-                    {links.map(link => (
-                        <line
-                            key={link.id}
-                            x1={link.x1}
-                            y1={link.y1}
-                            x2={link.x2}
-                            y2={link.y2}
-                            stroke={link.stroke}
-                            strokeWidth={link.strokeWidth}
-                            strokeOpacity={link.opacity}
-                        />
-                    ))}
-                </g>
-            )}
+            <g>
+                {links.map(link => (
+                    <line
+                        key={link.id}
+                        x1={link.x1}
+                        y1={link.y1}
+                        x2={link.x2}
+                        y2={link.y2}
+                        stroke={link.stroke}
+                        strokeWidth={link.strokeWidth}
+                        strokeOpacity={link.opacity}
+                    />
+                ))}
+            </g>
 
             {/* Inner & Outer points */}
             <g>
