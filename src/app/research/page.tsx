@@ -5,6 +5,7 @@ import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers, Atom, Brai
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { DynamicBlochSphere } from "@/components/DynamicBlochSphere";
 
 export const metadata: Metadata = {
   title: "Quantum Training System | Building Quantum Practitioners",
@@ -41,23 +42,26 @@ export default function ResearchPage() {
       <Header />
       <main className="flex-1">
         <section className="bg-background py-16 md:py-24 lg:py-32">
-          <div className="container">
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="font-semibold text-primary">A Workshop by Eve Count</p>
-              <h1 className="font-headline mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                The Quantum Hybrid Training System
-              </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-                We are solving the quantum talent gap. Our open-source "Quantum Research 101" repo is a hybrid training system designed to create the next wave of quantum practitioners. Explore our workbooks, like our latest on building your first quantum circuit, and start learning by building.
-              </p>
-               <Button size="lg" className="mt-8" asChild>
-                <Link href="https://github.com/evecount/quantum-research-101" target="_blank" rel="noopener noreferrer">
-                  <Github className="mr-2 h-5 w-5" />
-                  Explore the Quantum Circuit Workbook
-                </Link>
-              </Button>
+            <div className="container grid items-center gap-12 lg:grid-cols-2">
+                <div className="space-y-6 text-center lg:text-left">
+                    <p className="font-semibold text-primary">A Workshop by Eve Count</p>
+                    <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+                        The Quantum Hybrid Training System
+                    </h1>
+                    <p className="mx-auto max-w-2xl text-lg text-muted-foreground lg:mx-0">
+                        We are solving the quantum talent gap. Our open-source "Quantum Research 101" repo is a hybrid training system designed to create the next wave of quantum practitioners. Explore our workbooks and start learning by building.
+                    </p>
+                    <Button size="lg" asChild>
+                        <Link href="https://github.com/evecount/quantum-research-101" target="_blank" rel="noopener noreferrer">
+                            <Github className="mr-2 h-5 w-5" />
+                            Explore the Quantum Circuit Workbook
+                        </Link>
+                    </Button>
+                </div>
+                <div className="flex h-full min-h-[300px] w-full items-center justify-center">
+                    <DynamicBlochSphere />
+                </div>
             </div>
-          </div>
         </section>
 
         <section id="vision" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
