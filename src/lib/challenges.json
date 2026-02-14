@@ -3,43 +3,64 @@
   {
     "id": "challenge-001",
     "title": "AI Lead Scoring Engine",
-    "description": "Develop an intelligent lead scoring system using QML to identify high-value prospects from vast customer datasets. The system should enrich data via GenAI and predict conversion probability.",
+    "description": "Develop an intelligent lead scoring system using QML to identify high-value prospects from vast customer datasets. The system should enrich data via GenAI and predict conversion probability. The final deliverable should be a dashboard that visualizes lead scores and the factors contributing to them, integrated with a mock CRM.",
     "status": "Open",
     "domain": "Sales & Marketing"
   },
   {
     "id": "challenge-002",
     "title": "Multimodal Diagnostic Assistant",
-    "description": "Build an AI that synthesizes text-based symptoms, medical images, and audio clips to form a more holistic preliminary diagnosis, leveraging QML for complex pattern recognition.",
+    "description": "Build an AI that synthesizes text-based symptoms, medical images (e.g., X-rays, MRIs), and audio clips of coughs or speech to form a more holistic preliminary diagnosis. This project leverages QML for complex, high-dimensional pattern recognition.",
     "status": "Open",
-    "domain": "Healthcare"
+    "domain": "Healthcare / Bio-Tech"
   },
   {
     "id": "challenge-003",
     "title": "Low-Latency Arbitrage Engine",
-    "description": "Create a financial engine using quantum algorithms (like QAOA) to identify and act on market arbitrage opportunities in microseconds, optimizing trading strategies at speeds impossible for classical computers.",
+    "description": "Create a financial engine using quantum algorithms (like QAOA) to identify and act on market arbitrage opportunities in microseconds. This involves optimizing trading strategies at speeds impossible for classical computers and connecting to a simulated real-time market data feed.",
     "status": "Assigned",
     "domain": "FinTech"
   },
     {
     "id": "challenge-004",
     "title": "Supply Chain Optimization",
-    "description": "Tackle the Traveling Salesperson Problem for complex logistics. Build an application using quantum annealing concepts to calculate the most efficient routes in a vast search space.",
+    "description": "Tackle the Traveling Salesperson Problem for complex logistics. Build an application using quantum annealing concepts to calculate the most efficient routes in a vast search space, visualizing the optimal path on an interactive map.",
     "status": "Open",
-    "domain": "Logistics"
+    "domain": "Logistics & Supply Chain"
   },
   {
     "id": "challenge-005",
     "title": "Quantum-Secure Data Vault",
-    "description": "Architect and build a prototype for a data storage solution that uses Post-Quantum Cryptography (PQC) algorithms to secure data at rest against future quantum threats.",
+    "description": "Architect and build a prototype for a data storage solution that uses Post-Quantum Cryptography (PQC) algorithms (like CRYSTALS-Kyber) to secure data at rest against future quantum threats. The vault should have a simple API for CRUD operations.",
     "status": "Open",
     "domain": "Cybersecurity"
   },
   {
     "id": "challenge-006",
     "title": "Agentic Workflow Orchestrator",
-    "description": "Design a system for managing and orchestrating multiple AI agents to perform complex, multi-step tasks, complete with auditing and error-handling.",
+    "description": "Design a system for managing and orchestrating multiple AI agents to perform complex, multi-step tasks. The solution must include a visual dashboard for monitoring agent status, a robust auditing log, and error-handling capabilities.",
     "status": "Completed",
     "domain": "AI / SaaS"
+  },
+  {
+    "id": "challenge-007",
+    "title": "Synthetic Human Data Engine",
+    "description": "Create a high-fidelity dataset of human intuition and behavior for agentic augmentation. This 'synthetic human' data will be broadcast via an API to provide our agentic systems with a constant stream of common-sense reasoning, making their decisions more robust and aligned with human values.",
+    "status": "Open",
+    "domain": "AI / Data Science"
+  },
+  {
+    "id": "challenge-008",
+    "title": "Real-time Anomaly Detection",
+    "description": "Develop a system that processes high-volume data streams (e.g., live video, network traffic) to identify anomalous patterns in real time. This project explores quantum-enhanced perception to detect faint signals or complex deviations that are computationally prohibitive for classical systems.",
+    "status": "Open",
+    "domain": "Cybersecurity / IoT"
+  },
+  {
+    "id": "challenge-009",
+    "title": "Quantum Chemistry Simulator",
+    "description": "Simulating molecules is notoriously difficult. This project uses quantum algorithms to calculate molecular ground states—a fundamental quantum mechanical problem—which is crucial for drug discovery and materials science. The deliverable is a cloud-native app that models molecular structures.",
+    "status": "Assigned",
+    "domain": "Computational Chemistry"
   }
 ]
