@@ -514,9 +514,8 @@ export default function IncubatorPage() {
                                             <Button
                                                 className="w-full"
                                                 onClick={() => handleFindMatches('practitioner', member)}
-                                                disabled={member.status !== 'Available'}
                                             >
-                                                <Sparkles className="mr-2 h-4 w-4" /> Find Challenges
+                                                <User className="mr-2 h-4 w-4" /> View Profile & Matches
                                             </Button>
                                         </CardFooter>
                                     </Card>
@@ -589,19 +588,35 @@ export default function IncubatorPage() {
       </main>
       
       <Dialog open={isMatcherOpen} onOpenChange={setIsMatcherOpen}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-2xl">
             {selectedItem && (
                 <>
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2 text-foreground">
-                        <Sparkles className="text-primary" />
-                        AI-Powered Recommendations
+                        {selectedItem.type === 'practitioner' ? <User className="text-primary"/> : <Sparkles className="text-primary" />}
+                        {selectedItem.type === 'practitioner' ? "Practitioner Profile & Matches" : "AI-Powered Recommendations"}
                     </DialogTitle>
                     <DialogDescription>
-                        Finding best fits for {selectedItem.type === 'practitioner' ? `practitioner '${(selectedItem.item as IncubatorMember).name}'` : `challenge '${(selectedItem.item as Challenge).title}'`}.
+                        {selectedItem.type === 'practitioner' 
+                            ? `Viewing profile for '${(selectedItem.item as IncubatorMember).name}' and their top challenge recommendations.`
+                            : `Finding best fits for challenge '${(selectedItem.item as Challenge).title}'.`
+                        }
                     </DialogDescription>
                 </DialogHeader>
-                <div className="py-4 max-h-[60vh] overflow-y-auto">
+                <div className="py-4 max-h-[70vh] overflow-y-auto pr-6">
+                    {selectedItem.type === 'practitioner' && (
+                        <Card className="mb-6 bg-background/50 border-border/50">
+                            <CardHeader>
+                                <CardTitle className="text-xl text-foreground">{(selectedItem.item as IncubatorMember).name}</CardTitle>
+                                <CardDescription>{(selectedItem.item as IncubatorMember).expertise}</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <h4 className="font-semibold mb-2 text-foreground">Profile Summary</h4>
+                                <p className="text-sm text-muted-foreground">{(selectedItem.item as IncubatorMember).resume || "No resume summary available."}</p>
+                            </CardContent>
+                        </Card>
+                    )}
+
                     {matcherLoading ? (
                         <div className="flex items-center justify-center space-x-2 h-40">
                             <Loader2 className="h-6 w-6 animate-spin" />
@@ -609,9 +624,12 @@ export default function IncubatorPage() {
                         </div>
                     ) : (
                         <div className="space-y-4">
+                            <h3 className="text-lg font-semibold text-foreground -mb-2">
+                              {selectedItem.type === 'practitioner' ? 'Recommended Challenges' : 'Recommended Practitioners'}
+                            </h3>
                             {matchResults && matchResults.matches.length > 0 ? (
                                 matchResults.matches.map(match => (
-                                    <Card key={match.id} className="bg-background/50 flex flex-col">
+                                    <Card key={match.id} className="bg-background/50 flex flex-col border-border/50">
                                         <CardHeader className="pb-4">
                                             <CardTitle className="text-lg text-foreground">{match.name}</CardTitle>
                                         </CardHeader>
@@ -622,6 +640,7 @@ export default function IncubatorPage() {
                                             <Button 
                                                 className="w-full"
                                                 onClick={() => handleAssignment(match)}
+                                                disabled={(selectedItem.item as IncubatorMember | Challenge).status !== (selectedItem.type === 'practitioner' ? 'Available' : 'Open')}
                                             >
                                                 <Check className="mr-2 h-4 w-4" />
                                                 Assign

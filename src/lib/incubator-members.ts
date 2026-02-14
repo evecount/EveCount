@@ -7,6 +7,7 @@ export interface IncubatorMember {
   expertise: string;
   status: 'Available' | 'Assigned' | 'Completed';
   submissionId?: string;
+  resume?: string;
 }
 
 export const incubatorMembers: IncubatorMember[] = membersData;

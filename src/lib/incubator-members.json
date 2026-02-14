@@ -4,36 +4,42 @@
     "id": "member-001",
     "name": "Alex Chen",
     "expertise": "Quantum Machine Learning, Financial Modeling, Python, Qiskit.",
-    "status": "Available"
+    "status": "Available",
+    "resume": "Experienced practitioner in QML with a portfolio of projects in quantum finance. Proven ability to implement and optimize quantum algorithms for risk analysis and option pricing. Co-author of 'Quantum Kernels for Stock Market Prediction'."
   },
   {
     "id": "member-002",
     "name": "Brenda Tan",
     "expertise": "Natural Language Processing, Transformer models, Healthcare AI, PyTorch.",
-    "status": "Available"
+    "status": "Available",
+    "resume": "Specializes in building large-scale NLP models for clinical text analysis. Developed a transformer-based model for extracting patient data from unstructured EMR notes. Passionate about leveraging AI to improve patient outcomes."
   },
   {
     "id": "member-003",
     "name": "Charlie Lim",
     "expertise": "Computer Vision, Autonomous Systems, C++, ROS.",
-    "status": "Assigned"
+    "status": "Assigned",
+    "resume": "Robotics engineer with extensive experience in autonomous navigation and perception systems. Led the development of a SLAM algorithm for drones in GPS-denied environments. Proficient in C++ and Robot Operating System (ROS)."
   },
   {
     "id": "member-004",
     "name": "Diana Wong",
     "expertise": "Reinforcement Learning, Robotics, Multi-agent Systems, TensorFlow.",
-    "status": "Available"
+    "status": "Available",
+    "resume": "Expert in deep reinforcement learning for complex control tasks. Designed a multi-agent RL system for coordinating warehouse robots, resulting in a 20% efficiency increase. Published at NeurIPS on cooperative MARL."
   },
   {
     "id": "member-005",
     "name": "Ethan Kumar",
     "expertise": "AI Ethics, Explainable AI (XAI), Fairness & Bias in ML models.",
-    "status": "Available"
+    "status": "Available",
+    "resume": "Researcher focused on the ethical implications of AI. Developed novel techniques for interpreting black-box models and mitigating algorithmic bias in credit scoring systems. Advocate for responsible AI deployment."
   },
   {
     "id": "member-006",
     "name": "Fiona Goode",
     "expertise": "Multimodal AI, Generative Art, GANs, VAEs, Diffusers.",
-    "status": "Completed"
+    "status": "Completed",
+    "resume": "Creative technologist and artist exploring the boundaries of generative AI. Her work on multimodal generative models has been featured in several digital art exhibitions. Creator of a popular open-source library for VAEs."
   }
 ]
