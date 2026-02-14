@@ -27,7 +27,19 @@
     "description": "Tackle the Traveling Salesperson Problem for complex logistics. Build an application using quantum annealing concepts to calculate the most efficient routes in a vast search space.",
     "status": "Open",
     "domain": "Logistics"
+  },
+  {
+    "id": "challenge-005",
+    "title": "Quantum-Secure Data Vault",
+    "description": "Architect and build a prototype for a data storage solution that uses Post-Quantum Cryptography (PQC) algorithms to secure data at rest against future quantum threats.",
+    "status": "Open",
+    "domain": "Cybersecurity"
+  },
+  {
+    "id": "challenge-006",
+    "title": "Agentic Workflow Orchestrator",
+    "description": "Design a system for managing and orchestrating multiple AI agents to perform complex, multi-step tasks, complete with auditing and error-handling.",
+    "status": "Completed",
+    "domain": "AI / SaaS"
   }
 ]
-
-    

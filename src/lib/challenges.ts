@@ -1,4 +1,6 @@
 
+import challengesData from './challenges.json';
+
 export interface Challenge {
   id: string;
   title: string;
@@ -7,3 +9,5 @@ export interface Challenge {
   domain: string;
   submissionId?: string;
 }
+
+export const challenges: Challenge[] = challengesData;

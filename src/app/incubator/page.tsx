@@ -6,11 +6,11 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Send, Lock, Loader2, Hand, Lightbulb, Sparkles, Github } from "lucide-react";
-import type { IncubatorMember } from "@/lib/incubator-members";
-import type { Challenge } from "@/lib/challenges";
+import { User, Send, Lock, Loader2, Hand, Lightbulb, Sparkles, Github, TestTube2 } from "lucide-react";
+import { incubatorMembers as initialMembers, type IncubatorMember } from "@/lib/incubator-members";
+import { challenges as initialChallenges, type Challenge } from "@/lib/challenges";
 import { Input } from "@/components/ui/input";
-import { useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking } from "@/firebase";
+import { useFirestore, addDocumentNonBlocking } from "@/firebase";
 import { collection } from "firebase/firestore";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -255,19 +255,11 @@ export default function IncubatorPage() {
   const [error, setError] = useState('');
   const { toast } = useToast();
   
-  const firestore = useFirestore();
+  const [incubatorMembers, setIncubatorMembers] = useState<IncubatorMember[]>(initialMembers);
+  const [challenges, setChallenges] = useState<Challenge[]>(initialChallenges);
+  const membersLoading = false;
+  const challengesLoading = false;
 
-  const membersQuery = useMemoFirebase(() => {
-    if (!firestore) return null;
-    return collection(firestore, 'incubatorMembers');
-  }, [firestore]);
-  const { data: incubatorMembers, isLoading: membersLoading } = useCollection<IncubatorMember>(membersQuery);
-
-  const challengesQuery = useMemoFirebase(() => {
-    if (!firestore) return null;
-    return collection(firestore, 'challenges');
-  }, [firestore]);
-  const { data: challenges, isLoading: challengesLoading } = useCollection<Challenge>(challengesQuery);
 
   // New state for the matching feature
   const [isMatcherOpen, setIsMatcherOpen] = useState(false);
@@ -385,163 +377,170 @@ export default function IncubatorPage() {
         ) : (
           <>
             <section className="bg-background py-16 md:py-24 lg:py-32">
-              <div className="container text-center">
-                <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                  NTU x Eve Count AI Incubator
-                </h1>
-                <p className="mx-auto mt-6 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                  Meet the AI Practitioners from NTU's SCTP Programme for Advanced AI and Machine Learning. Each member combines deep academic knowledge with practical, domain-specific expertise, ready to tackle real-world business challenges.
-                </p>
-              </div>
-            </section>
-            
-            <section id="process" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
               <div className="container">
-                <div className="mb-12 text-center">
-                  <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Our Incubation Process</h2>
-                  <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                    We turn high-potential AI practitioners into venture-ready founders through a structured, hands-on program.
-                  </p>
-                </div>
-                <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
-                   <Card className="flex flex-col bg-background/50 text-foreground text-center">
-                    <CardHeader>
-                        <CardTitle>1. Challenge Matching</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground">
-                            Practitioners are matched with high-value business problems submitted by our corporate partners or sourced from the 'open sea'.
-                        </p>
-                    </CardContent>
-                   </Card>
-                   <Card className="flex flex-col bg-background/50 text-foreground text-center">
-                    <CardHeader>
-                        <CardTitle>2. AI-Accelerated MVP</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground">
-                            Working alongside Eve Count architects, practitioners build a functional MVP to solve the core problem.
-                        </p>
-                    </CardContent>
-                   </Card>
-                   <Card className="flex flex-col bg-background/50 text-foreground text-center">
-                    <CardHeader>
-                        <CardTitle>3. Venture Activation</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground">
-                            Successful MVPs are spun out into new ventures, with corporate backing and a clear go-to-market strategy.
-                        </p>
-                    </CardContent>
-                   </Card>
+                <div className="text-center">
+                    <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+                    NTU x Eve Count AI Incubator
+                    </h1>
+                    <p className="mx-auto mt-6 max-w-3xl text-lg text-muted-foreground sm:text-xl">
+                    Meet the AI Practitioners from NTU's SCTP Programme for Advanced AI and Machine Learning. Each member combines deep academic knowledge with practical, domain-specific expertise, ready to tackle real-world business challenges.
+                    </p>
                 </div>
               </div>
             </section>
 
-            <section id="roster" className="border-t border-border/40 bg-background py-16 md:py-24">
+             <section className="bg-secondary/20 py-16 md:py-24 border-y border-border/40">
                 <div className="container">
-                    <div className="mb-12 text-center">
-                        <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Practitioner Roster</h2>
-                        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                            The current cohort of elite AI talent from the NTU SCTP Programme, available to take on challenges.
+                     <Card className="mb-12 bg-blue-900/20 border-blue-500/50 text-foreground">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-blue-300"><TestTube2 className="h-5 w-5" /> Demo Mode</CardTitle>
+                            <CardDescription className="text-blue-400/80">This page is currently displaying synthetic data to showcase the AI Matchmaking functionality. All interactions here are for demonstration purposes and do not affect live data.</CardDescription>
+                        </CardHeader>
+                    </Card>
+                    
+                    <div id="process" className="mb-16">
+                        <div className="mb-12 text-center">
+                        <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Our Incubation Process</h2>
+                        <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
+                            We turn high-potential AI practitioners into venture-ready founders through a structured, hands-on program.
                         </p>
+                        </div>
+                        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
+                        <Card className="flex flex-col bg-background/50 text-foreground text-center">
+                            <CardHeader>
+                                <CardTitle>1. Challenge Matching</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">
+                                    Practitioners are matched with high-value business problems submitted by our corporate partners or sourced from the 'open sea'.
+                                </p>
+                            </CardContent>
+                        </Card>
+                        <Card className="flex flex-col bg-background/50 text-foreground text-center">
+                            <CardHeader>
+                                <CardTitle>2. AI-Accelerated MVP</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">
+                                    Working alongside Eve Count architects, practitioners build a functional MVP to solve the core problem.
+                                </p>
+                            </CardContent>
+                        </Card>
+                        <Card className="flex flex-col bg-background/50 text-foreground text-center">
+                            <CardHeader>
+                                <CardTitle>3. Venture Activation</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">
+                                    Successful MVPs are spun out into new ventures, with corporate backing and a clear go-to-market strategy.
+                                </p>
+                            </CardContent>
+                        </Card>
+                        </div>
                     </div>
-                     {membersLoading ? (
-                        <div className="flex justify-center">
-                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                        </div>
-                    ) : !incubatorMembers || incubatorMembers.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-8">No members on the roster.</p>
-                    ) : (
-                        <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {incubatorMembers.map((member) => (
-                                <Card key={member.id} className="flex flex-col bg-secondary/20 text-foreground">
-                                    <CardHeader>
-                                        <div className="flex justify-between items-start gap-4">
-                                            <div className="flex items-center gap-4">
-                                                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-background/50">
-                                                    <User className="h-8 w-8 text-primary" />
-                                                </div>
-                                                <div>
-                                                <CardTitle className="text-xl">{member.name}</CardTitle>
-                                                <CardDescription>AI Practitioner</CardDescription>
-                                                </div>
-                                            </div>
-                                            <Badge variant={getStatusVariant(member.status)}>{member.status}</Badge>
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="flex-grow">
-                                        <p className="text-muted-foreground">
-                                        <span className="font-semibold text-foreground">Domain Expertise: </span>
-                                        {member.expertise}
-                                        </p>
-                                    </CardContent>
-                                    <CardFooter>
-                                        <Button
-                                            className="w-full"
-                                            onClick={() => handleFindMatches('practitioner', member)}
-                                            disabled={member.status !== 'Available'}
-                                        >
-                                            <Sparkles className="mr-2 h-4 w-4" /> Find Challenges
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </section>
 
-            <section id="challenges" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
-                <div className="container">
-                    <div className="mb-12 text-center">
-                        <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Challenge Board</h2>
-                        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                            A board of high-value business problems and venture ideas, ready to be matched with practitioners from the roster.
-                        </p>
-                    </div>
-                     {challengesLoading ? (
-                        <div className="flex justify-center">
-                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                    <div id="roster" className="mb-16">
+                        <div className="mb-12 text-center">
+                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Practitioner Roster</h2>
+                            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
+                                The current cohort of elite AI talent from the NTU SCTP Programme, available to take on challenges.
+                            </p>
                         </div>
-                    ) : !challenges || challenges.length === 0 ? (
-                        <p className="text-center text-muted-foreground py-8">No challenges available.</p>
-                    ) : (
-                        <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {challenges.map(challenge => (
-                                <Card key={challenge.id} className="bg-background/50 flex flex-col text-foreground">
-                                    <CardHeader>
-                                        <div className="flex justify-between items-start gap-4">
-                                            <div className="flex items-center gap-4">
-                                                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                                                    <Lightbulb className="h-6 w-6 text-primary" />
+                        {membersLoading ? (
+                            <div className="flex justify-center">
+                                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                            </div>
+                        ) : !incubatorMembers || incubatorMembers.length === 0 ? (
+                            <p className="text-center text-muted-foreground py-8">No members on the roster.</p>
+                        ) : (
+                            <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                                {incubatorMembers.map((member) => (
+                                    <Card key={member.id} className="flex flex-col bg-background/50 text-foreground">
+                                        <CardHeader>
+                                            <div className="flex justify-between items-start gap-4">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
+                                                        <User className="h-8 w-8 text-primary" />
+                                                    </div>
+                                                    <div>
+                                                    <CardTitle className="text-xl">{member.name}</CardTitle>
+                                                    <CardDescription>AI Practitioner</CardDescription>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <CardTitle className="text-lg text-foreground">{challenge.title}</CardTitle>
-                                                    <CardDescription>{challenge.domain}</CardDescription>
-                                                </div>
+                                                <Badge variant={getStatusVariant(member.status)}>{member.status}</Badge>
                                             </div>
-                                            <Badge variant={getStatusVariant(challenge.status)}>{challenge.status}</Badge>
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="flex-grow">
-                                        <p className="text-sm text-muted-foreground">{challenge.description}</p>
-                                    </CardContent>
-                                    <CardFooter className="flex-col items-stretch gap-2">
-                                        <Button
-                                            onClick={() => handleFindMatches('challenge', challenge)}
-                                            disabled={challenge.status !== 'Open'}
-                                        >
-                                            <Sparkles className="mr-2 h-4 w-4" /> Find Practitioners
-                                        </Button>
-                                        <Button disabled={challenge.status !== 'Open'} variant="secondary">
-                                            <Hand className="mr-2 h-4 w-4" /> Assign Manually
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            ))}
+                                        </CardHeader>
+                                        <CardContent className="flex-grow">
+                                            <p className="text-muted-foreground">
+                                            <span className="font-semibold text-foreground">Domain Expertise: </span>
+                                            {member.expertise}
+                                            </p>
+                                        </CardContent>
+                                        <CardFooter>
+                                            <Button
+                                                className="w-full"
+                                                onClick={() => handleFindMatches('practitioner', member)}
+                                                disabled={member.status !== 'Available'}
+                                            >
+                                                <Sparkles className="mr-2 h-4 w-4" /> Find Challenges
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    <div id="challenges">
+                        <div className="mb-12 text-center">
+                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Challenge Board</h2>
+                            <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
+                                A board of high-value business problems and venture ideas, ready to be matched with practitioners from the roster.
+                            </p>
                         </div>
-                    )}
+                        {challengesLoading ? (
+                            <div className="flex justify-center">
+                                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                            </div>
+                        ) : !challenges || challenges.length === 0 ? (
+                            <p className="text-center text-muted-foreground py-8">No challenges available.</p>
+                        ) : (
+                            <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                                {challenges.map(challenge => (
+                                    <Card key={challenge.id} className="bg-background/50 flex flex-col text-foreground">
+                                        <CardHeader>
+                                            <div className="flex justify-between items-start gap-4">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                                        <Lightbulb className="h-6 w-6 text-primary" />
+                                                    </div>
+                                                    <div>
+                                                        <CardTitle className="text-lg text-foreground">{challenge.title}</CardTitle>
+                                                        <CardDescription>{challenge.domain}</CardDescription>
+                                                    </div>
+                                                </div>
+                                                <Badge variant={getStatusVariant(challenge.status)}>{challenge.status}</Badge>
+                                            </div>
+                                        </CardHeader>
+                                        <CardContent className="flex-grow">
+                                            <p className="text-sm text-muted-foreground">{challenge.description}</p>
+                                        </CardContent>
+                                        <CardFooter className="flex-col items-stretch gap-2">
+                                            <Button
+                                                onClick={() => handleFindMatches('challenge', challenge)}
+                                                disabled={challenge.status !== 'Open'}
+                                            >
+                                                <Sparkles className="mr-2 h-4 w-4" /> Find Practitioners
+                                            </Button>
+                                            <Button disabled={challenge.status !== 'Open'} variant="secondary">
+                                                <Hand className="mr-2 h-4 w-4" /> Assign Manually
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </section>
 
@@ -602,5 +601,3 @@ export default function IncubatorPage() {
     </div>
   );
 }
-
-    

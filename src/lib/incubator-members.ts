@@ -1,4 +1,6 @@
 
+import membersData from './incubator-members.json';
+
 export interface IncubatorMember {
   id: string;
   name: string;
@@ -6,3 +8,5 @@ export interface IncubatorMember {
   status: 'Available' | 'Assigned';
   submissionId?: string;
 }
+
+export const incubatorMembers: IncubatorMember[] = membersData;
