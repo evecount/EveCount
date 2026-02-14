@@ -10,7 +10,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github, Mail } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
@@ -381,6 +381,54 @@ function AdminDashboard() {
         });
     };
 
+  const handleSendProposalEmail = (proposal: OutreachProposal) => {
+    if (!user?.email) {
+        toast({
+            variant: "destructive",
+            title: "Cannot Send Email",
+            description: "Your email address is not available.",
+        });
+        return;
+    }
+
+    // Attempt to find the corresponding submission
+    const submissionIdMatch = proposal.sourceUrl.match(/submission=([^&]+)/);
+    const submissionId = submissionIdMatch ? submissionIdMatch[1] : null;
+    const submission = submissionId ? submissions?.find(s => s.id === submissionId) : null;
+
+    const to = user.email; // Email is sent to the admin for review
+    const subject = encodeURIComponent(`[FOR REVIEW] Outreach to ${proposal.companyName}: ${proposal.proposalTitle}`);
+    
+    let bodyContent = `Please review the following AI-generated outreach proposal.\n\n`;
+    bodyContent += `If you approve, please forward this to the appropriate contact at ${proposal.companyName}.\n`;
+    if (submission?.contactEmail) {
+        bodyContent += `Suggested contact: ${submission.contactEmail}\n`;
+    }
+    bodyContent += `\n-------\n\n`;
+    
+    bodyContent += `${proposal.proposalBody}\n\n`;
+    
+    bodyContent += `-------\n`;
+    bodyContent += `Internal Rationale & Context:\n`;
+    bodyContent += `Strategic Rationale: "${proposal.strategicRationale}"\n`;
+    bodyContent += `Agent ID: ${proposal.agentId}\n`;
+    
+    if (submission) {
+        bodyContent += `\nSource Submission Details:\n`;
+        bodyContent += `Submitter: ${submission.submitterName}\n`;
+        bodyContent += `Company: ${submission.companyName || 'N/A'}\n`;
+        bodyContent += `Vision Snippet: ${submission.visionPitch?.substring(0, 200)}...\n`;
+    }
+
+    const body = encodeURIComponent(bodyContent);
+
+    const mailtoLink = `mailto:${to}?subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+
+    // Update status to 'sent' after composing email
+    handleUpdateProposalStatus(proposal.id, 'sent');
+  };
+
   return (
     <div className="space-y-8">
         <div className="flex items-center justify-between">
@@ -486,8 +534,8 @@ function AdminDashboard() {
                                     </div>
                                 </CardContent>
                                 <CardFooter className="flex justify-end gap-2 border-t pt-4">
-                                    <Button variant="outline" size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'sent')} disabled={proposal.status === 'sent'}>
-                                        <Check className="h-4 w-4 mr-1" /> Send
+                                    <Button variant="outline" size="sm" onClick={() => handleSendProposalEmail(proposal)} disabled={proposal.status === 'sent'}>
+                                        <Mail className="h-4 w-4 mr-1" /> Send
                                     </Button>
                                     <Button variant="destructive" size="sm" onClick={() => handleUpdateProposalStatus(proposal.id, 'recalled')} disabled={proposal.status !== 'sent'}>
                                         <X className="h-4 w-4 mr-1" /> Recall
@@ -1059,3 +1107,5 @@ export default function AdminPage() {
         </div>
     );
 }
+
+    
