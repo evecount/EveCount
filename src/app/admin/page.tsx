@@ -10,7 +10,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github, Mail, BarChart3, TrendingUp, CalendarDays, DollarSign, ShieldX, LayoutDashboard, Tags, Rocket, Heart, GitFork } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github, Mail, BarChart3, TrendingUp, CalendarDays, DollarSign, ShieldX, LayoutDashboard, Tags, Rocket, Heart, GitFork, Send, Layers } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
@@ -187,14 +187,24 @@ function AdminDashboard() {
 
   const { data: proposals, isLoading: proposalsLoading } = useCollection<OutreachProposal>(proposalsQuery);
   
+  const proposalStats = useMemo(() => {
+    if (!proposals) return { total: 0, draft: 0, sent: 0, recalled: 0 };
+    return {
+        total: proposals.length,
+        draft: proposals.filter(p => p.status === 'draft').length,
+        sent: proposals.filter(p => p.status === 'sent').length,
+        recalled: proposals.filter(p => p.status === 'recalled').length,
+    };
+  }, [proposals]);
+
   const sortedProposals = useMemo(() => {
     if (!proposals) return [];
     return [...proposals].sort((a, b) => {
-        const isARecalled = a.status === 'recalled';
-        const isBRecalled = b.status === 'recalled';
+        const isADone = a.status === 'sent' || a.status === 'recalled';
+        const isBDone = b.status === 'sent' || b.status === 'recalled';
 
-        if (isARecalled && !isBRecalled) return 1;
-        if (!isARecalled && isBRecalled) return -1;
+        if (isADone && !isBDone) return 1;
+        if (!isADone && isBDone) return -1;
         
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
@@ -539,7 +549,7 @@ function AdminDashboard() {
           </TabsList>
           
           <TabsContent value="operations" className="mt-6 space-y-8">
-             <Accordion type="multiple" defaultValue={['item-1', 'item-2']} className="w-full space-y-8">
+             <Accordion type="multiple" defaultValue={['item-1', 'item-2', 'item-3']} className="w-full space-y-8">
                 <AccordionItem value="item-1" className="border-b-0">
                     <Card className="bg-secondary/20 text-foreground">
                         <AccordionTrigger className="p-6 text-left w-full hover:no-underline">
@@ -602,6 +612,56 @@ function AdminDashboard() {
                         </AccordionContent>
                     </Card>
                 </AccordionItem>
+                 <AccordionItem value="item-3" className="border-b-0">
+                    <Card className="bg-secondary/20 text-foreground">
+                        <AccordionTrigger className="p-6 text-left w-full hover:no-underline">
+                            <div className="flex-1 text-left">
+                                <h3 className="text-lg font-semibold flex items-center gap-2 text-foreground"><BarChart3 className="h-6 w-6" /> Outreach Performance</h3>
+                                <p className="text-sm text-muted-foreground">At-a-glance metrics for the Sovereign Engine's autonomous outreach.</p>
+                            </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="p-6 pt-0">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <Card className="bg-background text-foreground">
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">Total Proposals</CardTitle>
+                                        <Layers className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">{proposalStats.total}</div>
+                                    </CardContent>
+                                </Card>
+                                <Card className="bg-background text-foreground">
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">Proposals Sent</CardTitle>
+                                        <Send className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">{proposalStats.sent}</div>
+                                    </CardContent>
+                                </Card>
+                                <Card className="bg-background text-foreground">
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">Active Drafts</CardTitle>
+                                        <Edit className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">{proposalStats.draft}</div>
+                                    </CardContent>
+                                </Card>
+                                <Card className="bg-background text-foreground">
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">Recalled</CardTitle>
+                                        <X className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">{proposalStats.recalled}</div>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </AccordionContent>
+                    </Card>
+                </AccordionItem>
             </Accordion>
 
 
@@ -634,7 +694,7 @@ function AdminDashboard() {
                 {!proposalsLoading && sortedProposals && sortedProposals.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {sortedProposals.map(proposal => (
-                            <Card key={proposal.id} className="bg-background flex flex-col text-foreground">
+                            <Card key={proposal.id} className={`bg-background flex flex-col text-foreground transition-all duration-300 ${(proposal.status === 'sent' || proposal.status === 'recalled') ? 'opacity-60 grayscale hover:opacity-100 hover:grayscale-0' : ''}`}>
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
                                         <div>
