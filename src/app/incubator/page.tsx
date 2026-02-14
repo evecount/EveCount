@@ -44,8 +44,8 @@ function getStatusVariant(status: Challenge['status'] | IncubatorMember['status'
 
 const countryCodes = [
     { value: '+65-SG', label: 'Singapore (+65)' },
-    { value: '+1-CA', label: 'Canada (+1)' },
     { value: '+1-US', label: 'USA (+1)' },
+    { value: '+1-CA', label: 'Canada (+1)' },
     { value: '+44-GB', label: 'UK (+44)' },
     { value: '+91-IN', label: 'India (+91)' },
     { value: '+86-CN', label: 'China (+86)' },
@@ -563,7 +563,7 @@ export default function IncubatorPage() {
                                                 onClick={() => handleFindMatches('challenge', challenge)}
                                                 disabled={challenge.status !== 'Open'}
                                             >
-                                                <Sparkles className="mr-2 h-4 w-4" /> Find Practitioners
+                                                <Lightbulb className="mr-2 h-4 w-4" /> View Brief & Find Matches
                                             </Button>
                                             <Button disabled={challenge.status !== 'Open'} variant="secondary">
                                                 <Hand className="mr-2 h-4 w-4" /> Assign Manually
@@ -593,13 +593,13 @@ export default function IncubatorPage() {
                 <>
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2 text-foreground">
-                        {selectedItem.type === 'practitioner' ? <User className="text-primary"/> : <Sparkles className="text-primary" />}
-                        {selectedItem.type === 'practitioner' ? "Practitioner Profile & Matches" : "AI-Powered Recommendations"}
+                        {selectedItem.type === 'practitioner' ? <User className="text-primary"/> : <Lightbulb className="text-primary" />}
+                        {selectedItem.type === 'practitioner' ? "Practitioner Profile & Matches" : "Challenge Brief & Recommendations"}
                     </DialogTitle>
                     <DialogDescription>
                         {selectedItem.type === 'practitioner' 
                             ? `Viewing profile for '${(selectedItem.item as IncubatorMember).name}' and their top challenge recommendations.`
-                            : `Finding best fits for challenge '${(selectedItem.item as Challenge).title}'.`
+                            : `Viewing brief for challenge '${(selectedItem.item as Challenge).title}' and its best-fit practitioners.`
                         }
                     </DialogDescription>
                 </DialogHeader>
@@ -613,6 +613,19 @@ export default function IncubatorPage() {
                             <CardContent>
                                 <h4 className="font-semibold mb-2 text-foreground">Profile Summary</h4>
                                 <p className="text-sm text-muted-foreground">{(selectedItem.item as IncubatorMember).resume || "No resume summary available."}</p>
+                            </CardContent>
+                        </Card>
+                    )}
+
+                    {selectedItem.type === 'challenge' && (
+                        <Card className="mb-6 bg-background/50 border-border/50">
+                            <CardHeader>
+                                <CardTitle className="text-xl text-foreground">{(selectedItem.item as Challenge).title}</CardTitle>
+                                <CardDescription>{(selectedItem.item as Challenge).domain}</CardDescription>
+                            </CardHeader>
+                            <CardContent>
+                                <h4 className="font-semibold mb-2 text-foreground">Challenge Brief</h4>
+                                <p className="text-sm text-muted-foreground">{(selectedItem.item as Challenge).description}</p>
                             </CardContent>
                         </Card>
                     )}
@@ -658,7 +671,7 @@ export default function IncubatorPage() {
                                                 When no internal matches are found, the system's protocol is to create an "Open Call" to attract external specialists. This ensures no dead ends.
                                             </p>
                                             <Button asChild>
-                                                <Link href="/open-calls">
+                                                <Link href="/apply">
                                                     <Megaphone className="mr-2 h-4 w-4" />
                                                     Initiate Open Call
                                                 </Link>
