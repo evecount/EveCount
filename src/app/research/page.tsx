@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers, Atom, BrainCircuit, FlaskConical, TrendingUp, Filter, Truck, Combine, Shield, GaugeCircle } from 'lucide-react';
+import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers, Atom, BrainCircuit, FlaskConical, TrendingUp, Filter, Truck, Combine, ShieldCheck, GaugeCircle, Warehouse, Router } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -72,7 +72,7 @@ const exampleTracks = [
         icon: Filter,
         title: "AI Lead Scoring Engine",
         description: "Build an intelligent lead scoring system. A Quantum Machine Learning (QML) model could identify subtle patterns in vast customer datasets that classical algorithms might miss. Use GenAI to enrich the data, then apply a quantum classifier to predict which prospects are most likely to convert, optimizing the sales pipeline.",
-        authorQuote: "What a Y Combinator founder would build."
+        authorQuote: "What a Y Combinator founder would have built."
     },
     {
         icon: Truck,
@@ -87,7 +87,7 @@ const exampleTracks = [
         authorQuote: "What Rosalind Franklin would have built."
     },
     {
-        icon: Shield,
+        icon: ShieldCheck,
         title: "Real-time Anomaly Detection",
         description: "Develop a system that processes high-volume data streams, like live video or network traffic, to identify anomalous patterns in real time. This is a classic challenge where speed is critical. Quantum-enhanced perception could process vast amounts of data in parallel, allowing the system to detect faint signals or complex deviations from normal behavior that would be computationally prohibitive for classical systems.",
         authorQuote: "What Grace Hopper would have built."
@@ -97,6 +97,18 @@ const exampleTracks = [
         title: "Low-Latency Arbitrage Engine",
         description: "Create a financial engine that identifies and acts on market arbitrage opportunities in microseconds. This is a high-frequency optimization problem. Quantum algorithms like QAOA excel at rapidly exploring a massive number of potential trading strategies to find the optimal one, enabling execution at speeds impossible for classical computers, capturing value before it vanishes.",
         authorQuote: "What Richard Feynman would have built."
+    },
+    {
+        icon: Warehouse,
+        title: "Quantum Warehouse Placement",
+        description: "Solve a large-scale facility location problem. Given a map of customers and potential warehouse sites, use a quantum optimization algorithm (like QAOA) to determine the optimal placement of a fixed number of warehouses to minimize average delivery distance and cost. This is a classic NP-hard problem where quantum can shine.",
+        authorQuote: "What Jeff Bezos would have built."
+    },
+    {
+        icon: Router,
+        title: "Quantum Network Routing",
+        description: "Design a model for optimizing data flow in a congested telecommunications network. Use quantum annealing to find the most efficient paths for data packets to travel, minimizing latency and maximizing bandwidth utilization under dynamic load conditions. Visualize the network graph and the shifting optimal routes.",
+        authorQuote: "What Vint Cerf would have built."
     }
 ];
 
@@ -114,7 +126,7 @@ export default function ResearchPage() {
                         The Quantum Hybrid Training System
                     </h1>
                     <p className="mx-auto max-w-2xl text-lg text-muted-foreground lg:mx-0">
-                        We are solving the quantum talent gap. Our open-source "Quantum Research 101" repo is a hybrid training system designed to create the next wave of quantum practitioners. Explore our workbooks and start learning by building.
+                        We are solving the quantum talent gap. Our open-source "Quantum Research 101" repo is a hybrid training system designed to create the next wave of quantum practitioners. Explore our workbooks and start building by building.
                     </p>
                     <Button size="lg" asChild>
                         <Link href="https://github.com/evecount/quantum-research-101" target="_blank" rel="noopener noreferrer">
