@@ -60,6 +60,19 @@ export function QuantumTamChart() {
         return cycle < 0.5 ? cycle * 2 : (1 - cycle) * 2;
     }, [frameCount]);
 
+    const textProgress = useMemo(() => {
+        // This function creates a sharper transition curve.
+        // It stays near 0 for progress < 0.4,
+        // transitions quickly between 0.4 and 0.6,
+        // and stays near 1 for progress > 0.6.
+        const x = progress;
+        const edge0 = 0.4;
+        const edge1 = 0.6;
+        const t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
+        // This is a smoothstep function
+        return t * t * (3 - 2 * t);
+    }, [progress]);
+
     const outerPoints = useMemo(() => Array.from({ length: NUM_OUTER_POINTS }, (_, i) => getPointOnCircle(i, NUM_OUTER_POINTS, OUTER_RADIUS, rotation)), [rotation]);
     const innerPoints = useMemo(() => Array.from({ length: NUM_INNER_POINTS }, (_, i) => getPointOnCircle(i, NUM_INNER_POINTS, INNER_RADIUS, rotation)), [rotation]);
 
@@ -163,7 +176,7 @@ export function QuantumTamChart() {
 
              {/* Centerpiece: Now just shows the core tech labels */}
              <g textAnchor="middle">
-                 <g style={{ transition: 'opacity 0.5s ease-in-out' }} opacity={1 - progress}>
+                 <g style={{ transition: 'opacity 0.1s ease-in-out' }} opacity={1 - textProgress}>
                     <text x={CENTER} y={CENTER - 15} fontSize="14" fill="hsl(var(--muted-foreground))">
                         AI Technologies
                     </text>
@@ -171,7 +184,7 @@ export function QuantumTamChart() {
                         LLM & CV
                     </text>
                  </g>
-                 <g style={{ transition: 'opacity 0.5s ease-in-out' }} opacity={progress}>
+                 <g style={{ transition: 'opacity 0.1s ease-in-out' }} opacity={textProgress}>
                     <text x={CENTER} y={CENTER - 15} fontSize="14" fill="hsl(var(--muted-foreground))">
                         Quantum Technologies
                     </text>
