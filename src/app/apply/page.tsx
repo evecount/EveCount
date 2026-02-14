@@ -35,7 +35,11 @@ const applicationSchema = z.object({
     // Conditional fields
     companyName: z.string().optional(),
     visionPitch: z.string().optional(),
-    portfolioUrl: z.string().optional(),
+    
+    linkedinUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
+    githubUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
+    websiteUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
+
     roleInterest: z.string().optional(),
     resumeUrl: z.string().optional(),
     partnershipInterest: z.string().optional(),
@@ -45,8 +49,12 @@ const applicationSchema = z.object({
         ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your vision or problem (min 20 characters).", path: ['visionPitch'] });
     }
     if (data.applicationType === 'Incubator Application') {
-        if (!data.portfolioUrl || !z.string().url().safeParse(data.portfolioUrl).success) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please provide a valid URL to your portfolio, LinkedIn, or GitHub.", path: ['portfolioUrl'] });
+        const hasLinkedIn = data.linkedinUrl && data.linkedinUrl.length > 'https://linkedin.com/in/'.length;
+        const hasGitHub = data.githubUrl && data.githubUrl.length > 'https://github.com/'.length;
+        const hasWebsite = data.websiteUrl && data.websiteUrl.length > 'https://'.length;
+
+        if (!hasLinkedIn && !hasGitHub && !hasWebsite) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please provide at least one link (LinkedIn, GitHub, or personal site).", path: ['linkedinUrl'] });
         }
         if (!data.visionPitch || data.visionPitch.length < 20) {
             ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please tell us why you want to join (min 20 characters).", path: ['visionPitch'] });
@@ -58,9 +66,6 @@ const applicationSchema = z.object({
         }
         if (!data.resumeUrl || !z.string().url().safeParse(data.resumeUrl).success) {
             ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please provide a valid link to your resume/CV.", path: ['resumeUrl'] });
-        }
-        if (data.portfolioUrl && !z.string().url().safeParse(data.portfolioUrl).success) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "If providing a portfolio link, it must be a valid URL.", path: ['portfolioUrl'] });
         }
         if (!data.message || data.message.length < 20) {
             ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please provide a brief message (min 20 characters).", path: ['message'] });
@@ -109,7 +114,9 @@ export default function ApplyPage() {
             localPhone: "",
             companyName: "",
             visionPitch: "",
-            portfolioUrl: "",
+            linkedinUrl: "https://linkedin.com/in/",
+            githubUrl: "https://github.com/",
+            websiteUrl: "https://",
             roleInterest: "",
             resumeUrl: "",
             partnershipInterest: "",
@@ -281,18 +288,77 @@ export default function ApplyPage() {
                                                             </FormItem>
                                                         )}
                                                     />
+                                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="linkedinUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>LinkedIn Profile (Optional)</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="githubUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>GitHub Profile (Optional)</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </div>
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="websiteUrl"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Company Website (Optional)</FormLabel>
+                                                                <FormControl><Input {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
                                                 </>
                                             )}
 
                                             {applicationType === 'Incubator Application' && (
                                                 <>
+                                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="linkedinUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>LinkedIn Profile *</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="githubUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>GitHub Profile</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </div>
                                                     <FormField
                                                         control={form.control}
-                                                        name="portfolioUrl"
+                                                        name="websiteUrl"
                                                         render={({ field }) => (
                                                             <FormItem>
-                                                                <FormLabel>Portfolio Link (LinkedIn, GitHub, etc) *</FormLabel>
-                                                                <FormControl><Input placeholder="https://linkedin.com/in/yourprofile" {...field} /></FormControl>
+                                                                <FormLabel>Personal Website</FormLabel>
+                                                                <FormControl><Input {...field} /></FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}
@@ -335,13 +401,37 @@ export default function ApplyPage() {
                                                             </FormItem>
                                                         )}
                                                     />
+                                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="linkedinUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>LinkedIn Profile (Optional)</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="githubUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>GitHub Profile (Optional)</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </div>
                                                     <FormField
                                                         control={form.control}
-                                                        name="portfolioUrl"
+                                                        name="websiteUrl"
                                                         render={({ field }) => (
                                                             <FormItem>
-                                                                <FormLabel>Portfolio Link (Optional)</FormLabel>
-                                                                <FormControl><Input placeholder="https://github.com/yourprofile" {...field} /></FormControl>
+                                                                <FormLabel>Personal Website (Optional)</FormLabel>
+                                                                <FormControl><Input {...field} /></FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}
@@ -380,6 +470,41 @@ export default function ApplyPage() {
                                                             <FormItem>
                                                                 <FormLabel>Challenge or Partnership Interest *</FormLabel>
                                                                 <FormControl><Textarea placeholder="Describe your business challenge, or how you'd like to partner with us (e.g., Service Partner, Event Sponsor)." rows={5} {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="linkedinUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>LinkedIn Profile (Optional)</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="githubUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>GitHub Profile (Optional)</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </div>
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="websiteUrl"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Company Website (Optional)</FormLabel>
+                                                                <FormControl><Input {...field} /></FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}

@@ -38,14 +38,17 @@ Analyze the following submission:
 - Contact: {{contactEmail}}, {{contactPhone}}
 - Application Type: {{applicationType}}
 - Company Name: {{companyName}}
-- Portfolio/Resume: {{portfolioUrl}} / {{resumeUrl}}
+- LinkedIn: {{linkedinUrl}}
+- GitHub: {{githubUrl}}
+- Website: {{websiteUrl}}
+- Resume: {{resumeUrl}}
 - Vision/Pitch/Interest:
 "{{visionPitch}}"
 "{{partnershipInterest}}"
 "{{message}}"
 
 **Decision Logic:**
-- If the \`applicationType\` is "Incubator Application," your primary goal is to assess the candidate's potential. Analyze their \`visionPitch\` and \`portfolioUrl\` to determine their primary area of expertise. If they are a strong fit, your decision MUST be \`addToRoster\`. The payload should include their name and derived expertise.
+- If the \`applicationType\` is "Incubator Application," your primary goal is to assess the candidate's potential. Analyze their \`visionPitch\` and professional links (\`linkedinUrl\`, \`githubUrl\`) to determine their primary area of expertise. If they are a strong fit, your decision MUST be \`addToRoster\`. The payload should include their name and derived expertise.
 - If the \`applicationType\` is "Partnership Inquiry" and the \`partnershipInterest\` describes a well-defined business problem, your decision MUST be \`createChallenge\`. Extract the core problem to create a concise \`title\` and \`description\` for the challenge board, and classify it into a relevant business \`domain\`.
 - For all other cases ("Venture Pitch," "Career Inquiry," or weak applications), your decision MUST be \`archive\`. Provide a brief, neutral reason.
 

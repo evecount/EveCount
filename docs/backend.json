@@ -92,9 +92,19 @@
           "type": "string",
           "description": "Contact phone number of the submitter."
         },
-        "portfolioUrl": {
+        "linkedinUrl": {
           "type": "string",
-          "description": "A URL to a portfolio, LinkedIn, or GitHub profile. Crucial for 'Incubator Application' and optional for 'Career Inquiry'.",
+          "description": "A URL to a LinkedIn profile.",
+          "format": "uri"
+        },
+        "githubUrl": {
+          "type": "string",
+          "description": "A URL to a GitHub profile.",
+          "format": "uri"
+        },
+        "websiteUrl": {
+          "type": "string",
+          "description": "A URL to a personal or company website.",
           "format": "uri"
         },
         "resumeUrl": {
