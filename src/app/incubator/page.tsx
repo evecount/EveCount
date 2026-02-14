@@ -6,7 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Send, Lock, Loader2, Hand, Lightbulb, Sparkles, Github, TestTube2 } from "lucide-react";
+import { User, Send, Lock, Loader2, Hand, Lightbulb, Sparkles, Github, TestTube2, Check } from "lucide-react";
 import { incubatorMembers as initialMembers, type IncubatorMember } from "@/lib/incubator-members";
 import { challenges as initialChallenges, type Challenge } from "@/lib/challenges";
 import { Input } from "@/components/ui/input";
@@ -318,6 +318,38 @@ export default function IncubatorPage() {
     }
   };
 
+  const handleAssignment = (match: { id: string; name: string; rationale: string; }) => {
+    if (!selectedItem) return;
+
+    if (selectedItem.type === 'practitioner') {
+        const practitionerId = selectedItem.item.id;
+        const challengeId = match.id;
+
+        setIncubatorMembers(prev => prev.map(m => m.id === practitionerId ? { ...m, status: 'Assigned' as const } : m));
+        setChallenges(prev => prev.map(c => c.id === challengeId ? { ...c, status: 'Assigned' as const } : c));
+        
+        toast({
+            title: "Assignment Confirmed",
+            description: `'${(selectedItem.item as IncubatorMember).name}' has been assigned to challenge '${match.name}'.`
+        });
+    } else { // type is 'challenge'
+        const challengeId = selectedItem.item.id;
+        const practitionerId = match.id;
+
+        setChallenges(prev => prev.map(c => c.id === challengeId ? { ...c, status: 'Assigned' as const } : c));
+        setIncubatorMembers(prev => prev.map(m => m.id === practitionerId ? { ...m, status: 'Assigned' as const } : m));
+
+        toast({
+            title: "Assignment Confirmed",
+            description: `'${match.name}' has been assigned to challenge '${(selectedItem.item as Challenge).title}'.`
+        });
+    }
+
+    setIsMatcherOpen(false);
+    setSelectedItem(null);
+    setMatchResults(null);
+  };
+
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -579,13 +611,22 @@ export default function IncubatorPage() {
                         <div className="space-y-4">
                             {matchResults && matchResults.matches.length > 0 ? (
                                 matchResults.matches.map(match => (
-                                    <Card key={match.id} className="bg-background/50">
+                                    <Card key={match.id} className="bg-background/50 flex flex-col">
                                         <CardHeader className="pb-4">
                                             <CardTitle className="text-lg text-foreground">{match.name}</CardTitle>
                                         </CardHeader>
-                                        <CardContent>
+                                        <CardContent className="flex-grow">
                                             <p className="text-sm text-muted-foreground italic">"{match.rationale}"</p>
                                         </CardContent>
+                                        <CardFooter>
+                                            <Button 
+                                                className="w-full"
+                                                onClick={() => handleAssignment(match)}
+                                            >
+                                                <Check className="mr-2 h-4 w-4" />
+                                                Assign
+                                            </Button>
+                                        </CardFooter>
                                     </Card>
                                 ))
                             ) : (
