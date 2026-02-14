@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { DynamicBlochSphere } from "@/components/DynamicBlochSphere";
+import { QuantumBlueprint } from "@/components/QuantumBlueprint";
+import { QuantumTamChart } from "@/components/QuantumTamChart";
 
 export const metadata: Metadata = {
   title: "Quantum Training System | Building Quantum Practitioners",
@@ -166,8 +168,22 @@ export default function ResearchPage() {
                 </div>
             </div>
         </section>
+        
+        <section id="tam" className="border-t border-border/40 bg-background py-16 md:py-24">
+            <div className="container">
+                <div className="mb-12 text-center">
+                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">AI Adoption & Industry Penetration</h2>
+                    <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
+                        A visualization of how core AI technologies are penetrating and reshaping key industries, representing the established market that Quantum technologies are poised to disrupt and expand upon.
+                    </p>
+                </div>
+                <div className="mx-auto max-w-4xl">
+                     <QuantumTamChart />
+                </div>
+            </div>
+        </section>
 
-        <section id="ideas" className="border-t border-border/40 bg-background py-16 md:py-24">
+        <section id="ideas" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
             <div className="container">
                 <div className="mb-12 text-center">
                     <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Quantum Opportunity Blueprints</h2>
@@ -177,7 +193,7 @@ export default function ResearchPage() {
                 </div>
                  <div className="mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {exampleTracks.map((track, index) => (
-                        <Card key={index} className="flex flex-col bg-secondary/20 text-foreground text-center">
+                        <Card key={index} className="flex flex-col bg-background/50 text-foreground text-center">
                             <CardHeader>
                                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
                                     <track.icon className="h-6 w-6 text-primary" />
@@ -186,7 +202,7 @@ export default function ResearchPage() {
                             </CardHeader>
                             <CardContent className="flex flex-1 flex-col items-center justify-center p-2">
                                <div className="w-full max-w-[150px] mx-auto">
-                                    <DynamicBlochSphere />
+                                    <QuantumBlueprint />
                                 </div>
                             </CardContent>
                             <CardContent className="pt-0">
@@ -198,7 +214,7 @@ export default function ResearchPage() {
             </div>
         </section>
 
-        <section id="technical" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
+        <section id="technical" className="border-t border-border/40 bg-background py-16 md:py-24">
             <div className="container grid max-w-5xl gap-12 md:grid-cols-2">
                 <div>
                     <h3 className="font-headline flex items-center gap-3 text-2xl font-bold tracking-tighter sm:text-3xl"><Layers className="h-7 w-7 text-primary"/> Technical Stack</h3>
