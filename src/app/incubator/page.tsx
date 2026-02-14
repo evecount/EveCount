@@ -561,7 +561,7 @@ export default function IncubatorPage() {
             {selectedItem && (
                 <>
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2">
+                    <DialogTitle className="flex items-center gap-2 text-foreground">
                         <Sparkles className="text-primary" />
                         AI-Powered Recommendations
                     </DialogTitle>
@@ -581,7 +581,7 @@ export default function IncubatorPage() {
                                 matchResults.matches.map(match => (
                                     <Card key={match.id} className="bg-background/50">
                                         <CardHeader className="pb-4">
-                                            <CardTitle className="text-lg">{match.name}</CardTitle>
+                                            <CardTitle className="text-lg text-foreground">{match.name}</CardTitle>
                                         </CardHeader>
                                         <CardContent>
                                             <p className="text-sm text-muted-foreground italic">"{match.rationale}"</p>
@@ -603,3 +603,5 @@ export default function IncubatorPage() {
     </div>
   );
 }
+
+    
