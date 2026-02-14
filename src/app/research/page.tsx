@@ -1,12 +1,11 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { LayoutGrid, Users, BookOpen, Puzzle, Github, Target, Layers, Atom, BrainCircuit, FlaskConical, TrendingUp, Filter, Truck, Combine, ShieldCheck, GaugeCircle, Warehouse, Router } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { DynamicBlochSphere } from "@/components/DynamicBlochSphere";
-import { QuantumBlueprint } from "@/components/QuantumBlueprint";
 import { QuantumTamChart } from "@/components/QuantumTamChart";
 
 export const metadata: Metadata = {
@@ -186,28 +185,30 @@ export default function ResearchPage() {
         <section id="ideas" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
             <div className="container">
                 <div className="mb-12 text-center">
-                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Quantum Opportunity Blueprints</h2>
-                    <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                        Each potential quantum venture is rooted in the manipulation of quantum states. We visualize this core concept as a Bloch Sphere—the fundamental blueprint of a qubit—representing the vast potential within each idea.
+                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Example Project Tracks</h2>
+                     <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
+                        To bridge theory and practice, our workbooks are built around tangible project ideas. These are starting points designed to inspire the next generation of quantum applications.
                     </p>
                 </div>
-                 <div className="mx-auto grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                 <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {exampleTracks.map((track, index) => (
-                        <Card key={index} className="flex flex-col bg-background/50 text-foreground text-center">
+                        <Card key={index} className="flex flex-col bg-background/50 text-foreground">
                             <CardHeader>
-                                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                                    <track.icon className="h-6 w-6 text-primary" />
+                                <div className="flex items-center gap-4">
+                                    <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                        <track.icon className="h-6 w-6 text-primary" />
+                                    </div>
+                                    <CardTitle>{track.title}</CardTitle>
                                 </div>
-                                <CardTitle className="pt-2 text-base">{track.title}</CardTitle>
                             </CardHeader>
-                            <CardContent className="flex flex-1 flex-col items-center justify-center p-2">
-                               <div className="w-full max-w-[150px] mx-auto">
-                                    <QuantumBlueprint />
-                                </div>
+                            <CardContent className="flex-grow">
+                                <p className="text-sm text-muted-foreground">{track.description}</p>
                             </CardContent>
-                            <CardContent className="pt-0">
-                               <CardDescription className="text-xs">{track.description}</CardDescription>
-                            </CardContent>
+                            {track.authorQuote && (
+                                <CardFooter>
+                                    <p className="text-xs italic text-muted-foreground before:content-['—_']">{track.authorQuote}</p>
+                                </CardFooter>
+                            )}
                         </Card>
                     ))}
                 </div>
