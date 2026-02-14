@@ -2,7 +2,6 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
@@ -11,6 +10,7 @@ import { Github, Target, BookOpen, AlertTriangle, Terminal, Grid, Check, Upload,
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { ThreatVectorChart } from '@/components/ThreatVectorChart';
 
 const missionObjectives = [
     "Understand the Pandas Library for security log analysis.",
@@ -271,9 +271,8 @@ export default function OperationNightfallPage() {
                                                 </div>
                                             </CardHeader>
                                             <CardContent>
-                                                <div className="w-full aspect-video bg-background/50 rounded-md flex items-center justify-center relative overflow-hidden">
-                                                    <Image src="https://picsum.photos/seed/sentinel1/1200/800" alt="Mockup of a scatter plot for threat analysis" fill className="object-cover" data-ai-hint="data visualization" />
-                                                    <p className="absolute text-muted-foreground z-10">Chart Placeholder</p>
+                                                <div className="w-full aspect-video bg-background/50 rounded-md">
+                                                    <ThreatVectorChart />
                                                 </div>
                                             </CardContent>
                                             <CardFooter>
