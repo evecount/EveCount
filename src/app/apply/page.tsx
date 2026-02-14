@@ -79,20 +79,20 @@ const applicationSchema = z.object({
 });
 
 const countryCodes = [
-    { value: '+65', label: 'Singapore (+65)' },
-    { value: '+1', label: 'Canada (+1)' },
-    { value: '+1', label: 'USA (+1)' },
-    { value: '+44', label: 'UK (+44)' },
-    { value: '+91', label: 'India (+91)' },
-    { value: '+86', label: 'China (+86)' },
-    { value: '+81', label: 'Japan (+81)' },
-    { value: '+49', label: 'Germany (+49)' },
-    { value: '+33', label: 'France (+33)' },
-    { value: '+61', label: 'Australia (+61)' },
-    { value: '+234', label: 'Nigeria (+234)'},
-    { value: '+27', label: 'South Africa (+27)'},
-    { value: '+55', label: 'Brazil (+55)'},
-    { value: '+7', label: 'Russia (+7)'}
+    { value: '+65-SG', label: 'Singapore (+65)' },
+    { value: '+1-CA', label: 'Canada (+1)' },
+    { value: '+1-US', label: 'USA (+1)' },
+    { value: '+44-GB', label: 'UK (+44)' },
+    { value: '+91-IN', label: 'India (+91)' },
+    { value: '+86-CN', label: 'China (+86)' },
+    { value: '+81-JP', label: 'Japan (+81)' },
+    { value: '+49-DE', label: 'Germany (+49)' },
+    { value: '+33-FR', label: 'France (+33)' },
+    { value: '+61-AU', label: 'Australia (+61)' },
+    { value: '+234-NG', label: 'Nigeria (+234)'},
+    { value: '+27-ZA', label: 'South Africa (+27)'},
+    { value: '+55-BR', label: 'Brazil (+55)'},
+    { value: '+7-RU', label: 'Russia (+7)'}
 ];
 
 export default function ApplyPage() {
@@ -138,10 +138,11 @@ export default function ApplyPage() {
         }
 
         const { terms, countryCode, localPhone, ...submissionValues } = values;
+        const code = countryCode.split('-')[0];
 
         const submissionData = {
             ...submissionValues,
-            contactPhone: `${countryCode} ${localPhone}`,
+            contactPhone: `${code} ${localPhone}`,
             submissionDate: new Date().toISOString(),
             status: 'New' as const,
         };
@@ -289,7 +290,7 @@ export default function ApplyPage() {
                                                                     </FormControl>
                                                                     <SelectContent>
                                                                         {countryCodes.map((country) => (
-                                                                            <SelectItem key={country.label} value={country.value}>{country.label}</SelectItem>
+                                                                            <SelectItem key={country.value} value={country.value}>{country.label}</SelectItem>
                                                                         ))}
                                                                     </SelectContent>
                                                                 </Select>
