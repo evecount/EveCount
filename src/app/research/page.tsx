@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { DynamicBlochSphere } from "@/components/DynamicBlochSphere";
+import { QuantumTamChart } from "@/components/QuantumTamChart";
 
 export const metadata: Metadata = {
   title: "Quantum Training System | Building Quantum Practitioners",
@@ -92,7 +93,21 @@ export default function ResearchPage() {
             </div>
         </section>
 
-        <section id="ideas" className="border-t border-border/40 bg-background py-16 md:py-24">
+        <section id="tam" className="border-t border-border/40 bg-background py-16 md:py-24">
+            <div className="container">
+                <div className="mb-12 text-center">
+                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Quantum TAM: A $9 Trillion Beachhead</h2>
+                    <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
+                        Quantum systems are set to redefine industries. Our analysis shows a Total Addressable Market (TAM) of over $9 trillion based on Quantum Random Number Generator (QRNG) replacement alone. The graph below visualizes the primary sectors of penetration, from finance to defense, and the core quantum technologies driving this change.
+                    </p>
+                </div>
+                <div className="relative mx-auto flex h-[500px] w-full max-w-5xl items-center justify-center md:h-[600px]">
+                    <QuantumTamChart />
+                </div>
+            </div>
+        </section>
+
+        <section id="ideas" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
             <div className="container">
                 <div className="mb-12 text-center">
                     <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Example Tracks & Ideas</h2>
