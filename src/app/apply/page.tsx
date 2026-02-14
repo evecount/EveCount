@@ -19,6 +19,7 @@ import { useFirestore } from "@/firebase";
 import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
 import { collection } from "firebase/firestore";
 import { Send } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const applicationTypes = ["Venture Pitch", "Incubator Application", "Career Inquiry", "Partnership Inquiry"] as const;
 
@@ -26,7 +27,8 @@ const applicationSchema = z.object({
     applicationType: z.enum(applicationTypes, { required_error: "Please select an application type." }),
     submitterName: z.string().min(1, "Please enter your name."),
     contactEmail: z.string().email("Please enter a valid email address."),
-    contactPhone: z.string().min(10, "Please enter a valid phone number."),
+    countryCode: z.string({ required_error: "Please select a country code." }).min(1, "Please select a country code."),
+    localPhone: z.string().min(5, "Please enter a valid phone number."),
     terms: z.boolean().refine(val => val === true, {
         message: "You must review and agree to the terms and privacy policy to proceed."
     }),
@@ -74,6 +76,22 @@ const applicationSchema = z.object({
     }
 });
 
+const countryCodes = [
+    { value: '+1', label: 'USA / Canada (+1)' },
+    { value: '+44', label: 'UK (+44)' },
+    { value: '+65', label: 'Singapore (+65)' },
+    { value: '+91', label: 'India (+91)' },
+    { value: '+86', label: 'China (+86)' },
+    { value: '+81', label: 'Japan (+81)' },
+    { value: '+49', label: 'Germany (+49)' },
+    { value: '+33', label: 'France (+33)' },
+    { value: '+61', label: 'Australia (+61)' },
+    { value: '+234', label: 'Nigeria (+234)'},
+    { value: '+27', label: 'South Africa (+27)'},
+    { value: '+55', label: 'Brazil (+55)'},
+    { value: '+7', label: 'Russia (+7)'}
+];
+
 export default function ApplyPage() {
     const { toast } = useToast();
     const firestore = useFirestore();
@@ -87,7 +105,8 @@ export default function ApplyPage() {
         defaultValues: {
             submitterName: "",
             contactEmail: "",
-            contactPhone: "",
+            countryCode: "",
+            localPhone: "",
             companyName: "",
             visionPitch: "",
             portfolioUrl: "",
@@ -111,10 +130,11 @@ export default function ApplyPage() {
             return;
         }
 
-        const { terms, ...submissionValues } = values;
+        const { terms, countryCode, localPhone, ...submissionValues } = values;
 
         const submissionData = {
             ...submissionValues,
+            contactPhone: `${countryCode} ${localPhone}`,
             submissionDate: new Date().toISOString(),
             status: 'New',
         };
@@ -201,17 +221,41 @@ export default function ApplyPage() {
                                                     )}
                                                 />
                                             </div>
-                                             <FormField
-                                                control={form.control}
-                                                name="contactPhone"
-                                                render={({ field }) => (
-                                                    <FormItem>
-                                                        <FormLabel>Contact Phone *</FormLabel>
-                                                        <FormControl><Input type="tel" placeholder="Your phone number" {...field} /></FormControl>
-                                                        <FormMessage />
-                                                    </FormItem>
-                                                )}
-                                            />
+                                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-[150px_1fr]">
+                                                <FormField
+                                                    control={form.control}
+                                                    name="countryCode"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Country Code *</FormLabel>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                                <FormControl>
+                                                                    <SelectTrigger>
+                                                                        <SelectValue placeholder="Code" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent>
+                                                                    {countryCodes.map((country) => (
+                                                                        <SelectItem key={country.value} value={country.value}>{country.label}</SelectItem>
+                                                                    ))}
+                                                                </SelectContent>
+                                                            </Select>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <FormField
+                                                    control={form.control}
+                                                    name="localPhone"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Phone Number *</FormLabel>
+                                                            <FormControl><Input type="tel" placeholder="Your phone number" {...field} /></FormControl>
+                                                            <FormMessage />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            </div>
 
                                             {applicationType === 'Venture Pitch' && (
                                                 <>
@@ -386,5 +430,3 @@ export default function ApplyPage() {
         </div>
     );
 }
-
-    
