@@ -42,9 +42,8 @@ const applicationSchema = z.object({
     websiteUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
 
     roleInterest: z.string().optional(),
-    resumeUrl: z.string().optional(),
+    resumeContent: z.string().optional(),
     partnershipInterest: z.string().optional(),
-    message: z.string().optional(),
 }).superRefine((data, ctx) => {
     if (data.applicationType === 'Venture Pitch' && (!data.visionPitch || data.visionPitch.length < 20)) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your vision or problem (min 20 characters).", path: ['visionPitch'] });
@@ -65,11 +64,8 @@ const applicationSchema = z.object({
         if (!data.roleInterest || data.roleInterest.length < 1) {
              ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please specify your role or area of interest.", path: ['roleInterest'] });
         }
-        if (!data.resumeUrl || !z.string().url().safeParse(data.resumeUrl).success) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please provide a valid link to your resume/CV.", path: ['resumeUrl'] });
-        }
-        if (!data.message || data.message.length < 20) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please provide a brief message (min 20 characters).", path: ['message'] });
+        if (!data.resumeContent || data.resumeContent.length < 100) {
+            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please paste the full content of your resume (min 100 characters).", path: ['resumeContent'] });
         }
     }
     if (data.applicationType === 'Partnership Inquiry') {
@@ -123,9 +119,8 @@ export default function ApplyPage() {
             githubUrl: "https://github.com/",
             websiteUrl: "https://",
             roleInterest: "",
-            resumeUrl: "",
+            resumeContent: "",
             partnershipInterest: "",
-            message: "",
             terms: false,
         },
     });
@@ -174,9 +169,8 @@ export default function ApplyPage() {
             githubUrl: 'GitHub',
             websiteUrl: 'Website',
             roleInterest: 'Role of Interest',
-            resumeUrl: 'Resume',
+            resumeContent: 'Resume/CV',
             partnershipInterest: 'Partnership Interest',
-            message: 'Message',
         };
 
         for (const [key, value] of Object.entries(submissionData)) {
@@ -444,11 +438,11 @@ export default function ApplyPage() {
                                                         />
                                                         <FormField
                                                             control={form.control}
-                                                            name="resumeUrl"
+                                                            name="resumeContent"
                                                             render={({ field }) => (
                                                                 <FormItem>
-                                                                    <FormLabel>Resume / CV Link *</FormLabel>
-                                                                    <FormControl><Input placeholder="https://example.com/your-resume.pdf" {...field} /></FormControl>
+                                                                    <FormLabel>Resume / CV *</FormLabel>
+                                                                    <FormControl><Textarea placeholder="Please paste the plain text of your resume here. You can include a cover letter at the top." rows={10} {...field} /></FormControl>
                                                                     <FormMessage />
                                                                 </FormItem>
                                                             )}
@@ -484,17 +478,6 @@ export default function ApplyPage() {
                                                                 <FormItem>
                                                                     <FormLabel>Personal Website (Optional)</FormLabel>
                                                                     <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="message"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Message / Cover Letter *</FormLabel>
-                                                                    <FormControl><Textarea placeholder="Tell us a bit about yourself and why you're a good fit." rows={5} {...field} /></FormControl>
                                                                     <FormMessage />
                                                                 </FormItem>
                                                             )}

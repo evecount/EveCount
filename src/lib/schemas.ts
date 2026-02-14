@@ -94,9 +94,8 @@ const SubmissionSchemaForAgent = z.object({
   githubUrl: z.string().optional(),
   websiteUrl: z.string().optional(),
   roleInterest: z.string().optional(),
-  resumeUrl: z.string().optional(),
+  resumeContent: z.string().optional(),
   partnershipInterest: z.string().optional(),
-  message: z.string().optional(),
 });
 
 export const IncubatorMemberSchemaForAgent = z.object({

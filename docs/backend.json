@@ -107,10 +107,9 @@
           "description": "A URL to a personal or company website.",
           "format": "uri"
         },
-        "resumeUrl": {
+        "resumeContent": {
           "type": "string",
-          "description": "A URL to a resume or CV. Required for 'Career Inquiry'.",
-          "format": "uri"
+          "description": "The plain text content of a resume or CV, often including a cover letter. Required for 'Career Inquiry'."
         },
         "roleInterest": {
           "type": "string",
@@ -119,10 +118,6 @@
         "partnershipInterest": {
           "type": "string",
           "description": "For a 'Partnership Inquiry', this field should capture the specific business challenge or interest in partnering (e.g., Service Partner, Event Sponsor)."
-        },
-        "message": {
-          "type": "string",
-          "description": "A general message or cover letter, primarily for 'Career Inquiry'."
         }
       },
       "required": [

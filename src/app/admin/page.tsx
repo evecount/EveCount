@@ -72,9 +72,8 @@ interface Submission {
     githubUrl?: string;
     websiteUrl?: string;
     roleInterest?: string;
-    resumeUrl?: string;
+    resumeContent?: string;
     partnershipInterest?: string;
-    message?: string;
 }
 
 type StatusVariant = "default" | "destructive" | "secondary" | "outline";
@@ -834,10 +833,10 @@ function AdminDashboard() {
                                     <Textarea readOnly value={selectedSubmission.partnershipInterest} className="col-span-3 bg-muted text-foreground" rows={6}/>
                                 </div>
                             )}
-                             {selectedSubmission.message && (
+                            {selectedSubmission.resumeContent && (
                                 <div className="grid grid-cols-4 items-start gap-4">
-                                    <Label className="text-right pt-2">Message</Label>
-                                    <Textarea readOnly value={selectedSubmission.message} className="col-span-3 bg-muted text-foreground" rows={6}/>
+                                    <Label className="text-right pt-2">Resume Content</Label>
+                                    <Textarea readOnly value={selectedSubmission.resumeContent} className="col-span-3 bg-muted text-foreground" rows={10}/>
                                 </div>
                             )}
                              {selectedSubmission.linkedinUrl && (
@@ -862,12 +861,6 @@ function AdminDashboard() {
                                     <a href={selectedSubmission.websiteUrl} target="_blank" rel="noreferrer noopener" className="col-span-3 text-primary hover:underline truncate flex items-center gap-2">
                                         <LinkIcon className="h-4 w-4" /> {selectedSubmission.websiteUrl}
                                     </a>
-                                </div>
-                            )}
-                             {selectedSubmission.resumeUrl && (
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Resume</Label>
-                                    <a href={selectedSubmission.resumeUrl} target="_blank" rel="noreferrer noopener" className="col-span-3 text-primary hover:underline truncate">{selectedSubmission.resumeUrl}</a>
                                 </div>
                             )}
                         </div>
