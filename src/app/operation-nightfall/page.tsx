@@ -164,7 +164,7 @@ export default function OperationNightfallPage() {
                                 {/* Sidebar Mockup */}
                                 <div className="w-full md:w-1/4 lg:w-1/5 p-4 border-r border-border/40 bg-secondary/20">
                                     <div className="space-y-6">
-                                        <Card className="bg-background/50">
+                                        <Card className="bg-background/50 text-foreground">
                                             <CardHeader className="pb-2">
                                                 <CardTitle className="text-base flex items-center gap-2"><Upload className="h-4 w-4"/> Case Evidence</CardTitle>
                                             </CardHeader>
@@ -175,7 +175,7 @@ export default function OperationNightfallPage() {
 
                                         <Separator />
 
-                                        <Card className="bg-background/50">
+                                        <Card className="bg-background/50 text-foreground">
                                             <CardHeader className="pb-2">
                                                 <CardTitle className="text-base flex items-center gap-2"><Globe className="h-4 w-4"/> Contribute to Grid</CardTitle>
                                                 <CardDescription className="text-xs">Join the decentralized forensic network.</CardDescription>
@@ -189,7 +189,7 @@ export default function OperationNightfallPage() {
 
                                         <Separator />
 
-                                        <Card className="bg-background/50">
+                                        <Card className="bg-background/50 text-foreground">
                                             <CardHeader className="pb-2">
                                                 <CardTitle className="text-base flex items-center gap-2"><Heart className="h-4 w-4"/> Sponsor the Grid</CardTitle>
                                             </CardHeader>
@@ -215,7 +215,7 @@ export default function OperationNightfallPage() {
                                     <div className="mb-6">
                                         <h4 className="text-lg font-semibold flex items-center gap-2 mb-4"><Microscope/> Triage & Auto-Hunt</h4>
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                            <Card className="bg-secondary/30">
+                                            <Card className="bg-secondary/30 text-foreground">
                                                 <CardHeader className="pb-2">
                                                     <CardTitle className="text-sm font-medium text-muted-foreground">Total Events</CardTitle>
                                                 </CardHeader>
@@ -223,7 +223,7 @@ export default function OperationNightfallPage() {
                                                     <p className="text-2xl font-bold">2,845</p>
                                                 </CardContent>
                                             </Card>
-                                            <Card className="bg-secondary/30">
+                                            <Card className="bg-secondary/30 text-foreground">
                                                 <CardHeader className="pb-2">
                                                     <CardTitle className="text-sm font-medium text-muted-foreground">Unique Processes</CardTitle>
                                                 </CardHeader>
@@ -231,9 +231,9 @@ export default function OperationNightfallPage() {
                                                     <p className="text-2xl font-bold">78</p>
                                                 </CardContent>
                                             </Card>
-                                            <Card className="bg-destructive/10 border-destructive">
+                                            <Card className="bg-destructive/10 border-destructive text-foreground">
                                                 <CardHeader className="pb-2">
-                                                    <CardTitle className="text-sm font-medium text-destructive">🚨 Threat Hits</CardTitle>
+                                                    <CardTitle className="text-sm font-medium text-foreground">🚨 Threat Hits</CardTitle>
                                                 </CardHeader>
                                                 <CardContent>
                                                     <p className="text-2xl font-bold">12</p>
@@ -241,7 +241,7 @@ export default function OperationNightfallPage() {
                                                 </CardContent>
                                             </Card>
                                         </div>
-                                        <Alert variant="destructive" className="mt-4">
+                                        <Alert variant="destructive" className="mt-4 text-foreground">
                                             <Siren className="h-4 w-4" />
                                             <AlertTitle>Detected Suspicious Processes</AlertTitle>
                                             <AlertDescription>powershell.exe, nmap.exe</AlertDescription>
@@ -253,7 +253,7 @@ export default function OperationNightfallPage() {
                                     {/* Visualization Section */}
                                     <div>
                                         <h4 className="text-lg font-semibold flex items-center gap-2 mb-4"><BarChart3/> Threat Hunting Console</h4>
-                                        <Card className="bg-secondary/30">
+                                        <Card className="bg-secondary/30 text-foreground">
                                             <CardHeader>
                                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                                     <div>
