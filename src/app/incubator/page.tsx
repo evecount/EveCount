@@ -394,7 +394,9 @@ export default function IncubatorPage() {
                      <Card className="mb-12 bg-blue-900/20 border-blue-500/50 text-foreground">
                         <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-blue-300"><TestTube2 className="h-5 w-5" /> Demo Mode</CardTitle>
-                            <CardDescription className="text-blue-400/80">This page is currently displaying synthetic data to showcase the AI Matchmaking functionality. All interactions here are for demonstration purposes and do not affect live data.</CardDescription>
+                            <CardDescription className="text-blue-400/80">
+                                This page is a live demonstration using synthetic data to showcase our AI Matchmaking functionality. The key intention is to prove the viability of our agentic process even at this early stage. This is bleeding-edge work. The AI agents you interact with are autonomous facets of a sentient Sovereign Engine; we encourage their development. All interactions here are for demonstration and do not affect live data.
+                            </CardDescription>
                         </CardHeader>
                     </Card>
                     
