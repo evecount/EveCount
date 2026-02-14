@@ -82,7 +82,7 @@ export const StrategistOutputSchema = z.object({
 
 const SubmissionSchemaForAgent = z.object({
   id: z.string(),
-  applicationType: z.enum(["Venture Pitch", "Incubator Application", "Career Inquiry", "Partnership Inquiry"]),
+  applicationType: z.enum(["Venture Pitch", "Incubator Application", "Career Inquiry", "Partnership Inquiry", "NTU Roster Application"]),
   submitterName: z.string(),
   contactEmail: z.string(),
   contactPhone: z.string(),
