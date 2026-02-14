@@ -6,16 +6,34 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Send, Lock, Loader2 } from "lucide-react";
+import { User, Send, Lock, Loader2, Hand, Lightbulb } from "lucide-react";
 import type { IncubatorMember } from "@/lib/incubator-members";
+import type { Challenge } from "@/lib/challenges";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection } from "firebase/firestore";
+import { Badge } from "@/components/ui/badge";
 
 // IMPORTANT: This is a simple client-side password protection for demonstration purposes.
 // For a production application, you should use a proper authentication system.
 const PASSWORD = 'ntusctp';
+
+type StatusVariant = "default" | "destructive" | "secondary" | "outline";
+
+function getStatusVariant(status: Challenge['status'] | IncubatorMember['status'] | string): StatusVariant {
+    switch (status) {
+      case 'Completed':
+      case 'Assigned':
+        return 'default';
+      case 'Open':
+      case 'Available':
+        return 'secondary';
+      default:
+        return 'outline';
+    }
+}
+
 
 export default function IncubatorPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -28,8 +46,13 @@ export default function IncubatorPage() {
     if (!firestore) return null;
     return collection(firestore, 'incubatorMembers');
   }, [firestore]);
-
   const { data: incubatorMembers, isLoading: membersLoading } = useCollection<IncubatorMember>(membersQuery);
+
+  const challengesQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'challenges');
+  }, [firestore]);
+  const { data: challenges, isLoading: challengesLoading } = useCollection<Challenge>(challengesQuery);
 
 
   React.useEffect(() => {
@@ -104,7 +127,6 @@ export default function IncubatorPage() {
           </section>
         ) : (
           <>
-            {/* Hero Section */}
             <section className="bg-background py-16 md:py-24 lg:py-32">
               <div className="container text-center">
                 <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
@@ -115,14 +137,104 @@ export default function IncubatorPage() {
                 </p>
               </div>
             </section>
+            
+            <section id="process" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
+              <div className="container">
+                <div className="mb-12 text-center">
+                  <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Our Incubation Process</h2>
+                  <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
+                    We turn high-potential AI practitioners into venture-ready founders through a structured, hands-on program.
+                  </p>
+                </div>
+                <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
+                   <Card className="flex flex-col bg-background/50 text-foreground text-center">
+                    <CardHeader>
+                        <CardTitle>1. Challenge Matching</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground">
+                            Practitioners are matched with high-value business problems submitted by our corporate partners or sourced from the 'open sea'.
+                        </p>
+                    </CardContent>
+                   </Card>
+                   <Card className="flex flex-col bg-background/50 text-foreground text-center">
+                    <CardHeader>
+                        <CardTitle>2. AI-Accelerated MVP</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground">
+                            Working alongside Eve Count architects, practitioners build a functional MVP to solve the core problem.
+                        </p>
+                    </CardContent>
+                   </Card>
+                   <Card className="flex flex-col bg-background/50 text-foreground text-center">
+                    <CardHeader>
+                        <CardTitle>3. Venture Activation</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground">
+                            Successful MVPs are spun out into new ventures, with corporate backing and a clear go-to-market strategy.
+                        </p>
+                    </CardContent>
+                   </Card>
+                </div>
+              </div>
+            </section>
 
-            {/* Roster Section */}
+            <section id="challenges" className="border-t border-border/40 bg-background py-16 md:py-24">
+                <div className="container">
+                    <div className="mb-12 text-center">
+                        <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Challenge Board</h2>
+                        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
+                            A board of high-value business problems and venture ideas, ready to be matched with practitioners from the roster.
+                        </p>
+                    </div>
+                     {challengesLoading ? (
+                        <div className="flex justify-center">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                        </div>
+                    ) : !challenges || challenges.length === 0 ? (
+                        <p className="text-center text-muted-foreground py-8">No challenges available.</p>
+                    ) : (
+                        <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                            {challenges.map(challenge => (
+                                <Card key={challenge.id} className="bg-secondary/20 flex flex-col text-foreground">
+                                    <CardHeader>
+                                        <div className="flex justify-between items-start gap-4">
+                                            <div className="flex items-center gap-4">
+                                                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
+                                                    <Lightbulb className="h-6 w-6 text-primary" />
+                                                </div>
+                                                <div>
+                                                    <CardTitle className="text-lg text-foreground">{challenge.title}</CardTitle>
+                                                    <CardDescription>{challenge.domain}</CardDescription>
+                                                </div>
+                                            </div>
+                                            <Badge variant={getStatusVariant(challenge.status)}>{challenge.status}</Badge>
+                                        </div>
+                                    </CardHeader>
+                                    <CardContent className="flex-grow">
+                                        <p className="text-sm text-muted-foreground">{challenge.description}</p>
+                                    </CardContent>
+                                    <CardContent>
+                                        <Button disabled={challenge.status !== 'Open'} className="w-full">
+                                            <Hand className="mr-2 h-4 w-4" />
+                                            Assign to Practitioner
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </section>
+
             <section id="roster" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
                 <div className="container">
                     <div className="mb-12 text-center">
-                        <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Meet the Cohort</h2>
+                        <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Practitioner Roster</h2>
                         <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                            A roster of talent ready to transform industries with AI.
+                            The current cohort of elite AI talent from the NTU SCTP Programme, available to take on challenges.
                         </p>
                     </div>
                      {membersLoading ? (
@@ -134,14 +246,17 @@ export default function IncubatorPage() {
                             {incubatorMembers?.map((member) => (
                                 <Card key={member.id} className="flex flex-col bg-background/50 text-foreground">
                                     <CardHeader>
-                                        <div className="flex items-center gap-4">
-                                            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
-                                                <User className="h-8 w-8 text-primary" />
+                                        <div className="flex justify-between items-start gap-4">
+                                            <div className="flex items-center gap-4">
+                                                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary">
+                                                    <User className="h-8 w-8 text-primary" />
+                                                </div>
+                                                <div>
+                                                <CardTitle className="text-xl">{member.name}</CardTitle>
+                                                <CardDescription>AI Practitioner</CardDescription>
+                                                </div>
                                             </div>
-                                            <div>
-                                            <CardTitle className="text-xl">{member.name}</CardTitle>
-                                            <CardDescription>AI Practitioner</CardDescription>
-                                            </div>
+                                            <Badge variant={getStatusVariant(member.status)}>{member.status}</Badge>
                                         </div>
                                     </CardHeader>
                                     <CardContent>
@@ -157,56 +272,12 @@ export default function IncubatorPage() {
                 </div>
             </section>
 
-            {/* High-level process */}
-            <section id="process" className="border-t border-border/40 bg-background py-16 md:py-24">
-              <div className="container">
-                <div className="mb-12 text-center">
-                  <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Our Incubation Process</h2>
-                  <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                    We turn high-potential AI practitioners into venture-ready founders through a structured, hands-on program.
-                  </p>
-                </div>
-                <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
-                   <Card className="flex flex-col bg-secondary/20 text-foreground text-center">
-                    <CardHeader>
-                        <CardTitle>1. Challenge Matching</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground">
-                            Practitioners are matched with high-value business problems submitted by our corporate partners.
-                        </p>
-                    </CardContent>
-                   </Card>
-                   <Card className="flex flex-col bg-secondary/20 text-foreground text-center">
-                    <CardHeader>
-                        <CardTitle>2. AI-Accelerated MVP</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground">
-                            Working alongside Eve Count architects, practitioners build a functional MVP to solve the core problem.
-                        </p>
-                    </CardContent>
-                   </Card>
-                   <Card className="flex flex-col bg-secondary/20 text-foreground text-center">
-                    <CardHeader>
-                        <CardTitle>3. Venture Activation</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground">
-                            Successful MVPs are spun out into new ventures, with corporate backing and a clear go-to-market strategy.
-                        </p>
-                    </CardContent>
-                   </Card>
-                </div>
-              </div>
-            </section>
 
-            {/* Problem Statement Submission */}
-            <section id="submit-problem" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
+            <section id="submit-problem" className="border-t border-border/40 bg-background py-16 md:py-24">
                 <div className="container max-w-3xl text-center">
                     <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Have a Challenge for Us?</h2>
                     <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                        Submit your business problem statement. We will connect you with the right expert from our cohort to explore how AI can deliver a solution.
+                        Submit your business problem statement or venture idea. If it's a good fit, we'll add it to our Challenge Board for the community to tackle.
                     </p>
                     <Button size="lg" className="mt-8" asChild>
                       <Link href="/apply">
