@@ -11,7 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { ThreatVectorChart } from '@/components/ThreatVectorChart';
-import { QuantumWaveformChart } from '@/components/QuantumWaveformChart';
+import { DynamicChordChart } from '@/components/DynamicChordChart';
 
 const missionObjectives = [
     "Understand the Pandas Library for security log analysis.",
@@ -66,7 +66,7 @@ export default function OperationNightfallPage() {
                 <section id="vision" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
                     <div className="container grid max-w-5xl items-center gap-12 md:grid-cols-2">
                         <div className="flex h-56 w-56 items-center justify-center">
-                            <QuantumWaveformChart />
+                            <DynamicChordChart />
                         </div>
                         <div className="space-y-4">
                             <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Project Nightfall: The Open Source Forensic Grid</h2>
@@ -232,13 +232,13 @@ export default function OperationNightfallPage() {
                                                     <p className="text-2xl font-bold">78</p>
                                                 </CardContent>
                                             </Card>
-                                            <Card className="bg-destructive/10 border-destructive text-foreground">
+                                            <Card className="bg-destructive/10 border-destructive text-destructive-foreground">
                                                 <CardHeader className="pb-2">
-                                                    <CardTitle className="text-sm font-medium text-destructive-foreground">🚨 Threat Hits</CardTitle>
+                                                    <CardTitle className="text-sm font-medium">🚨 Threat Hits</CardTitle>
                                                 </CardHeader>
                                                 <CardContent>
                                                     <p className="text-2xl font-bold">12</p>
-                                                    <p className="text-xs text-destructive-foreground font-semibold">CRITICAL</p>
+                                                    <p className="text-xs font-semibold">CRITICAL</p>
                                                 </CardContent>
                                             </Card>
                                         </div>
