@@ -82,9 +82,10 @@ const applicationSchema = z.object({
 });
 
 const countryCodes = [
-    { value: '+1', label: 'USA / Canada (+1)' },
-    { value: '+44', label: 'UK (+44)' },
     { value: '+65', label: 'Singapore (+65)' },
+    { value: '+1', label: 'Canada (+1)' },
+    { value: '+1', label: 'USA (+1)' },
+    { value: '+44', label: 'UK (+44)' },
     { value: '+91', label: 'India (+91)' },
     { value: '+86', label: 'China (+86)' },
     { value: '+81', label: 'Japan (+81)' },
@@ -243,7 +244,7 @@ export default function ApplyPage() {
                                                                 </FormControl>
                                                                 <SelectContent>
                                                                     {countryCodes.map((country) => (
-                                                                        <SelectItem key={country.value} value={country.value}>{country.label}</SelectItem>
+                                                                        <SelectItem key={country.label} value={country.value}>{country.label}</SelectItem>
                                                                     ))}
                                                                 </SelectContent>
                                                             </Select>
