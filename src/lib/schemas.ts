@@ -99,7 +99,7 @@ const SubmissionSchemaForAgent = z.object({
   message: z.string().optional(),
 });
 
-const IncubatorMemberSchemaForAgent = z.object({
+export const IncubatorMemberSchemaForAgent = z.object({
     id: z.string(),
     name: z.string(),
     expertise: z.string(),
@@ -107,7 +107,7 @@ const IncubatorMemberSchemaForAgent = z.object({
     submissionId: z.string().optional(),
 });
 
-const ChallengeSchemaForAgent = z.object({
+export const ChallengeSchemaForAgent = z.object({
     id: z.string(),
     title: z.string(),
     description: z.string(),
@@ -164,6 +164,25 @@ export const CommandCenterChatOutputSchema = z.object({
       payload: SourceActionPayloadSchema,
   })).optional().describe("A list of autonomous actions for the client to execute, such as adding a new intelligence source."),
 });
+
+export const IncubatorMatcherInputSchema = z.object({
+    matchType: z.enum(['practitioner', 'challenge']),
+    targetId: z.string(),
+    practitioners: z.array(IncubatorMemberSchemaForAgent),
+    challenges: z.array(ChallengeSchemaForAgent),
+});
+
+export const IncubatorMatcherOutputSchema = z.object({
+    matches: z.array(z.object({
+        id: z.string(),
+        name: z.string().describe("The name of the matched practitioner or title of the matched challenge."),
+        rationale: z.string().describe("A brief, one-sentence explanation for why this is a good match."),
+    })).describe("A list of the top 3-5 matches, sorted by relevance."),
+});
+
+export type IncubatorMatcherInput = z.infer<typeof IncubatorMatcherInputSchema>;
+export type IncubatorMatcherOutput = z.infer<typeof IncubatorMatcherOutputSchema>;
+
 
 export const SubmissionSorterInputSchema = SubmissionSchemaForAgent;
 

@@ -1,12 +1,12 @@
 
 'use client';
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Send, Lock, Loader2, Hand, Lightbulb } from "lucide-react";
+import { User, Send, Lock, Loader2, Hand, Lightbulb, Sparkles } from "lucide-react";
 import type { IncubatorMember } from "@/lib/incubator-members";
 import type { Challenge } from "@/lib/challenges";
 import Link from "next/link";
@@ -14,6 +14,10 @@ import { Input } from "@/components/ui/input";
 import { useFirestore, useCollection, useMemoFirebase } from "@/firebase";
 import { collection } from "firebase/firestore";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { runIncubatorMatcherAction } from "@/app/actions";
+import { useToast } from "@/hooks/use-toast";
+import type { IncubatorMatcherOutput } from "@/lib/schemas";
 
 // IMPORTANT: This is a simple client-side password protection for demonstration purposes.
 // For a production application, you should use a proper authentication system.
@@ -39,6 +43,7 @@ export default function IncubatorPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const { toast } = useToast();
   
   const firestore = useFirestore();
 
@@ -54,6 +59,11 @@ export default function IncubatorPage() {
   }, [firestore]);
   const { data: challenges, isLoading: challengesLoading } = useCollection<Challenge>(challengesQuery);
 
+  // New state for the matching feature
+  const [isMatcherOpen, setIsMatcherOpen] = useState(false);
+  const [matcherLoading, setMatcherLoading] = useState(false);
+  const [matchResults, setMatchResults] = useState<IncubatorMatcherOutput | null>(null);
+  const [selectedItem, setSelectedItem] = useState<{ type: 'practitioner' | 'challenge'; item: IncubatorMember | Challenge } | null>(null);
 
   React.useEffect(() => {
     document.title = "NTU x Eve Count AI Incubator | EveCount.com";
@@ -69,6 +79,43 @@ export default function IncubatorPage() {
       setPassword('');
     }
   };
+
+  const handleFindMatches = async (type: 'practitioner' | 'challenge', item: IncubatorMember | Challenge) => {
+    setSelectedItem({ type, item });
+    setIsMatcherOpen(true);
+    setMatcherLoading(true);
+    setMatchResults(null);
+
+    try {
+        const result = await runIncubatorMatcherAction({
+            matchType: type,
+            targetId: item.id,
+            practitioners: incubatorMembers || [],
+            challenges: challenges || [],
+        });
+
+        if (result.success && result.data) {
+            setMatchResults(result.data);
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Matching Failed",
+                description: result.message || "Could not retrieve matches from the AI.",
+            });
+            setIsMatcherOpen(false); // Close dialog on error
+        }
+    } catch (error) {
+         toast({
+            variant: "destructive",
+            title: "Matching Failed",
+            description: "An unexpected error occurred.",
+        });
+        setIsMatcherOpen(false); // Close dialog on error
+    } finally {
+        setMatcherLoading(false);
+    }
+  };
+
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -216,12 +263,17 @@ export default function IncubatorPage() {
                                     <CardContent className="flex-grow">
                                         <p className="text-sm text-muted-foreground">{challenge.description}</p>
                                     </CardContent>
-                                    <CardContent>
-                                        <Button disabled={challenge.status !== 'Open'} className="w-full">
-                                            <Hand className="mr-2 h-4 w-4" />
-                                            Assign to Practitioner
+                                    <CardFooter className="flex-col items-stretch gap-2">
+                                        <Button
+                                            onClick={() => handleFindMatches('challenge', challenge)}
+                                            disabled={challenge.status !== 'Open'}
+                                        >
+                                            <Sparkles className="mr-2 h-4 w-4" /> Find Practitioners
                                         </Button>
-                                    </CardContent>
+                                        <Button disabled={challenge.status !== 'Open'} variant="secondary">
+                                            <Hand className="mr-2 h-4 w-4" /> Assign Manually
+                                        </Button>
+                                    </CardFooter>
                                 </Card>
                             ))}
                         </div>
@@ -241,9 +293,11 @@ export default function IncubatorPage() {
                         <div className="flex justify-center">
                             <Loader2 className="h-8 w-8 animate-spin text-primary" />
                         </div>
+                    ) : !incubatorMembers || incubatorMembers.length === 0 ? (
+                        <p className="text-center text-muted-foreground py-8">No members on the roster.</p>
                     ) : (
                         <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                            {incubatorMembers?.map((member) => (
+                            {incubatorMembers.map((member) => (
                                 <Card key={member.id} className="flex flex-col bg-background/50 text-foreground">
                                     <CardHeader>
                                         <div className="flex justify-between items-start gap-4">
@@ -259,12 +313,21 @@ export default function IncubatorPage() {
                                             <Badge variant={getStatusVariant(member.status)}>{member.status}</Badge>
                                         </div>
                                     </CardHeader>
-                                    <CardContent>
+                                    <CardContent className="flex-grow">
                                         <p className="text-muted-foreground">
                                         <span className="font-semibold text-foreground">Domain Expertise: </span>
                                         {member.expertise}
                                         </p>
                                     </CardContent>
+                                    <CardFooter>
+                                        <Button
+                                            className="w-full"
+                                            onClick={() => handleFindMatches('practitioner', member)}
+                                            disabled={member.status !== 'Available'}
+                                        >
+                                            <Sparkles className="mr-2 h-4 w-4" /> Find Challenges
+                                        </Button>
+                                    </CardFooter>
                                 </Card>
                             ))}
                         </div>
@@ -290,6 +353,50 @@ export default function IncubatorPage() {
           </>
         )}
       </main>
+      
+      <Dialog open={isMatcherOpen} onOpenChange={setIsMatcherOpen}>
+        <DialogContent>
+            {selectedItem && (
+                <>
+                <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2">
+                        <Sparkles className="text-primary" />
+                        AI-Powered Recommendations
+                    </DialogTitle>
+                    <DialogDescription>
+                        Finding best fits for {selectedItem.type === 'practitioner' ? `practitioner '${(selectedItem.item as IncubatorMember).name}'` : `challenge '${(selectedItem.item as Challenge).title}'`}.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="py-4 max-h-[60vh] overflow-y-auto">
+                    {matcherLoading ? (
+                        <div className="flex items-center justify-center space-x-2 h-40">
+                            <Loader2 className="h-6 w-6 animate-spin" />
+                            <p className="text-muted-foreground">Analyzing matches...</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-4">
+                            {matchResults && matchResults.matches.length > 0 ? (
+                                matchResults.matches.map(match => (
+                                    <Card key={match.id} className="bg-background/50">
+                                        <CardHeader className="pb-4">
+                                            <CardTitle className="text-lg">{match.name}</CardTitle>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <p className="text-sm text-muted-foreground italic">"{match.rationale}"</p>
+                                        </CardContent>
+                                    </Card>
+                                ))
+                            ) : (
+                                <p className="text-center text-muted-foreground pt-10">No ideal matches found at this time.</p>
+                            )}
+                        </div>
+                    )}
+                </div>
+                </>
+            )}
+        </DialogContent>
+    </Dialog>
+
       <Footer />
     </div>
   );

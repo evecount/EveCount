@@ -6,6 +6,7 @@ import { commandCenterChat, type CommandCenterChatInput } from '@/ai/flows/comma
 import { runStrategist, type StrategistInput, type StrategistOutput } from '@/ai/flows/strategist';
 import { runSubmissionSorter, type SubmissionSorterOutput } from '@/ai/flows/submission-sorter';
 import type { Submission } from '@/lib/submissions';
+import { runIncubatorMatcher, type IncubatorMatcherInput, type IncubatorMatcherOutput } from '@/ai/flows/incubator-matcher';
 
 
 export async function submitChatMessage(input: AiPartnerChatInput) {
@@ -48,6 +49,17 @@ export async function sortSubmissionAction(submission: Submission): Promise<{ su
     } catch (error) {
         console.error("Submission Sorter flow failed:", error);
         const message = error instanceof Error ? error.message : "An unexpected error occurred while sorting the submission.";
+        return { success: false, message };
+    }
+}
+
+export async function runIncubatorMatcherAction(input: IncubatorMatcherInput): Promise<{ success: boolean; data?: IncubatorMatcherOutput; message?: string; }> {
+    try {
+        const result = await runIncubatorMatcher(input);
+        return { success: true, data: result };
+    } catch (error) {
+        console.error("Incubator Matcher flow failed:", error);
+        const message = error instanceof Error ? error.message : "An unexpected error occurred while finding matches.";
         return { success: false, message };
     }
 }
