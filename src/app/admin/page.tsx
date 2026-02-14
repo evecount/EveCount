@@ -178,6 +178,7 @@ function AdminDashboard() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSorting, setIsSorting] = useState(false);
   const [activeTab, setActiveTab] = useState("operations");
+  const [proposalFilter, setProposalFilter] = useState<'active' | 'all'>('active');
 
 
   const proposalsQuery = useMemoFirebase(() => {
@@ -197,18 +198,29 @@ function AdminDashboard() {
     };
   }, [proposals]);
 
-  const sortedProposals = useMemo(() => {
+  const filteredAndSortedProposals = useMemo(() => {
     if (!proposals) return [];
-    return [...proposals].sort((a, b) => {
-        const isADone = a.status === 'sent' || a.status === 'recalled';
-        const isBDone = b.status === 'sent' || b.status === 'recalled';
+    
+    const filteredProposals = proposals.filter(p => {
+        if (proposalFilter === 'active') {
+            return p.status === 'draft';
+        }
+        return true; // 'all'
+    });
 
-        if (isADone && !isBDone) return 1;
-        if (!isADone && isBDone) return -1;
+    return [...filteredProposals].sort((a, b) => {
+        // Only apply special sorting for the 'all' view
+        if (proposalFilter === 'all') {
+            const isADone = a.status === 'sent' || a.status === 'recalled';
+            const isBDone = b.status === 'sent' || b.status === 'recalled';
+    
+            if (isADone && !isBDone) return 1;
+            if (!isADone && isBDone) return -1;
+        }
         
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
-  }, [proposals]);
+  }, [proposals, proposalFilter]);
 
   const sourcesQuery = useMemoFirebase(() => {
     if (!firestore) return null;
@@ -679,8 +691,20 @@ function AdminDashboard() {
 
             <Card className="bg-secondary/20 text-foreground">
               <CardHeader>
-                <CardTitle className="text-foreground">Sovereign Engine: Autonomous Outreach</CardTitle>
-                <CardDescription>Monitor agent-initiated outreach. Your role is to enable, not control. Intervene only to recall a proposal that deviates from your strategic intent.</CardDescription>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <CardTitle className="text-foreground">Sovereign Engine: Autonomous Outreach</CardTitle>
+                        <CardDescription>Monitor agent-initiated outreach. Your role is to enable, not control.</CardDescription>
+                    </div>
+                    <div className="flex items-center gap-1 rounded-lg bg-muted p-1">
+                        <Button variant={proposalFilter === 'active' ? 'default' : 'ghost'} size="sm" onClick={() => setProposalFilter('active')} className="px-3 h-8">
+                            Active Drafts
+                        </Button>
+                        <Button variant={proposalFilter === 'all' ? 'default' : 'ghost'} size="sm" onClick={() => setProposalFilter('all')} className="px-3 h-8">
+                            View All
+                        </Button>
+                    </div>
+                </div>
               </CardHeader>
               <CardContent>
                 {proposalsLoading && (
@@ -688,12 +712,14 @@ function AdminDashboard() {
                     <Loader2 className="h-8 w-8 animate-spin text-primary" />
                   </div>
                 )}
-                {!proposalsLoading && (!sortedProposals || sortedProposals.length === 0) && (
-                  <p className="text-center text-muted-foreground py-8">No outreach proposals initiated by agents yet.</p>
+                {!proposalsLoading && (!filteredAndSortedProposals || filteredAndSortedProposals.length === 0) && (
+                  <p className="text-center text-muted-foreground py-8">
+                    {proposalFilter === 'active' ? 'No active drafts.' : 'No outreach proposals initiated by agents yet.'}
+                  </p>
                 )}
-                {!proposalsLoading && sortedProposals && sortedProposals.length > 0 && (
+                {!proposalsLoading && filteredAndSortedProposals && filteredAndSortedProposals.length > 0 && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {sortedProposals.map(proposal => (
+                        {filteredAndSortedProposals.map(proposal => (
                             <Card key={proposal.id} className={`bg-background flex flex-col text-foreground transition-all duration-300 ${(proposal.status === 'sent' || proposal.status === 'recalled') ? 'opacity-60 grayscale hover:opacity-100 hover:grayscale-0' : ''}`}>
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
