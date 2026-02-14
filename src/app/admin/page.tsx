@@ -24,7 +24,7 @@ import type { IncubatorMember } from '@/lib/incubator-members';
 import type { Challenge } from '@/lib/challenges';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { generateProposalAction } from '@/app/actions';
+import { generateProposalAction, sortSubmissionAction } from '@/app/actions';
 
 interface UserProfile {
   uid: string;
@@ -63,7 +63,7 @@ interface Submission {
     contactEmail: string;
     contactPhone: string;
     submissionDate: string; // ISO String
-    status: "New" | "In Review" | "Archived" | "Challenge Created";
+    status: "New" | "In Review" | "Archived" | "Challenge Created" | "Added to Roster";
     companyName?: string;
     visionPitch?: string;
     portfolioUrl?: string;
@@ -83,6 +83,7 @@ function getStatusVariant(status: OutreachProposal['status'] | Source['status'] 
       case 'Completed':
       case 'Assigned':
       case 'Challenge Created':
+      case 'Added to Roster':
         return 'default';
       case 'rejected':
       case 'recalled':
@@ -171,6 +172,7 @@ function AdminDashboard() {
   const [editingSource, setEditingSource] = useState<Partial<Source> | null>(null);
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSorting, setIsSorting] = useState(false);
   const [activeTab, setActiveTab] = useState("operations");
 
 
@@ -291,6 +293,67 @@ function AdminDashboard() {
             });
         }
         setIsGenerating(false);
+    };
+
+    const handleSortSubmission = async (submission: Submission) => {
+        if (!firestore || !user) return;
+        setIsSorting(true);
+
+        const result = await sortSubmissionAction(submission);
+
+        if (result.success && result.data) {
+            const decision = result.data.decision;
+            const payload = result.data.payload;
+            const submissionRef = doc(firestore, 'submissions', submission.id);
+
+            let toastDescription = `Rationale: ${result.data.rationale}`;
+
+            if (decision === 'addToRoster' && 'name' in payload) {
+                const membersCollection = collection(firestore, 'incubatorMembers');
+                addDocumentNonBlocking(membersCollection, {
+                    name: payload.name,
+                    expertise: payload.expertise,
+                    status: 'Available',
+                    submissionId: submission.id,
+                });
+                updateDocumentNonBlocking(submissionRef, { status: 'Added to Roster' });
+                toast({
+                    title: "Decision: Add to Roster",
+                    description: toastDescription,
+                });
+            } else if (decision === 'createChallenge' && 'title' in payload) {
+                const challengesCollection = collection(firestore, 'challenges');
+                addDocumentNonBlocking(challengesCollection, {
+                    title: payload.title,
+                    description: payload.description,
+                    domain: payload.domain,
+                    status: 'Open',
+                    submissionId: submission.id,
+                });
+                updateDocumentNonBlocking(submissionRef, { status: 'Challenge Created' });
+                toast({
+                    title: "Decision: Create Challenge",
+                    description: toastDescription,
+                });
+
+            } else if (decision === 'archive' && 'reason' in payload) {
+                updateDocumentNonBlocking(submissionRef, { status: 'Archived' });
+                toast({
+                    title: "Decision: Archive",
+                    description: `Rationale: ${payload.reason}`,
+                });
+            }
+            
+            setSelectedSubmission(null); // Close dialog on success
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Agent Decision Failed",
+                description: result.message || "The Sorter agent could not process the submission.",
+            });
+        }
+
+        setIsSorting(false);
     };
 
     const handleCopyPrompt = (submission: Submission) => {
@@ -642,6 +705,7 @@ function AdminDashboard() {
                                             <SelectItem value="New">New</SelectItem>
                                             <SelectItem value="In Review">In Review</SelectItem>
                                             <SelectItem value="Challenge Created">Challenge Created</SelectItem>
+                                            <SelectItem value="Added to Roster">Added to Roster</SelectItem>
                                             <SelectItem value="Archived">Archived</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -692,15 +756,21 @@ function AdminDashboard() {
                                 </div>
                             )}
                         </div>
-                        <DialogFooter className="gap-2">
+                        <DialogFooter className="flex-col sm:flex-row sm:justify-between gap-2">
                              <Button variant="outline" onClick={() => handleCopyPrompt(selectedSubmission)}>
-                                <Copy className="h-4 w-4 mr-2"/> Copy Analysis Prompt
+                                <Copy className="h-4 w-4 mr-2"/> Copy for Agent
                             </Button>
-                             <Button onClick={() => handleGenerateProposal(selectedSubmission)} disabled={isGenerating}>
-                                {isGenerating ? <Loader2 className="h-4 w-4 mr-2 animate-spin"/> : <Sparkles className="h-4 w-4 mr-2"/>}
-                                Engage Strategist
-                            </Button>
-                            <Button variant="secondary" onClick={() => setSelectedSubmission(null)}>Close</Button>
+                            <div className="flex flex-col sm:flex-row gap-2">
+                                <Button onClick={() => handleGenerateProposal(selectedSubmission)} disabled={isGenerating || isSorting}>
+                                    {isGenerating ? <Loader2 className="h-4 w-4 mr-2 animate-spin"/> : <Sparkles className="h-4 w-4 mr-2"/>}
+                                    Engage Strategist
+                                </Button>
+                                <Button variant="default" onClick={() => handleSortSubmission(selectedSubmission)} disabled={isSorting || isGenerating}>
+                                    {isSorting ? <Loader2 className="h-4 w-4 mr-2 animate-spin"/> : <Bot className="h-4 w-4 mr-2"/>}
+                                    Let Sorter Decide
+                                </Button>
+                                <Button variant="secondary" onClick={() => setSelectedSubmission(null)}>Close</Button>
+                            </div>
                         </DialogFooter>
                     </>
                 )}
