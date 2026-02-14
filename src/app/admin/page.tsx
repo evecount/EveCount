@@ -26,6 +26,7 @@ import type { Challenge } from '@/lib/challenges';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { generateProposalAction, sortSubmissionAction } from '@/app/actions';
+import { SubmissionSorterOutput } from '@/lib/schemas';
 
 interface UserProfile {
   uid: string;
@@ -280,11 +281,53 @@ function AdminDashboard() {
     setEditingSource(null);
   };
 
-  const handleUpdateSubmissionStatus = (submissionId: string, status: Submission['status']) => {
-    if (!firestore) return;
+  const handleStatusChange = async (submissionId: string, status: Submission['status']) => {
+    if (!firestore || !user) return;
     const submissionRef = doc(firestore, 'submissions', submissionId);
-    updateDocumentNonBlocking(submissionRef, { status });
+    
+    const submission = submissions?.find(s => s.id === submissionId);
+    if (!submission) return;
+
+    if (status === 'Added to Roster' || status === 'Challenge Created') {
+        const result = await sortSubmissionAction(submission);
+
+        if (result.success && result.data) {
+            const decision = result.data.decision;
+            const payload = result.data.payload as any; // Cast for easier access
+
+            if (status === 'Added to Roster' && decision === 'addToRoster' && payload.name) {
+                const membersCollection = collection(firestore, 'incubatorMembers');
+                addDocumentNonBlocking(membersCollection, {
+                    name: payload.name,
+                    expertise: payload.expertise,
+                    status: 'Available',
+                    submissionId: submission.id,
+                });
+            } else if (status === 'Challenge Created' && decision === 'createChallenge' && payload.title) {
+                const challengesCollection = collection(firestore, 'challenges');
+                addDocumentNonBlocking(challengesCollection, {
+                    title: payload.title,
+                    description: payload.description,
+                    domain: payload.domain,
+                    status: 'Open',
+                    submissionId: submission.id,
+                });
+            }
+            updateDocumentNonBlocking(submissionRef, { status });
+            toast({ title: "Action Confirmed", description: `Submission status updated to '${status}'.`});
+        } else {
+             toast({
+                variant: "destructive",
+                title: "Agent Confirmation Failed",
+                description: "Could not get required data from the Sorter agent to complete the action.",
+            });
+        }
+    } else {
+        // For other statuses (New, In Review, Archived), just update the field
+        updateDocumentNonBlocking(submissionRef, { status });
+    }
   };
+
 
     const handleGenerateProposal = async (submission: Submission) => {
         if (!firestore) return;
@@ -328,7 +371,6 @@ function AdminDashboard() {
         if (!firestore || !user) return;
         setIsSorting(true);
 
-        // Data-patching resilience layer
         const submissionToSend = { ...submission };
         if (!submissionToSend.applicationType && submissionToSend.visionPitch?.includes("AI: I'm Eve Count's AI Partner-in-Residence")) {
             submissionToSend.applicationType = "Venture Pitch";
@@ -336,51 +378,24 @@ function AdminDashboard() {
 
 
         const result = await sortSubmissionAction(submissionToSend as Submission);
+        const submissionRef = doc(firestore, 'submissions', submission.id);
 
         if (result.success && result.data) {
             const decision = result.data.decision;
-            const payload = result.data.payload;
-            const submissionRef = doc(firestore, 'submissions', submission.id);
 
-            let toastDescription = `Rationale: ${result.data.rationale}`;
-
-            if (decision === 'addToRoster' && 'name' in payload) {
-                const membersCollection = collection(firestore, 'incubatorMembers');
-                addDocumentNonBlocking(membersCollection, {
-                    name: payload.name,
-                    expertise: payload.expertise,
-                    status: 'Available',
-                    submissionId: submission.id,
-                });
-                updateDocumentNonBlocking(submissionRef, { status: 'Added to Roster' });
-                toast({
-                    title: "Decision: Add to Roster",
-                    description: toastDescription,
-                });
-            } else if (decision === 'createChallenge' && 'title' in payload) {
-                const challengesCollection = collection(firestore, 'challenges');
-                addDocumentNonBlocking(challengesCollection, {
-                    title: payload.title,
-                    description: payload.description,
-                    domain: payload.domain,
-                    status: 'Open',
-                    submissionId: submission.id,
-                });
-                updateDocumentNonBlocking(submissionRef, { status: 'Challenge Created' });
-                toast({
-                    title: "Decision: Create Challenge",
-                    description: toastDescription,
-                });
-
-            } else if (decision === 'archive' && 'reason' in payload) {
+            if (decision === 'archive') {
                 updateDocumentNonBlocking(submissionRef, { status: 'Archived' });
+                toast({ title: "Decision: Archive", description: `Rationale: ${(result.data.payload as any).reason}` });
+            } else {
+                updateDocumentNonBlocking(submissionRef, { status: 'In Review' });
+                const recommendation = decision === 'addToRoster' ? 'Add to Roster' : 'Create Challenge';
                 toast({
-                    title: "Decision: Archive",
-                    description: `Rationale: ${payload.reason}`,
+                    title: `Sorter Recommends: ${recommendation}`,
+                    description: "Review the submission and change status to confirm the action.",
                 });
             }
             
-            setSelectedSubmission(null); // Close dialog on success
+            setSelectedSubmission(null);
         } else {
             toast({
                 variant: "destructive",
@@ -417,12 +432,11 @@ function AdminDashboard() {
         return;
     }
 
-    // Attempt to find the corresponding submission
     const submissionIdMatch = proposal.sourceUrl.match(/submission=([^&]+)/);
     const submissionId = submissionIdMatch ? submissionIdMatch[1] : null;
     const submission = submissionId ? submissions?.find(s => s.id === submissionId) : null;
 
-    const to = user.email; // Email is sent to the admin for review
+    const to = user.email; 
     const subject = encodeURIComponent(`[FOR REVIEW] Outreach to ${proposal.companyName}: ${proposal.proposalTitle}`);
     
     let bodyContent = `Please review the following AI-generated outreach proposal.\n\n`;
@@ -451,7 +465,6 @@ function AdminDashboard() {
     const mailtoLink = `mailto:${to}?subject=${subject}&body=${body}`;
     window.location.href = mailtoLink;
 
-    // Update status to 'sent' after composing email
     handleUpdateProposalStatus(proposal.id, 'sent');
   };
 
@@ -780,7 +793,7 @@ function AdminDashboard() {
                                 <div className="col-span-3">
                                     <Select
                                         value={selectedSubmission.status}
-                                        onValueChange={(value: Submission['status']) => handleUpdateSubmissionStatus(selectedSubmission.id, value)}
+                                        onValueChange={(value: Submission['status']) => handleStatusChange(selectedSubmission.id, value)}
                                     >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Set status..." />
