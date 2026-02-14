@@ -65,7 +65,7 @@ export default function OperationNightfallPage() {
                 {/* The Vision */}
                 <section id="vision" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
                     <div className="container grid max-w-5xl items-center gap-12 md:grid-cols-2">
-                        <div className="flex h-56 w-56 items-center justify-center">
+                        <div className="flex h-96 w-96 items-center justify-center">
                             <DynamicChordChart />
                         </div>
                         <div className="space-y-4">
@@ -167,7 +167,7 @@ export default function OperationNightfallPage() {
                                     <div className="space-y-6">
                                         <Card className="bg-background/50 text-foreground">
                                             <CardHeader className="pb-2">
-                                                <CardTitle className="text-base flex items-center gap-2"><Upload className="h-4 w-4"/> Case Evidence</CardTitle>
+                                                <CardTitle className="text-base flex items-center gap-2 text-foreground"><Upload className="h-4 w-4"/> Case Evidence</CardTitle>
                                             </CardHeader>
                                             <CardContent>
                                                 <Button variant="outline" className="w-full" disabled>Upload `process_log.csv`</Button>
@@ -178,7 +178,7 @@ export default function OperationNightfallPage() {
 
                                         <Card className="bg-background/50 text-foreground">
                                             <CardHeader className="pb-2">
-                                                <CardTitle className="text-base flex items-center gap-2"><Globe className="h-4 w-4"/> Contribute to Grid</CardTitle>
+                                                <CardTitle className="text-base flex items-center gap-2 text-foreground"><Globe className="h-4 w-4"/> Contribute to Grid</CardTitle>
                                                 <CardDescription className="text-xs">Join the decentralized forensic network.</CardDescription>
                                             </CardHeader>
                                             <CardContent className="space-y-2">
@@ -192,7 +192,7 @@ export default function OperationNightfallPage() {
 
                                         <Card className="bg-background/50 text-foreground">
                                             <CardHeader className="pb-2">
-                                                <CardTitle className="text-base flex items-center gap-2"><Heart className="h-4 w-4"/> Sponsor the Grid</CardTitle>
+                                                <CardTitle className="text-base flex items-center gap-2 text-foreground"><Heart className="h-4 w-4"/> Sponsor the Grid</CardTitle>
                                             </CardHeader>
                                             <CardContent>
                                                 <p className="text-xs text-muted-foreground mb-2">
@@ -214,7 +214,7 @@ export default function OperationNightfallPage() {
 
                                     {/* Triage Section */}
                                     <div className="mb-6">
-                                        <h4 className="text-lg font-semibold flex items-center gap-2 mb-4"><Microscope/> Triage & Auto-Hunt</h4>
+                                        <h4 className="text-lg font-semibold flex items-center gap-2 mb-4 text-foreground"><Microscope/> Triage & Auto-Hunt</h4>
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                             <Card className="bg-secondary/30 text-foreground">
                                                 <CardHeader className="pb-2">
@@ -234,7 +234,7 @@ export default function OperationNightfallPage() {
                                             </Card>
                                             <Card className="bg-destructive/10 border-destructive text-destructive-foreground">
                                                 <CardHeader className="pb-2">
-                                                    <CardTitle className="text-sm font-medium">🚨 Threat Hits</CardTitle>
+                                                    <CardTitle className="text-sm font-medium text-destructive">🚨 Threat Hits</CardTitle>
                                                 </CardHeader>
                                                 <CardContent>
                                                     <p className="text-2xl font-bold">12</p>
@@ -253,7 +253,7 @@ export default function OperationNightfallPage() {
 
                                     {/* Visualization Section */}
                                     <div>
-                                        <h4 className="text-lg font-semibold flex items-center gap-2 mb-4"><BarChart3/> Threat Hunting Console</h4>
+                                        <h4 className="text-lg font-semibold flex items-center gap-2 mb-4 text-foreground"><BarChart3/> Threat Hunting Console</h4>
                                         <Card className="bg-secondary/30 text-foreground">
                                             <CardHeader>
                                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -314,7 +314,7 @@ export default function OperationNightfallPage() {
                         </Card>
                          <Card className="border-destructive bg-destructive/10 text-destructive-foreground">
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2"><AlertTriangle className="h-6 w-6" /> Data Safety Warning</CardTitle>
+                                <CardTitle className="flex items-center gap-2 text-destructive"><AlertTriangle className="h-6 w-6" /> Data Safety Warning</CardTitle>
                                 <CardDescription>A note from your Senior Analyst.</CardDescription>
                             </CardHeader>
                             <CardContent>
