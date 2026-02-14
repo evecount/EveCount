@@ -1,12 +1,12 @@
-
 'use client';
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { User, Send, Lock, Loader2, Hand, Lightbulb, Sparkles, Github, TestTube2, Check } from "lucide-react";
+import { User, Send, Lock, Loader2, Hand, Lightbulb, Sparkles, Github, TestTube2, Check, Megaphone } from "lucide-react";
 import { incubatorMembers as initialMembers, type IncubatorMember } from "@/lib/incubator-members";
 import { challenges as initialChallenges, type Challenge } from "@/lib/challenges";
 import { Input } from "@/components/ui/input";
@@ -649,7 +649,23 @@ export default function IncubatorPage() {
                                     </Card>
                                 ))
                             ) : (
-                                <p className="text-center text-muted-foreground pt-10">No ideal matches found at this time.</p>
+                                <div className="text-center py-10">
+                                    <p className="text-muted-foreground">No ideal matches found at this time.</p>
+                                    {selectedItem?.type === 'challenge' && (
+                                        <div className="mt-6 p-4 rounded-lg bg-background border border-dashed border-border">
+                                            <h4 className="font-semibold text-foreground">Agentic Process: Open Call</h4>
+                                            <p className="text-sm text-muted-foreground mt-2 mb-4">
+                                                When no internal matches are found, the system's protocol is to create an "Open Call" to attract external specialists. This ensures no dead ends.
+                                            </p>
+                                            <Button asChild>
+                                                <Link href="/apply">
+                                                    <Megaphone className="mr-2 h-4 w-4" />
+                                                    Initiate Open Call
+                                                </Link>
+                                            </Button>
+                                        </div>
+                                    )}
+                                </div>
                             )}
                         </div>
                     )}
@@ -663,5 +679,3 @@ export default function IncubatorPage() {
     </div>
   );
 }
-
-    
