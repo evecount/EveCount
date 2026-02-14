@@ -52,6 +52,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/quantum-minting`,
       lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/operation-nightfall`,
+      lastModified: new Date(),
     }
   ]
 }

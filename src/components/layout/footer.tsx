@@ -19,9 +19,8 @@ const footerSections: {
     { href: "/research", label: "Quantum Research 101" },
     { href: "/sponsor", label: "Sponsor a Build" },
     {
-      href: "https://github.com/evecount/OperationNightfall",
+      href: "/operation-nightfall",
       label: "Operation Nightfall",
-      description: "A basic Pandas tutorial that doubles as a DFIR investigation, which can be activated to form a global reporting network for attack vectors."
     },
     { href: "/quantum-minting", label: "Quantum Minting" },
   ],
