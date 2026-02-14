@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -101,6 +102,9 @@ const countryCodes = [
 export default function ApplyPage() {
     const { toast } = useToast();
     const firestore = useFirestore();
+    const [submissionSuccess, setSubmissionSuccess] = useState(false);
+    const [mailtoLink, setMailtoLink] = useState('');
+
 
     useEffect(() => {
       document.title = "Apply to Eve Count | EveCount.com";
@@ -144,7 +148,7 @@ export default function ApplyPage() {
             ...submissionValues,
             contactPhone: `${countryCode} ${localPhone}`,
             submissionDate: new Date().toISOString(),
-            status: 'New',
+            status: 'New' as const,
         };
         
         const submissionsCollection = collection(firestore, 'submissions');
@@ -154,7 +158,38 @@ export default function ApplyPage() {
             title: "Application Received",
             description: "Thank you for your interest! We've received your submission and will be in touch via email shortly.",
         });
-        form.reset();
+
+        // Create the mailto link
+        const subject = `Eve Count Application Submission: ${submissionData.applicationType}`;
+        
+        let bodyContent = `This is a copy of my submission for your records.\n\n---\n`;
+        const keyMap: { [key: string]: string } = {
+            applicationType: 'Application Type',
+            submitterName: 'Name',
+            contactEmail: 'Email',
+            contactPhone: 'Phone',
+            companyName: 'Company Name',
+            visionPitch: 'Vision/Interest',
+            linkedinUrl: 'LinkedIn',
+            githubUrl: 'GitHub',
+            websiteUrl: 'Website',
+            roleInterest: 'Role of Interest',
+            resumeUrl: 'Resume',
+            partnershipInterest: 'Partnership Interest',
+            message: 'Message',
+        };
+
+        for (const [key, value] of Object.entries(submissionData)) {
+            if (value && keyMap[key]) {
+                bodyContent += `${keyMap[key]}: ${value}\n`;
+            }
+        }
+        bodyContent += `---`;
+
+        const mailto = `mailto:gwen@evecount.com?cc=${submissionData.contactEmail}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyContent)}`;
+        
+        setMailtoLink(mailto);
+        setSubmissionSuccess(true);
     }
 
     return (
@@ -174,380 +209,397 @@ export default function ApplyPage() {
                             <CardDescription>Tell us how you'd like to get involved.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                           <Form {...form}>
-                                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                                    <FormField
-                                        control={form.control}
-                                        name="applicationType"
-                                        render={({ field }) => (
-                                            <FormItem className="space-y-3">
-                                                <FormLabel>How would you like to engage with us? *</FormLabel>
-                                                <FormControl>
-                                                    <RadioGroup
-                                                        onValueChange={field.onChange}
-                                                        defaultValue={field.value}
-                                                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
-                                                    >
-                                                        {applicationTypes.map(type => (
-                                                            <FormItem key={type} className="flex items-center space-x-3 space-y-0">
-                                                                <FormControl>
-                                                                    <RadioGroupItem value={type} />
-                                                                </FormControl>
-                                                                <FormLabel className="font-normal">{type}</FormLabel>
-                                                            </FormItem>
-                                                        ))}
-                                                    </RadioGroup>
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
-                                    {applicationType && (
-                                        <>
-                                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                <FormField
-                                                    control={form.control}
-                                                    name="submitterName"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Your Name *</FormLabel>
-                                                            <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="contactEmail"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Contact Email *</FormLabel>
-                                                            <FormControl><Input type="email" placeholder="you@company.com" {...field} /></FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-                                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-[150px_1fr]">
-                                                <FormField
-                                                    control={form.control}
-                                                    name="countryCode"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Country Code *</FormLabel>
-                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                <FormControl>
-                                                                    <SelectTrigger>
-                                                                        <SelectValue placeholder="Code" />
-                                                                    </SelectTrigger>
-                                                                </FormControl>
-                                                                <SelectContent>
-                                                                    {countryCodes.map((country) => (
-                                                                        <SelectItem key={country.label} value={country.value}>{country.label}</SelectItem>
-                                                                    ))}
-                                                                </SelectContent>
-                                                            </Select>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                                <FormField
-                                                    control={form.control}
-                                                    name="localPhone"
-                                                    render={({ field }) => (
-                                                        <FormItem>
-                                                            <FormLabel>Phone Number *</FormLabel>
-                                                            <FormControl><Input type="tel" placeholder="Your phone number" {...field} /></FormControl>
-                                                            <FormMessage />
-                                                        </FormItem>
-                                                    )}
-                                                />
-                                            </div>
-
-                                            {applicationType === 'Venture Pitch' && (
-                                                <>
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="companyName"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Company Name (Optional)</FormLabel>
-                                                                <FormControl><Input placeholder="Your Company Inc." {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="visionPitch"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>The Vision or Problem *</FormLabel>
-                                                                <FormControl><Textarea placeholder="Describe the problem you're solving, your proposed solution, and the core insight..." rows={5} {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="linkedinUrl"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>LinkedIn Profile (Optional)</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
+                            {submissionSuccess ? (
+                                <div className="text-center p-4">
+                                    <CardTitle className="mb-2 text-2xl font-bold">Thank You!</CardTitle>
+                                    <CardDescription className="mb-6 text-muted-foreground">
+                                        Your application has been successfully submitted. We'll be in touch soon.
+                                        <br />
+                                        For your own records, and as a backup, you can email a copy of your submission.
+                                    </CardDescription>
+                                    <Button asChild size="lg">
+                                        <a href={mailtoLink}>
+                                            <Send className="mr-2 h-4 w-4" />
+                                            Email a Copy to Yourself & Eve Count
+                                        </a>
+                                    </Button>
+                                </div>
+                            ) : (
+                               <Form {...form}>
+                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                                        <FormField
+                                            control={form.control}
+                                            name="applicationType"
+                                            render={({ field }) => (
+                                                <FormItem className="space-y-3">
+                                                    <FormLabel>How would you like to engage with us? *</FormLabel>
+                                                    <FormControl>
+                                                        <RadioGroup
+                                                            onValueChange={field.onChange}
+                                                            defaultValue={field.value}
+                                                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+                                                        >
+                                                            {applicationTypes.map(type => (
+                                                                <FormItem key={type} className="flex items-center space-x-3 space-y-0">
+                                                                    <FormControl>
+                                                                        <RadioGroupItem value={type} />
+                                                                    </FormControl>
+                                                                    <FormLabel className="font-normal">{type}</FormLabel>
                                                                 </FormItem>
-                                                            )}
-                                                        />
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="githubUrl"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>GitHub Profile (Optional)</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                    </div>
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="websiteUrl"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Company Website (Optional)</FormLabel>
-                                                                <FormControl><Input {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </>
+                                                            ))}
+                                                        </RadioGroup>
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
                                             )}
+                                        />
 
-                                            {applicationType === 'Incubator Application' && (
-                                                <>
-                                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="linkedinUrl"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>LinkedIn Profile *</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="githubUrl"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>GitHub Profile</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                    </div>
+                                        {applicationType && (
+                                            <>
+                                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                                     <FormField
                                                         control={form.control}
-                                                        name="websiteUrl"
+                                                        name="submitterName"
                                                         render={({ field }) => (
                                                             <FormItem>
-                                                                <FormLabel>Personal Website</FormLabel>
-                                                                <FormControl><Input {...field} /></FormControl>
+                                                                <FormLabel>Your Name *</FormLabel>
+                                                                <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}
                                                     />
                                                     <FormField
                                                         control={form.control}
-                                                        name="visionPitch"
+                                                        name="contactEmail"
                                                         render={({ field }) => (
                                                             <FormItem>
-                                                                <FormLabel>Why do you want to join the incubator? *</FormLabel>
-                                                                <FormControl><Textarea placeholder="Tell us about your domain expertise, your goals, and what you hope to build." rows={5} {...field} /></FormControl>
+                                                                <FormLabel>Contact Email *</FormLabel>
+                                                                <FormControl><Input type="email" placeholder="you@company.com" {...field} /></FormControl>
                                                                 <FormMessage />
                                                             </FormItem>
                                                         )}
                                                     />
-                                                </>
-                                            )}
+                                                </div>
+                                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-[150px_1fr]">
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="countryCode"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Country Code *</FormLabel>
+                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                                    <FormControl>
+                                                                        <SelectTrigger>
+                                                                            <SelectValue placeholder="Code" />
+                                                                        </SelectTrigger>
+                                                                    </FormControl>
+                                                                    <SelectContent>
+                                                                        {countryCodes.map((country) => (
+                                                                            <SelectItem key={country.label} value={country.value}>{country.label}</SelectItem>
+                                                                        ))}
+                                                                    </SelectContent>
+                                                                </Select>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={form.control}
+                                                        name="localPhone"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>Phone Number *</FormLabel>
+                                                                <FormControl><Input type="tel" placeholder="Your phone number" {...field} /></FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
 
-                                            {applicationType === 'Career Inquiry' && (
-                                                <>
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="roleInterest"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Role / Area of Interest *</FormLabel>
-                                                                <FormControl><Input placeholder="e.g., AI Engineer, Full-Stack Developer" {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="resumeUrl"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Resume / CV Link *</FormLabel>
-                                                                <FormControl><Input placeholder="https://example.com/your-resume.pdf" {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                {applicationType === 'Venture Pitch' && (
+                                                    <>
                                                         <FormField
                                                             control={form.control}
-                                                            name="linkedinUrl"
+                                                            name="companyName"
                                                             render={({ field }) => (
                                                                 <FormItem>
-                                                                    <FormLabel>LinkedIn Profile (Optional)</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormLabel>Company Name (Optional)</FormLabel>
+                                                                    <FormControl><Input placeholder="Your Company Inc." {...field} /></FormControl>
                                                                     <FormMessage />
                                                                 </FormItem>
                                                             )}
                                                         />
                                                         <FormField
                                                             control={form.control}
-                                                            name="githubUrl"
+                                                            name="visionPitch"
                                                             render={({ field }) => (
                                                                 <FormItem>
-                                                                    <FormLabel>GitHub Profile (Optional)</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormLabel>The Vision or Problem *</FormLabel>
+                                                                    <FormControl><Textarea placeholder="Describe the problem you're solving, your proposed solution, and the core insight..." rows={5} {...field} /></FormControl>
                                                                     <FormMessage />
                                                                 </FormItem>
                                                             )}
                                                         />
-                                                    </div>
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="websiteUrl"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Personal Website (Optional)</FormLabel>
-                                                                <FormControl><Input {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="message"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Message / Cover Letter *</FormLabel>
-                                                                <FormControl><Textarea placeholder="Tell us a bit about yourself and why you're a good fit." rows={5} {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </>
-                                            )}
-                                            
-                                            {applicationType === 'Partnership Inquiry' && (
-                                                <>
-                                                     <FormField
-                                                        control={form.control}
-                                                        name="companyName"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Company Name *</FormLabel>
-                                                                <FormControl><Input placeholder="Your Company Inc." {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="partnershipInterest"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Challenge or Partnership Interest *</FormLabel>
-                                                                <FormControl><Textarea placeholder="Describe your business challenge, or how you'd like to partner with us (e.g., Service Partner, Event Sponsor)." rows={5} {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="linkedinUrl"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>LinkedIn Profile (Optional)</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="githubUrl"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>GitHub Profile (Optional)</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                    </div>
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="websiteUrl"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Company Website (Optional)</FormLabel>
-                                                                <FormControl><Input {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </>
-                                            )}
-
-                                            <FormField
-                                                control={form.control}
-                                                name="terms"
-                                                render={({ field }) => (
-                                                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-input bg-background/50 p-4 shadow">
-                                                        <FormControl>
-                                                            <Checkbox
-                                                                checked={field.value}
-                                                                onCheckedChange={field.onChange}
+                                                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="linkedinUrl"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>LinkedIn Profile (Optional)</FormLabel>
+                                                                        <FormControl><Input {...field} /></FormControl>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
                                                             />
-                                                        </FormControl>
-                                                        <div className="space-y-1 leading-none">
-                                                            <FormLabel>
-                                                                Acknowledge and Agree
-                                                            </FormLabel>
-                                                            <FormDescription>
-                                                                By submitting this form, you acknowledge that you have read and agree to our{' '}
-                                                                <Link href="/terms" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Terms & Conditions</Link> and{' '}
-                                                                <Link href="/privacy" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>.
-                                                                You agree to be contacted by Eve Count regarding your application.
-                                                            </FormDescription>
-                                                            <FormMessage />
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="githubUrl"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>GitHub Profile (Optional)</FormLabel>
+                                                                        <FormControl><Input {...field} /></FormControl>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
                                                         </div>
-                                                    </FormItem>
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="websiteUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Company Website (Optional)</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </>
                                                 )}
-                                            />
 
-                                            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                                                <Send className="mr-2 h-4 w-4" />
-                                                {form.formState.isSubmitting ? "Submitting..." : "Submit Application"}
-                                            </Button>
-                                        </>
-                                    )}
-                                </form>
-                            </Form>
+                                                {applicationType === 'Incubator Application' && (
+                                                    <>
+                                                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="linkedinUrl"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>LinkedIn Profile *</FormLabel>
+                                                                        <FormControl><Input {...field} /></FormControl>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="githubUrl"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>GitHub Profile</FormLabel>
+                                                                        <FormControl><Input {...field} /></FormControl>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        </div>
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="websiteUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Personal Website</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="visionPitch"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Why do you want to join the incubator? *</FormLabel>
+                                                                    <FormControl><Textarea placeholder="Tell us about your domain expertise, your goals, and what you hope to build." rows={5} {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </>
+                                                )}
+
+                                                {applicationType === 'Career Inquiry' && (
+                                                    <>
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="roleInterest"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Role / Area of Interest *</FormLabel>
+                                                                    <FormControl><Input placeholder="e.g., AI Engineer, Full-Stack Developer" {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="resumeUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Resume / CV Link *</FormLabel>
+                                                                    <FormControl><Input placeholder="https://example.com/your-resume.pdf" {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="linkedinUrl"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>LinkedIn Profile (Optional)</FormLabel>
+                                                                        <FormControl><Input {...field} /></FormControl>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="githubUrl"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>GitHub Profile (Optional)</FormLabel>
+                                                                        <FormControl><Input {...field} /></FormControl>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        </div>
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="websiteUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Personal Website (Optional)</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="message"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Message / Cover Letter *</FormLabel>
+                                                                    <FormControl><Textarea placeholder="Tell us a bit about yourself and why you're a good fit." rows={5} {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </>
+                                                )}
+                                                
+                                                {applicationType === 'Partnership Inquiry' && (
+                                                    <>
+                                                         <FormField
+                                                            control={form.control}
+                                                            name="companyName"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Company Name *</FormLabel>
+                                                                    <FormControl><Input placeholder="Your Company Inc." {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="partnershipInterest"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Challenge or Partnership Interest *</FormLabel>
+                                                                    <FormControl><Textarea placeholder="Describe your business challenge, or how you'd like to partner with us (e.g., Service Partner, Event Sponsor)." rows={5} {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="linkedinUrl"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>LinkedIn Profile (Optional)</FormLabel>
+                                                                        <FormControl><Input {...field} /></FormControl>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                            <FormField
+                                                                control={form.control}
+                                                                name="githubUrl"
+                                                                render={({ field }) => (
+                                                                    <FormItem>
+                                                                        <FormLabel>GitHub Profile (Optional)</FormLabel>
+                                                                        <FormControl><Input {...field} /></FormControl>
+                                                                        <FormMessage />
+                                                                    </FormItem>
+                                                                )}
+                                                            />
+                                                        </div>
+                                                        <FormField
+                                                            control={form.control}
+                                                            name="websiteUrl"
+                                                            render={({ field }) => (
+                                                                <FormItem>
+                                                                    <FormLabel>Company Website (Optional)</FormLabel>
+                                                                    <FormControl><Input {...field} /></FormControl>
+                                                                    <FormMessage />
+                                                                </FormItem>
+                                                            )}
+                                                        />
+                                                    </>
+                                                )}
+
+                                                <FormField
+                                                    control={form.control}
+                                                    name="terms"
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-input bg-background/50 p-4 shadow">
+                                                            <FormControl>
+                                                                <Checkbox
+                                                                    checked={field.value}
+                                                                    onCheckedChange={field.onChange}
+                                                                />
+                                                            </FormControl>
+                                                            <div className="space-y-1 leading-none">
+                                                                <FormLabel>
+                                                                    Acknowledge and Agree
+                                                                </FormLabel>
+                                                                <FormDescription>
+                                                                    By submitting this form, you acknowledge that you have read and agree to our{' '}
+                                                                    <Link href="/terms" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Terms & Conditions</Link> and{' '}
+                                                                    <Link href="/privacy" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>.
+                                                                    You agree to be contacted by Eve Count regarding your application.
+                                                                </FormDescription>
+                                                                <FormMessage />
+                                                            </div>
+                                                        </FormItem>
+                                                    )}
+                                                />
+
+                                                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                                                    <Send className="mr-2 h-4 w-4" />
+                                                    {form.formState.isSubmitting ? "Submitting..." : "Submit Application"}
+                                                </Button>
+                                            </>
+                                        )}
+                                    </form>
+                                </Form>
+                            )}
                         </CardContent>
                     </Card>
                 </div>
