@@ -48,30 +48,33 @@ export function Chatbot() {
         if (response.data.submissionDetails && firestore) {
           const { submitterName, contactEmail, contactPhone } = response.data.submissionDetails;
 
-          // Create the full conversation log for the pitch
-          const fullHistory = [...chatHistory, aiMessage];
-          const visionPitch = fullHistory
-            .map(m => `${m.role === 'user' ? 'User' : 'AI'}: ${m.content}`)
-            .join('\n\n');
+          // Resilience Guard: Only create submission if details are actually present.
+          if (submitterName && contactEmail && contactPhone) {
+            // Create the full conversation log for the pitch
+            const fullHistory = [...chatHistory, aiMessage];
+            const visionPitch = fullHistory
+              .map(m => `${m.role === 'user' ? 'User' : 'AI'}: ${m.content}`)
+              .join('\n\n');
 
-          // Create the final submission object
-          const submissionData = {
-            applicationType: 'Venture Pitch' as const,
-            visionPitch,
-            submissionDate: new Date().toISOString(),
-            submitterName,
-            contactEmail,
-            contactPhone,
-            status: 'New' as const
-          };
-          
-          const submissionsCollection = collection(firestore, 'submissions');
-          addDocumentNonBlocking(submissionsCollection, submissionData);
+            // Create the final submission object
+            const submissionData = {
+              applicationType: 'Venture Pitch' as const,
+              visionPitch,
+              submissionDate: new Date().toISOString(),
+              submitterName,
+              contactEmail,
+              contactPhone,
+              status: 'New' as const
+            };
+            
+            const submissionsCollection = collection(firestore, 'submissions');
+            addDocumentNonBlocking(submissionsCollection, submissionData);
 
-          toast({
-            title: "Pitch Received",
-            description: "Thank you! We've saved your pitch and will be in touch shortly.",
-          });
+            toast({
+              title: "Pitch Received",
+              description: "Thank you! We've saved your pitch and will be in touch shortly.",
+            });
+          }
         }
 
       } else {

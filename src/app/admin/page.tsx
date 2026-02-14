@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState } from 'react';
@@ -9,7 +10,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
@@ -66,7 +67,9 @@ interface Submission {
     status: "New" | "In Review" | "Archived" | "Challenge Created" | "Added to Roster";
     companyName?: string;
     visionPitch?: string;
-    portfolioUrl?: string;
+    linkedinUrl?: string;
+    githubUrl?: string;
+    websiteUrl?: string;
     roleInterest?: string;
     resumeUrl?: string;
     partnershipInterest?: string;
@@ -299,7 +302,14 @@ function AdminDashboard() {
         if (!firestore || !user) return;
         setIsSorting(true);
 
-        const result = await sortSubmissionAction(submission);
+        // Data-patching resilience layer
+        const submissionToSend = { ...submission };
+        if (!submissionToSend.applicationType && submissionToSend.visionPitch?.includes("AI: I'm Eve Count's AI Partner-in-Residence")) {
+            submissionToSend.applicationType = "Venture Pitch";
+        }
+
+
+        const result = await sortSubmissionAction(submissionToSend as Submission);
 
         if (result.success && result.data) {
             const decision = result.data.decision;
@@ -743,10 +753,28 @@ function AdminDashboard() {
                                     <Textarea readOnly value={selectedSubmission.message} className="col-span-3 bg-muted text-foreground" rows={6}/>
                                 </div>
                             )}
-                             {selectedSubmission.portfolioUrl && (
+                             {selectedSubmission.linkedinUrl && (
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Portfolio</Label>
-                                    <a href={selectedSubmission.portfolioUrl} target="_blank" rel="noreferrer noopener" className="col-span-3 text-primary hover:underline truncate">{selectedSubmission.portfolioUrl}</a>
+                                    <Label className="text-right">LinkedIn</Label>
+                                    <a href={selectedSubmission.linkedinUrl} target="_blank" rel="noreferrer noopener" className="col-span-3 text-primary hover:underline truncate flex items-center gap-2">
+                                        <LinkIcon className="h-4 w-4" /> {selectedSubmission.linkedinUrl}
+                                    </a>
+                                </div>
+                            )}
+                            {selectedSubmission.githubUrl && (
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label className="text-right">GitHub</Label>
+                                     <a href={selectedSubmission.githubUrl} target="_blank" rel="noreferrer noopener" className="col-span-3 text-primary hover:underline truncate flex items-center gap-2">
+                                        <Github className="h-4 w-4" /> {selectedSubmission.githubUrl}
+                                    </a>
+                                </div>
+                            )}
+                             {selectedSubmission.websiteUrl && (
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label className="text-right">Website</Label>
+                                    <a href={selectedSubmission.websiteUrl} target="_blank" rel="noreferrer noopener" className="col-span-3 text-primary hover:underline truncate flex items-center gap-2">
+                                        <LinkIcon className="h-4 w-4" /> {selectedSubmission.websiteUrl}
+                                    </a>
                                 </div>
                             )}
                              {selectedSubmission.resumeUrl && (
