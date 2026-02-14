@@ -43,7 +43,8 @@ export default function ResearchPage() {
         <section className="bg-background py-16 md:py-24 lg:py-32">
           <div className="container">
             <div className="mx-auto max-w-3xl text-center">
-              <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
+              <p className="font-semibold text-primary">A Workshop by Eve Count</p>
+              <h1 className="font-headline mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
                 The Quantum Hybrid Training System
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
