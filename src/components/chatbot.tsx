@@ -19,17 +19,12 @@ export function Chatbot() {
   const { open, setOpen, messages, addMessage } = useChatbot();
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const firestore = useFirestore();
   const { toast } = useToast();
 
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({
-        top: scrollAreaRef.current.scrollHeight,
-        behavior: 'smooth',
-      });
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -103,7 +98,7 @@ export function Chatbot() {
             <Bot /> AI Partner-in-Residence
           </SheetTitle>
         </SheetHeader>
-        <ScrollArea className="flex-1 pr-4 -mr-4" ref={scrollAreaRef}>
+        <ScrollArea className="flex-1 pr-4 -mr-4">
           <div className="space-y-4 p-4">
             {messages.map((message, index) => (
               <div
@@ -143,6 +138,7 @@ export function Chatbot() {
                 </div>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
         </ScrollArea>
         <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t p-4">

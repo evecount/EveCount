@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef, useEffect, useMemo } from 'react';
@@ -32,7 +31,7 @@ export function CommandCenterChat() {
   const [selectedAgentId, setSelectedAgentId] = useState<string>(agentCrew[0].id);
   const [inputValue, setInputValue] = useState('');
   const [isAiResponding, setIsAiResponding] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const { user } = useUser();
   const firestore = useFirestore();
@@ -77,12 +76,7 @@ export function CommandCenterChat() {
   }, [conversationData, isConversationLoading, selectedAgent]);
 
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({
-        top: scrollAreaRef.current.scrollHeight,
-        behavior: 'smooth',
-      });
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   const isBusy = isAiResponding || isConversationLoading || submissionsLoading || membersLoading || challengesLoading;
@@ -185,7 +179,7 @@ export function CommandCenterChat() {
                 </SelectContent>
             </Select>
         </div>
-      <ScrollArea className="flex-1" ref={scrollAreaRef}>
+      <ScrollArea className="flex-1">
         <div className="space-y-4 p-4">
           {isConversationLoading && messages.length === 0 && (
              <div className="flex justify-center items-center h-full">
@@ -230,6 +224,7 @@ export function CommandCenterChat() {
               </div>
             </div>
           )}
+          <div ref={messagesEndRef} />
         </div>
       </ScrollArea>
       <form onSubmit={handleSubmit} className="flex items-center gap-2 border-t bg-card p-4">
