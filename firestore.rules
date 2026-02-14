@@ -161,5 +161,15 @@ service cloud.firestore {
       allow get, list: if true;
       allow create, update, delete: if isAdmin();
     }
+
+    //================================================================================
+    // Collection: guardrailSources
+    //================================================================================
+    /**
+     * @description Admin/Partner-managed collection for AI guardrail sources.
+     */
+    match /guardrailSources/{sourceId} {
+      allow read, write: if isAdmin() || isPartner();
+    }
   }
 }

@@ -288,6 +288,22 @@
         "submissionId": { "type": "string", "description": "The ID of the original submission that led to this challenge." }
       },
       "required": ["id", "title", "description", "status", "domain"]
+    },
+    "GuardrailSource": {
+      "title": "Guardrail Source",
+      "description": "Represents a document or resource that provides guardrails or constraints for AI agent behavior, suggested by NTU admins.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "description": "The name of the guardrail document." },
+        "type": { "type": "string", "enum": ["URL", "Text"], "description": "The type of the source material." },
+        "content": { "type": "string", "description": "The URL to the document or the pasted text content." },
+        "status": { "type": "string", "enum": ["active", "archived"] },
+        "addedById": { "type": "string", "description": "UID of user who added it." },
+        "addedBy": { "type": "string", "description": "The name of the user." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "name", "type", "content", "status", "addedById", "createdAt"]
     }
   },
   "auth": {
@@ -413,6 +429,17 @@
             "description": "Collection for storing the Incubator Challenge Board items.",
             "params": [
                 { "name": "challengeId", "description": "Unique identifier for the challenge." }
+            ]
+        }
+      },
+      {
+        "path": "guardrailSources/{sourceId}",
+        "definition": {
+            "entityName": "GuardrailSource",
+            "schema": { "$ref": "#/backend/entities/GuardrailSource" },
+            "description": "Collection for storing guardrail documents and resources for AI agents, managed by Admins and Partners.",
+            "params": [
+                { "name": "sourceId", "description": "Unique identifier for the guardrail source." }
             ]
         }
       }

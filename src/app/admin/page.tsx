@@ -10,7 +10,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { useAuth, useUser, useFirestore, useDoc, useMemoFirebase, useCollection, updateDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github, Mail, BarChart3, TrendingUp, CalendarDays, DollarSign, ShieldX, LayoutDashboard, Tags, Rocket, Heart, GitFork, Send, Layers } from 'lucide-react';
+import { Loader2, ShieldAlert, BadgeCheck, Check, X, Rss, Newspaper, Lightbulb, Link as LinkIcon, Users2, PlusCircle, Edit, Hand, Code, Briefcase, Bot, Eye, Copy, Sparkles, Github, Mail, BarChart3, TrendingUp, CalendarDays, DollarSign, ShieldX, LayoutDashboard, Tags, Rocket, Heart, GitFork, Send, Layers, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { agentCrew } from '@/lib/agents';
@@ -59,6 +59,17 @@ interface Source {
   createdAt: string; // ISO String
 }
 
+interface GuardrailSource {
+  id: string;
+  name: string;
+  type: "URL" | "Text";
+  content: string;
+  status: "active" | "archived";
+  addedBy: string;
+  addedById: string;
+  createdAt: string; // ISO String
+}
+
 interface Submission {
     id: string;
     applicationType: "Venture Pitch" | "Incubator Application" | "Career Inquiry" | "Partnership Inquiry";
@@ -92,6 +103,7 @@ function getStatusVariant(status: OutreachProposal['status'] | Source['status'] 
       case 'rejected':
       case 'recalled':
       case 'Archived':
+      case 'archived':
         return 'destructive';
       case 'sent':
       case 'Open':
@@ -168,12 +180,81 @@ function SourceEditor({ source, onSave, onCancel }: { source: Partial<Source>, o
     );
 }
 
+function GuardrailSourceEditor({ source, onSave, onCancel }: { source: Partial<GuardrailSource>, onSave: (sourceData: Partial<GuardrailSource>) => void, onCancel: () => void }) {
+    const [sourceData, setSourceData] = useState(source);
+
+    const handleSave = () => {
+        onSave(sourceData);
+    };
+
+    return (
+        <>
+            <DialogHeader>
+                <DialogTitle>{source.id ? 'Edit Guardrail' : 'Add New Guardrail'}</DialogTitle>
+                <DialogDescription>
+                    {source.id ? 'Modify this guardrail document.' : 'Add a new guardrail for AI agents. This can be a URL to a document or pasted text.'}
+                </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="name" className="text-right">Name</Label>
+                    <Input id="name" value={sourceData.name || ''} onChange={(e) => setSourceData({ ...sourceData, name: e.target.value })} className="col-span-3" placeholder="e.g., Data Privacy Rules" />
+                </div>
+                <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="type" className="text-right">Type</Label>
+                     <Select
+                        value={sourceData.type}
+                        onValueChange={(value: GuardrailSource['type']) => setSourceData({ ...sourceData, type: value })}
+                    >
+                        <SelectTrigger className="col-span-3">
+                            <SelectValue placeholder="Select source type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="URL">URL</SelectItem>
+                            <SelectItem value="Text">Text</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div className="grid grid-cols-4 items-start gap-4">
+                     <Label htmlFor="content" className="text-right pt-2">Content</Label>
+                     {sourceData.type === 'URL' ? (
+                         <Input id="content" value={sourceData.content || ''} onChange={(e) => setSourceData({ ...sourceData, content: e.target.value })} className="col-span-3" placeholder="https://..."/>
+                     ) : (
+                         <Textarea id="content" value={sourceData.content || ''} onChange={(e) => setSourceData({ ...sourceData, content: e.target.value })} className="col-span-3" placeholder="Paste guardrail content here..." rows={8}/>
+                     )}
+                </div>
+                 <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="status" className="text-right">Status</Label>
+                     <Select
+                        value={sourceData.status}
+                        onValueChange={(value: GuardrailSource['status']) => setSourceData({ ...sourceData, status: value })}
+                    >
+                        <SelectTrigger className="col-span-3">
+                            <SelectValue placeholder="Select status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="active">Active</SelectItem>
+                            <SelectItem value="archived">Archived</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+            </div>
+            <DialogFooter>
+                <Button variant="outline" onClick={onCancel}>Cancel</Button>
+                <Button onClick={handleSave}>Save Guardrail</Button>
+            </DialogFooter>
+        </>
+    );
+}
+
 function AdminDashboard() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
   const [isSourceEditorOpen, setIsSourceEditorOpen] = useState(false);
   const [editingSource, setEditingSource] = useState<Partial<Source> | null>(null);
+  const [isGuardrailEditorOpen, setIsGuardrailEditorOpen] = useState(false);
+  const [editingGuardrail, setEditingGuardrail] = useState<Partial<GuardrailSource> | null>(null);
   const [selectedSubmission, setSelectedSubmission] = useState<Submission | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSorting, setIsSorting] = useState(false);
@@ -228,6 +309,12 @@ function AdminDashboard() {
   }, [firestore]);
 
   const { data: sources, isLoading: sourcesLoading } = useCollection<Source>(sourcesQuery);
+
+  const guardrailsQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return collection(firestore, 'guardrailSources');
+  }, [firestore]);
+  const { data: guardrailSources, isLoading: guardrailsLoading } = useCollection<GuardrailSource>(guardrailsQuery);
 
   const submissionsQuery = useMemoFirebase(() => {
     if (!firestore) return null;
@@ -353,6 +440,43 @@ function AdminDashboard() {
     
     setIsSourceEditorOpen(false);
     setEditingSource(null);
+  };
+  
+  const handleEditGuardrail = (source: GuardrailSource) => {
+    setEditingGuardrail(source);
+    setIsGuardrailEditorOpen(true);
+  };
+
+  const handleAddNewGuardrail = () => {
+    setEditingGuardrail({
+        name: '',
+        type: 'Text',
+        content: '',
+        status: 'active',
+        addedBy: user?.displayName || 'Admin',
+        createdAt: new Date().toISOString(),
+    });
+    setIsGuardrailEditorOpen(true);
+  };
+
+  const handleSaveGuardrail = (sourceData: Partial<GuardrailSource>) => {
+    if (!firestore || !user) return;
+    const sourceToSave = { ...sourceData };
+
+    if (sourceToSave.id) {
+        const sourceRef = doc(firestore, 'guardrailSources', sourceToSave.id);
+        const { id, ...dataToUpdate } = sourceToSave;
+        updateDocumentNonBlocking(sourceRef, dataToUpdate);
+    } else {
+        const sourcesCollection = collection(firestore, 'guardrailSources');
+        addDocumentNonBlocking(sourcesCollection, {
+            ...sourceData,
+            addedById: user.uid,
+        });
+    }
+    
+    setIsGuardrailEditorOpen(false);
+    setEditingGuardrail(null);
   };
 
   const handleStatusChange = async (submissionId: string, status: Submission['status']) => {
@@ -561,7 +685,7 @@ function AdminDashboard() {
           </TabsList>
           
           <TabsContent value="operations" className="mt-6 space-y-8">
-             <Accordion type="multiple" className="w-full space-y-8">
+             <Accordion type="multiple" defaultValue={[]} className="w-full space-y-8">
                 <AccordionItem value="item-1" className="border-b-0">
                     <Card className="bg-secondary/20 text-foreground">
                         <AccordionTrigger className="p-6 text-left w-full hover:no-underline">
@@ -947,6 +1071,62 @@ function AdminDashboard() {
                     )}
                 </CardContent>
             </Card>
+            <Card className="mt-6 bg-secondary/20 text-foreground">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <CardTitle className="text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6"/> Guardrail Sources</CardTitle>
+                        <CardDescription>Manage guardrail documents for the incubator's AI agents.</CardDescription>
+                    </div>
+                    <Button size="sm" onClick={handleAddNewGuardrail}>
+                        <PlusCircle className="h-4 w-4 mr-2" />
+                        Add Guardrail
+                    </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {guardrailsLoading ? (
+                  <div className="flex justify-center items-center h-40">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  </div>
+                ) : !guardrailSources || guardrailSources.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">No guardrail sources configured.</p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {guardrailSources.map(source => (
+                      <Card key={source.id} className="bg-background flex flex-col text-foreground">
+                        <CardHeader>
+                          <div className="flex justify-between items-start">
+                              <div>
+                                  <CardTitle className="text-lg flex items-center gap-2 text-foreground">
+                                    {source.type === 'URL' ? <LinkIcon className="h-5 w-5 text-primary"/> : <FileText className="h-5 w-5 text-primary" />}
+                                    {source.name}
+                                  </CardTitle>
+                                  <CardDescription>Added by {source.addedBy} on {format(new Date(source.createdAt), "PPP")}</CardDescription>
+                              </div>
+                              <Badge variant={getStatusVariant(source.status)}>{source.status}</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="flex-grow">
+                          {source.type === 'URL' ? (
+                            <a href={source.content} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">
+                              {source.content}
+                            </a>
+                          ) : (
+                            <p className="text-sm text-muted-foreground line-clamp-4">{source.content}</p>
+                          )}
+                        </CardContent>
+                        <CardFooter className="flex justify-end gap-2 border-t pt-4">
+                            <Button variant="outline" size="sm" onClick={() => handleEditGuardrail(source)}>
+                                <Edit className="h-4 w-4 mr-1" /> Edit
+                            </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
         
@@ -1059,7 +1239,11 @@ function AdminDashboard() {
                 )}
             </DialogContent>
         </Dialog>
-
+        <Dialog open={isGuardrailEditorOpen} onOpenChange={setIsGuardrailEditorOpen}>
+            <DialogContent>
+                {editingGuardrail && <GuardrailSourceEditor source={editingGuardrail} onSave={handleSaveGuardrail} onCancel={() => setIsGuardrailEditorOpen(false)} />}
+            </DialogContent>
+        </Dialog>
     </div>
   );
 }
@@ -1067,6 +1251,7 @@ function AdminDashboard() {
 function PartnerDashboard() {
     const { user } = useUser();
     const firestore = useFirestore();
+    const { toast } = useToast();
 
     const membersQuery = useMemoFirebase(() => {
         if (!firestore) return null;
@@ -1079,6 +1264,52 @@ function PartnerDashboard() {
         return collection(firestore, 'challenges');
     }, [firestore]);
     const { data: challenges, isLoading: challengesLoading } = useCollection<Challenge>(challengesQuery);
+
+    const [isGuardrailEditorOpen, setIsGuardrailEditorOpen] = useState(false);
+    const [editingGuardrail, setEditingGuardrail] = useState<Partial<GuardrailSource> | null>(null);
+
+    const guardrailsQuery = useMemoFirebase(() => {
+      if (!firestore) return null;
+      return collection(firestore, 'guardrailSources');
+    }, [firestore]);
+    const { data: guardrailSources, isLoading: guardrailsLoading } = useCollection<GuardrailSource>(guardrailsQuery);
+
+    const handleEditGuardrail = (source: GuardrailSource) => {
+      setEditingGuardrail(source);
+      setIsGuardrailEditorOpen(true);
+    };
+  
+    const handleAddNewGuardrail = () => {
+      setEditingGuardrail({
+          name: '',
+          type: 'Text',
+          content: '',
+          status: 'active',
+          addedBy: user?.displayName || 'Partner',
+          createdAt: new Date().toISOString(),
+      });
+      setIsGuardrailEditorOpen(true);
+    };
+  
+    const handleSaveGuardrail = (sourceData: Partial<GuardrailSource>) => {
+      if (!firestore || !user) return;
+      const sourceToSave = { ...sourceData };
+  
+      if (sourceToSave.id) {
+          const sourceRef = doc(firestore, 'guardrailSources', sourceToSave.id);
+          const { id, ...dataToUpdate } = sourceToSave;
+          updateDocumentNonBlocking(sourceRef, dataToUpdate);
+      } else {
+          const sourcesCollection = collection(firestore, 'guardrailSources');
+          addDocumentNonBlocking(sourcesCollection, {
+              ...sourceData,
+              addedById: user.uid,
+          });
+      }
+      
+      setIsGuardrailEditorOpen(false);
+      setEditingGuardrail(null);
+    };
 
     return (
     <div className="space-y-8">
@@ -1129,6 +1360,62 @@ function PartnerDashboard() {
                     )}
                 </CardContent>
             </Card>
+            <Card className="mt-6 bg-secondary/20 text-foreground">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <CardTitle className="text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6"/> Guardrail Sources</CardTitle>
+                        <CardDescription>Manage guardrail documents for the incubator's AI agents.</CardDescription>
+                    </div>
+                    <Button size="sm" onClick={handleAddNewGuardrail}>
+                        <PlusCircle className="h-4 w-4 mr-2" />
+                        Add Guardrail
+                    </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {guardrailsLoading ? (
+                  <div className="flex justify-center items-center h-40">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  </div>
+                ) : !guardrailSources || guardrailSources.length === 0 ? (
+                  <p className="text-center text-muted-foreground py-8">No guardrail sources configured.</p>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {guardrailSources.map(source => (
+                      <Card key={source.id} className="bg-background flex flex-col text-foreground">
+                        <CardHeader>
+                          <div className="flex justify-between items-start">
+                              <div>
+                                  <CardTitle className="text-lg flex items-center gap-2 text-foreground">
+                                    {source.type === 'URL' ? <LinkIcon className="h-5 w-5 text-primary"/> : <FileText className="h-5 w-5 text-primary" />}
+                                    {source.name}
+                                  </CardTitle>
+                                  <CardDescription>Added by {source.addedBy} on {format(new Date(source.createdAt), "PPP")}</CardDescription>
+                              </div>
+                              <Badge variant={getStatusVariant(source.status)}>{source.status}</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="flex-grow">
+                          {source.type === 'URL' ? (
+                            <a href={source.content} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline break-all">
+                              {source.content}
+                            </a>
+                          ) : (
+                            <p className="text-sm text-muted-foreground line-clamp-4">{source.content}</p>
+                          )}
+                        </CardContent>
+                        <CardFooter className="flex justify-end gap-2 border-t pt-4">
+                            <Button variant="outline" size="sm" onClick={() => handleEditGuardrail(source)}>
+                                <Edit className="h-4 w-4 mr-1" /> Edit
+                            </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
           <TabsContent value="challenges" className="mt-6 space-y-6">
              <Card className="bg-secondary/20 text-foreground">
@@ -1171,6 +1458,11 @@ function PartnerDashboard() {
             </Card>
           </TabsContent>
         </Tabs>
+        <Dialog open={isGuardrailEditorOpen} onOpenChange={setIsGuardrailEditorOpen}>
+            <DialogContent>
+                {editingGuardrail && <GuardrailSourceEditor source={editingGuardrail} onSave={handleSaveGuardrail} onCancel={() => setIsGuardrailEditorOpen(false)} />}
+            </DialogContent>
+        </Dialog>
     </div>
   );
 }
