@@ -121,6 +121,9 @@ export const CommandCenterChatInputSchema = z.object({
     role: z.enum(['user', 'model']),
     content: z.string(),
   })).describe("The chat history."),
+  submissionsSummary: z.array(z.object({ id: z.string(), submitterName: z.string(), type: z.string(), status: z.string() })).optional(),
+  challengesSummary: z.array(z.object({ id: z.string(), title: z.string(), status: z.string() })).optional(),
+  rosterSummary: z.array(z.object({ id: z.string(), name: z.string(), status: z.string() })).optional(),
 });
 
 const AgentSchemaForPrompt = z.object({
@@ -142,6 +145,9 @@ export const CommandCenterChatPromptInputSchema = z.object({
     content: z.string(),
   })),
   crew: z.array(AgentSchemaForPrompt),
+  submissionsSummary: z.array(z.object({ id: z.string(), submitterName: z.string(), type: z.string(), status: z.string() })).optional(),
+  challengesSummary: z.array(z.object({ id: z.string(), title: z.string(), status: z.string() })).optional(),
+  rosterSummary: z.array(z.object({ id: z.string(), name: z.string(), status: z.string() })).optional(),
 });
 
 const SourceActionPayloadSchema = z.object({

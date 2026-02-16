@@ -73,7 +73,7 @@ interface GuardrailSource {
 
 interface Submission {
     id: string;
-    applicationType: "Venture Pitch" | "Incubator Application" | "Career Inquiry" | "Partnership Inquiry";
+    applicationType: "Venture Pitch" | "Incubator Application" | "Career Inquiry" | "Partnership Inquiry" | "NTU Roster Application";
     submitterName: string;
     contactEmail: string;
     contactPhone: string;
@@ -902,7 +902,11 @@ function AdminDashboard() {
               </CardHeader>
               <CardContent className="p-0">
                 <div className="h-[600px] border-t">
-                    <CommandCenterChat />
+                    <CommandCenterChat 
+                        submissions={submissions || []}
+                        challenges={challenges || []}
+                        incubatorMembers={incubatorMembers || []}
+                    />
                 </div>
               </CardContent>
             </Card>
@@ -1719,4 +1723,5 @@ export default function AdminPage() {
     
 
     
+
 

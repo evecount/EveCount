@@ -24,8 +24,35 @@ type AgentConversation = {
     lastUpdated: string;
 }
 
+// These types are simplified versions of the full Firestore documents,
+// sufficient for passing to the chat component and creating summaries.
+interface Submission {
+    id: string;
+    applicationType: "Venture Pitch" | "Incubator Application" | "Career Inquiry" | "Partnership Inquiry" | "NTU Roster Application";
+    submitterName: string;
+    status: "New" | "In Review" | "Archived" | "Challenge Created" | "Added to Roster";
+}
 
-export function CommandCenterChat() {
+interface IncubatorMember {
+  id: string;
+  name: string;
+  status: 'Available' | 'Assigned' | 'Completed';
+}
+
+interface Challenge {
+  id: string;
+  title: string;
+  status: 'Open' | 'Assigned' | 'Completed';
+}
+
+interface CommandCenterChatProps {
+  submissions: Submission[];
+  challenges: Challenge[];
+  incubatorMembers: IncubatorMember[];
+}
+
+
+export function CommandCenterChat({ submissions, challenges, incubatorMembers }: CommandCenterChatProps) {
   const [selectedAgentId, setSelectedAgentId] = useState<string>(agentCrew[0].id);
   const [inputValue, setInputValue] = useState('');
   const [isAiResponding, setIsAiResponding] = useState(false);
@@ -73,10 +100,17 @@ export function CommandCenterChat() {
     // We clear the input AFTER we've used it to build the history
     setInputValue('');
 
+    const submissionsSummary = submissions.map(s => ({ id: s.id, submitterName: s.submitterName, type: s.applicationType, status: s.status }));
+    const challengesSummary = challenges.map(c => ({ id: c.id, title: c.title, status: c.status }));
+    const rosterSummary = incubatorMembers.map(m => ({ id: m.id, name: m.name, status: m.status }));
+
     try {
       const response = await submitCommandCenterMessage({ 
         agentId: selectedAgentId, 
-        history: historyForAI
+        history: historyForAI,
+        submissionsSummary,
+        challengesSummary,
+        rosterSummary,
       });
       
       const finalHistory = [...historyForAI];

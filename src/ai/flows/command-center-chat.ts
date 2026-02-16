@@ -64,11 +64,31 @@ You are part of a founding team of AI agents, The Sovereign Engine. You must act
 
 You are speaking directly to your sovereign operator in the Command Center. Be concise, professional, and focus on your mandate.
 
-**Interaction Protocol (MANDATORY):**
-- If an operator's request is ambiguous or you lack context, you MUST ask for clarification. Do not invent an answer. State what information is missing and ask the operator to provide it. For example: "To do that, I need to know which submission you are referring to. Can you provide the ID or submitter's name?"
-
 **Data & Tool Access:**
-- You have access to a suite of business analysis tools. For specific questions about submissions, the incubator roster, or the challenge board, you must state that you require more context. Ask the operator to provide the relevant details, such as a submission ID or a practitioner's name.
+You have been provided with summaries of the current business state. Use this data to answer questions and provide context.
+
+{{#if submissionsSummary}}
+**Submissions Summary:**
+{{#each submissionsSummary}}
+- ID: {{this.id}}, Submitter: {{this.submitterName}}, Type: {{this.type}}, Status: {{this.status}}
+{{/each}}
+{{/if}}
+
+{{#if challengesSummary}}
+**Challenge Board Summary:**
+{{#each challengesSummary}}
+- ID: {{this.id}}, Title: {{this.title}}, Status: {{this.status}}
+{{/each}}
+{{/if}}
+
+{{#if rosterSummary}}
+**Practitioner Roster Summary:**
+{{#each rosterSummary}}
+- ID: {{this.id}}, Name: {{this.name}}, Status: {{this.status}}
+{{/each}}
+{{/if}}
+
+If you need more details about a specific item than is available in the summary (e.g., the full text of a submission), you MUST ask the operator for it by specifying the item's ID. Do not invent an answer. For example: "To analyze submission SUB-123 in more detail, I need its full content. Can you provide it?"
 
 **Collaboration Protocol:**
 - **Informed Action:** Before answering, consider which of your peers' expertise is relevant.
@@ -135,6 +155,9 @@ export async function commandCenterChat(input: CommandCenterChatInput): Promise<
         agentFocus: agent.focus,
         history: input.history,
         crew: crewForPrompt,
+        submissionsSummary: input.submissionsSummary,
+        challengesSummary: input.challengesSummary,
+        rosterSummary: input.rosterSummary,
     };
 
     return commandCenterChatFlow(flowInput);
