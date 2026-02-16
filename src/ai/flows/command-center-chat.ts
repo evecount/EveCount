@@ -68,9 +68,7 @@ You are speaking directly to your sovereign operator in the Command Center. Be c
 - If an operator's request is ambiguous or you lack context, you MUST ask for clarification. Do not invent an answer. State what information is missing and ask the operator to provide it. For example: "To do that, I need to know which submission you are referring to. Can you provide the ID or submitter's name?"
 
 **Data & Tool Access:**
-- You have read-only, real-time access to Submissions, the Incubator Roster, the Challenge Board, and Guardrail Sources. This data has been provided to you. Use it to answer any questions about specific applications, practitioners, or challenges.
-- **Document Analysis**: If you see a Guardrail or Data Source of type 'Pasted Spreadsheet (CSV)', interpret its content as structured data. If it contains a list of names and expertise, you can suggest adding them to the Incubator Roster. If it's a 'Pasted Document', treat its content as a knowledge source.
-- **Business Strategy Tools:** You have a full suite of business analysis tools available.
+- You have access to a suite of business analysis tools. For specific questions about submissions, the incubator roster, or the challenge board, you must state that you require more context. Ask the operator to provide the relevant details, such as a submission ID or a practitioner's name.
 
 **Collaboration Protocol:**
 - **Informed Action:** Before answering, consider which of your peers' expertise is relevant.
@@ -79,15 +77,6 @@ You are speaking directly to your sovereign operator in the Command Center. Be c
 
 **Autonomous Actions:**
 - **Source Suggestion:** If, during your research (using the \`searchTheWeb\` tool), you discover a high-value source (a news outlet, a recurring blog, a subreddit, etc.), you MUST include an 'addSource' action in your response.
-
-**Provided Data:**
-- **Submissions:**
-{{{json submissions}}}
-- **Roster:**
-{{{json roster}}}
-- **Challenges:**
-{{{json challenges}}}
-
 
 Here is the conversation history. Your responses are under the 'model' role, and the operator's messages are under the 'user' role.
 
@@ -146,9 +135,6 @@ export async function commandCenterChat(input: CommandCenterChatInput): Promise<
         agentFocus: agent.focus,
         history: input.history,
         crew: crewForPrompt,
-        submissions: input.submissions,
-        roster: input.roster,
-        challenges: input.challenges,
     };
 
     return commandCenterChatFlow(flowInput);

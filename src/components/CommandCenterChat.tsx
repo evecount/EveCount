@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect, useMemo } from 'react';
@@ -8,11 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { submitCommandCenterMessage } from '@/app/actions';
 import { Send, User, Loader2 } from 'lucide-react';
 import { agentCrew } from '@/lib/agents';
-import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, addDocumentNonBlocking, useCollection } from '@/firebase';
+import { useUser, useFirestore, useDoc, useMemoFirebase, setDocumentNonBlocking, addDocumentNonBlocking } from '@/firebase';
 import { doc, collection } from 'firebase/firestore';
-import type { Submission } from '@/lib/submissions';
-import type { IncubatorMember } from '@/lib/incubator-members';
-import type { Challenge } from '@/lib/challenges';
 
 type Message = {
   role: 'user' | 'model';
@@ -35,24 +33,6 @@ export function CommandCenterChat() {
 
   const { user } = useUser();
   const firestore = useFirestore();
-
-  const submissionsQuery = useMemoFirebase(() => {
-    if (!firestore) return null;
-    return collection(firestore, 'submissions');
-  }, [firestore]);
-  const { data: submissions, isLoading: submissionsLoading } = useCollection<Submission>(submissionsQuery);
-  
-  const membersQuery = useMemoFirebase(() => {
-    if (!firestore) return null;
-    return collection(firestore, 'incubatorMembers');
-  }, [firestore]);
-  const { data: incubatorMembers, isLoading: membersLoading } = useCollection<IncubatorMember>(membersQuery);
-
-  const challengesQuery = useMemoFirebase(() => {
-    if (!firestore) return null;
-    return collection(firestore, 'challenges');
-  }, [firestore]);
-  const { data: challenges, isLoading: challengesLoading } = useCollection<Challenge>(challengesQuery);
 
   const conversationRef = useMemoFirebase(() => {
     if (!firestore || !user || !selectedAgentId) return null;
@@ -79,7 +59,7 @@ export function CommandCenterChat() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const isBusy = isAiResponding || isConversationLoading || submissionsLoading || membersLoading || challengesLoading;
+  const isBusy = isAiResponding || isConversationLoading;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,10 +76,7 @@ export function CommandCenterChat() {
     try {
       const response = await submitCommandCenterMessage({ 
         agentId: selectedAgentId, 
-        history: historyForAI,
-        submissions: submissions || [],
-        roster: incubatorMembers || [],
-        challenges: challenges || [],
+        history: historyForAI
       });
       
       const finalHistory = [...historyForAI];

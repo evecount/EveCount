@@ -121,9 +121,6 @@ export const CommandCenterChatInputSchema = z.object({
     role: z.enum(['user', 'model']),
     content: z.string(),
   })).describe("The chat history."),
-  submissions: z.array(SubmissionSchemaForAgent).optional().describe("A list of current submissions from Firestore."),
-  roster: z.array(IncubatorMemberSchemaForAgent).optional().describe("A list of current incubator members from Firestore."),
-  challenges: z.array(ChallengeSchemaForAgent).optional().describe("A list of current challenges from Firestore."),
 });
 
 const AgentSchemaForPrompt = z.object({
@@ -145,9 +142,6 @@ export const CommandCenterChatPromptInputSchema = z.object({
     content: z.string(),
   })),
   crew: z.array(AgentSchemaForPrompt),
-  submissions: z.array(SubmissionSchemaForAgent).optional(),
-  roster: z.array(IncubatorMemberSchemaForAgent).optional(),
-  challenges: z.array(ChallengeSchemaForAgent).optional(),
 });
 
 const SourceActionPayloadSchema = z.object({
