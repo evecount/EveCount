@@ -57,6 +57,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
     },
     {
+      url: `${baseUrl}/snapdragon/dsmf`,
+      lastModified: new Date(),
+    },
+    {
       url: `${baseUrl}/operation-nightfall`,
       lastModified: new Date(),
     }

@@ -5,7 +5,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Share2, Binary, Cpu, Activity, Clock, Trash2, Microscope, ArrowRight } from 'lucide-react';
+import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Share2, Binary, Cpu, Activity, Clock, Trash2, Microscope, ArrowRight, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -209,6 +209,11 @@ export default function SnapdragonPage() {
                                 <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
                                     <Binary className="h-4 w-4" /> TECHNICAL_README.md
                                 </a>
+                            </Button>
+                            <Button variant="outline" className="flex items-center gap-2" asChild>
+                                <Link href="/snapdragon/dsmf">
+                                    <FileText className="h-4 w-4" /> DSMF Whitepaper
+                                </Link>
                             </Button>
                             <Button variant="outline" className="flex items-center gap-2" asChild>
                                 <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
