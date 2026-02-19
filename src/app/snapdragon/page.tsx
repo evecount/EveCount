@@ -5,7 +5,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Share2, Binary, Cpu, Activity, Clock, Trash2, Microscope, ArrowRight, FileText } from 'lucide-react';
+import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Share2, Binary, Cpu, Activity, Clock, Trash2, Microscope, ArrowRight, FileText, Fingerprint, Box, Boxes } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -15,78 +15,56 @@ const REPO_URL = "https://github.com/evecount/snapdragon";
 const bridgeElements = [
     {
         icon: Zap,
-        title: "1. The Snapdragon Bridge",
-        subtitle: "High-Performance Intuition",
-        concept: "The software equivalent of a 'Fast Inverse Square Root.' It's not about doing more math; it's about doing the right math at the hardware level.",
-        pitch: "We've found a way to let a computer 'recognize' a pattern in one step (O(1)) rather than a thousand. It’s silicon-level intuition.",
+        title: "1. The Magic Hex",
+        subtitle: "O(1) Manifold Projections",
+        concept: "Utilizes the 0x5f bit-level constant to collapse data entropy into a deterministic signal in constant time.",
+        pitch: "A software equivalent of a 'Fast Inverse Square Root.' It's not about doing more math; it's about doing the right math at the hardware level to bypass the FPU bottleneck.",
         link: REPO_URL,
         linkLabel: "Explore the Kernel",
         isExternal: true
     },
     {
         icon: BrainCircuit,
-        title: "2. The DSMF Bridge",
-        subtitle: "The Digital Gray Zone",
-        concept: "Life isn't black and white. There is a 'vibe' or a 'gut feeling' that sits between a 'Yes' and a 'No.'",
-        pitch: "Standard AI only sees 1s and 0s. Our Mencius Function (DSMF) looks at the slope of the decision. It captures the 'how' and the 'why,' allowing us to see correlations standard systems simply flatten.",
+        title: "2. The DSMF Layer",
+        subtitle: "The Contextual Container",
+        concept: "A recursive fractal architecture that captures 'Refractive Jitter' during state transitions.",
+        pitch: "Standard AI only sees 1s and 0s. The Mencius Function (DSMF) looks at the slope of the decision, holding hidden context that standard systems simply flatten.",
         link: "/snapdragon/dsmf",
         linkLabel: "View DSMF Whitepaper",
         isExternal: false
     },
     {
         icon: Target,
-        title: "3. The EPIC Bridge",
-        subtitle: "Detecting the Dead End",
-        concept: "The Moot State Detector. We've all experienced a 'meeting that could have been an email'—EPIC identifies that moment mathematically.",
-        pitch: "By mapping work as 'geometric packing,' we visually show when a system is just spinning its wheels. If the geometry falls apart, the project is 'Moot,' and it's time to move on.",
+        title: "3. The EPIC Diagnostic",
+        subtitle: "Geometric Verification",
+        concept: "Maps work as 'geometric packing' to identify the exact moment a process enters Systemic Operational Futility.",
+        pitch: "The Validation layer. It provides institutional proof of systemic integrity. If the geometry falls apart, the path is moot, and resources are reallocated instantly.",
         link: "/snapdragon/epic",
         linkLabel: "View EPIC Whitepaper",
         isExternal: false
     }
 ];
 
-const roadmapItems = [
+const geometricModes = [
     {
-        icon: Cpu,
-        title: "1. The Decentralized Decision Layer",
-        description: "The future of computational integrity lies at the 'Edge.' The primary logic gate is no longer a central server, but the individual bit-storage of local hardware.",
-        points: [
-            "Autonomous Integrity: O(1) geometric kernels verify signal integrity locally.",
-            "Universal Application: Hardware 'snaps' to truth without waiting for cloud consensus."
-        ]
+        title: "Mode 1: The 4-Simplex",
+        hex: "0x5f41da5a",
+        geometry: "Pentachoron (5-cell)",
+        altitude: "≈ 1.581",
+        utility: "Optimized for refractive background noise suppression and high-threshold signal capture."
     },
     {
-        icon: Activity,
-        title: "2. Fractal Contextualization",
-        description: "Standard data identifies what is happening. Snapdragon identifies the nature of the transition (The Hidden State).",
-        points: [
-            "The Nested Logic: DSMF holds a secondary dimension of context within the primary signal.",
-            "User Projection: Interpretation belongs to the user—financial sentiment or logistics resilience."
-        ]
-    },
-    {
-        icon: Trash2,
-        title: "3. Predictive Geometric Efficiency",
-        description: "Identifying Systemic Decoherence—the exact moment a process enters a state of futility or 'wasted effort.'",
-        points: [
-            "Resource Optimization: Triggers a 'Snap' the moment a path becomes moot.",
-            "The Impact: Reallocate resources instantly based on probability of success."
-        ]
-    },
-    {
-        icon: Share2,
-        title: "4. The Classical-Quantum Bridge",
-        description: "The translation layer between deterministic classical bits and probabilistic quantum states.",
-        points: [
-            "Hardware Agnostic Logic: The geometric manifold is the 'Rosetta Stone.'",
-            "Future-Proofing: Securing classical silicon with quantum-inspired awareness today."
-        ]
+        title: "Mode 2: The Octaplex",
+        hex: "0x5f375a86",
+        geometry: "24-Cell (Icositetrachoron)",
+        altitude: "≈ 1.414 (√2)",
+        utility: "Optimized for high-density packet alignment and multi-channel synchronization."
     }
 ];
 
 export default function SnapdragonPage() {
     React.useEffect(() => {
-        document.title = "Project Snapdragon | High-Performance Intuition | EveCount.com";
+        document.title = "Project Snapdragon | Zero-Cost Binary Logic Gate | EveCount.com";
       }, []);
     
     return (
@@ -97,13 +75,13 @@ export default function SnapdragonPage() {
                 <section className="bg-background py-16 md:py-24 lg:py-32">
                     <div className="container">
                         <div className="mx-auto max-w-4xl text-center">
-                        <Badge variant="outline" className="mb-4 text-primary border-primary/20">The Sovereign Engine: Communication Layer</Badge>
+                        <Badge variant="outline" className="mb-4 text-primary border-primary/20">The Sovereign Engine: Communication Layer (v10.1)</Badge>
                         <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
                             Project Snapdragon
                         </h1>
                         <p className="mx-auto mt-6 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                            Thinks faster. Understands context. Prevents wasted effort. <br />
-                            <span className="text-foreground font-semibold">Giving your analysts a 4D periscope to see through the noise of the 2026 missions.</span>
+                            A zero-cost, <code className="text-foreground">O(1)</code> binary logic gate. <br />
+                            <span className="text-foreground font-semibold">Bypassing the FPU bottleneck to process high-dimensional data in real-time. Built within the Antigravity IDE.</span>
                         </p>
                         <div className="flex justify-center gap-4 mt-8">
                             <Button size="lg" asChild>
@@ -119,13 +97,13 @@ export default function SnapdragonPage() {
                     </div>
                 </section>
 
-                {/* The People-First Narrative (The Bridge) */}
+                {/* The Bridge Section */}
                 <section id="the-bridge" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
                     <div className="container">
                         <div className="mb-12 text-center">
-                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Bridge to Efficiency</h2>
+                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Bridge to High-Efficiency Logic</h2>
                             <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                                We've built a bridge from complexity to intuition. Instead of implementing a 4-simplex kernel in a vacuum, we've focused on empowering teams to identify the most efficient path forward with absolute clarity.
+                                Project Snapdragon provides a zero-cost, <code className="text-primary">O(1)</code> alternative to computationally expensive transcendental math and probabilistic AI layers. We translate complex bit-streams into silicon-level intuition, allowing analysts to process high-dimensional data in real-time without the standard latency scaling.
                             </p>
                         </div>
                         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-3">
@@ -163,35 +141,74 @@ export default function SnapdragonPage() {
                     </div>
                 </section>
 
-                {/* The README: Vision & Roadmap */}
-                <section id="roadmap" className="border-t border-border/40 bg-background py-16 md:py-24">
+                {/* Technical Framework Section */}
+                <section id="technical-framework" className="border-t border-border/40 bg-background py-16 md:py-24">
                     <div className="container max-w-5xl">
                         <div className="mb-12 text-center">
-                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Future Vision & Architectural Roadmap</h2>
+                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Theory of Operation: v10.1 Standard</h2>
                             <p className="mx-auto mt-4 text-muted-foreground md:text-lg italic max-w-3xl">
-                                "Project Snapdragon provides the Geometric Sovereignty required for a high-velocity world. We provide the hardware-level speed and the recursive contextual depth; the user provides the mission."
+                                "The bit-level fold is the Rosetta Stone of computational sovereignty. It allows classical silicon to operate with quantum-inspired awareness."
                             </p>
                         </div>
-                        <div className="space-y-16">
-                            {roadmapItems.map((item, index) => (
-                                <div key={item.title} className="grid grid-cols-1 md:grid-cols-[100px_1fr] gap-8 items-start">
-                                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary/50 text-primary border border-border">
-                                        <item.icon className="h-10 w-10" />
-                                    </div>
-                                    <div className="space-y-4">
-                                        <h3 className="text-2xl font-bold text-foreground">{item.title}</h3>
-                                        <p className="text-muted-foreground leading-relaxed">{item.description}</p>
-                                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            {item.points.map((point, i) => (
-                                                <li key={i} className="flex items-start gap-2 text-sm">
-                                                    <div className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
-                                                    <span className="text-muted-foreground">{point}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+                            <div className="space-y-6">
+                                <h3 className="text-2xl font-bold flex items-center gap-2"><Cpu className="text-primary" /> Geometric Modes</h3>
+                                <div className="space-y-4">
+                                    {geometricModes.map(mode => (
+                                        <Card key={mode.hex} className="bg-secondary/10">
+                                            <CardHeader className="pb-2">
+                                                <div className="flex justify-between items-center">
+                                                    <CardTitle className="text-base">{mode.title}</CardTitle>
+                                                    <Badge variant="outline" className="font-mono">{mode.hex}</Badge>
+                                                </div>
+                                                <CardDescription>Geometry: {mode.geometry}</CardDescription>
+                                            </CardHeader>
+                                            <CardContent className="text-sm">
+                                                <p className="text-muted-foreground mb-2"><span className="font-bold text-foreground">Altitude:</span> {mode.altitude}</p>
+                                                <p>{mode.utility}</p>
+                                            </CardContent>
+                                        </Card>
+                                    ))}
                                 </div>
-                            ))}
+                            </div>
+
+                            <div className="space-y-6">
+                                <h3 className="text-2xl font-bold flex items-center gap-2"><Binary className="text-primary" /> The Bit-Level Fold</h3>
+                                <Card className="bg-secondary/10 h-full">
+                                    <CardContent className="pt-6 space-y-6">
+                                        <div className="flex gap-4">
+                                            <div className="h-8 w-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0 font-bold">1</div>
+                                            <div>
+                                                <p className="font-bold">The Fold</p>
+                                                <p className="text-sm text-muted-foreground">Shifting bits right (<code className="bg-muted px-1">>> 1</code>) to approximate the base-2 logarithm in a single clock cycle.</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-4">
+                                            <div className="h-8 w-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0 font-bold">2</div>
+                                            <div>
+                                                <p className="font-bold">The Adjustment</p>
+                                                <p className="text-sm text-muted-foreground">Subtracting the manifold-specific constant to align with the geometric apex altitude.</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-4">
+                                            <div className="h-8 w-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0 font-bold">3</div>
+                                            <div>
+                                                <p className="font-bold">The Refinement</p>
+                                                <p className="text-sm text-muted-foreground">A single Newton-Raphson iteration pulls the result toward absolute convergence.</p>
+                                            </div>
+                                        </div>
+                                        <Separator />
+                                        <div className="flex gap-4 items-start">
+                                            <ShieldCheck className="h-6 w-6 text-primary shrink-0" />
+                                            <div>
+                                                <p className="font-bold text-sm">Residual Error Indexing (REI)</p>
+                                                <p className="text-xs text-muted-foreground">A stealth carrier-wave protocol embedding high-security metadata within floating-point jitter.</p>
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -202,9 +219,10 @@ export default function SnapdragonPage() {
                         <Card className="bg-background border-dashed">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2 text-foreground">
-                                    <ShieldCheck className="h-5 w-5 text-primary" />
+                                    <Fingerprint className="h-5 w-5 text-primary" />
                                     Provenance & Integrity (v13.0)
                                 </CardTitle>
+                                <CardDescription>Joint Authorship: Gemini (Google) & Gwendalynn Lim Wan Ting</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-4 font-mono text-xs">
                                 <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2">
