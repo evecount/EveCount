@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -70,6 +69,7 @@ export default function SnapdragonPage() {
       }, []);
 
     const benchmarkImage = PlaceHolderImages.find(img => img.id === 'snapdragon-benchmark');
+    const visualizerImage = PlaceHolderImages.find(img => img.id === 'snapdragon-visualizer');
     
     return (
         <div className="flex min-h-screen flex-col">
@@ -169,9 +169,9 @@ export default function SnapdragonPage() {
                                         )}
                                     </div>
                                     <CardFooter className="bg-background/50 py-4">
-                                        <p className="text-[10px] md:text-xs font-mono text-muted-foreground leading-relaxed">
-                                            <span className="font-bold text-foreground">Figure 1: Deterministic O(1) Latency Audit (v13.1)</span> “This audit compares the Project SNAPDRAGON Kernel against the industry-standard NumPy/FPU execution paths. By utilizing bit-level coordinate refraction (0x5f41da5a) instead of transcendental FPU operations, SNAPDRAGON achieves constant-time (O(1)) signal separation. As complexity scales to 10M+ samples, SNAPDRAGON maintains a flat latency profile, effectively bypassing the FPU bottleneck and providing the deterministic speed required for sovereign, high-velocity missions.”
-                                        </p>
+                                        <div className="text-[10px] md:text-xs font-mono text-muted-foreground leading-relaxed">
+                                            <span className="font-bold text-foreground">Figure 1: Deterministic O(1) Latency Audit (v13.1)</span> “This audit compares the Project SNAPDRAGON Kernel against the industry-standard NumPy/FPU execution paths. By utilizing bit-level coordinate refraction (0x5f41da5a) instead of transcendental FPU operations, SNAPDRAGON achieves constant-time ($O(1)$) signal separation. As complexity scales to 10M+ samples, SNAPDRAGON maintains a flat latency profile, effectively bypassing the FPU bottleneck and providing the deterministic speed required for sovereign, high-velocity missions.”
+                                        </div>
                                     </CardFooter>
                                 </Card>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -243,8 +243,32 @@ export default function SnapdragonPage() {
                     </div>
                 </section>
 
+                {/* Visualizer Section */}
+                <section id="visualizer" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
+                    <div className="container max-w-6xl text-center">
+                        <h2 className="font-headline text-3xl font-bold tracking-tighter text-foreground sm:text-4xl mb-8">The Snapdragon Visualizer</h2>
+                        <Card className="bg-background border-border/40 overflow-hidden shadow-2xl mx-auto max-w-4xl">
+                            <div className="p-4">
+                                {visualizerImage && (
+                                    <img 
+                                        src={visualizerImage.imageUrl} 
+                                        alt={visualizerImage.description}
+                                        className="w-full h-auto rounded-md border border-border/40"
+                                        data-ai-hint={visualizerImage.imageHint}
+                                    />
+                                )}
+                            </div>
+                            <CardFooter className="bg-muted/10 py-4 justify-center">
+                                <p className="text-sm text-muted-foreground italic">
+                                    Real-time geometric manifold projection utilizing the Simplex kernel.
+                                </p>
+                            </CardFooter>
+                        </Card>
+                    </div>
+                </section>
+
                 {/* Technical Framework Section */}
-                <section id="technical-framework" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
+                <section id="technical-framework" className="border-t border-border/40 bg-background py-16 md:py-24">
                     <div className="container max-w-5xl">
                         <div className="mb-12 text-center">
                             <h2 className="font-headline text-3xl font-bold tracking-tighter text-foreground sm:text-4xl">Theory of Operation: v10.1 Standard</h2>
@@ -258,7 +282,7 @@ export default function SnapdragonPage() {
                                 <h3 className="text-2xl font-bold flex items-center gap-2 text-foreground"><Cpu className="text-primary" /> Geometric Modes</h3>
                                 <div className="space-y-4">
                                     {geometricModes.map(mode => (
-                                        <Card key={mode.hex} className="bg-background/50 border-border/40">
+                                        <Card key={mode.hex} className="bg-secondary/10 border-border/40">
                                             <CardHeader className="pb-2">
                                                 <div className="flex justify-between items-center">
                                                     <CardTitle className="text-base text-foreground font-bold">{mode.title}</CardTitle>
@@ -277,7 +301,7 @@ export default function SnapdragonPage() {
 
                             <div className="space-y-6">
                                 <h3 className="text-2xl font-bold flex items-center gap-2 text-foreground"><Binary className="text-primary" /> The Bit-Level Fold</h3>
-                                <Card className="bg-background/50 h-full border-border/40">
+                                <Card className="bg-secondary/10 h-full border-border/40">
                                     <CardContent className="pt-6 space-y-6">
                                         <div className="flex gap-4">
                                             <div className="h-8 w-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0 font-bold">1</div>
@@ -316,9 +340,9 @@ export default function SnapdragonPage() {
                 </section>
 
                 {/* Provenance & Integrity */}
-                <section id="provenance" className="border-t border-border/40 bg-background py-16">
+                <section id="provenance" className="border-t border-border/40 bg-secondary/20 py-16">
                     <div className="container max-w-4xl">
-                        <Card className="bg-secondary/10 border-dashed border-border/60">
+                        <Card className="bg-background border-dashed border-border/60">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2 text-foreground">
                                     <Fingerprint className="h-5 w-5 text-primary" />
@@ -345,7 +369,7 @@ export default function SnapdragonPage() {
                 </section>
 
                 {/* Resource Hub */}
-                <section className="border-t border-border/40 bg-secondary/20 py-16 text-center">
+                <section className="border-t border-border/40 bg-background py-16 text-center">
                     <div className="container">
                         <h2 className="text-2xl font-bold mb-8 text-foreground">Resource Hub</h2>
                         <div className="flex flex-wrap justify-center gap-4">

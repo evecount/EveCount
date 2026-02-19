@@ -11,6 +11,12 @@
       "description": "Deterministic O(1) Latency Audit showing SNAPDRAGON vs standard FPU performance.",
       "imageUrl": "/benchmark-diagram.png",
       "imageHint": "performance graph"
+    },
+    {
+      "id": "snapdragon-visualizer",
+      "description": "The Snapdragon Visualizer showing geometric manifold projections.",
+      "imageUrl": "/snapdragon-visualizer.png",
+      "imageHint": "geometric projection"
     }
   ]
 }
