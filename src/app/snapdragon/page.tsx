@@ -18,21 +18,30 @@ const bridgeElements = [
         title: "1. The Snapdragon Bridge",
         subtitle: "High-Performance Intuition",
         concept: "The software equivalent of a 'Fast Inverse Square Root.' It's not about doing more math; it's about doing the right math at the hardware level.",
-        pitch: "We've found a way to let a computer 'recognize' a pattern in one step (O(1)) rather than a thousand. It’s silicon-level intuition."
+        pitch: "We've found a way to let a computer 'recognize' a pattern in one step (O(1)) rather than a thousand. It’s silicon-level intuition.",
+        link: REPO_URL,
+        linkLabel: "Explore the Kernel",
+        isExternal: true
     },
     {
         icon: BrainCircuit,
         title: "2. The DSMF Bridge",
         subtitle: "The Digital Gray Zone",
         concept: "Life isn't black and white. There is a 'vibe' or a 'gut feeling' that sits between a 'Yes' and a 'No.'",
-        pitch: "Standard AI only sees 1s and 0s. Our Mencius Function (DSMF) looks at the slope of the decision. It captures the 'how' and the 'why,' allowing us to see correlations standard systems simply flatten."
+        pitch: "Standard AI only sees 1s and 0s. Our Mencius Function (DSMF) looks at the slope of the decision. It captures the 'how' and the 'why,' allowing us to see correlations standard systems simply flatten.",
+        link: "/snapdragon/dsmf",
+        linkLabel: "View DSMF Whitepaper",
+        isExternal: false
     },
     {
         icon: Target,
         title: "3. The EPIC Bridge",
         subtitle: "Detecting the Dead End",
         concept: "The Moot State Detector. We've all experienced a 'meeting that could have been an email'—EPIC identifies that moment mathematically.",
-        pitch: "By mapping work as 'geometric packing,' we visually show when a system is just spinning its wheels. If the geometry falls apart, the project is 'Moot,' and it's time to move on."
+        pitch: "By mapping work as 'geometric packing,' we visually show when a system is just spinning its wheels. If the geometry falls apart, the project is 'Moot,' and it's time to move on.",
+        link: "/snapdragon/epic",
+        linkLabel: "View EPIC Whitepaper",
+        isExternal: false
     }
 ];
 
@@ -116,7 +125,7 @@ export default function SnapdragonPage() {
                         <div className="mb-12 text-center">
                             <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Bridge to Efficiency</h2>
                             <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                                We've built a bridge from complexity to intuition. Instead of implementing a 4-simplex kernel in a vacuum, we've focused on empowering humans to see the solution as inevitable.
+                                We've built a bridge from complexity to intuition. Instead of implementing a 4-simplex kernel in a vacuum, we've focused on empowering teams to identify the most efficient path forward with absolute clarity.
                             </p>
                         </div>
                         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-3">
@@ -133,6 +142,21 @@ export default function SnapdragonPage() {
                                         <p className="text-sm text-muted-foreground mb-4 italic">"{element.concept}"</p>
                                         <p className="text-sm text-foreground font-medium">{element.pitch}</p>
                                     </CardContent>
+                                    <CardFooter className="pt-0 pb-6">
+                                        {element.isExternal ? (
+                                            <Button variant="outline" className="w-full" asChild>
+                                                <a href={element.link} target="_blank" rel="noopener noreferrer">
+                                                    {element.linkLabel} <ArrowRight className="ml-2 h-4 w-4" />
+                                                </a>
+                                            </Button>
+                                        ) : (
+                                            <Button variant="outline" className="w-full" asChild>
+                                                <Link href={element.link}>
+                                                    {element.linkLabel} <ArrowRight className="ml-2 h-4 w-4" />
+                                                </Link>
+                                            </Button>
+                                        )}
+                                    </CardFooter>
                                 </Card>
                             ))}
                         </div>
