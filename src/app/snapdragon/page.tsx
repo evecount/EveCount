@@ -6,7 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Binary, Cpu, ArrowRight, FileText, Fingerprint, Network, BarChart3, Timer, ThermometerSnowflake, Activity, Scale, Zap as ZapIcon } from 'lucide-react';
+import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Binary, Cpu, ArrowRight, FileText, Fingerprint, Network, BarChart3, Timer, ThermometerSnowflake, Activity, Scale } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
