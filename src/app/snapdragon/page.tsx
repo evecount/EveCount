@@ -6,11 +6,10 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Binary, Cpu, ArrowRight, FileText, Fingerprint, Network, BarChart3, Timer, ThermometerSnowflake } from 'lucide-react';
+import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Binary, Cpu, ArrowRight, FileText, Fingerprint, Network, BarChart3, Timer, ThermometerSnowflake, Activity, Scale, Zap as ZapIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import Image from 'next/link';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const REPO_URL = "https://github.com/evecount/snapdragon";
@@ -80,19 +79,19 @@ export default function SnapdragonPage() {
                 <section className="bg-background py-16 md:py-24 lg:py-32">
                     <div className="container">
                         <div className="mx-auto max-w-4xl text-center">
-                        <Badge variant="outline" className="mb-4 text-primary border-primary/20">Unified Standard v10.1: Communication Layer</Badge>
+                        <Badge variant="outline" className="mb-4 text-primary border-primary/20 uppercase tracking-widest">Unified Standard v10.1: Communication Layer</Badge>
                         <h1 className="font-headline text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl md:text-6xl lg:text-7xl">
                             The Geometric Bridge Protocol
                         </h1>
                         <p className="mx-auto mt-6 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                            Existing hardware's way of thinking like a quantum network. <br />
+                            Classical hardware's way of thinking like a quantum network. <br />
                             <span className="text-foreground font-semibold">A zero-cost, O(1) translation layer between deterministic silicon and probabilistic states.</span>
                         </p>
                         <div className="flex justify-center gap-4 mt-8">
-                            <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90" asChild>
+                            <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 font-bold" asChild>
                                 <Link href="/apply">Request Partner Access</Link>
                             </Button>
-                            <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-accent" asChild>
+                            <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-accent font-bold" asChild>
                                 <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
                                     <Github className="mr-2 h-5 w-5" /> Explore the Kernel
                                 </a>
@@ -122,18 +121,18 @@ export default function SnapdragonPage() {
                                         <CardDescription className="text-primary font-bold">{element.subtitle}</CardDescription>
                                     </CardHeader>
                                     <CardContent className="flex-grow">
-                                        <p className="text-sm text-muted-foreground mb-4 italic">"{element.concept}"</p>
+                                        <p className="text-sm text-muted-foreground mb-4 italic leading-relaxed">"{element.concept}"</p>
                                         <p className="text-sm text-foreground font-medium">{element.pitch}</p>
                                     </CardContent>
                                     <CardFooter className="pt-0 pb-6">
                                         {element.isExternal ? (
-                                            <Button variant="secondary" className="w-full text-foreground font-semibold" asChild>
+                                            <Button variant="secondary" className="w-full text-foreground font-bold" asChild>
                                                 <a href={element.link} target="_blank" rel="noopener noreferrer">
                                                     {element.linkLabel} <ArrowRight className="ml-2 h-4 w-4" />
                                                 </a>
                                             </Button>
                                         ) : (
-                                            <Button variant="secondary" className="w-full text-foreground font-semibold" asChild>
+                                            <Button variant="secondary" className="w-full text-foreground font-bold" asChild>
                                                 <Link href={element.link}>
                                                     {element.linkLabel} <ArrowRight className="ml-2 h-4 w-4" />
                                                 </Link>
@@ -150,76 +149,93 @@ export default function SnapdragonPage() {
                 <section id="benchmarks" className="border-t border-border/40 bg-background py-16 md:py-24">
                     <div className="container max-w-6xl">
                         <div className="mb-12 text-center">
-                            <h2 className="font-headline text-3xl font-bold tracking-tighter text-foreground sm:text-4xl">SNAPDRAGON vs standard FPU: Latency to Complexity Audit</h2>
+                            <h2 className="font-headline text-3xl font-bold tracking-tighter text-foreground sm:text-4xl">The Technical Narrative: O(1) Determinism vs. FPU Lag</h2>
                             <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
                                 Benchmarking the O(1) constant-time kernel against standard transcendental math scaling on existing hardware architectures.
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                            <div className="space-y-8">
-                                <Card className="bg-secondary/10 border-border/40 overflow-hidden">
-                                    <div className="aspect-[2/1] relative bg-muted flex items-center justify-center">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                            <div className="space-y-6">
+                                <Card className="bg-secondary/10 border-border/40 overflow-hidden shadow-2xl">
+                                    <div className="p-2 bg-muted/20">
                                         {benchmarkImage && (
                                             <img 
                                                 src={benchmarkImage.imageUrl} 
                                                 alt={benchmarkImage.description}
-                                                className="object-cover w-full h-full opacity-80 mix-blend-luminosity"
+                                                className="w-full h-auto rounded-sm border border-border/40"
                                                 data-ai-hint={benchmarkImage.imageHint}
                                             />
                                         )}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent flex items-end p-6">
-                                            <p className="text-xs font-mono text-primary uppercase tracking-widest">Audit Ref: 0x5f_BENCH_V10</p>
-                                        </div>
                                     </div>
+                                    <CardFooter className="bg-background/50 py-4">
+                                        <p className="text-[10px] md:text-xs font-mono text-muted-foreground leading-relaxed">
+                                            <span className="font-bold text-foreground">Figure 1: Deterministic O(1) Latency Audit (v13.1)</span> “This audit compares the Project SNAPDRAGON Kernel against the industry-standard NumPy/FPU execution paths. By utilizing bit-level coordinate refraction (0x5f41da5a) instead of transcendental FPU operations, SNAPDRAGON achieves constant-time (O(1)) signal separation. As complexity scales to 10M+ samples, SNAPDRAGON maintains a flat latency profile, effectively bypassing the FPU bottleneck and providing the deterministic speed required for sovereign, high-velocity missions.”
+                                        </p>
+                                    </CardFooter>
                                 </Card>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     <Card className="bg-secondary/20 p-4 text-center">
                                         <Timer className="h-5 w-5 text-primary mx-auto mb-2" />
-                                        <p className="text-xl font-bold">1-3 Cycles</p>
-                                        <p className="text-[10px] text-muted-foreground uppercase">Kernel Latency</p>
+                                        <p className="text-xl font-bold text-foreground">1-3 Cycles</p>
+                                        <p className="text-[10px] text-muted-foreground uppercase font-bold">Kernel Latency</p>
                                     </Card>
                                     <Card className="bg-secondary/20 p-4 text-center">
                                         <Cpu className="h-5 w-5 text-primary mx-auto mb-2" />
-                                        <p className="text-xl font-bold">O(1)</p>
-                                        <p className="text-[10px] text-muted-foreground uppercase">Scaling Complexity</p>
+                                        <p className="text-xl font-bold text-foreground">O(1)</p>
+                                        <p className="text-[10px] text-muted-foreground uppercase font-bold">Scaling Complexity</p>
                                     </Card>
                                     <Card className="bg-secondary/20 p-4 text-center">
                                         <ThermometerSnowflake className="h-5 w-5 text-primary mx-auto mb-2" />
-                                        <p className="text-xl font-bold">-94%</p>
-                                        <p className="text-[10px] text-muted-foreground uppercase">Thermal Delta</p>
+                                        <p className="text-xl font-bold text-foreground">-94%</p>
+                                        <p className="text-[10px] text-muted-foreground uppercase font-bold">Thermal Delta</p>
                                     </Card>
                                 </div>
                             </div>
 
-                            <div className="space-y-6">
-                                <h3 className="text-2xl font-bold text-foreground">Eliminating the FPU Bottleneck</h3>
-                                <p className="text-muted-foreground">
-                                    Traditional decision logic in high-dimensional manifolds relies on transcendental functions (<code>sine</code>, <code>cosine</code>, <code>log</code>) which scale poorly with data volume and introduce significant thermal jitter.
-                                </p>
-                                <ul className="space-y-4">
-                                    <li className="flex gap-3">
-                                        <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                                            <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                            <div className="space-y-10">
+                                <div>
+                                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-2 mb-4">
+                                        <Activity className="h-6 w-6 text-primary" /> 1. What is being Benchmarked?
+                                    </h3>
+                                    <div className="space-y-4">
+                                        <p className="text-muted-foreground">
+                                            <span className="font-bold text-foreground underline decoration-chart-5 underline-offset-4">The Baseline (Magenta/NumPy):</span> Standard floating-point math (FPU). This is how the world currently processes data—using complex, power-hungry transcendental functions to calculate "inverses."
+                                        </p>
+                                        <p className="text-muted-foreground">
+                                            <span className="font-bold text-foreground underline decoration-primary underline-offset-4">The Disruptor (Cyan/SNAPDRAGON):</span> Our O(1) Bit-Level Refraction. We bypass the FPU entirely by treating data as a geometric integer and "folding" the bits in a single clock cycle.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-2 mb-4">
+                                        <BarChart3 className="h-6 w-6 text-primary" /> 2. The "Flat Line" Proof
+                                    </h3>
+                                    <p className="text-muted-foreground leading-relaxed">
+                                        The audit confirms that as the sample volume (X-Axis) increases from <span className="text-foreground font-semibold">1,000 to 10,000,000</span>, the Snapdragon latency remains predictably flat. While standard math slows down as the CPU struggles with FPU bottlenecks, Snapdragon scales without a latency penalty.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h3 className="text-2xl font-bold text-foreground flex items-center gap-2 mb-4">
+                                        <Scale className="h-6 w-6 text-primary" /> 3. Why it Matters
+                                    </h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <p className="font-bold text-foreground mb-1">Predictability</p>
+                                            <p className="text-sm text-muted-foreground italic">In high-frequency environments, you cannot have "jitter." SNAPDRAGON provides a "latency floor" that never moves.</p>
                                         </div>
-                                        <p className="text-sm text-foreground/90"><span className="font-bold">Standard FPU Approach:</span> Iterative series approximations. Latency increases as accuracy requirements rise.</p>
-                                    </li>
-                                    <li className="flex gap-3">
-                                        <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                                            <div className="h-1.5 w-1.5 rounded-full bg-primary" />
+                                        <div>
+                                            <p className="font-bold text-foreground mb-1">Efficiency</p>
+                                            <p className="text-sm text-muted-foreground italic">Lower CPU overhead means higher throughput, achieving quantum-like speeds on classical silicon.</p>
                                         </div>
-                                        <p className="text-sm text-foreground/90"><span className="font-bold">Snapdragon Kernel:</span> Direct IEEE 754 bit-level folding. Constant time performance regardless of precision target.</p>
-                                    </li>
-                                    <li className="flex gap-3">
-                                        <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                                            <div className="h-1.5 w-1.5 rounded-full bg-primary" />
-                                        </div>
-                                        <p className="text-sm text-foreground/90"><span className="font-bold">Strategic Impact:</span> Enables real-time verification of signal integrity at edge-layer speeds without specialized co-processors.</p>
-                                    </li>
-                                </ul>
-                                <Button asChild className="mt-4">
+                                    </div>
+                                </div>
+                                
+                                <Button asChild className="w-full font-bold py-6">
                                     <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
-                                        View Benchmarking Source <BarChart3 className="ml-2 h-4 w-4" />
+                                        View Benchmarking Source <ArrowRight className="ml-2 h-4 w-4" />
                                     </a>
                                 </Button>
                             </div>
@@ -333,27 +349,27 @@ export default function SnapdragonPage() {
                     <div className="container">
                         <h2 className="text-2xl font-bold mb-8 text-foreground">Resource Hub</h2>
                         <div className="flex flex-wrap justify-center gap-4">
-                            <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-semibold" asChild>
+                            <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-bold" asChild>
                                 <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
                                     <Binary className="h-4 w-4" /> TECHNICAL_README.md
                                 </a>
                             </Button>
-                            <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-semibold" asChild>
+                            <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-bold" asChild>
                                 <Link href="/snapdragon/dsmf">
                                     <FileText className="h-4 w-4" /> DSMF Whitepaper
                                 </Link>
                             </Button>
-                            <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-semibold" asChild>
+                            <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-bold" asChild>
                                 <Link href="/snapdragon/epic">
                                     <Target className="h-4 w-4" /> EPIC Whitepaper
                                 </Link>
                             </Button>
-                            <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-semibold" asChild>
+                            <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-bold" asChild>
                                 <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
                                     <Layers className="h-4 w-4" /> Lineage Map
                                 </a>
                             </Button>
-                            <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-semibold" asChild>
+                            <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-bold" asChild>
                                 <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
                                     <Network className="h-4 w-4" /> Deployment Simulator
                                 </a>

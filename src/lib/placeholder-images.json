@@ -8,8 +8,8 @@
     },
     {
       "id": "snapdragon-benchmark",
-      "description": "A performance graph comparing Snapdragon's O(1) latency against standard FPU transcendental math complexity.",
-      "imageUrl": "https://images.unsplash.com/photo-1758876202980-0a28b744fb24?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGVyZm9ybWFuY2UlMjBncmFwaHxlbnwwfHx8fDE3NzE0NzYyMDB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Deterministic O(1) Latency Audit showing SNAPDRAGON vs standard FPU performance.",
+      "imageUrl": "/benchmark-diagram.png",
       "imageHint": "performance graph"
     }
   ]
