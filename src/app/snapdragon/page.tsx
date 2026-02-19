@@ -181,7 +181,7 @@ export default function SnapdragonPage() {
                                             <div className="h-8 w-8 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0 font-bold">1</div>
                                             <div>
                                                 <p className="font-bold">The Fold</p>
-                                                <p className="text-sm text-muted-foreground">Shifting bits right (<code className="bg-muted px-1">>> 1</code>) to approximate the base-2 logarithm in a single clock cycle.</p>
+                                                <p className="text-sm text-muted-foreground">Shifting bits right (<code className="bg-muted px-1">&gt;&gt; 1</code>) to approximate the base-2 logarithm in a single clock cycle.</p>
                                             </div>
                                         </div>
                                         <div className="flex gap-4">
