@@ -60,7 +60,7 @@ const roadmapItems = [
         title: "3. Predictive Geometric Efficiency",
         description: "Identifying Systemic Decoherence—the exact moment a process enters a state of futility or 'wasted effort.'",
         points: [
-            "Resource Optimization: Triggers a 'Snap' the moment a path becomes mathematically moot.",
+            "Resource Optimization: Triggers a 'Snap' the moment a path becomes moot.",
             "The Impact: Reallocate resources instantly based on probability of success."
         ]
     },
@@ -213,6 +213,11 @@ export default function SnapdragonPage() {
                             <Button variant="outline" className="flex items-center gap-2" asChild>
                                 <Link href="/snapdragon/dsmf">
                                     <FileText className="h-4 w-4" /> DSMF Whitepaper
+                                </Link>
+                            </Button>
+                            <Button variant="outline" className="flex items-center gap-2" asChild>
+                                <Link href="/snapdragon/epic">
+                                    <Target className="h-4 w-4" /> EPIC Whitepaper
                                 </Link>
                             </Button>
                             <Button variant="outline" className="flex items-center gap-2" asChild>
