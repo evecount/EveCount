@@ -3,64 +3,79 @@
 import React from 'react';
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Github, Check, ShieldCheck, Zap, Share2, Network, Radio, Lock, Binary, Cpu } from 'lucide-react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Share2, Binary, Cpu, Activity, Clock, Trash2, Microscope } from 'lucide-react';
 import Link from 'next/link';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
-const communicationFeatures = [
-    {
-        icon: ShieldCheck,
-        title: "Unbreakable QKD",
-        description: "Quantum Key Distribution (QKD) ensures that any attempt to intercept data is detected instantly by the laws of quantum mechanics."
-    },
+const bridgeElements = [
     {
         icon: Zap,
-        title: "Recursive Wave-Collapse",
-        description: "Our proprietary algorithm that monitors the 'Snapdragon' effect—where observation collapses the wave function, triggering an immediate security protocol."
+        title: "1. The Snapdragon Bridge",
+        subtitle: "High-Performance Intuition",
+        concept: "The software equivalent of a 'Fast Inverse Square Root.' It's not about doing more math; it's about doing the right math at the hardware level.",
+        pitch: "Silicon-level intuition. We've found a way to let a computer 'recognize' a pattern in one step rather than a thousand."
+    },
+    {
+        icon: BrainCircuit,
+        title: "2. The DSMF Bridge",
+        subtitle: "The Digital Gray Zone",
+        concept: "Life isn't black and white. There is a 'vibe' or a 'gut feeling' that sits between a 'Yes' and a 'No.'",
+        pitch: "Standard AI only sees 1s and 0s. Our Mencius Function (DSMF) captures the 'how' and the 'why,' seeing correlations standard systems simply flatten."
+    },
+    {
+        icon: Target,
+        title: "3. The EPIC Bridge",
+        subtitle: "Detecting the Dead End",
+        concept: "The Moot State Detector. We've all experienced a 'meeting that could have been an email'—EPIC identifies that moment mathematically.",
+        pitch: "By mapping work as 'geometric packing,' we visually show when a system is just spinning its wheels. If the geometry falls apart, the project is 'Moot'."
+    }
+];
+
+const roadmapItems = [
+    {
+        icon: Cpu,
+        title: "1. The Decentralized Decision Layer",
+        description: "Future integrity lies at the 'Edge.' The primary logic gate is no longer a central server, but the individual bit-storage of local hardware.",
+        points: [
+            "Autonomous Integrity: Geometric kernels verify signals locally.",
+            "Universal Application: Hardware 'snaps' to truth without cloud consensus."
+        ]
+    },
+    {
+        icon: Activity,
+        title: "2. Fractal Contextualization",
+        description: "Standard data identifies what is happening. Snapdragon identifies the nature of the transition.",
+        points: [
+            "The Nested Logic: DSMF holds a secondary dimension of context within the primary signal.",
+            "User Projection: Financial 'Market Sentiment' or Logistics 'Resilience'—the math remains the same."
+        ]
+    },
+    {
+        icon: Trash2,
+        title: "3. Predictive Geometric Efficiency",
+        description: "Identifying Systemic Decoherence—the exact moment a process enters a state of futility or 'wasted effort.'",
+        points: [
+            "Resource Optimization: Triggers a 'Snap' the moment a path becomes mathematically moot.",
+            "The Impact: Reallocate resources instantly based on probability of success."
+        ]
     },
     {
         icon: Share2,
-        title: "Entanglement Sync",
-        description: "Synchronizing quantum states across distributed nodes to create a unified, hardware-rooted trust layer for global communications."
-    }
-];
-
-const customerProfiles = [
-    {
-        icon: Network,
-        title: "Critical Infrastructure",
-        description: "Power grids and water systems requiring protection against sophisticated nation-state actors."
-    },
-    {
-        icon: Lock,
-        title: "Central Banking Systems",
-        description: "Financial networks needing to secure inter-bank settlements with zero-trust quantum foundations."
-    },
-    {
-        icon: Radio,
-        title: "Aerospace & Defense",
-        description: "Securing satellite-to-ground links against 'Harvest Now, Decrypt Later' threats."
-    }
-];
-
-const implementationStrategies = [
-    {
-        method: "Snapdragon Connect",
-        implementation: "A software wrapper for existing TLS/SSL stacks that injects quantum-generated keys.",
-        benefit: "Instant upgrade to quantum-safe communication without changing existing applications."
-    },
-    {
-        method: "Hardware Entanglement",
-        implementation: "Physical deployment of QKD nodes at data center points-of-presence (PoP).",
-        benefit: "Physical layer security that cannot be bypassed by software exploits."
+        title: "4. The Classical-Quantum Bridge",
+        description: "The translation layer between deterministic classical bits and probabilistic quantum states.",
+        points: [
+            "Hardware Agnostic Logic: The geometric manifold is the 'Rosetta Stone.'",
+            "Future-Proofing: Securing classical silicon with quantum-inspired awareness today."
+        ]
     }
 ];
 
 export default function SnapdragonPage() {
     React.useEffect(() => {
-        document.title = "Snapdragon: Quantum Communication | EveCount.com";
+        document.title = "Project Snapdragon | High-Performance Intuition | EveCount.com";
       }, []);
     
     return (
@@ -71,147 +86,136 @@ export default function SnapdragonPage() {
                 <section className="bg-background py-16 md:py-24 lg:py-32">
                     <div className="container">
                         <div className="mx-auto max-w-4xl text-center">
-                        <p className="font-semibold text-primary">The Snapdragon Protocol</p>
-                        <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                            Communication Guaranteed <br /> by the Laws of Physics
+                        <Badge variant="outline" className="mb-4 text-primary border-primary/20">The Sovereign Engine: Communication Layer</Badge>
+                        <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+                            Project Snapdragon
                         </h1>
                         <p className="mx-auto mt-6 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                            Snapdragon is our next-generation communication protocol designed to eliminate the possibility of eavesdropping through the power of quantum entanglement.
+                            Thinks faster. Understands context. Prevents wasted effort. <br />
+                            <span className="text-foreground font-semibold">Giving analysts a 4D periscope to see through the noise.</span>
                         </p>
-                        <Button size="lg" className="mt-8" asChild>
-                            <Link href="/apply">
-                            <Zap className="mr-2 h-5 w-5" />
-                            Secure Your Network
-                            </Link>
-                        </Button>
+                        <div className="flex justify-center gap-4 mt-8">
+                            <Button size="lg" asChild>
+                                <Link href="/apply">Request Access</Link>
+                            </Button>
+                            <Button size="lg" variant="outline">
+                                <Github className="mr-2 h-5 w-5" /> Explore the Kernel
+                            </Button>
+                        </div>
                         </div>
                     </div>
                 </section>
 
-                {/* Core USP */}
-                <section id="usp" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
-                    <div className="container grid max-w-5xl items-center gap-12 md:grid-cols-2">
-                        <div className="space-y-4">
-                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Snapdragon Effect</h2>
-                            <p className="text-muted-foreground md:text-lg">
-                                In classical communication, an eavesdropper can copy data without being noticed. In the Snapdragon Protocol, we utilize **entangled particles**. If an observer attempts to measure the data, the quantum state collapses.
-                            </p>
-                            <p className="text-muted-foreground md:text-lg">
-                                This is not just security; it is a **Sentient Defense**. The protocol knows it is being watched and responds instantly, making it the most robust communication layer in existence.
-                            </p>
-                        </div>
-                        <div className="flex justify-center">
-                            <Binary className="h-48 w-48 text-primary/30" />
-                        </div>
-                    </div>
-                </section>
-
-                {/* Features */}
-                <section id="features" className="border-t border-border/40 bg-background py-16 md:py-24">
-                    <div className="container">
-                        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
-                            {communicationFeatures.map((feature) => (
-                                <Card key={feature.title} className="bg-secondary/20 text-foreground">
-                                    <CardHeader>
-                                        <div className="flex items-center gap-4 mb-2">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
-                                                <feature.icon className="h-5 w-5 text-primary" />
-                                            </div>
-                                            <CardTitle className="text-lg">{feature.title}</CardTitle>
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-sm text-muted-foreground">{feature.description}</p>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* ICP */}
-                <section id="icp" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
+                {/* The Bridge Narrative */}
+                <section id="the-bridge" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
                     <div className="container">
                         <div className="mb-12 text-center">
-                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Ideal Deployment Scenarios</h2>
-                             <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                                We are deploying Snapdragon for organizations where data integrity is the only option.
+                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Bridge to Efficiency</h2>
+                            <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
+                                We've built a bridge from complexity to intuition. We don't just implement simplex kernels; we empower humans to see through the noise.
                             </p>
                         </div>
-                        <div className="mx-auto grid grid-cols-1 gap-8 md:grid-cols-3">
-                            {customerProfiles.map((profile) => (
-                                <Card key={profile.title} className="flex flex-col bg-background/50 text-foreground">
+                        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-3">
+                            {bridgeElements.map((element) => (
+                                <Card key={element.title} className="bg-background/50 border-border/50 flex flex-col h-full transition-all hover:border-primary/50">
                                     <CardHeader>
-                                        <div className="flex items-center gap-4">
-                                            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                                                <profile.icon className="h-6 w-6 text-primary" />
-                                            </div>
-                                            <CardTitle className="text-xl">{profile.title}</CardTitle>
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary mb-4">
+                                            <element.icon className="h-6 w-6 text-primary" />
                                         </div>
+                                        <CardTitle className="text-xl">{element.title}</CardTitle>
+                                        <CardDescription className="text-primary font-semibold">{element.subtitle}</CardDescription>
                                     </CardHeader>
-                                    <CardContent>
-                                        <p className="text-muted-foreground">{profile.description}</p>
+                                    <CardContent className="flex-grow">
+                                        <p className="text-sm text-muted-foreground mb-4 italic">"{element.concept}"</p>
+                                        <p className="text-sm text-foreground">{element.pitch}</p>
                                     </CardContent>
                                 </Card>
                             ))}
                         </div>
                     </div>
                 </section>
-                
-                {/* Implementation */}
-                <section id="integration" className="border-t border-border/40 bg-background py-16 md:py-24">
-                    <div className="container">
-                         <div className="mb-12 text-center">
-                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Architecting the Secure Pipe</h2>
-                             <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                                Snapdragon integrates into modern architectures as a dedicated security layer.
+
+                {/* The README: Vision & Roadmap */}
+                <section id="roadmap" className="border-t border-border/40 bg-background py-16 md:py-24">
+                    <div className="container max-w-5xl">
+                        <div className="mb-12 text-center">
+                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Future Vision & Architectural Roadmap</h2>
+                            <p className="mx-auto mt-4 text-muted-foreground md:text-lg italic">
+                                "Snapdragon provides the Geometric Sovereignty required for a high-velocity world. We provide the lens through which the solution becomes inevitable."
                             </p>
                         </div>
-                        <Card className="bg-secondary/20 max-w-5xl mx-auto">
-                            <CardContent className="p-0">
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead className="w-1/4">Method</TableHead>
-                                            <TableHead>Implementation</TableHead>
-                                            <TableHead>Strategic Benefit</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        {implementationStrategies.map((method) => (
-                                            <TableRow key={method.method}>
-                                                <TableCell className="font-medium text-foreground">{method.method}</TableCell>
-                                                <TableCell className="text-muted-foreground">{method.implementation}</TableCell>
-                                                <TableCell className="text-muted-foreground">{method.benefit}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
+                        <div className="space-y-12">
+                            {roadmapItems.map((item, index) => (
+                                <div key={item.title} className="grid grid-cols-1 md:grid-cols-[100px_1fr] gap-8 items-start">
+                                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-secondary/50 text-primary border border-border">
+                                        <item.icon className="h-10 w-10" />
+                                    </div>
+                                    <div className="space-y-4">
+                                        <h3 className="text-2xl font-bold text-foreground">{item.title}</h3>
+                                        <p className="text-muted-foreground">{item.description}</p>
+                                        <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {item.points.map((point, i) => (
+                                                <li key={i} className="flex items-start gap-2 text-sm">
+                                                    <div className="h-1.5 w-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                                                    <span className="text-muted-foreground">{point}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Provenance & Integrity */}
+                <section id="provenance" className="border-t border-border/40 bg-secondary/20 py-16">
+                    <div className="container max-w-4xl">
+                        <Card className="bg-background border-dashed">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2 text-foreground">
+                                    <ShieldCheck className="h-5 w-5 text-primary" />
+                                    Provenance & Integrity (v13.0)
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-4 font-mono text-xs">
+                                <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2">
+                                    <span className="text-muted-foreground">Proof of Work (PoW):</span>
+                                    <span className="text-foreground break-all">1A3E10C6273953ED2B0470114FC30B807180FEB83F23172E54F8C7D4FCC5701A</span>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2">
+                                    <span className="text-muted-foreground">Timestamp:</span>
+                                    <span className="text-foreground">2026-02-19T04:11:27Z</span>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-[150px_1fr] gap-2">
+                                    <span className="text-muted-foreground">Scope:</span>
+                                    <span className="text-foreground">Core v13.0 institutional release documentation and kernel specification.</span>
+                                </div>
                             </CardContent>
                         </Card>
                     </div>
                 </section>
 
-                 <section id="vision-conclusion" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
-                    <div className="container grid max-w-5xl gap-12 md:grid-cols-2">
-                        <div className="space-y-4">
-                            <h3 className="font-headline text-2xl font-bold tracking-tighter sm:text-3xl">The Quantum Backbone</h3>
-                            <p className="text-muted-foreground">
-                                Our goal is to build the world's most secure communication backbone. Snapdragon is not just a product; it's a foundational protocol for the next era of computing, where every bit of data is anchored to physical reality.
-                            </p>
-                        </div>
-                        <div className="space-y-4">
-                            <h3 className="font-headline text-2xl font-bold tracking-tighter sm:text-3xl">Ready for Integration</h3>
-                            <p className="text-muted-foreground">
-                                Snapdragon is currently in pilot phase with select government and financial partners. We are now opening the protocol for integration with high-scale enterprise API pipelines.
-                            </p>
-                            <Button variant="outline" asChild>
-                                <Link href="/apply">Request Pilot Access</Link>
+                {/* Resources */}
+                <section className="border-t border-border/40 bg-background py-16 text-center">
+                    <div className="container">
+                        <h2 className="text-2xl font-bold mb-8">Resource Hub</h2>
+                        <div className="flex flex-wrap justify-center gap-4">
+                            <Button variant="outline" className="flex items-center gap-2">
+                                <Binary className="h-4 w-4" /> Technical Deep-Dive
+                            </Button>
+                            <Button variant="outline" className="flex items-center gap-2">
+                                <Layers className="h-4 w-4" /> Lineage Map
+                            </Button>
+                            <Button variant="outline" className="flex items-center gap-2">
+                                <Microscope className="h-4 w-4" /> Performance Simulator
+                            </Button>
+                            <Button variant="outline" className="flex items-center gap-2">
+                                <Clock className="h-4 w-4" /> Executive Overview
                             </Button>
                         </div>
                     </div>
                 </section>
-
             </main>
             <Footer />
         </div>
