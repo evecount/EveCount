@@ -23,6 +23,7 @@ const footerSections: {
       label: "Operation Nightfall",
     },
     { href: "/quantum-minting", label: "Quantum Minting" },
+    { href: "/snapdragon", label: "Quantum Communication" },
   ],
   legal: [
     { href: "/privacy", label: "Privacy Policy" },

@@ -1,4 +1,3 @@
-
 import { MetadataRoute } from 'next'
  
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -51,6 +50,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/quantum-minting`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/snapdragon`,
       lastModified: new Date(),
     },
     {
