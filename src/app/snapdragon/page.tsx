@@ -5,7 +5,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Share2, Binary, Cpu, Activity, Clock, Trash2, Microscope, ArrowRight, FileText, Fingerprint, Box, Boxes } from 'lucide-react';
+import { Zap, BrainCircuit, Target, Github, Layers, ShieldCheck, Binary, Cpu, Activity, ArrowRight, FileText, Fingerprint, Network } from 'lucide-react';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -15,30 +15,30 @@ const REPO_URL = "https://github.com/evecount/snapdragon";
 const bridgeElements = [
     {
         icon: Zap,
-        title: "1. The Magic Hex",
-        subtitle: "O(1) Manifold Projections",
-        concept: "Utilizes the 0x5f bit-level constant to collapse data entropy into a deterministic signal in constant time.",
-        pitch: "A software equivalent of a 'Fast Inverse Square Root.' It's not about doing more math; it's about doing the right math at the hardware level to bypass the FPU bottleneck.",
+        title: "1. The Mathematical Translator",
+        subtitle: "Silicon-Level Intuition",
+        concept: "Gives classical 32-bit registers the ability to simulate the rotational behavior of a quantum state (|ψ⟩).",
+        pitch: "It is a protocol that gives classical internet speeds the 'integrity' and 'depth' of quantum entanglement without requiring new hardware.",
         link: REPO_URL,
         linkLabel: "Explore the Kernel",
         isExternal: true
     },
     {
         icon: BrainCircuit,
-        title: "2. The DSMF Layer",
-        subtitle: "The Contextual Container",
-        concept: "A recursive fractal architecture that captures 'Refractive Jitter' during state transitions.",
-        pitch: "Standard AI only sees 1s and 0s. The Mencius Function (DSMF) looks at the slope of the decision, holding hidden context that standard systems simply flatten.",
+        title: "2. Post-Quantum Resilience",
+        subtitle: "Signal Geometry as the Key",
+        concept: "Uses the DSMF (Mencius Function) to hide context within the slope of its activation curve.",
+        pitch: "In traditional protocols, the key is separate. In Snapdragon, the geometry of the signal IS the key, making it invisible to standard linear decryption.",
         link: "/snapdragon/dsmf",
         linkLabel: "View DSMF Whitepaper",
         isExternal: false
     },
     {
         icon: Target,
-        title: "3. The EPIC Diagnostic",
-        subtitle: "Geometric Verification",
-        concept: "Maps work as 'geometric packing' to identify the exact moment a process enters Systemic Operational Futility.",
-        pitch: "The Validation layer. It provides institutional proof of systemic integrity. If the geometry falls apart, the path is moot, and resources are reallocated instantly.",
+        title: "3. The 'Moot State' Filter",
+        subtitle: "Geometric Coherence",
+        concept: "Integrates EPIC diagnostics to detect the exact moment a communication line enters a state of futility.",
+        pitch: "Snapdragon prevents wasted bandwidth by 'Snapping' a line closed if it detects decoherence, ensuring only high-integrity data moves through the bridge.",
         link: "/snapdragon/epic",
         linkLabel: "View EPIC Whitepaper",
         isExternal: false
@@ -64,7 +64,7 @@ const geometricModes = [
 
 export default function SnapdragonPage() {
     React.useEffect(() => {
-        document.title = "Project Snapdragon | Zero-Cost Binary Logic Gate | EveCount.com";
+        document.title = "Project Snapdragon | Geometric Bridge Protocol | EveCount.com";
       }, []);
     
     return (
@@ -75,13 +75,13 @@ export default function SnapdragonPage() {
                 <section className="bg-background py-16 md:py-24 lg:py-32">
                     <div className="container">
                         <div className="mx-auto max-w-4xl text-center">
-                        <Badge variant="outline" className="mb-4 text-primary border-primary/20">The Sovereign Engine: Communication Layer (v10.1)</Badge>
+                        <Badge variant="outline" className="mb-4 text-primary border-primary/20">Unified Standard v10.1: Communication Layer</Badge>
                         <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-                            Project Snapdragon
+                            The Geometric Bridge Protocol
                         </h1>
                         <p className="mx-auto mt-6 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                            A zero-cost, <code className="text-foreground">O(1)</code> binary logic gate. <br />
-                            <span className="text-foreground font-semibold">Bypassing the FPU bottleneck to process high-dimensional data in real-time. Built within the Antigravity IDE.</span>
+                            Classical hardware's way of thinking like a quantum network. <br />
+                            <span className="text-foreground font-semibold">A zero-cost, O(1) translation layer between deterministic silicon and probabilistic quantum states.</span>
                         </p>
                         <div className="flex justify-center gap-4 mt-8">
                             <Button size="lg" asChild>
@@ -97,13 +97,13 @@ export default function SnapdragonPage() {
                     </div>
                 </section>
 
-                {/* The Bridge Section */}
+                {/* The Rosetta Stone Section */}
                 <section id="the-bridge" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
                     <div className="container">
                         <div className="mb-12 text-center">
-                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Bridge to High-Efficiency Logic</h2>
+                            <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">The Rosetta Stone for 2026 Missions</h2>
                             <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                                Project Snapdragon provides a zero-cost, <code className="text-primary">O(1)</code> alternative to computationally expensive transcendental math and probabilistic AI layers. We translate complex bit-streams into silicon-level intuition, allowing analysts to process high-dimensional data in real-time without the standard latency scaling.
+                                Project Snapdragon provides the <strong>Geometric Sovereignty</strong> required for a high-velocity world. It runs on today's silicon (HSBC servers, Singtel towers), uses tomorrow's math (Spinor geometry, 4D manifolds), and secures the future's data.
                             </p>
                         </div>
                         <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-3">
@@ -147,7 +147,7 @@ export default function SnapdragonPage() {
                         <div className="mb-12 text-center">
                             <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Theory of Operation: v10.1 Standard</h2>
                             <p className="mx-auto mt-4 text-muted-foreground md:text-lg italic max-w-3xl">
-                                "The bit-level fold is the Rosetta Stone of computational sovereignty. It allows classical silicon to operate with quantum-inspired awareness."
+                                "The bit-level fold is the translation mechanism that allows classical silicon to operate with quantum-inspired awareness."
                             </p>
                         </div>
 
@@ -269,12 +269,7 @@ export default function SnapdragonPage() {
                             </Button>
                             <Button variant="outline" className="flex items-center gap-2" asChild>
                                 <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
-                                    <Microscope className="h-4 w-4" /> Visual Proof (Simulator)
-                                </a>
-                            </Button>
-                            <Button variant="outline" className="flex items-center gap-2" asChild>
-                                <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
-                                    <Clock className="h-4 w-4" /> Executive Overview
+                                    <Network className="h-4 w-4" /> Deployment Simulator
                                 </a>
                             </Button>
                         </div>
