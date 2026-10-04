@@ -14,11 +14,11 @@ export function Header() {
       <div className="page-container header-inner">
         <Link href="/" className="brand inline-flex items-center gap-3.5 no-underline group" aria-label="Eve Count Quantum Systems home">
           <img 
-            src="/images/evecount-logo.png" 
-            alt="Eve Count Logo" 
+            src="/images/evecount-mark.png" 
+            alt="Eve Count" 
             width={44} 
             height={44} 
-            className="h-10 w-10 sm:h-11 sm:w-11 rounded-full shrink-0 group-hover:scale-105 transition-transform shadow-xs" 
+            className="h-10 w-10 sm:h-11 sm:w-11 rounded-full shrink-0 group-hover:scale-105 transition-transform shadow-xs object-cover" 
           />
           <div className="flex flex-col text-left select-none">
             <span className="text-[17px] sm:text-[18px] font-black tracking-tight text-[#16181D] leading-none uppercase font-sans">
@@ -67,11 +67,11 @@ export function Header() {
                 <SheetTitle>
                   <Link href="/" onClick={() => setSheetOpen(false)} className="inline-flex items-center gap-3">
                     <img 
-                      src="/images/evecount-logo.png" 
-                      alt="Eve Count Logo" 
+                      src="/images/evecount-mark.png" 
+                      alt="Eve Count" 
                       width={38} 
                       height={38} 
-                      className="h-9 w-9 rounded-full shrink-0" 
+                      className="h-9 w-9 rounded-full shrink-0 object-cover" 
                     />
                     <div className="flex flex-col text-left">
                       <span className="text-[16px] font-black tracking-tight text-[#16181D] leading-none uppercase">
