@@ -31,11 +31,11 @@ export function Hero() {
             <span>Quantum Systems.</span>
           </h1>
           <p className="hero-statement">
-            Clarity for the<br />
-            <em>post-quantum</em> world.
+            A secure future<br />
+            <em>without passwords.</em>
           </p>
           <p className="hero-description">
-            We help institutions navigate the post-quantum shift with certainty—bridging cryptographic security, real quantum hardware, and systems built to evolve.
+            We eliminate passwords and credential vulnerabilities using NIST-standardized post-quantum cryptography, zero-knowledge verification, and hardware-validated cryptographic agility.
           </p>
           <div className="hero-actions">
             <Button variant="editorial" asChild className="main-cta">
@@ -59,18 +59,18 @@ export function Hero() {
         <div className="hero-art" aria-label="Architectural illustration representing post-quantum resilience">
           <span className="art-topnote">EC / SYSTEM STUDY NO. 001</span>
           <div 
-            className="transition-transform duration-75 ease-out flex items-center justify-center pointer-events-none select-none"
+            className="transition-transform duration-75 ease-out flex items-center justify-center pointer-events-none select-none w-full"
             style={{ 
-              transform: `scale(0.82) rotate(${rotationDeg}deg)`,
+              transform: `scale(1.22) rotate(${rotationDeg}deg)`,
               transformOrigin: "center center"
             }}
           >
             <img 
               src="/images/quantum-architecture.svg" 
               alt="Stippled architectural gateway representing post-quantum resilience" 
-              width={620} 
-              height={550} 
-              className="w-full max-w-[500px] h-auto drop-shadow-sm"
+              width={760} 
+              height={680} 
+              className="w-full max-w-[640px] h-auto drop-shadow-md"
             />
           </div>
           <span className="art-bottomnote">ENGINEERING THE TRANSITION →</span>
