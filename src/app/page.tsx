@@ -120,21 +120,12 @@ export default function Home() {
           </motion.div>
           
           <motion.figure className="hero-cinema" style={{ scale: imageScale, y: imageY }}>
-            <video 
-              className="cinema-video" 
-              src="/images/quantum-landscape-loop.mp4" 
-              autoPlay 
-              muted 
-              loop 
-              playsInline 
-              preload="auto" 
-              aria-hidden="true" 
-            />
             <img 
               src="/images/quantum-landscape.jpg" 
               alt="A monumental system of glass and metal rings suspended over a misty landscape" 
               width={1920} 
               height={1088} 
+              loading="eager"
             />
             <figcaption>
               Architecture for the next computing era <span>01 / 04</span>
