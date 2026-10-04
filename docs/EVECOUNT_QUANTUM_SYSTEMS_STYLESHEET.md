@@ -1,4 +1,5 @@
 # Eve Count Quantum Systems — Website Visual Style Sheet
+
 *Reusable reference for a full website rebrand*
 
 This stylesheet translates the existing presentation language into practical website guidance: restrained enterprise structure, technical futurism, warm gold accents, and confident forward-looking communication.
@@ -8,9 +9,11 @@ This stylesheet translates the existing presentation language into practical web
 ## 1. Brand Essence and Design Principles
 
 ### Brand Essence
+
 Make complex quantum systems feel clear, credible, and ready for strategic action. The website should balance enterprise confidence with a sense of technical possibility.
 
 ### Design Principles
+
 1. **Lead with clarity** — state the audience benefit or decision context before introducing technical detail.
 2. **Use restraint as a signal of confidence** — prioritize whitespace, hierarchy, and purposeful content over decoration.
 3. **Make the future tangible** — use conceptual technical imagery, structured diagrams, and precise language rather than literal science-fiction visuals.
@@ -32,6 +35,7 @@ Make complex quantum systems feel clear, credible, and ready for strategic actio
 | **Gold Wash** | `#F5EBD6` | Callouts, CTA backgrounds, subtle emphasis | Use as a soft tonal field rather than a dominant brand block. |
 
 ### Accessibility Baseline
+
 Validate every final combination against WCAG guidance: target at least 4.5:1 contrast for normal text, 3:1 for large text and interface graphics, and a clearly visible focus state. Do not rely on gold alone to communicate status or selection.
 
 ---
@@ -61,7 +65,7 @@ Keep layouts open, left-aligned, and easy to scan. Use a consistent content edge
 | :--- | :--- | :--- | :--- |
 | **Content width** | 1200px maximum | Full width with 20px gutters | Prevent long lines while preserving generous margins. |
 | **Outer gutter** | 32–48px | 20px | Align all primary content to one dependable left edge. |
-| **Section spacing**| 80–112px | 56–72px | Separate strategic sections without crowding. |
+| **Section spacing** | 80–112px | 56–72px | Separate strategic sections without crowding. |
 | **Content gap** | 24–40px | 20–28px | Space headings, paragraphs, media, and controls. |
 | **Reading width** | 640–720px | 100% | Keep explanatory copy compact and comfortable. |
 
@@ -89,7 +93,7 @@ Visuals should clarify an idea, create atmosphere, or signal technical depth wit
 | Visual Type | Recommended Direction | Restraint |
 | :--- | :--- | :--- |
 | **Technical sketches** | Paper-like diagrams, annotated systems, grid fragments, abstract research marks. | Subdued, spacious, and secondary to the message. |
-| **Abstract quantum imagery**| Soft waves, fields, particles, luminous gold traces to suggest connection. | Avoid literal sci-fi scenes, overloaded 3D renders, and visual noise. |
+| **Abstract quantum imagery** | Soft waves, fields, particles, luminous gold traces to suggest connection. | Avoid literal sci-fi scenes, overloaded 3D renders, and visual noise. |
 | **Light-based imagery** | Focused light or glow to emphasize discovery and clarity. | Keep glow controlled; gold should be a highlight, not a full-page effect. |
 | **Diagrams and icons** | Simple line-based diagrams with clean geometry and consistent stroke weight. | No decorative icon libraries without defined functional roles. |
 
@@ -120,6 +124,7 @@ Write with shared ownership and practical confidence. Use “we” when describi
 | **Readable** | Short paragraphs, informative headings, compact lists, meaningful labels. | Dense walls of text, unexplained acronyms, decorative copy. |
 
 ### Rules
+
 - **Lead with relevance** — explain why the section matters before adding detail.
 - **Use progressive disclosure** — keep the first view concise and make deeper explanation easy to reach.
 - **Show evidence responsibly** — include proof points only when approved and supportable.
@@ -130,6 +135,7 @@ Write with shared ownership and practical confidence. Use “we” when describi
 ## 9. Do and Don't Checklist
 
 ### Do
+
 - Maintain a white or very light canvas with strong charcoal/ink text.
 - Use gold to direct attention toward interaction and strategic emphasis.
 - Preserve generous spacing and a consistent content edge.
@@ -137,6 +143,7 @@ Write with shared ownership and practical confidence. Use “we” when describi
 - Test every responsive layout and colour pairing for accessibility.
 
 ### Don't
+
 - Don't turn the site into a presentation replica with slide-like density or decorative framing.
 - Don't use gold for long passages, low-contrast text, or every interactive element at once.
 - Don't crowd pages with literal technology imagery, excessive gradients, or ornamental icons.

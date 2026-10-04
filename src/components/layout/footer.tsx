@@ -21,9 +21,9 @@ const quantumRepos = [
     badge: "Lattice / ML"
   },
   { 
-    href: "/snapdragon", 
+    href: "https://github.com/evecount/snapdragon", 
     label: "Project Snapdragon (Bridge)", 
-    isExternal: false,
+    isExternal: true,
     badge: "O(1) Optics"
   },
   { 
@@ -54,7 +54,7 @@ export function Footer() {
                 alt="Eve Count" 
                 width={44} 
                 height={44} 
-                className="h-10 w-10 sm:h-11 sm:w-11 rounded-full shrink-0 group-hover:scale-105 transition-transform object-cover ring-1 ring-[var(--signal)]/40" 
+                className="h-10 w-10 sm:h-11 sm:w-11 rounded-full shrink-0 group-hover:scale-105 transition-transform object-cover ring-1 ring-[color-mix(in_oklab,var(--canvas)_14%,transparent)]" 
               />
               <div className="flex flex-col text-left select-none">
                 <span className="text-[17px] sm:text-[18px] font-black tracking-tight text-[var(--canvas)] leading-none uppercase font-sans">
@@ -111,6 +111,7 @@ export function Footer() {
                         className="group flex flex-col text-sm text-[color-mix(in_oklab,var(--canvas)_75%,transparent)] transition-colors hover:text-[var(--canvas)]"
                       >
                         <span className="inline-flex items-center gap-1.5 font-medium">
+                          <Github className="h-3.5 w-3.5 text-[color-mix(in_oklab,var(--canvas)_50%,transparent)] group-hover:text-[var(--signal)] transition-colors" />
                           <span>{link.label}</span>
                           <ArrowUpRight className="h-3 w-3 text-[var(--signal)] opacity-70" />
                         </span>
