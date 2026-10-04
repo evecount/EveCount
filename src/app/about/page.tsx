@@ -249,6 +249,16 @@ export default function AboutPage() {
 
         <section className="evidence">
           <div className="evidence-image">
+            <video 
+              className="cinema-video" 
+              src="/images/crypto-material-loop.mp4" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              preload="auto" 
+              aria-hidden="true" 
+            />
             <img 
               src="/images/crypto-material.jpg" 
               alt="Glass, mineral and gold technical sculpture" 
