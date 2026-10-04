@@ -32,7 +32,7 @@ export function Header() {
         <div className="hidden md:flex items-center">
           <Button variant="editorial" size="sm" asChild className="header-cta">
             <Link href="/apply" className="inline-flex items-center gap-1.5">
-              <span>Enterprise Diagnostic</span>
+              <span>Commission Assessment</span>
               <ArrowUpRight size={14} />
             </Link>
           </Button>
@@ -41,7 +41,7 @@ export function Header() {
         {/* Mobile navigation */}
         <div className="md:hidden ml-auto flex items-center gap-2">
           <Button variant="editorial" size="sm" asChild className="header-cta">
-            <Link href="/apply" aria-label="Enterprise Diagnostic">
+            <Link href="/apply" aria-label="Commission Assessment">
               <ArrowUpRight size={17} />
             </Link>
           </Button>
@@ -80,7 +80,7 @@ export function Header() {
                 <div className="pt-4 border-t border-[#E7E3D8]">
                   <Button variant="editorial" asChild className="w-full justify-center">
                     <Link href="/apply" onClick={() => setSheetOpen(false)}>
-                      Complete Enterprise Diagnostic
+                      Commission Institutional Assessment
                     </Link>
                   </Button>
                 </div>

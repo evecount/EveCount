@@ -27,7 +27,7 @@ export function Hero() {
           <div className="hero-actions">
             <Button variant="editorial" asChild className="main-cta">
               <Link href="/apply" className="inline-flex items-center">
-                <span>Complete Enterprise Diagnostic</span>
+                <span>Commission Institutional Assessment</span>
                 <ArrowUpRight className="ml-3 h-4 w-4" />
               </Link>
             </Button>

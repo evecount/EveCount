@@ -144,11 +144,11 @@ export function Funding() {
             wait for certainty. <em>Build it.</em>
           </h2>
           <p>
-            Start with a confidential enterprise diagnostic and discover where your quantum transition begins.
+            Commission a confidential institutional risk audit and discover where your quantum transition begins.
           </p>
           <Button variant="editorial" asChild className="main-cta">
             <Link href="/apply" className="inline-flex items-center">
-              <span>Complete Enterprise Diagnostic</span>
+              <span>Commission Institutional Assessment</span>
               <ArrowUpRight className="ml-3 h-4 w-4" />
             </Link>
           </Button>
