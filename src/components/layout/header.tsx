@@ -10,74 +10,90 @@ export function Header() {
   const [isSheetOpen, setSheetOpen] = useState(false);
 
   return (
-    <header className="site-header sticky top-0 z-50 bg-[#FAF9F6]/95 backdrop-blur">
-      <div className="page-container header-inner">
-        <Link href="/" className="brand inline-flex items-center gap-3.5 no-underline group" aria-label="Eve Count Quantum Systems home">
+    <header className="sticky top-0 z-50 bg-[var(--canvas)]/95 backdrop-blur border-b border-[var(--line)]">
+      <div className="max-w-[1440px] mx-auto px-6 sm:px-10 h-[88px] flex items-center justify-between">
+        {/* Brand */}
+        <Link href="/" className="inline-flex items-center gap-3.5 no-underline group select-none" aria-label="Eve Count Quantum Systems">
           <img 
             src="/icon.png" 
             alt="Eve Count" 
-            width={44} 
-            height={44} 
-            className="h-10 w-10 sm:h-11 sm:w-11 rounded-full shrink-0 group-hover:scale-105 transition-transform shadow-xs object-cover" 
+            width={40} 
+            height={40} 
+            className="h-9 w-9 sm:h-10 sm:w-10 rounded-full shrink-0 group-hover:scale-105 transition-transform object-cover ring-1 ring-[var(--line)]" 
           />
-          <div className="flex flex-col text-left select-none">
-            <span className="text-[17px] sm:text-[18px] font-black tracking-tight text-[#16181D] leading-none uppercase font-sans">
+          <div className="flex flex-col text-left">
+            <span className="text-[16px] sm:text-[17px] font-black tracking-tight text-[var(--ink)] leading-none uppercase font-sans">
               EVE COUNT
             </span>
-            <span className="text-[8.5px] sm:text-[9px] font-extrabold tracking-[0.24em] text-[#5B616B] uppercase mt-1 leading-none">
+            <span className="text-[8px] sm:text-[8.5px] font-extrabold tracking-[0.24em] text-[var(--moss)] uppercase mt-1 leading-none">
               QUANTUM SYSTEMS
             </span>
           </div>
         </Link>
 
-        <nav className="header-nav hidden md:flex" aria-label="Main navigation">
-          <a href="#expertise">Expertise</a>
-          <a href="#approach">Approach</a>
-          <Link href="/about">About</Link>
-          <a href="https://cybrdeck.com" target="_blank" rel="noopener noreferrer">
-            Cybrdeck <ArrowUpRight size={14} strokeWidth={1.7} />
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
+          <Link href="/about" className="text-xs font-semibold tracking-wider text-[var(--ink)] opacity-60 hover:opacity-100 transition-opacity">
+            About
+          </Link>
+          <a href="/#expertise" className="text-xs font-semibold tracking-wider text-[var(--ink)] opacity-60 hover:opacity-100 transition-opacity">
+            Work
+          </a>
+          <a href="/#approach" className="text-xs font-semibold tracking-wider text-[var(--ink)] opacity-60 hover:opacity-100 transition-opacity">
+            The Method
+          </a>
+          <a href="/#proof" className="text-xs font-semibold tracking-wider text-[var(--ink)] opacity-60 hover:opacity-100 transition-opacity">
+            Project Q-Rotate
+          </a>
+          <a href="https://cybrdeck.com" target="_blank" rel="noopener noreferrer" className="text-xs font-semibold tracking-wider text-[var(--ink)] opacity-60 hover:opacity-100 transition-opacity inline-flex items-center gap-1">
+            <span>Cybrdeck</span>
+            <ArrowUpRight size={12} />
           </a>
         </nav>
 
+        {/* Right CTA */}
         <div className="hidden md:flex items-center">
-          <Button variant="editorial" size="sm" asChild className="header-cta">
-            <Link href="/apply" className="inline-flex items-center gap-1.5">
-              <span>Commission Assessment</span>
-              <ArrowUpRight size={14} />
-            </Link>
-          </Button>
+          <Link 
+            href="/apply" 
+            className="inline-flex items-center gap-2 text-xs font-bold text-[var(--ink)] border-b border-[var(--ink)] pb-1 hover:opacity-75 transition-opacity"
+          >
+            <span>Diagnostic</span>
+            <ArrowUpRight size={14} />
+          </Link>
         </div>
 
-        {/* Mobile navigation */}
-        <div className="md:hidden ml-auto flex items-center gap-2">
-          <Button variant="editorial" size="sm" asChild className="header-cta">
-            <Link href="/apply" aria-label="Commission Assessment">
-              <ArrowUpRight size={17} />
-            </Link>
-          </Button>
+        {/* Mobile Menu */}
+        <div className="md:hidden flex items-center gap-3">
+          <Link 
+            href="/apply" 
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[var(--ink)] border-b border-[var(--ink)] pb-0.5"
+          >
+            <span>Diagnostic</span>
+            <ArrowUpRight size={13} />
+          </Link>
           <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-ink">
+              <Button variant="ghost" size="icon" className="text-[var(--ink)] -mr-2">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="bg-[#FAF9F6]">
+            <SheetContent side="left" className="bg-[var(--canvas)] border-r border-[var(--line)]">
               <SheetHeader>
                 <SheetTitle>
                   <Link href="/" onClick={() => setSheetOpen(false)} className="inline-flex items-center gap-3">
                     <img 
                       src="/icon.png" 
                       alt="Eve Count" 
-                      width={38} 
-                      height={38} 
-                      className="h-9 w-9 rounded-full shrink-0 object-cover" 
+                      width={36} 
+                      height={36} 
+                      className="h-8 w-8 rounded-full shrink-0 object-cover" 
                     />
                     <div className="flex flex-col text-left">
-                      <span className="text-[16px] font-black tracking-tight text-[#16181D] leading-none uppercase">
+                      <span className="text-[15px] font-black tracking-tight text-[var(--ink)] leading-none uppercase">
                         EVE COUNT
                       </span>
-                      <span className="text-[8px] font-extrabold tracking-[0.22em] text-[#5B616B] uppercase mt-1 leading-none">
+                      <span className="text-[8px] font-extrabold tracking-[0.22em] text-[var(--moss)] uppercase mt-1 leading-none">
                         QUANTUM SYSTEMS
                       </span>
                     </div>
@@ -85,25 +101,31 @@ export function Header() {
                 </SheetTitle>
               </SheetHeader>
               <div className="mt-8 flex flex-col gap-5">
-                <a href="#expertise" onClick={() => setSheetOpen(false)} className="text-base font-semibold text-ink">
-                  Expertise
-                </a>
-                <a href="#approach" onClick={() => setSheetOpen(false)} className="text-base font-semibold text-ink">
-                  Approach
-                </a>
-                <Link href="/about" onClick={() => setSheetOpen(false)} className="text-base font-semibold text-ink">
+                <Link href="/about" onClick={() => setSheetOpen(false)} className="text-sm font-semibold text-[var(--ink)]">
                   About
                 </Link>
-                <a href="https://cybrdeck.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-base font-semibold text-ink">
-                  <span>Cybrdeck Terminal</span>
-                  <ArrowUpRight className="h-4 w-4 text-gold-warm" />
+                <a href="/#expertise" onClick={() => setSheetOpen(false)} className="text-sm font-semibold text-[var(--ink)]">
+                  Work
                 </a>
-                <div className="pt-4 border-t border-[#E7E3D8]">
-                  <Button variant="editorial" asChild className="w-full justify-center">
-                    <Link href="/apply" onClick={() => setSheetOpen(false)}>
-                      Commission Institutional Assessment
-                    </Link>
-                  </Button>
+                <a href="/#approach" onClick={() => setSheetOpen(false)} className="text-sm font-semibold text-[var(--ink)]">
+                  The Method
+                </a>
+                <a href="/#proof" onClick={() => setSheetOpen(false)} className="text-sm font-semibold text-[var(--ink)]">
+                  Project Q-Rotate
+                </a>
+                <a href="https://cybrdeck.com" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm font-semibold text-[var(--ink)]">
+                  <span>Cybrdeck Terminal</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+                <div className="pt-4 border-t border-[var(--line)]">
+                  <Link 
+                    href="/apply" 
+                    onClick={() => setSheetOpen(false)}
+                    className="inline-flex w-full items-center justify-center gap-2 py-3 rounded-full bg-[var(--ink)] text-[var(--canvas)] text-xs font-bold"
+                  >
+                    <span>Complete Enterprise Diagnostic</span>
+                    <ArrowUpRight size={14} />
+                  </Link>
                 </div>
               </div>
             </SheetContent>

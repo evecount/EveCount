@@ -2,215 +2,140 @@
 
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Zap, Code, Share2, Mail, Bot, ShieldCheck, BrainCircuit } from "lucide-react";
-import { useChatbot } from "@/hooks/use-chatbot";
-import React from "react";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { useRef } from "react";
 
 export default function AboutPage() {
-  const { setOpen } = useChatbot();
+  const hero = useRef<HTMLElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: hero, offset: ["start start", "end start"] });
+  const tilt = useSpring(useTransform(scrollYProgress, [0, 1], [0, 32]), { stiffness: 70, damping: 24 });
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.18]);
 
-  React.useEffect(() => {
-    document.title = "About Eve Count | Our Deep-Tech Focus on Quantum & AI | EveCount.com";
-  }, []);
-
+  const reveal = (delay = 0) => ({
+    initial: { opacity: 0, y: 36 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, amount: 0.2 },
+    transition: {
+      duration: reduced ? 0 : 0.9,
+      delay,
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+    },
+  });
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="new-site about-new flex min-h-screen flex-col">
       <Header />
       <main className="flex-1">
-        <section className="bg-background py-16 md:py-24 lg:py-32">
-          <div className="container">
-            <div className="mb-12 text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#DCD6C8] bg-white px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-slate mb-4">
-                <span className="h-1.5 w-1.5 rounded-full bg-gold-warm" />
-                <span>Institutional Provenance</span>
-              </div>
-              <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl text-ink">
-                Architecting Sovereign Resilience
-              </h1>
-              <p className="mx-auto mt-4 max-w-3xl text-lg text-slate sm:text-xl leading-relaxed">
-                Traditional consultancies produce speculative slide decks. We engineer verifiable cryptographic defenses and hardware-level quantum benchmarks. We believe the only defensible hedge against Q-Day is production-grade code.
-              </p>
-            </div>
-
-            <div className="mx-auto grid max-w-5xl gap-12">
-              <div className="text-center">
-                 <h2 className="font-headline text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-                  The Eve Count Philosophy
-                </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-slate md:text-lg leading-relaxed">
-                  We are a specialized deep-tech studio operating at the intersection of mathematical physics, Post-Quantum Cryptography (PQC), and autonomous systems. Our mission is to protect institutional data from 'Harvest Now, Decrypt Later' adversaries and architect quantum-ready enterprise infrastructure.
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-                 <Card className="flex flex-col bg-secondary/20 text-foreground">
-                  <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                        <Zap className="h-6 w-6 text-primary" />
-                      </div>
-                      <CardTitle>Product as the Story</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">
-                      We don't just tell your story—we build the product that becomes the story. A flawless UX, a game-changing AI feature, a beautifully architected system; these are the narratives that spread.
-                    </p>
-                  </CardContent>
-                </Card>
-                 <Card className="flex flex-col bg-secondary/20 text-foreground">
-                  <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                        <Code className="h-6 w-6 text-primary" />
-                      </div>
-                      <CardTitle>Code as the Creative</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">
-                      Our campaigns aren't ads; they are scalable infrastructure, intelligent algorithms, and robust machine learning pipelines. This is the creative work that builds a defensible moat.
-                    </p>
-                  </CardContent>
-                </Card>
-                 <Card className="flex flex-col bg-secondary/20 text-foreground">
-                  <CardHeader>
-                    <div className="flex items-center gap-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                        <Share2 className="h-6 w-6 text-primary" />
-                      </div>
-                      <CardTitle>Growth as the Goal</CardTitle>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">
-                     The result is organic, durable growth. A product that markets itself because it's fundamentally better. That's the unfair advantage we build for our partners.
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div className="border-t border-border/40 pt-12">
-                <div className="text-center">
-                  <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
-                    Our Deep-Tech Focus
-                  </h2>
-                  <p className="mx-auto mt-4 max-w-3xl text-muted-foreground md:text-lg">
-                    "Deep tech" isn't just a buzzword for us. It's our foundation. We build ventures rooted in significant scientific and engineering innovation. Our core focus areas are at the frontier of what's possible.
-                  </p>
-                </div>
-                <div className="mx-auto mt-10 grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-3">
-                  <Card className="flex flex-col bg-secondary/20 text-foreground">
-                    <CardHeader>
-                      <div className="flex items-center gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                          <ShieldCheck className="h-6 w-6 text-primary" />
-                        </div>
-                        <CardTitle>Post-Quantum Cryptography (PQC)</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        As quantum computers emerge, today's encryption standards will become obsolete. We are building the next generation of cryptographic systems that are secure against attacks from both classical and quantum computers.
-                      </p>
-                    </CardContent>
-                  </Card>
-                  <Card className="flex flex-col bg-secondary/20 text-foreground">
-                    <CardHeader>
-                      <div className="flex items-center gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                          <Share2 className="h-6 w-6 text-primary" />
-                        </div>
-                        <CardTitle>Quantum Key Distribution (QKD)</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        Leveraging the principles of quantum mechanics, we build communication networks where security is guaranteed by the laws of physics. Any attempt to eavesdrop on a QKD channel is instantly detectable.
-                      </p>
-                    </CardContent>
-                  </Card>
-                  <Card className="flex flex-col bg-secondary/20 text-foreground">
-                    <CardHeader>
-                      <div className="flex items-center gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                          <BrainCircuit className="h-6 w-6 text-primary" />
-                        </div>
-                        <CardTitle>Quantum Machine Learning (QML)</CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        We explore the intersection of quantum computing and AI. By using quantum algorithms, we aim to solve complex machine learning problems that are intractable for even the most powerful classical supercomputers.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-
-              <div className="border-t border-border/40 pt-12 text-center">
-                 <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
-                  What's in a Name?
-                </h2>
-                 <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                    In cryptography, 'Eve' is the eavesdropper, the observer. In quantum mechanics, the act of observation fundamentally changes the outcome. <br /><span className="font-semibold text-foreground">Eve Count</span> is a nod to this principle. We believe that by intently observing a problem and 'counting' its components, we can build systems—from quantum-secure communications (QKD) to AI—that don't just solve it, but change the landscape entirely. We are the observers who build.
-                </p>
-              </div>
-
-            </div>
-
+        <section className="about-new-hero" ref={hero}>
+          <div className="about-ring-field" aria-hidden="true">
+            <motion.div className="about-rings" style={{ rotate: tilt, scale }}>
+              <i /><i /><i /><i /><b />
+            </motion.div>
+          </div>
+          <div className="about-new-copy">
+            <p className="new-kicker">ABOUT EVE COUNT</p>
+            <h1>
+              The adversary<br />
+              clarifies<br />
+              <em>the question.</em>
+            </h1>
+            <p>
+              We named the firm after Eve—the eavesdropper in every cryptography textbook—because security is only meaningful when measured against the person trying to break it.
+            </p>
           </div>
         </section>
-        <section id="contact" className="border-t border-border/40 bg-secondary/20 py-16 md:py-24">
-            <div className="container">
-                <div className="mb-12 text-center">
-                    <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
-                        Get in Touch
-                    </h2>
-                    <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                        We're always open to new ideas and partnerships.
-                    </p>
-                </div>
 
-                <div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
-                    <Card className="bg-background/50">
-                        <CardHeader>
-                            <CardTitle>Direct Inquiries</CardTitle>
-                            <CardDescription>For general questions or media requests.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <a href="https://www.linkedin.com/in/gwendalynnlim/" target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-foreground transition-colors hover:text-primary">
-                                Gwendalynn Lim Wan Ting
-                            </a>
-                            <div className="mt-2 space-y-2 text-muted-foreground">
-                                <a href="mailto:gwen@evecount.com" className="flex items-center gap-2 transition-colors hover:text-primary">
-                                    <Mail className="h-4 w-4" />
-                                    <span>gwen@evecount.com</span>
-                                </a>
-                            </div>
-                        </CardContent>
-                    </Card>
+        <section className="about-manifesto">
+          <motion.p className="chapter" {...reveal()}>
+            THE NAME <span>01</span>
+          </motion.p>
+          <motion.h2 {...reveal(0.08)}>
+            Alice and Bob want privacy.<br />
+            <em>Eve wants what passes between them.</em>
+          </motion.h2>
+          <div className="manifesto-grid">
+            <motion.p {...reveal(0.12)}>
+              Eve is patient. She is well-funded. She may already be recording what cannot yet be read.
+            </motion.p>
+            <motion.div {...reveal(0.2)}>
+              <p>
+                That turns post-quantum security from an abstract future into a present question: how long must this information remain secret?
+              </p>
+              <p>
+                Ask what Eve would need—how much time, power and access—and vague risk becomes an arithmetic problem with a deadline.
+              </p>
+            </motion.div>
+          </div>
+        </section>
 
-                    <Card className="bg-background/50">
-                        <CardHeader>
-                            <CardTitle>Pitch Your Venture</CardTitle>
-                            <CardDescription>Ready to build? Chat with our AI Partner to start.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <Button size="lg" className="w-full" onClick={() => setOpen(true)}>
-                                <Bot className="mr-2 h-4 w-4" />
-                                Start the Conversation
-                            </Button>
-                            <p className="mt-4 text-xs text-muted-foreground">
-                                Our AI will guide you through the key questions to structure your pitch and save it for our review.
-                            </p>
-                        </CardContent>
-                    </Card>
-                </div>
-            </div>
+        <section className="about-photo">
+          <motion.img 
+            style={{ scale }} 
+            src="/images/quantum-landscape.jpg" 
+            alt="Monumental orbiting architecture in a misty landscape" 
+            width={1920} 
+            height={1088} 
+          />
+          <p>Assume the impossible becomes possible.</p>
+        </section>
+
+        <section className="beliefs">
+          <p className="chapter">WHAT WE REFUSE TO TRADE <span>02</span></p>
+          {[
+            ['01', 'Rigor', 'If we cannot reproduce the measurement, we do not make the claim.'],
+            ['02', 'Discretion', 'Your inventory, benchmarks and roadmap remain yours.'],
+            ['03', 'Agility', 'A changing standard should become a configuration—not a rebuild.']
+          ].map(([n, t, b], i) => (
+            <motion.article {...reveal(i * 0.1)} key={n}>
+              <span>{n}</span>
+              <h3>{t}</h3>
+              <p>{b}</p>
+            </motion.article>
+          ))}
+        </section>
+
+        <section className="evidence">
+          <div className="evidence-image">
+            <img 
+              src="/images/crypto-material.jpg" 
+              alt="Glass, mineral and gold technical sculpture" 
+              width={1600} 
+              height={1104} 
+              loading="lazy" 
+            />
+          </div>
+          <div className="evidence-copy">
+            <p className="chapter chapter-light">THE GROUND BENEATH THE IDEA <span>03</span></p>
+            <h2>
+              Philosophy,<br />
+              <em>made measurable.</em>
+            </h2>
+            {[
+              ['NIST PQC standards', 'FIPS 203 · 204 · 205'],
+              ['Real quantum hardware', 'Quantinuum · IonQ'],
+              ['Hybrid migration', 'TLS · PKI · keys · certificates'],
+              ['Crypto inventory', 'discovery · classification · governance']
+            ].map(([a, b]) => (
+              <div key={a}>
+                <strong>{a}</strong>
+                <span>{b}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="new-closing">
+          <p className="chapter chapter-light">THE QUESTION <span>04</span></p>
+          <h2>
+            How long must your<br />
+            secrets remain secret?
+          </h2>
+          <Link className="pill pill-signal" href="/apply">
+            Find out <ArrowUpRight size={16} />
+          </Link>
         </section>
       </main>
       <Footer />
