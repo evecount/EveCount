@@ -35,7 +35,8 @@ const capabilities = [
     title: "Post-quantum security", 
     body: "Find every vulnerable key, certificate and protocol. Then move from legacy RSA and ECC to NIST-standardised protection with a migration you can actually execute.", 
     meta: "PQC AUDITS · FIPS 203 / 204 / 205", 
-    image: "/images/crypto-material.jpg" 
+    image: "/images/crypto-material.jpg",
+    video: "/images/crypto-material-loop.mp4"
   },
   { 
     number: "02", 
@@ -43,7 +44,8 @@ const capabilities = [
     title: "Real hardware, measured", 
     body: "We run and optimise circuits on Quantinuum and IonQ systems, replacing speculation with evidence from the machines that exist today.", 
     meta: "QUANTINUUM · IONQ · CIRCUIT FIDELITY", 
-    image: "/images/quantum-hardware.jpg" 
+    image: "/images/quantum-hardware.jpg",
+    video: "/images/quantum-hardware-loop.mp4"
   },
   { 
     number: "03", 
@@ -176,6 +178,18 @@ export default function Home() {
           {capabilities.map((item, index) => (
             <article className={`story story-${index + 1}`} key={item.number}>
               <motion.div className="story-image" {...reveal()}>
+                {item.video ? (
+                  <video 
+                    className="cinema-video" 
+                    src={item.video} 
+                    autoPlay 
+                    muted 
+                    loop 
+                    playsInline 
+                    preload="auto" 
+                    aria-hidden="true" 
+                  />
+                ) : null}
                 <img 
                   src={item.image} 
                   alt="" 
