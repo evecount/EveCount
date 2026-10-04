@@ -55,7 +55,7 @@ export function Footer() {
           <div className="flex flex-col items-start gap-4 lg:col-span-2">
             <Link href="/" className="brand inline-flex items-center gap-3.5 no-underline group" aria-label="Eve Count Quantum Systems home">
               <img 
-                src="/images/evecount-mark.png" 
+                src="/icon.png" 
                 alt="Eve Count" 
                 width={44} 
                 height={44} 

@@ -14,7 +14,7 @@ export function Header() {
       <div className="page-container header-inner">
         <Link href="/" className="brand inline-flex items-center gap-3.5 no-underline group" aria-label="Eve Count Quantum Systems home">
           <img 
-            src="/images/evecount-mark.png" 
+            src="/icon.png" 
             alt="Eve Count" 
             width={44} 
             height={44} 
@@ -67,7 +67,7 @@ export function Header() {
                 <SheetTitle>
                   <Link href="/" onClick={() => setSheetOpen(false)} className="inline-flex items-center gap-3">
                     <img 
-                      src="/images/evecount-mark.png" 
+                      src="/icon.png" 
                       alt="Eve Count" 
                       width={38} 
                       height={38} 
