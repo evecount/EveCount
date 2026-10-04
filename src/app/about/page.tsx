@@ -23,21 +23,25 @@ export default function AboutPage() {
         <section className="bg-background py-16 md:py-24 lg:py-32">
           <div className="container">
             <div className="mb-12 text-center">
-              <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                Growth by Engineering
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#DCD6C8] bg-white px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-slate mb-4">
+                <span className="h-1.5 w-1.5 rounded-full bg-gold-warm" />
+                <span>Institutional Provenance</span>
+              </div>
+              <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl text-ink">
+                Architecting Sovereign Resilience
               </h1>
-              <p className="mx-auto mt-4 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                Traditional firms chase growth with marketing campaigns. We build it with code. We believe the most powerful form of marketing isn't an ad; it's a category-defining product.
+              <p className="mx-auto mt-4 max-w-3xl text-lg text-slate sm:text-xl leading-relaxed">
+                Traditional consultancies produce speculative slide decks. We engineer verifiable cryptographic defenses and hardware-level quantum benchmarks. We believe the only defensible hedge against Q-Day is production-grade code.
               </p>
             </div>
 
             <div className="mx-auto grid max-w-5xl gap-12">
               <div className="text-center">
-                 <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">
+                 <h2 className="font-headline text-3xl font-bold tracking-tight text-ink sm:text-4xl">
                   The Eve Count Philosophy
                 </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                  To be clear: we are not a marketing company. We are a venture studio that uses engineering as its primary tool for growth. Our 'creatives' are architects and AI specialists. Our goal isn't a campaign; it's to build a digital asset. A product so effective, built on data and machine learning, that it becomes the engine that builds the entire company.
+                <p className="mx-auto mt-4 max-w-2xl text-slate md:text-lg leading-relaxed">
+                  We are a specialized deep-tech studio operating at the intersection of mathematical physics, Post-Quantum Cryptography (PQC), and autonomous systems. Our mission is to protect institutional data from 'Harvest Now, Decrypt Later' adversaries and architect quantum-ready enterprise infrastructure.
                 </p>
               </div>
 

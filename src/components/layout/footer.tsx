@@ -7,6 +7,7 @@ const footerSections = {
     { href: "/about", label: "About" },
     { href: "/ventures", label: "Ventures" },
     { href: "/research", label: "Foundational Research" },
+    { href: "/pricing", label: "Engagement Models" },
     { href: "/apply", label: "Enterprise Diagnostic" },
   ],
   quantumSystems: [
@@ -36,7 +37,7 @@ const footerSections = {
   ],
   platforms: [
     { href: "https://cybrdeck.com", label: "Cybrdeck Terminal", isExternal: true },
-    { href: "/#engine", label: "Bridge Engine" },
+    { href: "/#engine", label: "Advisory Framework" },
     { href: "/quantum-minting", label: "Quantum Minting (QUM)" },
   ],
   legal: [

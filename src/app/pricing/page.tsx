@@ -5,132 +5,167 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Users, Code, Scale, Rocket, Check } from "lucide-react";
+import { ShieldCheck, Cpu, Terminal, Sparkles, Check, ArrowRight } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { useChatbot } from "@/hooks/use-chatbot";
+import Link from "next/link";
 
-const pricingTiers: {
+interface Tier {
   icon: LucideIcon;
   title: string;
-  description: string;
+  scope: string;
   timeline: string;
   price: string;
-  features: string[];
-}[] = [
+  badge: string;
+  deliverables: string[];
+}
+
+const enterpriseTiers: Tier[] = [
   {
-    icon: Users,
-    title: "1. The Foundry Session",
-    description: "An intensive, in-person deep-dive to forge the core vision, architecture, and roadmap.",
+    icon: Sparkles,
+    title: "1. Executive Risk Briefing",
+    scope: "Board-level immersion into quantum computing realities, timeline horizons, and regulatory compliance.",
     timeline: "1-2 Weeks",
-    price: "$15k - $25k+",
-    features: [
-      "In-person strategy workshop",
-      "Core architecture design",
-      "Technical roadmap & milestones",
-      "Initial user personas"
+    price: "$25,000",
+    badge: "Orientation",
+    deliverables: [
+      "Executive risk & opportunity assessment",
+      "Harvest Now, Decrypt Later (HNDL) exposure brief",
+      "Sector-specific regulatory mandate analysis (NIST / MAS)",
+      "Interactive C-suite Q&A session"
     ],
   },
   {
-    icon: Code,
-    title: "2. AI-Accelerated Build",
-    description: "Our core white-label development service to rapidly construct a market-ready MVP in complete stealth.",
-    timeline: "8-12 Weeks",
-    price: "$100k - $150k+",
-    features: [
-      "Full-stack development",
-      "AI & GenAI integration",
-      "Cloud-native architecture",
-      "Weekly progress demos"
-    ],
-  },
-  {
-    icon: Scale,
-    title: "3. Corporate & IP Foundation",
-    description: "While we build, our partners handle incorporation, legal frameworks, and IP protection.",
-    timeline: "Continuous",
-    price: "Varies",
-    features: [
-      "Company incorporation",
-      "IP protection & patents",
-      "Cap table management",
-      "Financial bookkeeping setup"
-    ],
-  },
-  {
-    icon: Rocket,
-    title: "4. GTM Activation",
-    description: "Activating your GTM strategy, securing initial users, and positioning for a successful seed round.",
+    icon: ShieldCheck,
+    title: "2. Post-Quantum Cryptography Audit",
+    scope: "Comprehensive cryptographic inventory and migration roadmap compliant with NIST FIPS 203/204/205.",
     timeline: "4-6 Weeks",
-    price: "$30k - $50k+",
-    features: [
-      "Brand & messaging strategy",
-      "Initial user acquisition",
-      "PR & media outreach",
-      "Investor pitch deck refinement"
+    price: "$75,000 – $125,000",
+    badge: "Remediation",
+    deliverables: [
+      "Complete PKI & cipher suite discovery scan",
+      "NIST FIPS 203 (ML-KEM) / 204 (ML-DSA) gap analysis",
+      "Cryptographic agility middleware blueprint",
+      "Phased transition implementation plan"
+    ],
+  },
+  {
+    icon: Cpu,
+    title: "3. Algorithm Prototyping & Benchmarking",
+    scope: "Benchmarking and compilation of domain-specific algorithms on real quantum hardware backends.",
+    timeline: "8-12 Weeks",
+    price: "$150,000 – $250,000",
+    badge: "Hardware Validation",
+    deliverables: [
+      "Circuit synthesis & error mitigation modeling",
+      "Quantinuum trapped-ion & IonQ hardware execution",
+      "Classical vs. quantum benchmark report",
+      "Hardware-agnostic SDK integration code"
+    ],
+  },
+  {
+    icon: Terminal,
+    title: "4. Retained Quantum Advisory Partner",
+    scope: "Continuous strategic technical leadership for enterprises engineering mission-critical quantum resilience.",
+    timeline: "Annual Retainer",
+    price: "$35,000 / month",
+    badge: "Retained Advisory",
+    deliverables: [
+      "Dedicated quantum systems architects",
+      "Continuous algorithm & cipher monitoring",
+      "Cybrdeck terminal rapid prototyping integration",
+      "Priority hardware access coordination"
     ],
   }
 ];
 
 export default function PricingPage() {
-  const { setOpen } = useChatbot();
-
   React.useEffect(() => {
-    document.title = "Our Investment Model | EveCount.com";
+    document.title = "Enterprise Engagement Models | Eve Count Quantum Systems";
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[#FAF9F6]">
       <Header />
       <main className="flex-1">
-        <section className="bg-background py-16 md:py-24 lg:py-32">
-          <div className="container">
-            <div className="mb-12 text-center">
-              <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-                Our Investment Model
+        <section className="py-20 md:py-28 border-b border-[#E7E3D8]">
+          <div className="container max-w-[1280px] mx-auto px-6">
+            
+            {/* Header */}
+            <div className="mb-16 text-center max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#DCD6C8] bg-white px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-slate mb-4">
+                <span className="h-1.5 w-1.5 rounded-full bg-gold-warm" />
+                <span>Institutional Engagement Frameworks</span>
+              </div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-ink leading-tight">
+                Enterprise Engagement Models
               </h1>
-              <p className="mx-auto mt-4 max-w-3xl text-lg text-muted-foreground sm:text-xl">
-                We operate on a venture-partnership model, typically taking an equity-equivalent stake for our investment of Code, AI, and Architecture. For partners who prefer a fee-for-service arrangement, the market benchmarks below provide transparency on the value we deliver at an accelerated pace.
+              <p className="mx-auto mt-4 max-w-3xl text-lg text-slate leading-relaxed">
+                We provide transparent, fixed-scope engagements designed to transition global enterprises and institutional funds from quantum vulnerability to verifiable sovereign readiness.
               </p>
             </div>
-            <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-              {pricingTiers.map((tier) => (
-                <Card key={tier.title} className="flex flex-col bg-secondary/20 text-foreground">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-secondary">
-                        <tier.icon className="h-6 w-6 text-primary" />
+
+            {/* Grid */}
+            <div className="grid max-w-7xl mx-auto grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+              {enterpriseTiers.map((tier) => (
+                <Card 
+                  key={tier.title} 
+                  className="flex flex-col bg-white border-[#E7E3D8] hover:border-gold-luminous hover:shadow-md transition-all duration-200 rounded-2xl overflow-hidden shadow-xs"
+                >
+                  <CardHeader className="p-6 pb-4">
+                    <div className="flex items-center justify-between gap-2 mb-4">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-mist border border-[#DCD6C8]">
+                        <tier.icon className="h-5 w-5 text-gold-warm" />
                       </div>
-                      <CardTitle className="text-xl">{tier.title}</CardTitle>
+                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-gold-wash text-ink">
+                        {tier.badge}
+                      </span>
                     </div>
-                     <CardDescription className="text-sm text-muted-foreground h-16">{tier.description}</CardDescription>
+                    <CardTitle className="text-lg font-bold text-ink">{tier.title}</CardTitle>
+                    <div className="mt-3">
+                      <div className="text-2xl font-extrabold text-ink">{tier.price}</div>
+                      <div className="text-xs font-mono text-slate font-medium mt-0.5">Timeline: {tier.timeline}</div>
+                    </div>
+                    <CardDescription className="text-xs text-slate mt-3 leading-relaxed min-h-[50px]">
+                      {tier.scope}
+                    </CardDescription>
                   </CardHeader>
-                  <CardContent className="flex flex-1 flex-col justify-between pt-0">
-                    <div>
-                        <div className="mb-6">
-                            <p className="text-4xl font-bold tracking-tighter">{tier.price}</p>
-                            <p className="text-sm text-muted-foreground">{tier.timeline}</p>
-                        </div>
-                        <ul className="space-y-3 text-sm">
-                        {tier.features.map((feature) => (
-                            <li key={feature} className="flex items-center gap-2">
-                            <Check className="h-4 w-4 text-green-500" />
-                            <span className="text-muted-foreground">{feature}</span>
-                            </li>
+
+                  <CardContent className="flex flex-1 flex-col justify-between p-6 pt-2">
+                    <div className="border-t border-[#E7E3D8] pt-4">
+                      <div className="text-xs font-semibold uppercase tracking-wider text-slate mb-3">Key Deliverables</div>
+                      <ul className="space-y-2.5 text-xs text-slate mb-6">
+                        {tier.deliverables.map((item) => (
+                          <li key={item} className="flex items-start gap-2">
+                            <Check className="h-3.5 w-3.5 text-gold-warm mt-0.5 shrink-0" />
+                            <span className="leading-tight">{item}</span>
+                          </li>
                         ))}
-                        </ul>
+                      </ul>
                     </div>
+
+                    <Button asChild className="w-full bg-ink hover:bg-ink/90 text-white font-semibold rounded-xl">
+                      <Link href="/apply">Initiate Engagement</Link>
+                    </Button>
                   </CardContent>
                 </Card>
               ))}
             </div>
-            <div className="mt-16 text-center">
-                <p className="mx-auto max-w-3xl text-muted-foreground">
-                  Note: The prices above are illustrative market-rate benchmarks. Our preferred method is to operate as a venture partner for an equity equivalent. We also offer introductory one-off strategy sessions starting at $2k for teams looking to refine their vision before committing to a full Foundry Session.
-                </p>
-              <Button size="lg" className="mt-6" onClick={() => setOpen(true)}>
-                Discuss Your Venture
-              </Button>
+
+            {/* Bottom info */}
+            <div className="mt-16 text-center max-w-2xl mx-auto">
+              <p className="text-xs text-slate leading-relaxed">
+                All engagements are protected under strict bilateral non-disclosure agreements (NDA). Retained partnerships include priority scheduling for Quantinuum and IonQ hardware batch executions.
+              </p>
+              <div className="mt-6">
+                <Button size="lg" asChild className="bg-gold-luminous hover:bg-gold-warm text-ink font-semibold rounded-xl px-8 shadow-sm">
+                  <Link href="/apply" className="inline-flex items-center gap-2">
+                    <span>Complete Enterprise Diagnostic</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
             </div>
+
           </div>
         </section>
       </main>
