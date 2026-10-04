@@ -2,66 +2,112 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink, ShieldCheck, Cpu } from "lucide-react";
+import { QuantumHeroGraphic } from "./QuantumHeroGraphic";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-white border-b border-border">
-      {/* Subtle background ambient light */}
-      <div className="absolute top-0 right-1/4 -z-10 h-96 w-96 rounded-full bg-gold-wash/50 blur-3xl pointer-events-none" />
+    <section className="relative overflow-hidden bg-[#FAF9F6] border-b border-[#E7E3D8]">
+      {/* Subtle warm ambient wash in background */}
+      <div className="absolute top-0 right-1/4 -z-10 h-[500px] w-[500px] rounded-full bg-gold-wash/60 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-10 -z-10 h-72 w-72 rounded-full bg-mist/80 blur-2xl pointer-events-none" />
 
-      <div className="container max-w-[1200px] mx-auto px-6 py-28 md:py-36 lg:py-40">
-        <div className="max-w-[760px] flex flex-col items-start text-left space-y-6">
-          {/* Eyebrow badge */}
-          <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-mist/60 px-3.5 py-1 text-xs font-semibold uppercase tracking-widest text-slate">
-            <span className="h-1.5 w-1.5 rounded-full bg-gold-warm" />
-            <span>Quantum-Ready Enterprise Systems</span>
-          </div>
+      <div className="container max-w-[1280px] mx-auto px-6 py-16 sm:py-20 lg:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          {/* Left Column: Punchy Headline & Clear Action (PartyRock Style) */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left space-y-7">
+            
+            {/* Eyebrow badge */}
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-[#DCD6C8] bg-white/90 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-slate shadow-2xs">
+              <span className="h-2 w-2 rounded-full bg-gold-warm animate-pulse" />
+              <span>Eve Count Quantum Systems</span>
+            </div>
 
-          {/* Display Heading */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
-            Translating complex quantum systems into{" "}
-            <span className="relative inline-block text-ink">
-              strategic action.
-              <span className="absolute bottom-1 left-0 w-full h-[3px] bg-gold-luminous -z-0" />
-            </span>
-          </h1>
+            {/* Display Heading inspired by PartyRock: punchy, prominent line breaks */}
+            <h1 className="text-4xl sm:text-6xl lg:text-[68px] font-extrabold tracking-tight text-ink leading-[1.08] lg:leading-[1.04]">
+              Eve Count:
+              <br />
+              <span className="text-ink">where quantum</span>
+              <br />
+              <span className="relative inline-block text-ink">
+                strategy starts
+                <svg
+                  className="absolute -bottom-2 left-0 w-full text-gold-luminous h-3 overflow-visible pointer-events-none"
+                  viewBox="0 0 300 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2 9C75 3 225 3 298 9"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+            </h1>
 
-          {/* Lead Paragraph */}
-          <p className="text-lg sm:text-xl text-slate leading-relaxed max-w-[680px]">
-            We bridge deep mathematical physics, Post-Quantum Cryptography (PQC), and autonomous architecture with institutional enterprise decision-making. 
-          </p>
+            {/* Clear-box Value Proposition */}
+            <p className="text-lg sm:text-xl text-slate leading-relaxed max-w-[580px] font-normal">
+              Eve Count enables enterprise leaders and institutions to navigate the post-quantum shift with certainty. 
+              Bridging Post-Quantum Cryptography (PQC), hardware-level benchmarking, and sovereign quantum architectures.
+            </p>
 
-          {/* Strategic Action Pathways */}
-          <div className="flex flex-wrap items-center gap-4 pt-4">
-            <Button 
-              size="lg" 
-              asChild
-              className="bg-gold-luminous hover:bg-gold-warm text-ink font-semibold px-7 py-3 text-base shadow-sm transition-all"
-            >
-              <Link href="/apply" className="inline-flex items-center gap-2">
-                <span>Enterprise Diagnostic</span>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-
-            <Button 
-              size="lg" 
-              variant="outline" 
-              asChild
-              className="border-border bg-white hover:bg-mist text-ink font-medium px-6 py-3 text-base transition-all"
-            >
-              <a 
-                href="https://cybrdeck.com" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2"
+            {/* Action Buttons: High-Contrast Ink Button + Outline */}
+            <div className="flex flex-wrap items-center gap-4 pt-2">
+              <Button 
+                size="lg" 
+                asChild
+                className="bg-ink hover:bg-ink/90 text-white font-semibold px-8 py-6 text-base rounded-xl shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
-                <span>Cybrdeck Terminal</span>
-                <ExternalLink className="h-4 w-4 text-gold-warm" />
-              </a>
-            </Button>
+                <Link href="/apply" className="inline-flex items-center gap-2.5">
+                  <span>Complete Enterprise Diagnostic</span>
+                  <ArrowRight className="h-4 w-4 text-gold-luminous" />
+                </Link>
+              </Button>
+
+              <Button 
+                size="lg" 
+                variant="outline" 
+                asChild
+                className="border-2 border-[#D8D2C4] bg-white hover:bg-mist text-ink font-semibold px-6 py-6 text-base rounded-xl transition-all"
+              >
+                <a 
+                  href="https://cybrdeck.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2"
+                >
+                  <span>Cybrdeck Terminal</span>
+                  <ExternalLink className="h-4 w-4 text-gold-warm" />
+                </a>
+              </Button>
+            </div>
+
+            {/* Trust Markers */}
+            <div className="flex flex-wrap items-center gap-6 pt-4 text-xs font-semibold uppercase tracking-wider text-slate border-t border-[#E7E3D8] w-full max-w-[580px]">
+              <span className="flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-gold-warm" />
+                NIST PQC Standards
+              </span>
+              <span className="flex items-center gap-2">
+                <Cpu className="h-4 w-4 text-gold-luminous" />
+                Quantinuum & IonQ Benchmarking
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-ink" />
+                Zero Lock-In
+              </span>
+            </div>
+
           </div>
+
+          {/* Right Column: Architectural Quantum Graphic (PartyRock Stipple Aesthetic) */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end items-center">
+            <QuantumHeroGraphic />
+          </div>
+
         </div>
       </div>
     </section>
