@@ -81,41 +81,88 @@ const freeEmailDomains = new Set([
 
 function diagnosticEmail(form: FormState) {
   const optional = (value: string) => value.trim() || "Not provided";
+  const today = new Date().toLocaleDateString('en-GB', { 
+    day: 'numeric', 
+    month: 'long', 
+    year: 'numeric' 
+  });
+
   const lines = [
-    "ENTERPRISE QUANTUM DIAGNOSTIC",
+    "==================================================",
+    "EVE COUNT QUANTUM SYSTEMS — ENTERPRISE DIAGNOSTIC",
+    "==================================================",
+    `Date of Submission: ${today}`,
     "",
-    "AUTHORITY & CONTEXT",
-    `Institution / entity: ${form.companyName.trim()}`,
-    `Executive sponsor: ${form.executiveSponsor.trim()}`,
-    `Corporate / institutional email: ${form.workEmail.trim()}`,
-    `Executive role / title: ${form.executiveRole}`,
-    `Annual revenue / operating scale: ${form.organizationScale}`,
-    `Industry / vertical: ${optional(form.industry)}`,
+    "1. AUTHORITY & INSTITUTIONAL CONTEXT",
+    `• Institution / Entity: ${form.companyName.trim()}`,
+    `• Executive Sponsor: ${form.executiveSponsor.trim()}`,
+    `• Executive Role / Title: ${form.executiveRole}`,
+    `• Corporate / Institutional Email: ${form.workEmail.trim()}`,
+    `• Operating Scale / Revenue Bracket: ${form.organizationScale}`,
+    `• Industry / Vertical: ${optional(form.industry)}`,
     "",
-    "THE QUESTION",
-    `Primary commissioning mandate: ${form.primaryObjective}`,
-    `Estimated value of encrypted assets / IP: ${optional(form.assetLiabilityBracket)}`,
-    `Procurement & engagement horizon: ${optional(form.procurementTimeline)}`,
+    "2. STRATEGIC MANDATE & RISK EXPOSURE",
+    `• Primary Commissioning Objective: ${form.primaryObjective}`,
+    `• Estimated Encrypted Asset Exposure: ${optional(form.assetLiabilityBracket)}`,
+    `• Engagement Horizon: ${optional(form.procurementTimeline)}`,
     "",
-    "WHAT WE SHOULD KNOW",
-    `High-level systems or compound focus: ${optional(form.technicalContext)}`,
+    "3. TECHNICAL CONTEXT & SYSTEM ARCHITECTURE",
+    `${optional(form.technicalContext)}`,
     "",
-    `Bilateral mutual non-disclosure agreement requested: ${form.mndaRequired ? "Yes" : "No"}`,
   ];
+
   if (form.mndaRequired) {
     lines.push(
+      "==================================================",
+      "BILATERAL MUTUAL NON-DISCLOSURE AGREEMENT (MNDA)",
+      "==================================================",
+      `Effective Date: ${today}`,
       "",
-      "NDA PREPARATION BRIEF (not an executed agreement)",
-      "Proposed party: Eve Count Quantum Systems",
-      `Counterparty / institution: ${form.companyName.trim()}`,
-      `Counterparty contact: ${form.executiveSponsor.trim()} (${form.executiveRole})`,
-      `Contact email: ${form.workEmail.trim()}`,
-      `Purpose of discussions: ${form.primaryObjective}`,
-      `Technical context: ${optional(form.technicalContext)}`,
-      "Please prepare a bilateral mutual NDA before any confidential technical disclosure. Legal names, addresses, terms, and signatories are to be confirmed by both parties.",
+      "PARTIES:",
+      "1. Disclosing & Receiving Party: Eve Count Quantum Systems",
+      "   Authorized Signatory: Gwendalynn Lim Wan Ting, Founder & CTO",
+      "   Official Email: gwen@evecount.com",
+      "",
+      `2. Disclosing & Receiving Party: ${form.companyName.trim()}`,
+      `   Authorized Signatory: ${form.executiveSponsor.trim()}`,
+      `   Title / Role: ${form.executiveRole}`,
+      `   Official Email: ${form.workEmail.trim()}`,
+      "",
+      "RECITALS & PURPOSE:",
+      `The Parties wish to explore potential technical engagement and collaboration regarding:`,
+      `"${form.primaryObjective}".`,
+      "To facilitate technical discussions without risking forfeiture of intellectual property, trade secrets, cryptographic keys, or proprietary research, the Parties agree to the following terms:",
+      "",
+      "TERMS & CONDITIONS:",
+      "1. Confidential Information: Includes all technical blueprints, algorithm specifications, quantum benchmark telemetry, source code, data architectures, and strategic roadmaps exchanged between the Parties.",
+      "2. Standard of Care: Each Party agrees to protect the Confidential Information of the other Party with the same degree of care it uses for its own proprietary information (and never less than reasonable care).",
+      "3. Permitted Purpose: Confidential Information shall be used exclusively for evaluating and executing bilateral technical or commercial collaborations between Eve Count Quantum Systems and the counterparty.",
+      "4. Non-Disclosure: Neither Party will disclose Confidential Information to any third party without prior written consent, except to officers, employees, and advisors with a strict need to know and bound by equivalent confidentiality obligations.",
+      "5. Term & Survival: This mutual confidentiality obligation shall remain in effect for two (2) years from the Effective Date above.",
+      "",
+      "SIGNATURES & ACKNOWLEDGMENT:",
+      `Accepted & Requested on: ${today}`,
+      "",
+      `For ${form.companyName.trim()}:`,
+      `Authorized Signatory: ${form.executiveSponsor.trim()}`,
+      `Title: ${form.executiveRole}`,
+      `Email: ${form.workEmail.trim()}`,
+      "",
+      "For Eve Count Quantum Systems:",
+      "Authorized Signatory: Gwendalynn Lim Wan Ting",
+      "Title: Founder & CTO, Eve Count Quantum Systems",
+      "Email: gwen@evecount.com",
+      "=================================================="
     );
+  } else {
+    lines.push("Bilateral mutual non-disclosure agreement requested: No");
   }
-  return `mailto:gwen@evecount.com?subject=${encodeURIComponent(`Enterprise diagnostic — ${form.companyName.trim()}`)}&body=${encodeURIComponent(lines.join("\n"))}`;
+
+  const subject = form.mndaRequired 
+    ? `Enterprise Diagnostic & MNDA — ${form.companyName.trim()} [${form.executiveSponsor.trim()}]`
+    : `Enterprise Diagnostic — ${form.companyName.trim()} [${form.executiveSponsor.trim()}]`;
+
+  return `mailto:gwen@evecount.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
 }
 
 export default function ApplyPage() {
@@ -271,8 +318,8 @@ export default function ApplyPage() {
                 <input type="checkbox" checked={form.mndaRequired} onChange={e => update("mndaRequired", e.target.checked)} />
                 <i>{form.mndaRequired && <Check size={13} />}</i>
                 <span>
-                  <strong>Prepare a bilateral mutual non-disclosure agreement</strong>
-                  <small>We will establish confidentiality before technical architectural disclosure.</small>
+                  <strong>Prepare a bilateral mutual non-disclosure agreement (MNDA)</strong>
+                  <small>Pre-populates executed mutual NDA terms with your name, company, date, and scope directly in your email draft.</small>
                 </span>
               </label>
 
