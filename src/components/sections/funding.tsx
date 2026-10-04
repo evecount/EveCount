@@ -135,6 +135,7 @@ export function Funding() {
 
       {/* Lovable Editorial Closing Section */}
       <section className="closing-section border-t border-[#E7E3D8] bg-[#FAF9F6]" aria-labelledby="closing-title">
+        <div className="closing-halo" aria-hidden="true" />
         <div className="page-container closing-inner">
           <div className="section-kicker">
             <Asterisk size={17} strokeWidth={1.3} /> BEGIN WITH CLARITY <span> / 03</span>

@@ -45,6 +45,7 @@ export function Engine() {
             </p>
           </div>
           <div className="capability-grid">
+            <div className="capability-trace" aria-hidden="true" />
             {capabilities.map((item) => (
               <article className="capability" key={item.number}>
                 <div className="capability-top">
@@ -63,6 +64,11 @@ export function Engine() {
 
       {/* Approach Section */}
       <section id="approach" className="approach-section" aria-labelledby="approach-title">
+        <div className="approach-orbit" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
         <div className="page-container approach-grid">
           <div className="approach-left">
             <div className="section-kicker light-kicker">

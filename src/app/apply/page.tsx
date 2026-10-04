@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
@@ -10,8 +10,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { submitEnterpriseDiagnosticAction, type EnterpriseDiagnosticInput } from "@/app/actions";
-import { ShieldCheck, CheckCircle2, Lock, ArrowUpRight, Building2, Calendar, FileText, Sparkles, AlertCircle } from "lucide-react";
+import { ShieldCheck, CheckCircle2, Lock, ArrowUpRight, Building2, Calendar, FileText, Sparkles, AlertCircle, Terminal } from "lucide-react";
 import Link from 'next/link';
+
+const STEPS = [
+  { code: "01", label: "Authenticating confidential channel", detail: "TLS 1.3 · PFS" },
+  { code: "02", label: "Loading post-quantum suite", detail: "ML-KEM · ML-DSA · SLH-DSA" },
+  { code: "03", label: "Indexing crypto inventory", detail: "hybrid · agile · auditable" },
+  { code: "04", label: "Reserving benchmark window", detail: "Quantinuum · IonQ" },
+  { code: "05", label: "Opening intake terminal", detail: "ready" },
+];
 
 const EXECUTIVE_ROLES = [
   "Chief Information Security Officer (CISO)",
@@ -72,6 +80,11 @@ const BLOCKED_DOMAINS = [
 ];
 
 export default function EnterpriseDiagnosticPage() {
+  const [phase, setPhase] = useState<"boot" | "ready">("boot");
+  const [step, setStep] = useState(0);
+  const [count, setCount] = useState(3);
+  const [held, setHeld] = useState(false);
+
   const [formData, setFormData] = useState<EnterpriseDiagnosticInput>({
     companyName: '',
     executiveSponsor: '',
@@ -89,6 +102,27 @@ export default function EnterpriseDiagnosticPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const progress = Math.min(step / STEPS.length, 1);
+
+  useEffect(() => {
+    if (phase !== "boot") return;
+    const id = window.setInterval(
+      () => setStep((s) => Math.min(s + 1, STEPS.length)),
+      420
+    );
+    return () => window.clearInterval(id);
+  }, [phase]);
+
+  useEffect(() => {
+    if (step < STEPS.length || held || phase !== "boot") return;
+    if (count <= 0) {
+      setPhase("ready");
+      return;
+    }
+    const id = window.setTimeout(() => setCount((c) => c - 1), 1000);
+    return () => window.clearTimeout(id);
+  }, [step, held, count, phase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,12 +150,130 @@ export default function EnterpriseDiagnosticPage() {
     }
   };
 
+  if (phase === "boot") {
+    return (
+      <main className="enclave">
+        <div className="enclave-field" aria-hidden="true">
+          <div className="enclave-grid" />
+          <div className="enclave-glow" />
+          <div className="enclave-rings">
+            <span className="ring-a" />
+            <span className="ring-b" />
+            <span className="ring-c" />
+          </div>
+          <img className="enclave-ghost" src="/images/quantum-architecture.svg" alt="" />
+          <div className="enclave-scan" />
+        </div>
+
+        <div className="enclave-frame" aria-hidden="true">
+          <span className="frame-tl" />
+          <span className="frame-tr" />
+          <span className="frame-bl" />
+          <span className="frame-br" />
+        </div>
+
+        <div className="enclave-inner">
+          <header className="enclave-top enclave-rise" style={{ animationDelay: ".04s" }}>
+            <span className="enclave-mark">
+              <img src="/icon.png" alt="Eve Count" width={40} height={40} />
+            </span>
+            <span className="enclave-wordmark">Eve Count Quantum Systems</span>
+            <span className="enclave-live">
+              <i /> channel live
+            </span>
+          </header>
+
+          <div className="enclave-body">
+            <div className="enclave-copy">
+              <p className="enclave-kicker enclave-rise" style={{ animationDelay: ".1s" }}>
+                ENTERPRISE QUANTUM DIAGNOSTIC
+              </p>
+              <h1 className="enclave-rise" style={{ animationDelay: ".18s" }}>
+                Secure handoff
+                <br />
+                <em>in progress.</em>
+              </h1>
+              <p className="enclave-note enclave-rise" style={{ animationDelay: ".3s" }}>
+                You are leaving the overview and entering the confidential intake terminal. Four minutes,
+                no documents required at this stage.
+              </p>
+              <div className="enclave-actions enclave-rise" style={{ animationDelay: ".42s" }}>
+                <button type="button" className="enclave-cta" onClick={() => setPhase("ready")}>
+                  Enter the diagnostic <ArrowUpRight size={16} />
+                </button>
+                {step >= STEPS.length && !held ? (
+                  <button type="button" className="enclave-hold" onClick={() => setHeld(true)}>
+                    Hold here
+                  </button>
+                ) : (
+                  <Link href="/" className="enclave-back">
+                    Return to overview
+                  </Link>
+                )}
+              </div>
+            </div>
+
+            <aside className="enclave-console enclave-rise" style={{ animationDelay: ".26s" }} aria-label="Handoff status">
+              <div className="console-head">
+                <span>intake terminal</span>
+                <span className="console-tag">ecqs · 2.6</span>
+              </div>
+              <ol className="console-list">
+                {STEPS.map((s, i) => (
+                  <li key={s.code} className={i < step ? "is-done" : "is-wait"}>
+                    <span className="console-index">{s.code}</span>
+                    <span className="console-label">{s.label}</span>
+                    <span className="console-detail">{s.detail}</span>
+                    <span className="console-state">{i < step ? "ok" : "···"}</span>
+                  </li>
+                ))}
+              </ol>
+              <div className="console-meter" role="presentation">
+                <span style={{ width: `${progress * 100}%` }} />
+              </div>
+              <p className="console-readout">
+                <span>{String(Math.round(progress * 100)).padStart(3, "0")}%</span>
+                <span>{step < STEPS.length ? "establishing" : held ? "standing by" : `opening docket in ${count}s`}</span>
+              </p>
+            </aside>
+          </div>
+
+          <footer className="enclave-foot enclave-rise" style={{ animationDelay: ".5s" }}>
+            <span>CONFIDENTIAL · NO PII REQUIRED AT THIS STAGE</span>
+            <span>EVE COUNT QUANTUM SYSTEMS</span>
+          </footer>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <div className="site-shell min-h-screen flex flex-col bg-[#FAF9F6] text-[#16181D]">
       <Header />
 
       <main className="flex-1 py-16 md:py-24">
         <div className="page-container max-w-[920px]">
+          
+          {/* Top Enclave Telemetry Banner */}
+          <div className="mb-10 rounded-xl border border-[#DCD6C8] bg-white p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4 shadow-2xs">
+            <div className="flex items-center gap-3">
+              <span className="flex h-2.5 w-2.5 rounded-full bg-[#B8872A] animate-pulse" />
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#16181D]">
+                ENCLAVE HANDOFF VERIFIED // ECQS 2.6
+              </span>
+              <span className="text-[11px] font-mono text-[#5B616B] hidden md:inline">
+                · TLS 1.3 PFS · ML-KEM/ML-DSA READY · HARDWARE BENCHMARK WINDOW RESERVED
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => { setPhase("boot"); setStep(0); setCount(3); setHeld(false); }}
+              className="text-xs font-mono font-bold text-[#B8872A] hover:underline inline-flex items-center gap-1.5 uppercase tracking-wider"
+            >
+              <Terminal className="h-3.5 w-3.5" />
+              <span>Terminal Readout</span>
+            </button>
+          </div>
           
           {/* Header Briefing */}
           <div className="mb-14 text-left">

@@ -35,6 +35,10 @@ body {
     --gold-warm: 39 63% 44%;             /* Warm Gold #B8872A */
     --gold-luminous: 42 63% 59%;         /* Luminous Gold #D7AF55 */
     --gold-wash: 41 57% 90%;             /* Gold Wash #F5EBD6 */
+    --gold: oklch(0.7723 0.1179 85.4);
+    --gold-deep: oklch(0.6555 0.1208 79.1);
+    --paper-deep: oklch(0.9490 0.0083 91.5);
+    --forest: oklch(0.3098 0.0141 136.7);
     
     --radius: 0.5rem;
     --sidebar-background: 0 0% 100%;
@@ -641,4 +645,120 @@ body {
   .baseline-items { flex-wrap: wrap; row-gap: 4px; }
   .art-topnote, .art-bottomnote { font-size: 7px; }
 }
+
+/* Continuous architectural thread through the application */
+.reading-progress { position: fixed; z-index: 50; top: 0; left: 0; right: 0; height: 3px; background: var(--gold-deep); transform-origin: left center; pointer-events: none; }
+.capability-grid { position: relative; }
+.capability-trace { position: absolute; top: -1px; left: 0; right: 0; height: 2px; background: var(--gold-deep); transform-origin: left center; pointer-events: none; }
+.capability { transition: background-color .45s ease, padding-left .45s ease; }
+.capability:hover { background-color: color-mix(in oklab, var(--background) 45%, transparent); }
+.capability-top svg, .approach-steps svg { transition: transform .4s cubic-bezier(.22,1,.36,1); }
+.capability:hover .capability-top svg, .approach-steps div:hover svg { transform: translate(5px, -5px); }
+.approach-section { position: relative; isolation: isolate; overflow: hidden; }
+.approach-grid { position: relative; z-index: 1; }
+.approach-orbit { position: absolute; z-index: 0; left: -120px; top: 4%; width: 490px; aspect-ratio: 1; border: 1px solid color-mix(in oklab, var(--gold) 30%, transparent); border-radius: 50%; pointer-events: none; }
+.approach-orbit::before, .approach-orbit::after { content: ""; position: absolute; inset: 12%; border: 1px dashed color-mix(in oklab, var(--gold) 28%, transparent); border-radius: 50%; }
+.approach-orbit::after { inset: 31%; border-style: solid; }
+.approach-orbit span { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.approach-orbit span:nth-child(1) { top: 8%; left: 23%; }
+.approach-orbit span:nth-child(2) { top: 50%; right: -4px; }
+.approach-orbit span:nth-child(3) { bottom: 7%; left: 23%; }
+.closing-section { position: relative; isolation: isolate; overflow: hidden; }
+.closing-inner { position: relative; z-index: 1; }
+.closing-halo { position: absolute; width: min(80vw, 850px); aspect-ratio: 1; left: 50%; top: 50%; translate: -50% -50%; border: 1px solid color-mix(in oklab, var(--gold-deep) 22%, transparent); border-radius: 50%; pointer-events: none; }
+.closing-halo::before, .closing-halo::after { content: ""; position: absolute; inset: 12%; border: 1px solid color-mix(in oklab, var(--gold-deep) 12%, transparent); border-radius: 50%; }
+.closing-halo::after { inset: 25%; }
+
+@media (max-width: 760px) {
+  .approach-orbit { width: 330px; left: -180px; top: 17%; opacity: .65; }
+  .closing-halo { width: 125vw; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-sculpture-breathe, .hero-sculpture-orbit { animation: none; }
+  .reading-progress, .approach-orbit, .closing-halo { display: none; }
+}
+
+/* /apply — secure enclave handoff terminal */
+.enclave { position: relative; isolation: isolate; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; color: var(--paper-deep); background: radial-gradient(120% 95% at 80% 4%, color-mix(in oklab, var(--forest) 62%, black) 0%, transparent 58%), radial-gradient(95% 85% at 6% 100%, color-mix(in oklab, var(--gold-deep) 22%, black) 0%, transparent 52%), color-mix(in oklab, var(--forest) 70%, black); }
+.enclave-field { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.enclave-grid { position: absolute; inset: -25%; background-image: linear-gradient(to right, color-mix(in oklab, var(--gold) 12%, transparent) 1px, transparent 1px), linear-gradient(to bottom, color-mix(in oklab, var(--gold) 12%, transparent) 1px, transparent 1px); background-size: 76px 76px; mask-image: radial-gradient(72% 62% at 50% 45%, black, transparent 88%); animation: enclave-drift 30s linear infinite; }
+.enclave-glow { position: absolute; left: 50%; top: 42%; width: min(1150px, 130vw); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: radial-gradient(circle, color-mix(in oklab, var(--gold) 15%, transparent) 0%, transparent 60%); animation: enclave-pulse 9s ease-in-out infinite alternate; }
+.enclave-rings span { position: absolute; left: 50%; top: 44%; translate: -50% -50%; aspect-ratio: 1; border-radius: 50%; border: 1px solid color-mix(in oklab, var(--gold-deep) 30%, transparent); }
+.enclave-rings .ring-a { width: min(560px, 88vw); border-style: dashed; animation: enclave-turn 70s linear infinite; }
+.enclave-rings .ring-b { width: min(820px, 120vw); border-color: color-mix(in oklab, var(--gold) 22%, transparent); animation: enclave-turn 110s linear infinite reverse; }
+.enclave-rings .ring-c { width: min(1120px, 150vw); border-color: color-mix(in oklab, var(--gold) 12%, transparent); animation: enclave-turn 160s linear infinite; }
+.enclave-ghost { position: absolute; right: -8%; bottom: -16%; width: min(720px, 86vw); opacity: .18; animation: enclave-sway 26s ease-in-out infinite alternate; }
+.enclave-scan { position: absolute; left: 0; right: 0; height: 30%; background: linear-gradient(to bottom, transparent, color-mix(in oklab, var(--gold) 10%, transparent), transparent); animation: enclave-scan 7.5s ease-in-out infinite; }
+
+@keyframes enclave-drift { to { background-position: 76px 76px; } }
+@keyframes enclave-pulse { from { opacity: .55; scale: .96; } to { opacity: 1; scale: 1.04; } }
+@keyframes enclave-turn { to { rotate: 360deg; } }
+@keyframes enclave-sway { from { rotate: -12deg; } to { rotate: -2deg; } }
+@keyframes enclave-scan { 0% { transform: translateY(-120%); } 50% { transform: translateY(320%); } 100% { transform: translateY(-120%); } }
+@keyframes enclave-blink { 50% { opacity: .25; } }
+@keyframes enclave-rise { from { opacity: 0; transform: translateY(20px); filter: blur(4px); } to { opacity: 1; transform: translateY(0); filter: blur(0px); } }
+
+.enclave-rise { animation: enclave-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+.enclave-frame { position: absolute; inset: 22px; z-index: 2; pointer-events: none; }
+.enclave-frame span { position: absolute; width: 44px; height: 44px; border: 1px solid color-mix(in oklab, var(--gold) 45%, transparent); }
+.frame-tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.frame-tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.frame-bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.frame-br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+.enclave-inner { position: relative; z-index: 1; width: min(100% - 64px, 1180px); margin-inline: auto; flex: 1; display: flex; flex-direction: column; padding-block: 78px 66px; }
+.enclave-top { display: flex; align-items: center; gap: 14px; }
+.enclave-mark { display: grid; place-items: center; width: 40px; height: 40px; }
+.enclave-mark img { width: 40px; height: 40px; filter: invert(1); opacity: .92; }
+.enclave-wordmark { font-family: "Manrope", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.enclave-live { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: color-mix(in oklab, var(--paper-deep) 62%, transparent); }
+.enclave-live i { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: enclave-blink 1.6s ease-in-out infinite; }
+.enclave-body { flex: 1; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: clamp(38px, 6vw, 90px); align-items: center; padding-block: 30px; }
+.enclave-kicker { margin: 0; font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 500; letter-spacing: .3em; color: var(--gold); }
+.enclave h1 { margin: 18px 0 0; font-family: "Manrope", sans-serif; font-size: clamp(46px, 6.4vw, 92px); font-weight: 800; line-height: 1.02; letter-spacing: -.02em; }
+.enclave h1 em { font-style: normal; color: var(--gold); }
+.enclave-note { max-width: 460px; margin: 24px 0 0; font-size: 15px; line-height: 1.75; color: color-mix(in oklab, var(--paper-deep) 66%, transparent); }
+.enclave-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 22px; margin-top: 34px; }
+.enclave-cta { display: inline-flex; align-items: center; gap: 10px; height: 54px; padding-inline: 26px; border: 0; border-radius: 2px; background: var(--gold); color: color-mix(in oklab, var(--forest) 80%, black); font-family: "DM Sans", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; transition: transform .25s, box-shadow .25s; }
+.enclave-cta:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -18px color-mix(in oklab, var(--gold) 70%, transparent); }
+.enclave-hold, .enclave-back { background: none; border: 0; padding: 0 0 4px; color: color-mix(in oklab, var(--paper-deep) 72%, transparent); font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--gold) 45%, transparent); cursor: pointer; }
+.enclave-hold:hover, .enclave-back:hover { color: var(--gold); }
+.enclave-console { border: 1px solid color-mix(in oklab, var(--gold) 26%, transparent); background: color-mix(in oklab, var(--forest) 45%, black); padding: 22px 24px 20px; }
+.console-head { display: flex; justify-content: space-between; padding-bottom: 14px; border-bottom: 1px solid color-mix(in oklab, var(--gold) 18%, transparent); font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: color-mix(in oklab, var(--paper-deep) 55%, transparent); }
+.console-tag { color: var(--gold-deep); }
+.console-list { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 11px; }
+.console-list li { display: flex; align-items: baseline; gap: 10px; font-family: "JetBrains Mono", monospace; font-size: 11px; color: color-mix(in oklab, var(--paper-deep) 38%, transparent); transition: color .3s; }
+.console-list li.is-done { color: color-mix(in oklab, var(--paper-deep) 88%, transparent); }
+.console-index { color: var(--gold-deep); }
+.console-detail { margin-left: auto; font-size: 9px; letter-spacing: .08em; opacity: .55; }
+.console-state { font-size: 10px; letter-spacing: .1em; }
+.console-list li.is-done .console-state { color: var(--gold); }
+.console-meter { height: 3px; margin-top: 18px; background: color-mix(in oklab, var(--paper-deep) 12%, transparent); overflow: hidden; }
+.console-meter span { display: block; height: 100%; background: linear-gradient(to right, var(--gold-deep), var(--gold)); transition: width .42s linear; }
+.console-readout { display: flex; justify-content: space-between; margin: 12px 0 0; font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: color-mix(in oklab, var(--paper-deep) 55%, transparent); }
+.console-readout span:first-child { color: var(--gold); }
+.enclave-foot { display: flex; justify-content: space-between; gap: 18px; padding-top: 22px; border-top: 1px solid color-mix(in oklab, var(--gold) 16%, transparent); font-family: "JetBrains Mono", monospace; font-size: 9px; letter-spacing: .18em; color: color-mix(in oklab, var(--paper-deep) 45%, transparent); }
+
+@media (max-width: 900px) {
+  .enclave-inner { width: min(100% - 40px, 1180px); padding-block: 58px 48px; }
+  .enclave-body { grid-template-columns: 1fr; gap: 34px; align-items: start; }
+  .enclave-ghost { width: 520px; opacity: .12; right: -24%; bottom: -6%; }
+  .enclave-frame { inset: 12px; }
+  .enclave-frame span { width: 26px; height: 26px; }
+  .enclave h1 { font-size: clamp(38px, 10.5vw, 58px); }
+  .enclave-foot { flex-direction: column; gap: 6px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enclave-scan { display: none; }
+  .enclave-ghost, .enclave-rings span, .enclave-grid { animation: none; }
+}
+
+@media (max-width: 480px) {
+  .console-detail { display: none; }
+  .enclave-console { padding: 18px 16px 16px; }
+}
+
 
