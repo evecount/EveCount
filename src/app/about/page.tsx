@@ -143,7 +143,7 @@ export default function AboutPage() {
                       <span>02 / BUILD VOICE AGENTS WITH SPEECHMATICS</span>
                       <h3>Hackathon winner</h3>
                     </div>
-                    <p>$2,000 Golden Ticket for a cognitive overlay and silent technical co-founder for Sovereignty OS / Unity OS, with SGInnovate and The Generative Beings.</p>
+                    <p>Awarded the Golden Ticket for a cognitive overlay and silent technical co-founder for Sovereignty OS / Unity OS, with SGInnovate and The Generative Beings.</p>
                   </div>
                   <div>
                     <div>
@@ -213,7 +213,7 @@ export default function AboutPage() {
                   <Award className="text-[var(--gold-deep)] shrink-0 mt-0.5" size={16} />
                   <div>
                     <strong className="text-[var(--ink)] block">3x DeepTech Hackathon &amp; Ideation Winner:</strong>
-                    <span>Microsoft AICO 2026 Gold (Dual-Agent Copilot Studio with HSBC) · Speechmatics Voice Agents ($2,000 Golden Ticket for Sovereignty OS) · QDay Summit Learnathon (Perfect 5/5 Shor's Algorithm PQC Defense).</span>
+                    <span>Microsoft AICO 2026 Gold (Dual-Agent Copilot Studio with HSBC) · Speechmatics Voice Agents (Golden Ticket Winner for Sovereignty OS) · QDay Summit Learnathon (Perfect 5/5 Shor's Algorithm PQC Defense).</span>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
