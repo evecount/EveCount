@@ -194,6 +194,29 @@ export default function Home() {
           ))}
         </section>
 
+        <section className="recognition">
+          <div className="recognition-inner">
+            <span>RECOGNISED</span>
+            <ul>
+              <li>
+                <strong>Gold</strong>
+                <span>Microsoft AICO 2026 Ideation</span>
+              </li>
+              <li>
+                <strong>Winner</strong>
+                <span>Build Voice Agents with Speechmatics</span>
+              </li>
+              <li>
+                <strong>1st · 5/5</strong>
+                <span>QDay Summit Learnathon</span>
+              </li>
+            </ul>
+            <Link className="underlink" href="/about">
+              Who you're working with <ArrowUpRight size={15} />
+            </Link>
+          </div>
+        </section>
+
         <section className="method" id="approach">
           <p className="chapter">THE METHOD <span>04</span></p>
           <div className="method-grid">
@@ -218,9 +241,29 @@ export default function Home() {
           </div>
         </section>
 
+        <section className="speaking" id="speaking">
+          <div className="speaking-inner">
+            <p className="chapter">BEYOND THE LAB <span>05</span></p>
+            <div className="speaking-grid">
+              <motion.h2 {...reveal()}>
+                The future is a<br />
+                <em>conversation.</em>
+              </motion.h2>
+              <motion.div className="speaking-aside" {...reveal(0.12)}>
+                <p>
+                  We hold quantum events and lectures, and are available for speaking engagements. Bring us into the room where the next questions are being asked.
+                </p>
+                <a className="pill pill-dark" href="mailto:gwen@evecount.com?subject=Speaking%20engagement%20enquiry">
+                  Invite us to speak <ArrowUpRight size={16} />
+                </a>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
         <section className="new-closing">
           <motion.p {...reveal()} className="chapter chapter-light">
-            THE FIRST MOVE <span>05</span>
+            THE FIRST MOVE <span>06</span>
           </motion.p>
           <motion.h2 {...reveal(0.08)}>
             Before certainty,<br />

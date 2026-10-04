@@ -38,6 +38,7 @@ const platforms = [
   { href: "https://cybrdeck.com", label: "Cybrdeck Terminal", isExternal: true },
   { href: "/#expertise", label: "Capabilities & Pillars", isExternal: false },
   { href: "/#approach", label: "The Method", isExternal: false },
+  { href: "/#speaking", label: "Speaking & Events", isExternal: false },
   { href: "/apply", label: "Enterprise Diagnostic", isExternal: false },
 ];
 
