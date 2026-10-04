@@ -1,11 +1,24 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 
 export function Hero() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrollY(window.scrollY || 0);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Smooth dynamic rotation based on scroll (scaling decreased by 20% for optimal proportions)
+  const rotationDeg = (scrollY * 0.08) % 360;
+
   return (
     <section className="hero border-b border-[#E7E3D8]" aria-labelledby="hero-title">
       <div className="page-container hero-grid">
@@ -45,12 +58,21 @@ export function Hero() {
 
         <div className="hero-art" aria-label="Architectural illustration representing post-quantum resilience">
           <span className="art-topnote">EC / SYSTEM STUDY NO. 001</span>
-          <img 
-            src="/images/quantum-architecture.svg" 
-            alt="Stippled architectural gateway representing post-quantum resilience" 
-            width={760} 
-            height={680} 
-          />
+          <div 
+            className="transition-transform duration-75 ease-out flex items-center justify-center pointer-events-none select-none"
+            style={{ 
+              transform: `scale(0.82) rotate(${rotationDeg}deg)`,
+              transformOrigin: "center center"
+            }}
+          >
+            <img 
+              src="/images/quantum-architecture.svg" 
+              alt="Stippled architectural gateway representing post-quantum resilience" 
+              width={620} 
+              height={550} 
+              className="w-full max-w-[500px] h-auto drop-shadow-sm"
+            />
+          </div>
           <span className="art-bottomnote">ENGINEERING THE TRANSITION →</span>
         </div>
       </div>

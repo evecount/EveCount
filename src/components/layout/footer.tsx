@@ -53,12 +53,18 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-5">
           {/* Brand Column */}
           <div className="flex flex-col items-start gap-4 lg:col-span-2">
-            <Link href="/" className="brand" aria-label="Eve Count Quantum Systems home">
-              <span className="brand-mark" aria-hidden="true"><span /></span>
-              <span className="brand-name">
-                EVE COUNT
-                <span className="brand-suffix">QUANTUM SYSTEMS</span>
+            <Link href="/" className="brand inline-flex items-center gap-3.5 no-underline group" aria-label="Eve Count Quantum Systems home">
+              <span className="brand-mark shrink-0 group-hover:scale-105 transition-transform" aria-hidden="true">
+                <span />
               </span>
+              <div className="flex flex-col text-left select-none">
+                <span className="text-[17px] font-black tracking-tight text-[#16181D] leading-none uppercase font-sans">
+                  EVE COUNT
+                </span>
+                <span className="text-[8.5px] font-extrabold tracking-[0.24em] text-[#5B616B] uppercase mt-1 leading-none">
+                  QUANTUM SYSTEMS
+                </span>
+              </div>
             </Link>
             <p className="text-sm text-[#5B616B] leading-relaxed max-w-[340px] mt-2">
               Eve Count Pte. Ltd., Singapore. Translating complex quantum computational architectures into strategic enterprise infrastructure.

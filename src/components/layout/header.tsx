@@ -12,12 +12,18 @@ export function Header() {
   return (
     <header className="site-header sticky top-0 z-50 bg-[#FAF9F6]/95 backdrop-blur">
       <div className="page-container header-inner">
-        <Link href="/" className="brand" aria-label="Eve Count Quantum Systems home">
-          <span className="brand-mark" aria-hidden="true"><span /></span>
-          <span className="brand-name">
-            EVE COUNT
-            <span className="brand-suffix">QUANTUM SYSTEMS</span>
+        <Link href="/" className="brand inline-flex items-center gap-3.5 no-underline group" aria-label="Eve Count Quantum Systems home">
+          <span className="brand-mark shrink-0 group-hover:scale-105 transition-transform" aria-hidden="true">
+            <span />
           </span>
+          <div className="flex flex-col text-left select-none">
+            <span className="text-[17px] font-black tracking-tight text-[#16181D] leading-none uppercase font-sans">
+              EVE COUNT
+            </span>
+            <span className="text-[8.5px] font-extrabold tracking-[0.24em] text-[#5B616B] uppercase mt-1 leading-none">
+              QUANTUM SYSTEMS
+            </span>
+          </div>
         </Link>
 
         <nav className="header-nav hidden md:flex" aria-label="Main navigation">
@@ -55,10 +61,15 @@ export function Header() {
             <SheetContent side="left" className="bg-[#FAF9F6]">
               <SheetHeader>
                 <SheetTitle>
-                  <Link href="/" onClick={() => setSheetOpen(false)} className="flex items-center space-x-2">
+                  <Link href="/" onClick={() => setSheetOpen(false)} className="inline-flex items-center gap-3">
+                    <span className="brand-mark shrink-0" aria-hidden="true"><span /></span>
                     <div className="flex flex-col text-left">
-                      <span className="font-extrabold text-ink text-base">EVE COUNT</span>
-                      <span className="text-[9px] uppercase font-bold tracking-widest text-[#5B616B]">Quantum Systems</span>
+                      <span className="text-[16px] font-black tracking-tight text-[#16181D] leading-none uppercase">
+                        EVE COUNT
+                      </span>
+                      <span className="text-[8px] font-extrabold tracking-[0.22em] text-[#5B616B] uppercase mt-1 leading-none">
+                        QUANTUM SYSTEMS
+                      </span>
                     </div>
                   </Link>
                 </SheetTitle>
