@@ -1076,6 +1076,18 @@ body {
 .diagnostic-page { min-height: 100vh; display: grid; grid-template-columns: minmax(320px, .72fr) minmax(680px, 1.28fr); background: var(--canvas); color: var(--ink); }
 .diagnostic-page * { box-sizing: border-box; }
 .diagnostic-page > .handoff-visual { position: sticky; top: 0; height: 100vh; min-height: 720px; }
+.handoff-visual { position: relative; min-height: 100vh; overflow: hidden; }
+.handoff-visual > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.8) contrast(1.05); animation: handoff-breathe 18s ease-in-out infinite alternate; }
+.handoff-visual > .cinema-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.handoff-visual::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, color-mix(in oklab, var(--ink) 92%, transparent), transparent 78%); pointer-events: none; }
+.handoff-overlay { position: absolute; z-index: 2; inset: 40px; display: flex; flex-direction: column; color: var(--canvas); pointer-events: none; }
+.handoff-overlay * { pointer-events: auto; }
+.handoff-brand { width: 54px; height: 54px; display: block; }
+.handoff-brand img { width: 100%; height: 100%; object-fit: contain; filter: invert(1); }
+.handoff-overlay p { position: relative; margin: auto 0 22px; font: 400 clamp(48px, 5vw, 76px)/.98 "Instrument Serif", serif; max-width: 620px; text-shadow: 0 1px 2px color-mix(in oklab, var(--ink) 42%, transparent), 0 12px 34px color-mix(in oklab, var(--ink) 72%, transparent), 0 30px 84px color-mix(in oklab, var(--ink) 58%, transparent); color: var(--canvas); }
+.handoff-overlay p::before { content: ""; position: absolute; z-index: -1; inset: -34% -24%; background: radial-gradient(74% 72% at 45% 56%, color-mix(in oklab, var(--ink) 96%, transparent), transparent 64%); filter: blur(32px); }
+.handoff-overlay > span { font: 500 9px "JetBrains Mono", monospace; letter-spacing: .15em; text-shadow: 0 2px 14px color-mix(in oklab, var(--ink) 85%, transparent); color: var(--canvas); }
+@keyframes handoff-breathe { to { transform: scale(1.06); } }
 .diagnostic-panel { min-width: 0; padding: 0 clamp(30px, 5vw, 84px); }
 .diagnostic-top { min-height: 86px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--line); font: 500 9px "JetBrains Mono", monospace; letter-spacing: .14em; color: var(--ghost); }
 .diagnostic-top a { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; }
@@ -1128,7 +1140,7 @@ body {
 .diagnostic-success > div { width: 100%; display: flex; flex-direction: column; gap: 8px; padding: 22px 0; margin-bottom: 34px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .diagnostic-success small { font: 500 9px "JetBrains Mono", monospace; letter-spacing: .14em; color: var(--ghost); }
 .diagnostic-success > div strong { font: 500 14px "JetBrains Mono", monospace; color: var(--moss); }
-@media (max-width: 1050px) { .diagnostic-page { grid-template-columns: 1fr; } .diagnostic-page > .handoff-visual { position: relative; height: 48svh; min-height: 360px; } .diagnostic-panel { padding-inline: 24px; } }
+@media (max-width: 1050px) { .diagnostic-page { grid-template-columns: 1fr; } .diagnostic-page > .handoff-visual { position: relative; height: 48svh; min-height: 360px; } .diagnostic-panel { padding-inline: 24px; } .handoff-overlay { inset: 20px 24px; } .handoff-overlay p { font-size: 42px; } }
 @media (max-width: 600px) { .diagnostic-top span { display: none; } .diagnostic-inner { padding-top: 70px; } .diagnostic-intro h1, .diagnostic-success h1 { font-size: 58px; } .diagnostic-section { padding: 54px 0 60px; } .diagnostic-section > header { grid-template-columns: 1fr; gap: 10px; } .diagnostic-fields, .diagnostic-objectives { grid-template-columns: 1fr; } .diagnostic-field, .diagnostic-objectives { grid-column: 1; } .diagnostic-objectives label { min-height: 0; } .diagnostic-panel > footer { align-items: flex-start; flex-direction: column; justify-content: center; } }
 
 /* ---- Diagnostic interlude — the homepage moss as a dark band inside the form ---- */

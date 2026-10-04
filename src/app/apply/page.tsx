@@ -168,20 +168,21 @@ function diagnosticEmail(form: FormState) {
 export default function ApplyPage() {
   const reduced = useReducedMotion();
   const visualRef = useRef<HTMLVideoElement>(null);
+  const [videoError, setVideoError] = useState(false);
   const [form, setForm] = useState(initialForm);
   const [error, setError] = useState("");
   const [draftOpened, setDraftOpened] = useState(false);
 
   useEffect(() => {
     const video = visualRef.current;
-    if (!video) return;
+    if (!video || videoError) return;
     if (reduced) {
       video.pause();
       video.currentTime = 0;
     } else {
       video.play().catch(() => {});
     }
-  }, [reduced]);
+  }, [reduced, videoError]);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setDraftOpened(false);
@@ -210,17 +211,20 @@ export default function ApplyPage() {
     <main className="diagnostic-page">
       <section className="handoff-visual">
         <img src="/images/quantum-hardware.jpg" alt="Quantum computing chamber filled with golden light" width={1920} height={1088} />
-        <video 
-          ref={visualRef} 
-          className="cinema-video" 
-          src="/images/quantum-hardware-loop.mp4" 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          preload="metadata" 
-          aria-hidden="true" 
-        />
+        {!videoError && (
+          <video 
+            ref={visualRef} 
+            className="cinema-video" 
+            src="/images/quantum-hardware-loop.mp4" 
+            autoPlay 
+            muted 
+            loop 
+            playsInline 
+            preload="metadata" 
+            aria-hidden="true" 
+            onError={() => setVideoError(true)}
+          />
+        )}
         <div className="handoff-overlay">
           <Link href="/" className="handoff-brand">
             <img src="/images/evecount-mark.png" alt="Eve Count home" width={150} height={150} />
