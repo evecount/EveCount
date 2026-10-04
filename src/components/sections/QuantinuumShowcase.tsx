@@ -1,9 +1,52 @@
-'use client';
-
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Sparkles, Activity, Dna, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
+import { ExternalLink, Sparkles, Activity, Dna, ArrowRight, ShieldCheck, Zap, HelpCircle, CheckCircle2, RotateCw } from 'lucide-react';
+
+const VALUE_CARDS = [
+  {
+    id: "speed",
+    number: "01",
+    questionBadge: "VELOCITY",
+    question: "Will we create cures faster?",
+    questionContext: "Biopharma discovery timelines average 10–12 years, bottlenecked by classical supercomputer queues testing molecular rotations.",
+    solutionBadge: "HIGH-THROUGHPUT DISCOVERY",
+    title: "High-Throughput Drug Screening",
+    description: "Screen candidate compounds against viral targets in seconds instead of months on supercomputers. Natural quantum interference locks onto target pockets in real-time iterations.",
+    metricValue: "1,000×+",
+    metricLabel: "Speedup Advantage",
+    subMetric: "Vs. Classical Grid Search",
+    icon: Zap,
+  },
+  {
+    id: "privacy",
+    number: "02",
+    questionBadge: "IP PROTECTION",
+    question: "How can I protect my ideas?",
+    questionContext: "Evaluating candidate drugs with external research partners or CROs historically risks leaking atomic coordinates and proprietary chemical formulas.",
+    solutionBadge: "ZERO-KNOWLEDGE VERIFICATION",
+    title: "Confidential Research Pipelines",
+    description: "Zero-knowledge cryptographic verification evaluates docking fit and binding affinity without ever exposing raw chemical structures or atomic coordinates to third parties.",
+    metricValue: "Zero-Knowledge",
+    metricLabel: "Privacy Guarantee",
+    subMetric: "Bilateral Coordinate Obfuscation",
+    icon: ShieldCheck,
+  },
+  {
+    id: "materials",
+    number: "03",
+    questionBadge: "SYNTHESIS",
+    question: "Can we design a new future?",
+    questionContext: "Classical physics algorithms break down when computing electronic correlation in large active sites, novel catalysts, and synthetic enzymes.",
+    solutionBadge: "QUANTUM CATALYSIS",
+    title: "Novel Materials & Enzyme Design",
+    description: "Model complex protein switches, targeted industrial catalysts, and synthetic biology on trapped-ion quantum backends with sub-degree angular precision.",
+    metricValue: "< 1.0°",
+    metricLabel: "Angular Accuracy",
+    subMetric: "Trapped-Ion Circuit Fidelity",
+    icon: Sparkles,
+  },
+];
 
 const realWorldSystems = [
   {
@@ -37,15 +80,58 @@ const realWorldSystems = [
 ];
 
 export function QuantinuumShowcase() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [morphedStates, setMorphedStates] = useState<boolean[]>([false, false, false]);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const [manualOverride, setManualOverride] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // Calculate progress through section (0 to 1)
+      const visibleDistance = windowHeight * 0.85 - rect.top;
+      const totalDistance = rect.height * 0.65;
+      const progress = Math.min(Math.max(visibleDistance / totalDistance, 0), 1);
+
+      if (manualOverride === null) {
+        setMorphedStates([
+          progress > 0.22,
+          progress > 0.48,
+          progress > 0.72,
+        ]);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [manualOverride]);
+
+  const toggleAll = (showSolutions: boolean) => {
+    setManualOverride(showSolutions);
+    setMorphedStates([showSolutions, showSolutions, showSolutions]);
+  };
+
+  const toggleCard = (index: number) => {
+    setMorphedStates((prev) => {
+      const next = [...prev];
+      next[index] = !next[index];
+      return next;
+    });
+  };
+
   return (
-    <section className="relative overflow-hidden bg-white py-20 md:py-28 border-b border-[#E7E3D8]">
+    <section ref={sectionRef} className="relative overflow-hidden bg-white py-20 md:py-28 border-b border-[#E7E3D8]">
       {/* Subtle ambient light */}
       <div className="absolute top-1/2 left-0 -z-10 h-80 w-80 -translate-y-1/2 rounded-full bg-gold-wash/50 blur-3xl pointer-events-none" />
 
       <div className="page-container">
         
         {/* Header Eyebrow & Headline */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-[#DCD6C8] bg-mist/60 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-slate mb-4">
               <span className="h-2 w-2 rounded-full bg-gold-warm animate-pulse" />
@@ -57,149 +143,170 @@ export function QuantinuumShowcase() {
               <span className="text-ink">not months on supercomputers.</span>
             </h2>
             <p className="mt-4 text-base sm:text-lg text-slate leading-relaxed">
-              We use frontier quantum hardware APIs to solve one of biopharma’s most expensive bottlenecks: finding exactly how a therapeutic molecule locks into a disease target without brute-forcing billions of coordinates.
+              We replace months of brute-force supercomputing cluster queues with real-time quantum resonance—locking onto viral targets and disease enzymes in seconds.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <Button size="lg" asChild className="bg-ink hover:bg-ink/90 text-white font-semibold rounded-xl px-6 py-6 shadow-sm">
-              <a 
-                href="https://evecount.github.io/quantum_rotation/constellation.html" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2"
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            {/* Interactive Morph Mode Switcher */}
+            <div className="inline-flex items-center p-1 rounded-xl bg-[#F0EEE6] border border-[#DCD6C8] text-xs font-mono font-bold">
+              <button
+                type="button"
+                onClick={() => toggleAll(false)}
+                className={`px-3 py-1.5 rounded-lg transition-all ${
+                  !morphedStates.every(Boolean)
+                    ? 'bg-white text-ink shadow-2xs font-bold'
+                    : 'text-slate hover:text-ink'
+                }`}
               >
-                <Sparkles className="h-4 w-4 text-gold-luminous" />
-                <span>Launch Interactive 3D Visualizer</span>
-                <ExternalLink className="h-3.5 w-3.5 opacity-70" />
-              </a>
-            </Button>
-            <Button size="lg" variant="outline" asChild className="border-2 border-[#D8D2C4] bg-white hover:bg-mist text-ink font-semibold rounded-xl px-5 py-6">
-              <a 
-                href="https://github.com/evecount/quantum_rotation" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2"
+                Questions
+              </button>
+              <button
+                type="button"
+                onClick={() => toggleAll(true)}
+                className={`px-3 py-1.5 rounded-lg transition-all ${
+                  morphedStates.every(Boolean)
+                    ? 'bg-ink text-white shadow-2xs font-bold'
+                    : 'text-slate hover:text-ink'
+                }`}
               >
-                <span>View Open Source Solution</span>
-                <ExternalLink className="h-4 w-4 text-gold-warm" />
-              </a>
-            </Button>
+                Solutions
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button size="sm" asChild className="bg-ink hover:bg-ink/90 text-white font-semibold rounded-xl px-4 py-5 shadow-xs text-xs">
+                <a 
+                  href="https://evecount.github.io/quantum_rotation/constellation.html" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5"
+                >
+                  <Sparkles className="h-3.5 w-3.5 text-gold-luminous" />
+                  <span>3D Visualizer</span>
+                  <ExternalLink className="h-3 w-3 opacity-70" />
+                </a>
+              </Button>
+              <Button size="sm" variant="outline" asChild className="border border-[#D8D2C4] bg-white hover:bg-mist text-ink font-semibold rounded-xl px-4 py-5 text-xs">
+                <a 
+                  href="https://github.com/evecount/quantum_rotation" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5"
+                >
+                  <span>Open Source</span>
+                  <ExternalLink className="h-3 w-3 text-gold-warm" />
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
 
-        {/* 2-Column: Problem vs Quantum Leap */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-          
-          {/* Left: The Practical Story */}
-          <div className="lg:col-span-7 rounded-2xl bg-[#FAF9F6] border border-[#E7E3D8] p-8 flex flex-col justify-between">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white border border-[#DCD6C8]">
-                  <Dna className="h-5 w-5 text-gold-warm" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-ink">From Grid Brute-Force to Quantum Resonance</h3>
-                  <p className="text-xs text-slate font-mono">Real-Time Molecular Lock-and-Key Matching</p>
-                </div>
-              </div>
+        {/* Concept 1: Scroll-Morphing Question-to-Value Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-14">
+          {VALUE_CARDS.map((card, idx) => {
+            const isCardMorphed = hoveredCard === idx ? true : morphedStates[idx];
+            const Icon = card.icon;
 
-              <div className="space-y-4 text-sm text-slate leading-relaxed">
-                <p>
-                  <strong>The Classical Bottleneck:</strong> Today, discovering whether a candidate drug fits a viral pocket requires supercomputers to break 3D space into a massive grid and test billions of rotations one-by-one. It takes days per compound and costs millions in compute.
-                </p>
-                <p>
-                  <strong>Our Quantum Solution:</strong> Instead of guessing positions on a grid, our system encodes the molecule and pocket into quantum states. The quantum hardware tests the overlap simultaneously using natural interference—locking onto the correct fit in a handful of real-time iterations.
-                </p>
-              </div>
-
-              {/* Intuitive Value Callouts */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-                <div className="rounded-xl bg-white border border-[#DCD6C8] p-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-ink mb-1">
-                    <Zap className="h-4 w-4 text-gold-warm" />
-                    <span>Real-Time Feedback Loops</span>
-                  </div>
-                  <p className="text-xs text-slate">
-                    Dynamic mid-circuit measurements correct the alignment on the fly until resonance is achieved.
-                  </p>
-                </div>
-                <div className="rounded-xl bg-white border border-[#DCD6C8] p-4">
-                  <div className="flex items-center gap-2 text-xs font-bold text-ink mb-1">
-                    <ShieldCheck className="h-4 w-4 text-gold-warm" />
-                    <span>Zero-Knowledge Screening</span>
-                  </div>
-                  <p className="text-xs text-slate">
-                    Verifies whether candidate molecules fit active sites without exposing proprietary chemical structures.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-4 border-t border-[#E7E3D8] pt-6 mt-6 text-left">
-              <div>
-                <div className="text-xs text-slate font-semibold uppercase">Speed Advantage</div>
-                <div className="text-xl sm:text-2xl font-extrabold text-ink">1,000×+</div>
-                <div className="text-[10px] text-slate font-mono">Vs. Classical Grid Search</div>
-              </div>
-              <div>
-                <div className="text-xs text-slate font-semibold uppercase">Resolution</div>
-                <div className="text-xl sm:text-2xl font-extrabold text-gold-warm">&lt; 1.0°</div>
-                <div className="text-[10px] text-slate font-mono">Angular Fit Accuracy</div>
-              </div>
-              <div>
-                <div className="text-xs text-slate font-semibold uppercase">Execution</div>
-                <div className="text-xl sm:text-2xl font-extrabold text-ink">&lt; 5 Loops</div>
-                <div className="text-[10px] text-slate font-mono">To Complete Target Lock</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: What This Enables for Enterprises */}
-          <div className="lg:col-span-5 rounded-2xl bg-ink text-white p-8 flex flex-col justify-between shadow-md">
-            <div>
-              <div className="flex items-center justify-between mb-6">
-                <span className="text-xs uppercase tracking-widest font-mono font-bold text-gold-luminous">Commercial Applications</span>
-                <span className="text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-white/10 text-white border border-white/10">Production Ready</span>
-              </div>
-              
-              <div className="space-y-5 text-sm">
-                <div>
-                  <h4 className="font-bold text-white text-base mb-1">High-Throughput Drug Screening</h4>
-                  <p className="text-xs text-slate-light leading-relaxed">
-                    Filter thousands of candidate compounds against disease enzymes in hours rather than months of supercomputer cluster time.
-                  </p>
-                </div>
-
-                <div className="border-t border-white/10 pt-4">
-                  <h4 className="font-bold text-white text-base mb-1">Confidential Compound Evaluation</h4>
-                  <p className="text-xs text-slate-light leading-relaxed">
-                    Pharma partners can evaluate proprietary intellectual property in joint ventures without sharing atomic coordinate files.
-                  </p>
-                </div>
-
-                <div className="border-t border-white/10 pt-4">
-                  <h4 className="font-bold text-white text-base mb-1">Materials & Enzyme Design</h4>
-                  <p className="text-xs text-slate-light leading-relaxed">
-                    Model complex protein switches, catalysts, and synthetic biology components on state-of-the-art quantum backends.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 pt-4 border-t border-white/10">
-              <a 
-                href="https://evecount.github.io/quantum_rotation/constellation.html" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-between w-full text-xs text-gold-luminous hover:text-white transition-colors font-semibold"
+            return (
+              <div
+                key={card.id}
+                onClick={() => toggleCard(idx)}
+                onMouseEnter={() => setHoveredCard(idx)}
+                onMouseLeave={() => setHoveredCard(null)}
+                className="relative min-h-[340px] sm:min-h-[360px] rounded-2xl cursor-pointer select-none transition-all duration-300 group"
               >
-                <span>Explore Live In-Browser Molecular Simulation</span>
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </div>
-          </div>
+                {/* 1. Question Face (Visible before scroll / hover) */}
+                <div
+                  className={`absolute inset-0 rounded-2xl p-7 flex flex-col justify-between border border-[#E7E3D8] bg-[#FAF9F6] transition-all duration-500 ease-out ${
+                    isCardMorphed
+                      ? 'opacity-0 scale-95 pointer-events-none'
+                      : 'opacity-100 scale-100 shadow-2xs'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-6">
+                      <span className="text-[11px] font-mono font-bold tracking-widest text-[#B8872A] uppercase">
+                        {card.number} // {card.questionBadge}
+                      </span>
+                      <span className="flex items-center gap-1 text-[11px] font-mono text-[#5B616B]">
+                        <HelpCircle className="h-3.5 w-3.5 text-[#B8872A]" />
+                        <span>Question</span>
+                      </span>
+                    </div>
 
+                    <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#16181D] leading-tight mb-4">
+                      <em>&ldquo;{card.question}&rdquo;</em>
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-[#5B616B] leading-relaxed">
+                      {card.questionContext}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-[#E7E3D8] flex items-center justify-between text-xs font-mono text-[#B8872A]">
+                    <span className="flex items-center gap-1.5 font-semibold">
+                      <span>Scroll or tap to reveal</span>
+                      <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                    <span className="text-[10px] text-[#5B616B]/70 font-mono">0{idx + 1}/03</span>
+                  </div>
+                </div>
+
+                {/* 2. Value Face (Morphed on scroll / hover) */}
+                <div
+                  className={`absolute inset-0 rounded-2xl p-7 flex flex-col justify-between border border-[#B8872A]/50 bg-[#16181D] text-white transition-all duration-500 ease-out shadow-xl shadow-black/10 ${
+                    isCardMorphed
+                      ? 'opacity-100 scale-100'
+                      : 'opacity-0 scale-95 pointer-events-none'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-5">
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#B8872A]/20 border border-[#B8872A]/40 text-[#D7AF55]">
+                          <Icon className="h-4 w-4" />
+                        </div>
+                        <span className="text-[10px] font-mono font-bold tracking-widest text-[#D7AF55] uppercase">
+                          {card.number} // {card.solutionBadge}
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-white/10 text-white/90 border border-white/10">
+                        Resolved
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white mb-3">
+                      {card.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                      {card.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-white/10 flex items-end justify-between">
+                    <div>
+                      <div className="text-[10px] uppercase font-mono text-[#D7AF55] font-semibold tracking-wider">
+                        {card.metricLabel}
+                      </div>
+                      <div className="text-xl sm:text-2xl font-extrabold text-white font-mono">
+                        {card.metricValue}
+                      </div>
+                      <div className="text-[10px] text-zinc-400 font-mono">
+                        {card.subMetric}
+                      </div>
+                    </div>
+
+                    <span className="text-[10px] text-zinc-400 font-mono flex items-center gap-1 group-hover:text-[#D7AF55] transition-colors">
+                      <RotateCw className="h-3 w-3" />
+                      <span>Flip</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Real-World Validated Systems */}
