@@ -13,14 +13,18 @@ export function Header() {
     <header className="site-header sticky top-0 z-50 bg-[#FAF9F6]/95 backdrop-blur">
       <div className="page-container header-inner">
         <Link href="/" className="brand inline-flex items-center gap-3.5 no-underline group" aria-label="Eve Count Quantum Systems home">
-          <span className="brand-mark shrink-0 group-hover:scale-105 transition-transform" aria-hidden="true">
-            <span />
-          </span>
+          <img 
+            src="/images/evecount-logo.png" 
+            alt="Eve Count Logo" 
+            width={44} 
+            height={44} 
+            className="h-10 w-10 sm:h-11 sm:w-11 rounded-full shrink-0 group-hover:scale-105 transition-transform shadow-xs" 
+          />
           <div className="flex flex-col text-left select-none">
-            <span className="text-[17px] font-black tracking-tight text-[#16181D] leading-none uppercase font-sans">
+            <span className="text-[17px] sm:text-[18px] font-black tracking-tight text-[#16181D] leading-none uppercase font-sans">
               EVE COUNT
             </span>
-            <span className="text-[8.5px] font-extrabold tracking-[0.24em] text-[#5B616B] uppercase mt-1 leading-none">
+            <span className="text-[8.5px] sm:text-[9px] font-extrabold tracking-[0.24em] text-[#5B616B] uppercase mt-1 leading-none">
               QUANTUM SYSTEMS
             </span>
           </div>
@@ -62,7 +66,13 @@ export function Header() {
               <SheetHeader>
                 <SheetTitle>
                   <Link href="/" onClick={() => setSheetOpen(false)} className="inline-flex items-center gap-3">
-                    <span className="brand-mark shrink-0" aria-hidden="true"><span /></span>
+                    <img 
+                      src="/images/evecount-logo.png" 
+                      alt="Eve Count Logo" 
+                      width={38} 
+                      height={38} 
+                      className="h-9 w-9 rounded-full shrink-0" 
+                    />
                     <div className="flex flex-col text-left">
                       <span className="text-[16px] font-black tracking-tight text-[#16181D] leading-none uppercase">
                         EVE COUNT
