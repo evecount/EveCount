@@ -21,7 +21,7 @@ export function Hero() {
             {/* Eyebrow badge */}
             <div className="inline-flex items-center gap-2.5 rounded-full border border-[#DCD6C8] bg-white/90 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-slate shadow-2xs">
               <span className="h-2 w-2 rounded-full bg-gold-warm animate-pulse" />
-              <span>Quantinuum Grand Challenge '26 // Quantum Systems</span>
+              <span>Sovereign Quantum Systems // Molecular Discovery & PQC</span>
             </div>
 
             {/* Display Heading inspired by PartyRock: punchy, prominent line breaks */}
@@ -50,8 +50,8 @@ export function Hero() {
 
             {/* Clear-box Value Proposition */}
             <p className="text-lg sm:text-xl text-slate leading-relaxed max-w-[580px] font-normal">
-              Eve Count enables enterprise leaders and institutions to navigate the post-quantum shift with certainty. 
-              Bridging Post-Quantum Cryptography (PQC), Quantinuum trapped-ion hardware compilation, and sovereign quantum architectures.
+              Eve Count enables enterprise leaders and institutions to navigate the quantum transition with certainty. 
+              Bridging Post-Quantum Cryptography (PQC), real-time molecular discovery, and sovereign computational architectures.
             </p>
 
             {/* Action Buttons: High-Contrast Ink Button + Outline */}
