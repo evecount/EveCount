@@ -45,6 +45,9 @@ export default function AboutPage() {
             <p>
               We named the firm after Eve—the eavesdropper in every cryptography textbook—because security is only meaningful when measured against the person trying to break it.
             </p>
+            <p className="about-ring-note text-xs font-mono text-[var(--ghost)] tracking-wider mt-4">
+              The rings are not decoration — <Link href="/#proof" className="underline underline-offset-4 text-[var(--ink)]">they are our method</Link>.
+            </p>
           </div>
         </section>
 

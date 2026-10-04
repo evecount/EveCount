@@ -137,6 +137,7 @@ export default function Home() {
 
         <section className="questions-section" id="questions" ref={questionsRef}>
           <div className="questions-stage">
+            <ResonanceWaves progress={qProgress} reduced={!!reduced} />
             <div className="questions-inner">
               <p className="chapter chapter-light">
                 THE HUMAN QUESTION <span>01</span>
@@ -277,13 +278,44 @@ function QuestionFade({
   );
 }
 
+const waveGeom = (amp: number, wl: number, y: number, phase: number) => {
+  let d = "";
+  for (let x = 0; x <= 2400; x += 12) d += `${x ? "L" : "M"}${x} ${(y + Math.sin((x / wl) * Math.PI * 2 + phase) * amp).toFixed(1)}`;
+  return d;
+};
+
+const waveDefs = [
+  { amp: 30, wl: 640, y: 596, phase: 0, op: 0.42, drift: -260, bob: [-30, 8, -18, 12, -26] },
+  { amp: 48, wl: 900, y: 626, phase: 1.2, op: 0.24, drift: -430, bob: [26, -12, 22, -14, 18] },
+  { amp: 15, wl: 300, y: 650, phase: 2.4, op: 0.5, drift: -170, bob: [-12, 14, -8, 10, -14] },
+  { amp: 22, wl: 520, y: 96, phase: 0.6, op: 0.16, drift: -330, bob: [10, -8, 12, -6, 8] },
+];
+
+function ResonanceWaves({ progress, reduced }: { progress: MotionValue<number>; reduced: boolean }) {
+  return (
+    <svg className="resonance-waves" viewBox="0 0 2400 720" preserveAspectRatio="none" aria-hidden="true">
+      {waveDefs.map((def, i) => (
+        <WaveLine key={i} def={def} progress={progress} reduced={reduced} />
+      ))}
+    </svg>
+  );
+}
+
+function WaveLine({ def, progress, reduced }: { def: (typeof waveDefs)[number]; progress: MotionValue<number>; reduced: boolean }) {
+  const x = useTransform(progress, [0, 1], [0, reduced ? 0 : def.drift]);
+  const y = useTransform(progress, [0, 0.25, 0.5, 0.75, 1], def.bob.map((v) => (reduced ? 0 : v)));
+  return <motion.path d={waveGeom(def.amp, def.wl, def.y, def.phase)} vectorEffect="non-scaling-stroke" style={{ x, y, opacity: def.op }} />;
+}
+
 function ProofSection({ reduced }: { reduced: boolean }) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const figRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: figP } = useScroll({ target: figRef, offset: ["start end", "center center"] });
   const r1 = useTransform(scrollYProgress, [0, 0.55], [reduced ? 0 : -140, 0]);
   const r2 = useTransform(scrollYProgress, [0, 0.55], [reduced ? 0 : 110, 0]);
   const r3 = useTransform(scrollYProgress, [0, 0.55], [reduced ? 0 : -70, 0]);
-  const lock = useTransform(scrollYProgress, [0.48, 0.56], [reduced ? 1 : 0, 1]);
+  const lock = useTransform(figP, [0.55, 1], [reduced ? 1 : 0, 1]);
 
   const stats = [
     ["6 / 6", "real protein targets locked", "RCSB PDB & PubChem structures"],
@@ -318,7 +350,7 @@ function ProofSection({ reduced }: { reduced: boolean }) {
           </p>
           <div className="proof-actions">
             <a 
-              className="pill pill-signal" 
+              className="pill pill-dark" 
               href="https://github.com/evecount/quantum_rotation" 
               target="_blank" 
               rel="noreferrer"
@@ -326,21 +358,24 @@ function ProofSection({ reduced }: { reduced: boolean }) {
               Read the research <ArrowUpRight size={16} />
             </a>
             <a 
-              className="text-link" 
+              className="underlink" 
               href="https://evecount.github.io/quantum_rotation/constellation.html" 
               target="_blank" 
               rel="noreferrer"
             >
-              Enter the 3D Constellation <ArrowUpRight size={14} />
+              Enter the 3D Constellation <ArrowUpRight size={15} />
             </a>
           </div>
         </div>
-        <div className="proof-rings" aria-hidden="true">
-          <motion.i style={{ rotate: r1, rotateX: 62 }} />
-          <motion.i style={{ rotate: r2, rotateY: 58 }} />
-          <motion.i style={{ rotate: r3 }} />
-          <motion.b style={{ opacity: lock, scale: lock }} />
-          <motion.em style={{ opacity: lock }}>LOCKED</motion.em>
+        <div className="proof-figure" aria-hidden="true" ref={figRef}>
+          <div className="proof-rings">
+            <span className="proof-plate" />
+            <motion.i style={{ rotate: r1, rotateX: 62 }} />
+            <motion.i style={{ rotate: r2, rotateY: 58 }} />
+            <motion.i style={{ rotate: r3 }} />
+          </div>
+          <motion.b className="proof-dot" style={{ opacity: lock, scale: lock }} />
+          <motion.em className="proof-tag" style={{ opacity: lock }}>LOCKED</motion.em>
         </div>
       </div>
       <div className="proof-credits">
@@ -357,8 +392,8 @@ function ProofSection({ reduced }: { reduced: boolean }) {
             Co-founder & Systems Architect · Constellation & interfaces
           </li>
           <li>
-            <strong>James Sun</strong>
-            Venture Advisor · Mamba Partners
+            <strong><a href="https://www.mambapartners.com/" target="_blank" rel="noreferrer">James Sun</a></strong>
+            Venture Advisor · <a href="https://www.mambapartners.com/" target="_blank" rel="noreferrer">Mamba Partners</a>
           </li>
         </ul>
       </div>
