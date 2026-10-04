@@ -93,10 +93,10 @@ export default function ResearchPage() {
                 </p>
                 <div className="flex flex-wrap items-center gap-4 pt-2">
                   <Button size="lg" asChild className="bg-ink hover:bg-ink/90 text-white font-semibold rounded-xl px-7 py-6">
-                    <Link href="/apply" className="inline-flex items-center gap-2">
+                    <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Research Briefing Request — Quantum Systems & PQC")}&body=${encodeURIComponent("Hi Gwen,\n\nWe would like to request an executive research briefing on applied quantum computation, post-quantum cryptography (PQC), and cryptographic agility.\n\nOrganization / Entity:\nExecutive / Research Lead:\nKey Technical Areas of Focus:\nProposed Date / Format:\n")}`} className="inline-flex items-center gap-2">
                       <span>Request Research Briefing</span>
                       <ArrowRight className="h-4 w-4 text-gold-luminous" />
-                    </Link>
+                    </a>
                   </Button>
                   <Button size="lg" variant="outline" asChild className="border-2 border-[#D8D2C4] bg-white hover:bg-mist text-ink font-semibold rounded-xl px-6 py-6">
                     <a href="https://github.com/evecount" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
@@ -224,7 +224,9 @@ export default function ResearchPage() {
                 We collaborate with enterprise R&D departments, defense contractors, and financial institutions on targeted post-quantum cryptographic validation.
               </p>
               <Button size="lg" asChild className="bg-ink hover:bg-ink/90 text-white font-semibold rounded-xl px-8 mt-6">
-                <Link href="/apply">Schedule a Research Consultation</Link>
+                <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Research Consultation Scheduling — Eve Count R&D")}&body=${encodeURIComponent("Hi Gwen,\n\nWe would like to schedule a research consultation with the Eve Count quantum and systems engineering team.\n\nInstitution / Organization:\nContact Name & Title:\nDomain / Technical Architecture:\nTarget Timeline:\n")}`}>
+                  Schedule a Research Consultation
+                </a>
               </Button>
             </div>
           </div>

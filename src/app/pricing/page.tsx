@@ -144,7 +144,9 @@ export default function PricingPage() {
                     </div>
 
                     <Button asChild className="w-full bg-ink hover:bg-ink/90 text-white font-semibold rounded-xl">
-                      <Link href="/apply">Initiate Engagement</Link>
+                      <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent(`Initiate Engagement — ${tier.title} (${tier.price})`)}&body=${encodeURIComponent(`Hi Gwen,\n\nWe would like to initiate an engagement for the following service tier:\n\nSelected Tier: ${tier.title}\nPrice: ${tier.price}\nTimeline: ${tier.timeline}\nScope: ${tier.scope}\n\nOrganization / Firm:\nExecutive Sponsor:\nRole / Title:\nPrimary Cryptographic Systems to Assess:\n`)}`}>
+                        Initiate Engagement
+                      </a>
                     </Button>
                   </CardContent>
                 </Card>

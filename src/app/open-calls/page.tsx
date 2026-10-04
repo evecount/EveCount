@@ -67,10 +67,10 @@ export default function OpenCallsPage() {
                                 </CardContent>
                                 <CardFooter>
                                     <Button asChild className="w-full">
-                                        <Link href="/apply">
+                                        <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent(`Open Call Application — ${challenge.title}`)}&body=${encodeURIComponent(`Hi Gwen,\n\nI am applying to solve the following Open Call challenge:\n\nChallenge: ${challenge.title}\nDomain: ${challenge.domain}\nStatus: ${challenge.status}\n\nApplicant Name:\nUniversity / Organization:\nLinkedIn / GitHub:\nProposed Solution Architecture & Methodology:\n`)}`}>
                                             <Send className="mr-2 h-4 w-4" />
                                             Apply to Solve
-                                        </Link>
+                                        </a>
                                     </Button>
                                 </CardFooter>
                             </Card>
@@ -90,10 +90,10 @@ export default function OpenCallsPage() {
                 <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
                     When you apply, select "Incubator Application". Mention the challenge you are interested in. Our Sorter AI will review your submission. If your expertise is a match, you will be invited to join the NTU x Eve Count AI Incubator to build out the solution.
                 </p>
-                <Button size="lg" className="mt-8" asChild>
-                    <Link href="/apply">
-                       Go to Application
-                    </Link>
+                <Button size="lg" className="mt-8 bg-ink hover:bg-ink/90 text-white font-semibold rounded-xl px-8" asChild>
+                    <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("General Open Call & Incubator Application")}&body=${encodeURIComponent("Hi Gwen,\n\nI would like to apply to participate in the NTU x Eve Count AI Incubator / Open Calls.\n\nApplicant Name:\nBackground / Technical Focus:\nLinkedIn / GitHub:\nDomain of Interest (Quantum / PQC / Agentic AI):\n")}`}>
+                       Apply via Email to Gwen
+                    </a>
                 </Button>
             </div>
         </section>

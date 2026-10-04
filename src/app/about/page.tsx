@@ -284,7 +284,7 @@ export default function AboutPage() {
               <h2>Good questions<br /><em>travel.</em></h2>
               <div className="speaking-aside">
                 <p>We hold quantum events and lectures, and are available for speaking engagements. Invite Eve Count to bring the conversation to your audience.</p>
-                <a className="pill pill-dark" href="mailto:gwen@evecount.com?subject=Speaking%20engagement%20enquiry">
+                <a className="pill pill-dark" href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Speaking engagement enquiry — Eve Count")}&body=${encodeURIComponent("Hi Gwen,\n\nWe would like to invite Eve Count to speak at our event / institution.\n\nEvent Name / Host:\nTarget Audience:\nProposed Date / Format:\nKey Themes (Applied Quantum, PQC, Agentic AI):\nContact Person:\n")}`}>
                   Invite us to speak <ArrowUpRight size={16} />
                 </a>
               </div>

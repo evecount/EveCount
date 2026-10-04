@@ -170,7 +170,11 @@ export default function OperationNightfallPage() {
                                                 <CardTitle className="text-base flex items-center gap-2 text-foreground"><Upload className="h-4 w-4"/> Case Evidence</CardTitle>
                                             </CardHeader>
                                             <CardContent>
-                                                <Button variant="outline" className="w-full" disabled>Upload `process_log.csv`</Button>
+                                                <Button variant="outline" className="w-full" asChild>
+                                                    <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Operation Nightfall — Case Evidence Submission (process_log.csv)")}&body=${encodeURIComponent("Hi Gwen,\n\nI have case evidence / process log data to submit for forensic analysis under Operation Nightfall.\n\nOrganization / Incident Ref:\nLog Source / Environment:\nSummary of Observed Indicators:\n")}`}>
+                                                        Upload `process_log.csv`
+                                                    </a>
+                                                </Button>
                                             </CardContent>
                                         </Card>
 
@@ -182,9 +186,11 @@ export default function OperationNightfallPage() {
                                                 <CardDescription className="text-xs">Join the decentralized forensic network.</CardDescription>
                                             </CardHeader>
                                             <CardContent className="space-y-2">
-                                                <Input disabled placeholder="https://github.com/username/repo"/>
-                                                <Input disabled placeholder="data/attack_vector.csv"/>
-                                                <Button className="w-full" disabled>📝 Sign & Transmit</Button>
+                                                <Button className="w-full" asChild>
+                                                    <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Operation Nightfall — Contribute Forensic Vector to Grid")}&body=${encodeURIComponent("Hi Gwen,\n\nI would like to contribute an attack vector / forensic telemetry to the Operation Nightfall decentralized network.\n\nGitHub Repo / Source:\nVector / CSV Reference:\nResearch Entity / Contributor:\n")}`}>
+                                                        📝 Sign &amp; Transmit
+                                                    </a>
+                                                </Button>
                                             </CardContent>
                                         </Card>
 
@@ -198,7 +204,11 @@ export default function OperationNightfallPage() {
                                                 <p className="text-xs text-muted-foreground mb-2">
                                                     <strong>Sentinel is currently running in Local Mode.</strong> To build the real-time <strong>Cloud Backend</strong> for the Global Grid, we need server resources.
                                                 </p>
-                                                <Button className="w-full" disabled><DollarSign className="h-4 w-4 mr-2"/> Fund the Backend</Button>
+                                                <Button className="w-full" asChild>
+                                                    <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Operation Nightfall — Sponsor & Fund Sentinel Cloud Backend")}&body=${encodeURIComponent("Hi Gwen,\n\nWe are interested in discussing sponsorship and server resource funding for the Sentinel Cloud Backend.\n\nSponsor / Organization:\nContact Name & Title:\nProposed Funding / Compute Contribution:\n")}`}>
+                                                        <DollarSign className="h-4 w-4 mr-2"/> Fund the Backend
+                                                    </a>
+                                                </Button>
                                             </CardContent>
                                         </Card>
                                     </div>

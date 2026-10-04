@@ -111,9 +111,29 @@ function RosterApplicationForm() {
         const submissionsCollection = collection(firestore, 'submissions');
         addDocumentNonBlocking(submissionsCollection, submissionData);
 
+        const mailLines = [
+            "NTU PRACTITIONER ROSTER APPLICATION",
+            "------------------------------------",
+            `Applicant Name: ${submissionValues.submitterName}`,
+            `Contact Email: ${submissionValues.contactEmail}`,
+            `Phone: ${code} ${localPhone}`,
+            `LinkedIn: ${submissionValues.linkedinUrl || "N/A"}`,
+            `GitHub: ${submissionValues.githubUrl || "N/A"}`,
+            `Vision / Pitch: ${submissionValues.visionPitch || "N/A"}`,
+            "",
+            "Submitted directly via evecount.com/incubator",
+        ];
+        const mailtoUrl = `mailto:gwen@evecount.com?subject=${encodeURIComponent(`NTU Practitioner Roster Application — ${submissionValues.submitterName}`)}&body=${encodeURIComponent(mailLines.join("\n"))}`;
+        
+        try {
+            window.location.href = mailtoUrl;
+        } catch {
+            // fallback if browser blocks
+        }
+
         toast({
             title: "Application Received",
-            description: "Thank you! Our team will review your application and you will see your profile on the roster shortly if approved.",
+            description: "Opening prefilled email to Gwen. You can also send directly from your mail client.",
         });
         
         setSubmissionSuccess(true);
@@ -122,12 +142,21 @@ function RosterApplicationForm() {
     
     if (submissionSuccess) {
         return (
-            <div className="text-center p-4 rounded-lg bg-background/50">
+            <div className="text-center p-6 rounded-lg bg-background/50 border border-border/50">
                 <CardTitle className="mb-2 text-2xl font-bold">Thank You!</CardTitle>
                 <CardDescription className="mb-6 text-muted-foreground">
-                    Your application has been successfully submitted.
+                    Your application has been received and routed directly to Gwen's email.
                 </CardDescription>
-                <Button onClick={() => setSubmissionSuccess(false)}>Submit Another Application</Button>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <Button onClick={() => setSubmissionSuccess(false)} variant="outline">
+                        Submit Another Application
+                    </Button>
+                    <Button asChild>
+                        <a href="mailto:gwen@evecount.com?subject=NTU%20Roster%20Application%20Follow-up">
+                            Email Gwen Directly
+                        </a>
+                    </Button>
+                </div>
             </div>
         )
     }
@@ -671,10 +700,10 @@ export default function IncubatorPage() {
                                                 When no internal matches are found, the system's protocol is to create an "Open Call" to attract external specialists. This ensures no dead ends.
                                             </p>
                                             <Button asChild>
-                                                <Link href="/apply">
+                                                <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Initiate Open Call — NTU AI Incubator")}&body=${encodeURIComponent("Hi Gwen,\n\nI would like to initiate an Open Call for a challenge where external specialists are required.\n\nChallenge Title / Focus:\nRequired Technical Skillsets:\nTimeline / Budget:\n")}`}>
                                                     <Megaphone className="mr-2 h-4 w-4" />
                                                     Initiate Open Call
-                                                </Link>
+                                                </a>
                                             </Button>
                                         </div>
                                     )}

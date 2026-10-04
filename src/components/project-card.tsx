@@ -9,8 +9,13 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ venture }: ProjectCardProps) {
+  const isPlaceholderUrl = venture.url.includes("google.com/search");
+  const targetUrl = isPlaceholderUrl 
+    ? `mailto:gwen@evecount.com?subject=${encodeURIComponent(`Venture Inquiry — ${venture.name}`)}&body=${encodeURIComponent(`Hi Gwen,\n\nI would like to request the executive briefing and confidential venture dossier for ${venture.name} (${venture.sector}).\n\nName:\nFirm / Angel Fund / Partner:\nInquiry Type (Synergy / Investment / Acquisition):\n`)}`
+    : venture.url;
+
   return (
-    <Link href={venture.url} target="_blank" rel="noopener noreferrer" className="group block">
+    <a href={targetUrl} target={isPlaceholderUrl ? undefined : "_blank"} rel="noopener noreferrer" className="group block">
       <Card className="flex h-full flex-col transition-all duration-300 ease-in-out group-hover:border-primary group-hover:shadow-lg group-hover:shadow-primary/10 bg-secondary/20 text-foreground">
         <CardHeader>
           <div className="flex items-start justify-between">
@@ -38,6 +43,6 @@ export function ProjectCard({ venture }: ProjectCardProps) {
           </div>
         </CardContent>
       </Card>
-    </Link>
+    </a>
   );
 }

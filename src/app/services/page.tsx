@@ -43,8 +43,10 @@ export default function PartnersPage() {
               ))}
             </div>
             <div className="mt-12 text-center">
-              <Button size="lg" asChild>
-                <a href="mailto:partnerships@evecount.com">Become a Service Partner</a>
+              <Button size="lg" asChild className="bg-ink hover:bg-ink/90 text-white font-semibold rounded-xl px-8 shadow-sm">
+                <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Venture Partner Application — Service Provider Network")}&body=${encodeURIComponent("Hi Gwen,\n\nI would like to apply as an ecosystem venture service partner alongside Eve Count.\n\nOrganization / Firm:\nPrimary Services / Capabilities:\nKey Contact & Role:\nWebsite / Portfolio:\nProposed Value to Portfolio Companies:\n")}`}>
+                  Become a Service Partner
+                </a>
               </Button>
             </div>
           </div>

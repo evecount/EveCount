@@ -90,7 +90,9 @@ export default function SnapdragonPage() {
                         </p>
                         <div className="flex justify-center gap-4 mt-8">
                             <Button size="lg" className="bg-foreground text-background hover:bg-foreground/90 font-bold" asChild>
-                                <Link href="/apply">Request Partner Access</Link>
+                                <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Snapdragon Partner Access Request — Geometric Bridge Protocol")}&body=${encodeURIComponent("Hi Gwen,\n\nWe would like to request partner access to the Snapdragon Geometric Bridge Protocol kernel.\n\nOrganization / Firm:\nPrimary Technical Contact:\nTarget Architecture (Classical HPC / Hybrid QPU / Emulation):\nIntended Workload / Use Case:\n")}`}>
+                                    Request Partner Access
+                                </a>
                             </Button>
                             <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-accent font-bold" asChild>
                                 <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
@@ -390,12 +392,12 @@ export default function SnapdragonPage() {
                                 </Link>
                             </Button>
                             <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-bold" asChild>
-                                <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+                                <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Snapdragon Lineage Map Request")}&body=${encodeURIComponent("Hi Gwen,\n\nI would like to request the complete mathematical and architectural Lineage Map for Snapdragon.\n\nName:\nOrganization:\nEmail:\nRole:\n")}`}>
                                     <Layers className="h-4 w-4" /> Lineage Map
                                 </a>
                             </Button>
                             <Button variant="outline" className="flex items-center gap-2 text-foreground border-border hover:bg-accent font-bold" asChild>
-                                <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
+                                <a href={`mailto:gwen@evecount.com?subject=${encodeURIComponent("Snapdragon Deployment Simulator Access Request")}&body=${encodeURIComponent("Hi Gwen,\n\nWe would like to request evaluation access to the Snapdragon Deployment Simulator.\n\nName:\nOrganization / Lab:\nTarget Infrastructure:\nIntended Benchmarks:\n")}`}>
                                     <Network className="h-4 w-4" /> Deployment Simulator
                                 </a>
                             </Button>
