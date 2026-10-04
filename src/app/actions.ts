@@ -63,3 +63,36 @@ export async function runIncubatorMatcherAction(input: IncubatorMatcherInput): P
         return { success: false, message };
     }
 }
+
+export interface EnterpriseDiagnosticInput {
+    companyName: string;
+    executiveSponsor: string;
+    workEmail: string;
+    industry: string;
+    dataProfile: string[];
+    pqcAwareness: string;
+    currentEncryption: string;
+    dataLifespan: string;
+    classicalLimitations: string;
+    aiArchitecture: string;
+    immediateGoal: string[];
+}
+
+export async function submitEnterpriseDiagnosticAction(input: EnterpriseDiagnosticInput) {
+    try {
+        const timestamp = new Date().toISOString();
+        const referenceId = `EQD-${Date.now().toString(36).toUpperCase()}`;
+        console.log(`[Enterprise Quantum Diagnostic] Received ${referenceId} from ${input.companyName} (${input.executiveSponsor}) at ${timestamp}:`, input);
+
+        return { 
+            success: true, 
+            referenceId,
+            message: "Diagnostic received. Our chief quantum architects will evaluate your baseline and reach out within 24 hours." 
+        };
+    } catch (error) {
+        console.error("Diagnostic submission failed:", error);
+        const message = error instanceof Error ? error.message : "An unexpected error occurred during submission.";
+        return { success: false, message };
+    }
+}
+

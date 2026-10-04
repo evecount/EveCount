@@ -2,30 +2,64 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useChatbot } from "@/hooks/use-chatbot";
+import { ArrowRight, ExternalLink } from "lucide-react";
 
 export function Hero() {
-  const { setOpen } = useChatbot();
   return (
-    <section className="border-b border-border/40 bg-gradient-to-b from-background to-background/80">
-      <div className="container py-32 text-center md:py-40 lg:py-56">
-        <div className="flex flex-col items-center space-y-4">
-          <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            We don't invest capital.
-            <br />
-            <span className="inline-block steel-gradient bg-clip-text text-transparent">
-              We invest Code, AI, and Architecture.
+    <section className="relative overflow-hidden bg-white border-b border-border">
+      {/* Subtle background ambient light */}
+      <div className="absolute top-0 right-1/4 -z-10 h-96 w-96 rounded-full bg-gold-wash/50 blur-3xl pointer-events-none" />
+
+      <div className="container max-w-[1200px] mx-auto px-6 py-28 md:py-36 lg:py-40">
+        <div className="max-w-[760px] flex flex-col items-start text-left space-y-6">
+          {/* Eyebrow badge */}
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-border bg-mist/60 px-3.5 py-1 text-xs font-semibold uppercase tracking-widest text-slate">
+            <span className="h-1.5 w-1.5 rounded-full bg-gold-warm" />
+            <span>Quantum-Ready Enterprise Systems</span>
+          </div>
+
+          {/* Display Heading */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-ink leading-[1.12]">
+            Translating complex quantum systems into{" "}
+            <span className="relative inline-block text-ink">
+              strategic action.
+              <span className="absolute bottom-1 left-0 w-full h-[3px] bg-gold-luminous -z-0" />
             </span>
           </h1>
-          <p className="max-w-xl text-lg text-muted-foreground sm:text-xl md:max-w-2xl">
-            Eve Count is a Singapore-based venture studio specializing in Quantum technologies, AI Architecture, and Agentic Training Systems. We operate in stealth mode, taking projects from Vision to Market-Ready MVP in record time.
+
+          {/* Lead Paragraph */}
+          <p className="text-lg sm:text-xl text-slate leading-relaxed max-w-[680px]">
+            We bridge deep mathematical physics, Post-Quantum Cryptography (PQC), and autonomous architecture with institutional enterprise decision-making. 
           </p>
-          <div className="flex gap-4">
-            <Button size="lg" asChild>
-              <Link href="/ventures">Our Ventures</Link>
+
+          {/* Strategic Action Pathways */}
+          <div className="flex flex-wrap items-center gap-4 pt-4">
+            <Button 
+              size="lg" 
+              asChild
+              className="bg-gold-luminous hover:bg-gold-warm text-ink font-semibold px-7 py-3 text-base shadow-sm transition-all"
+            >
+              <Link href="/apply" className="inline-flex items-center gap-2">
+                <span>Enterprise Diagnostic</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
             </Button>
-            <Button size="lg" variant="outline" onClick={() => setOpen(true)}>
-              Chat with our AI Partner
+
+            <Button 
+              size="lg" 
+              variant="outline" 
+              asChild
+              className="border-border bg-white hover:bg-mist text-ink font-medium px-6 py-3 text-base transition-all"
+            >
+              <a 
+                href="https://cybrdeck.com" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2"
+              >
+                <span>Cybrdeck Terminal</span>
+                <ExternalLink className="h-4 w-4 text-gold-warm" />
+              </a>
             </Button>
           </div>
         </div>

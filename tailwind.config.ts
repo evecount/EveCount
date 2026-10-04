@@ -52,6 +52,24 @@ export default {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
+        // Eve Count Quantum Systems Brand Palette
+        ink: {
+          DEFAULT: '#16181D',
+          light: '#22262E',
+        },
+        slate: {
+          DEFAULT: '#5B616B',
+          light: '#7A8290',
+        },
+        mist: {
+          DEFAULT: '#EEF0F2',
+          dark: '#E2E5E9',
+        },
+        gold: {
+          warm: '#B8872A',
+          luminous: '#D7AF55',
+          wash: '#F5EBD6',
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

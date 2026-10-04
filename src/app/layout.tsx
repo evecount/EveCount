@@ -8,10 +8,10 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: {
-    default: 'Eve Count | Quantum & AI Venture Studio, Singapore',
-    template: '%s | EveCount.com',
+    default: 'Eve Count Quantum Systems | Enterprise Quantum & AI',
+    template: '%s | Eve Count Quantum Systems',
   },
-  description: 'Eve Count is a Singapore-based venture studio specializing in Quantum (PQC, QKD) & AI. We build ventures by investing Code and Architecture, not just capital, turning complex ideas into market-ready products.',
+  description: 'Eve Count Quantum Systems translates quantum complexity into actionable enterprise strategy, code, and computational architecture.',
   metadataBase: new URL('https://www.evecount.com'),
 };
 
@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="scroll-smooth">
       <head>
         <link rel="icon" href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3e%3ccircle cx='50' cy='50' r='50' fill='black'/%3e%3cpath d='M10,50 C 30,25 70,75 90,50' fill='none' stroke='white' stroke-width='6'/%3e%3c/svg%3e" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />

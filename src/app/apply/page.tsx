@@ -1,594 +1,370 @@
-
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import Link from "next/link";
+import { useState } from 'react';
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
-import { useFirestore } from "@/firebase";
-import { addDocumentNonBlocking } from "@/firebase/non-blocking-updates";
-import { collection } from "firebase/firestore";
-import { Send } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { submitEnterpriseDiagnosticAction, type EnterpriseDiagnosticInput } from "@/app/actions";
+import { ShieldCheck, ArrowRight, CheckCircle2, Lock, Cpu, Sparkles } from "lucide-react";
 
-const applicationTypes = ["Venture Pitch", "Incubator Application", "Career Inquiry", "Partnership Inquiry"] as const;
-
-const applicationSchema = z.object({
-    applicationType: z.enum(applicationTypes, { required_error: "Please select an application type." }),
-    submitterName: z.string().min(1, "Please enter your name."),
-    contactEmail: z.string().email("Please enter a valid email address."),
-    countryCode: z.string({ required_error: "Please select a country code." }).min(1, "Please select a country code."),
-    localPhone: z.string().min(5, "Please enter a valid phone number."),
-    terms: z.boolean().refine(val => val === true, {
-        message: "You must review and agree to the terms and privacy policy to proceed."
-    }),
-    // Conditional fields
-    companyName: z.string().optional(),
-    visionPitch: z.string().optional(),
-    
-    linkedinUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
-    githubUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
-    websiteUrl: z.string().url({ message: "Please enter a valid URL." }).optional().or(z.literal('')),
-
-    roleInterest: z.string().optional(),
-    resumeContent: z.string().optional(),
-    partnershipInterest: z.string().optional(),
-}).superRefine((data, ctx) => {
-    if (data.applicationType === 'Venture Pitch' && (!data.visionPitch || data.visionPitch.length < 20)) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your vision or problem (min 20 characters).", path: ['visionPitch'] });
-    }
-    if (data.applicationType === 'Incubator Application') {
-        const hasLinkedIn = data.linkedinUrl && data.linkedinUrl.length > 'https://linkedin.com/in/'.length;
-        const hasGitHub = data.githubUrl && data.githubUrl.length > 'https://github.com/'.length;
-        const hasWebsite = data.websiteUrl && data.websiteUrl.length > 'https://'.length;
-
-        if (!hasLinkedIn && !hasGitHub && !hasWebsite) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please provide at least one link (LinkedIn, GitHub, or personal site).", path: ['linkedinUrl'] });
-        }
-        if (!data.visionPitch || data.visionPitch.length < 20) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please tell us why you want to join (min 20 characters).", path: ['visionPitch'] });
-        }
-    }
-    if (data.applicationType === 'Career Inquiry') {
-        if (!data.roleInterest || data.roleInterest.length < 1) {
-             ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please specify your role or area of interest.", path: ['roleInterest'] });
-        }
-        if (!data.resumeContent || data.resumeContent.length < 100) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please paste the full content of your resume (min 100 characters).", path: ['resumeContent'] });
-        }
-    }
-    if (data.applicationType === 'Partnership Inquiry') {
-        if (!data.companyName || data.companyName.length < 1) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please enter your company name.", path: ['companyName'] });
-        }
-        if (!data.partnershipInterest || data.partnershipInterest.length < 20) {
-            ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Please describe your challenge or interest in partnering (min 20 characters).", path: ['partnershipInterest'] });
-        }
-    }
-});
-
-const countryCodes = [
-    { value: '+65-SG', label: 'Singapore (+65)' },
-    { value: '+1-CA', label: 'Canada (+1)' },
-    { value: '+1-US', label: 'USA (+1)' },
-    { value: '+44-GB', label: 'UK (+44)' },
-    { value: '+91-IN', label: 'India (+91)' },
-    { value: '+86-CN', label: 'China (+86)' },
-    { value: '+81-JP', label: 'Japan (+81)' },
-    { value: '+49-DE', label: 'Germany (+49)' },
-    { value: '+33-FR', label: 'France (+33)' },
-    { value: '+61-AU', label: 'Australia (+61)' },
-    { value: '+234-NG', label: 'Nigeria (+234)'},
-    { value: '+27-ZA', label: 'South Africa (+27)'},
-    { value: '+55-BR', label: 'Brazil (+55)'},
-    { value: '+7-RU', label: 'Russia (+7)'}
+const DATA_PROFILES = [
+  { id: "financial", label: "Financial / Transactional Data" },
+  { id: "healthcare", label: "Healthcare / PHI / Genomic Data" },
+  { id: "ip", label: "Proprietary IP / Trade Secrets" },
+  { id: "defense", label: "National Security / Defense Assets" },
+  { id: "pii", label: "High-Volume Consumer PII" },
 ];
 
-export default function ApplyPage() {
-    const { toast } = useToast();
-    const firestore = useFirestore();
-    const [submissionSuccess, setSubmissionSuccess] = useState(false);
-    const [mailtoLink, setMailtoLink] = useState('');
+const ENGAGEMENT_GOALS = [
+  { id: "csuite_edu", label: "Executive / Board-Level Education and Demystification" },
+  { id: "pqc_audit", label: "Post-Quantum Cryptographic (PQC) Audit and Migration Strategy" },
+  { id: "quantum_opt", label: "Exploring Quantum-Inspired Optimization for existing bottlenecks" },
+  { id: "advisory", label: "General technical advisory and architectural review" },
+];
 
+export default function EnterpriseDiagnosticPage() {
+  const [formData, setFormData] = useState<EnterpriseDiagnosticInput>({
+    companyName: '',
+    executiveSponsor: '',
+    workEmail: '',
+    industry: '',
+    dataProfile: [],
+    pqcAwareness: 'unsure',
+    currentEncryption: '',
+    dataLifespan: '10_years',
+    classicalLimitations: '',
+    aiArchitecture: '',
+    immediateGoal: [],
+  });
 
-    useEffect(() => {
-      document.title = "Apply to Eve Count | EveCount.com";
-    }, []);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submittedRef, setSubmittedRef] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-    const form = useForm<z.infer<typeof applicationSchema>>({
-        resolver: zodResolver(applicationSchema),
-        defaultValues: {
-            submitterName: "",
-            contactEmail: "",
-            countryCode: "",
-            localPhone: "",
-            companyName: "",
-            visionPitch: "",
-            linkedinUrl: "https://linkedin.com/in/",
-            githubUrl: "https://github.com/",
-            websiteUrl: "https://",
-            roleInterest: "",
-            resumeContent: "",
-            partnershipInterest: "",
-            terms: false,
-        },
-    });
+  const toggleDataProfile = (item: string) => {
+    setFormData(prev => ({
+      ...prev,
+      dataProfile: prev.dataProfile.includes(item)
+        ? prev.dataProfile.filter(i => i !== item)
+        : [...prev.dataProfile, item]
+    }));
+  };
 
-    const applicationType = form.watch("applicationType");
+  const toggleGoal = (item: string) => {
+    setFormData(prev => ({
+      ...prev,
+      immediateGoal: prev.immediateGoal.includes(item)
+        ? prev.immediateGoal.filter(i => i !== item)
+        : [...prev.immediateGoal, item]
+    }));
+  };
 
-    async function onSubmit(values: z.infer<typeof applicationSchema>) {
-        if (!firestore) {
-            toast({
-                variant: "destructive",
-                title: "Error",
-                description: "Could not connect to the database. Please try again later.",
-            });
-            return;
-        }
-
-        const { terms, countryCode, localPhone, ...submissionValues } = values;
-        const code = countryCode.split('-')[0];
-
-        const submissionData = {
-            ...submissionValues,
-            contactPhone: `${code} ${localPhone}`,
-            submissionDate: new Date().toISOString(),
-            status: 'New' as const,
-        };
-        
-        const submissionsCollection = collection(firestore, 'submissions');
-        addDocumentNonBlocking(submissionsCollection, submissionData);
-
-        toast({
-            title: "Application Received",
-            description: "Thank you for your interest! We've received your submission and will be in touch via email shortly.",
-        });
-
-        // Create the mailto link
-        const subject = `Eve Count Application Submission: ${submissionData.applicationType}`;
-        
-        let bodyContent = `This is a copy of my submission for your records.\n\n---\n`;
-        const keyMap: { [key: string]: string } = {
-            applicationType: 'Application Type',
-            submitterName: 'Name',
-            contactEmail: 'Email',
-            contactPhone: 'Phone',
-            companyName: 'Company Name',
-            visionPitch: 'Vision/Interest',
-            linkedinUrl: 'LinkedIn',
-            githubUrl: 'GitHub',
-            websiteUrl: 'Website',
-            roleInterest: 'Role of Interest',
-            resumeContent: 'Resume/CV',
-            partnershipInterest: 'Partnership Interest',
-        };
-
-        for (const [key, value] of Object.entries(submissionData)) {
-            if (value && keyMap[key]) {
-                bodyContent += `${keyMap[key]}: ${value}\n`;
-            }
-        }
-        bodyContent += `---`;
-
-        const mailto = `mailto:gwen@evecount.com?cc=${submissionData.contactEmail}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyContent)}`;
-        
-        setMailtoLink(mailto);
-        setSubmissionSuccess(true);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.companyName || !formData.executiveSponsor || !formData.workEmail) {
+      setErrorMsg("Please complete all required organizational contact fields.");
+      return;
     }
 
-    return (
-        <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1 py-16 md:py-24">
-                <div className="container max-w-4xl">
-                    <div className="mb-12 text-center">
-                        <h1 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">Apply to Eve Count</h1>
-                        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground md:text-lg">
-                            Whether you're pitching a new venture, looking to join our incubator, seeking a new career, or wanting to partner with us, this is the right place to start.
-                        </p>
-                    </div>
-                    <Card className="bg-secondary/20 text-foreground">
-                        <CardHeader>
-                            <CardTitle>Universal Application</CardTitle>
-                            <CardDescription>Tell us how you'd like to get involved.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            {submissionSuccess ? (
-                                <div className="text-center p-4">
-                                    <CardTitle className="mb-2 text-2xl font-bold">Thank You!</CardTitle>
-                                    <CardDescription className="mb-6 text-muted-foreground">
-                                        Your application has been successfully submitted. We'll be in touch soon.
-                                        <br />
-                                        For your own records, and as a backup, you can email a copy of your submission.
-                                    </CardDescription>
-                                    <Button asChild size="lg">
-                                        <a href={mailtoLink}>
-                                            <Send className="mr-2 h-4 w-4" />
-                                            Email a Copy to Yourself & Eve Count
-                                        </a>
-                                    </Button>
-                                </div>
-                            ) : (
-                               <Form {...form}>
-                                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                                        <FormField
-                                            control={form.control}
-                                            name="applicationType"
-                                            render={({ field }) => (
-                                                <FormItem className="space-y-3">
-                                                    <FormLabel>How would you like to engage with us? *</FormLabel>
-                                                    <FormControl>
-                                                        <RadioGroup
-                                                            onValueChange={field.onChange}
-                                                            defaultValue={field.value}
-                                                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
-                                                        >
-                                                            {applicationTypes.map(type => (
-                                                                <FormItem key={type} className="flex items-center space-x-3 space-y-0">
-                                                                    <FormControl>
-                                                                        <RadioGroupItem value={type} />
-                                                                    </FormControl>
-                                                                    <FormLabel className="font-normal">{type}</FormLabel>
-                                                                </FormItem>
-                                                            ))}
-                                                        </RadioGroup>
-                                                    </FormControl>
-                                                    <FormMessage />
-                                                </FormItem>
-                                            )}
-                                        />
+    setIsSubmitting(true);
+    setErrorMsg(null);
 
-                                        {applicationType && (
-                                            <>
-                                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="submitterName"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Your Name *</FormLabel>
-                                                                <FormControl><Input placeholder="Your Name" {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="contactEmail"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Contact Email *</FormLabel>
-                                                                <FormControl><Input type="email" placeholder="you@company.com" {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </div>
-                                                <div className="grid grid-cols-1 gap-4 sm:grid-cols-[150px_1fr]">
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="countryCode"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Country Code *</FormLabel>
-                                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                                    <FormControl>
-                                                                        <SelectTrigger>
-                                                                            <SelectValue placeholder="Code" />
-                                                                        </SelectTrigger>
-                                                                    </FormControl>
-                                                                    <SelectContent>
-                                                                        {countryCodes.map((country) => (
-                                                                            <SelectItem key={country.value} value={country.value}>{country.label}</SelectItem>
-                                                                        ))}
-                                                                    </SelectContent>
-                                                                </Select>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                    <FormField
-                                                        control={form.control}
-                                                        name="localPhone"
-                                                        render={({ field }) => (
-                                                            <FormItem>
-                                                                <FormLabel>Phone Number *</FormLabel>
-                                                                <FormControl><Input type="tel" placeholder="Your phone number" {...field} /></FormControl>
-                                                                <FormMessage />
-                                                            </FormItem>
-                                                        )}
-                                                    />
-                                                </div>
+    const res = await submitEnterpriseDiagnosticAction(formData);
+    setIsSubmitting(false);
 
-                                                {applicationType === 'Venture Pitch' && (
-                                                    <>
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="companyName"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Company Name (Optional)</FormLabel>
-                                                                    <FormControl><Input placeholder="Your Company Inc." {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="visionPitch"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>The Vision or Problem *</FormLabel>
-                                                                    <FormControl><Textarea placeholder="Describe the problem you're solving, your proposed solution, and the core insight..." rows={5} {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                            <FormField
-                                                                control={form.control}
-                                                                name="linkedinUrl"
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>LinkedIn Profile (Optional)</FormLabel>
-                                                                        <FormControl><Input {...field} /></FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                            <FormField
-                                                                control={form.control}
-                                                                name="githubUrl"
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>GitHub Profile (Optional)</FormLabel>
-                                                                        <FormControl><Input {...field} /></FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                        </div>
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="websiteUrl"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Company Website (Optional)</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                    </>
-                                                )}
+    if (res.success && res.referenceId) {
+      setSubmittedRef(res.referenceId);
+    } else {
+      setErrorMsg(res.message || "An error occurred while submitting.");
+    }
+  };
 
-                                                {applicationType === 'Incubator Application' && (
-                                                    <>
-                                                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                            <FormField
-                                                                control={form.control}
-                                                                name="linkedinUrl"
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>LinkedIn Profile *</FormLabel>
-                                                                        <FormControl><Input {...field} /></FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                            <FormField
-                                                                control={form.control}
-                                                                name="githubUrl"
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>GitHub Profile</FormLabel>
-                                                                        <FormControl><Input {...field} /></FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                        </div>
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="websiteUrl"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Personal Website</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="visionPitch"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Why do you want to join the incubator? *</FormLabel>
-                                                                    <FormControl><Textarea placeholder="Tell us about your domain expertise, your goals, and what you hope to build." rows={5} {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                    </>
-                                                )}
+  return (
+    <div className="flex min-h-screen flex-col bg-white text-ink">
+      <Header />
 
-                                                {applicationType === 'Career Inquiry' && (
-                                                    <>
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="roleInterest"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Role / Area of Interest *</FormLabel>
-                                                                    <FormControl><Input placeholder="e.g., AI Engineer, Full-Stack Developer" {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="resumeContent"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Resume / CV *</FormLabel>
-                                                                    <FormControl><Textarea placeholder="Please paste the plain text of your resume here. You can include a cover letter at the top." rows={10} {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                            <FormField
-                                                                control={form.control}
-                                                                name="linkedinUrl"
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>LinkedIn Profile (Optional)</FormLabel>
-                                                                        <FormControl><Input {...field} /></FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                            <FormField
-                                                                control={form.control}
-                                                                name="githubUrl"
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>GitHub Profile (Optional)</FormLabel>
-                                                                        <FormControl><Input {...field} /></FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                        </div>
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="websiteUrl"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Personal Website (Optional)</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                    </>
-                                                )}
-                                                
-                                                {applicationType === 'Partnership Inquiry' && (
-                                                    <>
-                                                         <FormField
-                                                            control={form.control}
-                                                            name="companyName"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Company Name *</FormLabel>
-                                                                    <FormControl><Input placeholder="Your Company Inc." {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="partnershipInterest"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Challenge or Partnership Interest *</FormLabel>
-                                                                    <FormControl><Textarea placeholder="Describe your business challenge, or how you'd like to partner with us (e.g., Service Partner, Event Sponsor)." rows={5} {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                            <FormField
-                                                                control={form.control}
-                                                                name="linkedinUrl"
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>LinkedIn Profile (Optional)</FormLabel>
-                                                                        <FormControl><Input {...field} /></FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                            <FormField
-                                                                control={form.control}
-                                                                name="githubUrl"
-                                                                render={({ field }) => (
-                                                                    <FormItem>
-                                                                        <FormLabel>GitHub Profile (Optional)</FormLabel>
-                                                                        <FormControl><Input {...field} /></FormControl>
-                                                                        <FormMessage />
-                                                                    </FormItem>
-                                                                )}
-                                                            />
-                                                        </div>
-                                                        <FormField
-                                                            control={form.control}
-                                                            name="websiteUrl"
-                                                            render={({ field }) => (
-                                                                <FormItem>
-                                                                    <FormLabel>Company Website (Optional)</FormLabel>
-                                                                    <FormControl><Input {...field} /></FormControl>
-                                                                    <FormMessage />
-                                                                </FormItem>
-                                                            )}
-                                                        />
-                                                    </>
-                                                )}
+      <main className="flex-1 py-16 md:py-24">
+        <div className="container max-w-[880px] mx-auto px-6">
+          {/* Header Briefing */}
+          <div className="mb-12 text-left space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-mist px-3.5 py-1 text-xs font-semibold uppercase tracking-widest text-slate">
+              <ShieldCheck className="h-3.5 w-3.5 text-gold-warm" />
+              <span>NIST PQC & Computational Baseline</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-ink">
+              Enterprise Quantum Diagnostic
+            </h1>
+            <p className="text-base sm:text-lg text-slate leading-relaxed max-w-[720px]">
+              Establish your organizational readiness for post-quantum cryptographic security and classical-quantum algorithm acceleration. Submissions are reviewed by our chief architects under strict confidentiality.
+            </p>
+          </div>
 
-                                                <FormField
-                                                    control={form.control}
-                                                    name="terms"
-                                                    render={({ field }) => (
-                                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border border-input bg-background/50 p-4 shadow">
-                                                            <FormControl>
-                                                                <Checkbox
-                                                                    checked={field.value}
-                                                                    onCheckedChange={field.onChange}
-                                                                />
-                                                            </FormControl>
-                                                            <div className="space-y-1 leading-none">
-                                                                <FormLabel>
-                                                                    Acknowledge and Agree
-                                                                </FormLabel>
-                                                                <FormDescription>
-                                                                    By submitting this form, you acknowledge that you have read and agree to our{' '}
-                                                                    <Link href="/terms" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Terms & Conditions</Link> and{' '}
-                                                                    <Link href="/privacy" className="underline hover:text-primary" target="_blank" rel="noopener noreferrer">Privacy Policy</Link>.
-                                                                    You agree to be contacted by Eve Count regarding your application.
-                                                                </FormDescription>
-                                                                <FormMessage />
-                                                            </div>
-                                                        </FormItem>
-                                                    )}
-                                                />
-
-                                                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                                                    <Send className="mr-2 h-4 w-4" />
-                                                    {form.formState.isSubmitting ? "Submitting..." : "Submit Application"}
-                                                </Button>
-                                            </>
-                                        )}
-                                    </form>
-                                </Form>
-                            )}
-                        </CardContent>
-                    </Card>
+          {submittedRef ? (
+            <Card className="border border-border bg-mist/30 p-8 sm:p-12 text-left space-y-6">
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="h-8 w-8 text-gold-warm" />
+                <h2 className="text-2xl font-bold text-ink">Diagnostic Assessment Ingested</h2>
+              </div>
+              <p className="text-slate leading-relaxed">
+                Thank you. Your organizational baseline has been registered under Reference ID:
+              </p>
+              <div className="rounded-md border border-border bg-white p-4 font-mono text-lg font-bold text-ink inline-block">
+                {submittedRef}
+              </div>
+              <p className="text-sm text-slate">
+                Our architecture team is evaluating your data profile against current NIST PQC standards (ML-KEM, ML-DSA) and classical bottlenecks. An executive summary will be transmitted to <strong>{formData.workEmail}</strong>.
+              </p>
+              <div className="pt-4">
+                <Button asChild className="bg-gold-luminous hover:bg-gold-warm text-ink font-semibold">
+                  <a href="/">Return to Sovereign Portal</a>
+                </Button>
+              </div>
+            </Card>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-10">
+              {errorMsg && (
+                <div className="rounded-md border border-red-200 bg-red-50 p-4 text-sm text-red-800">
+                  {errorMsg}
                 </div>
-            </main>
-            <Footer />
+              )}
+
+              {/* Section 1: Organizational Baseline */}
+              <Card className="border border-border bg-white shadow-none">
+                <CardHeader className="border-b border-border pb-4">
+                  <CardTitle className="text-xl font-bold text-ink flex items-center gap-2">
+                    <span className="font-mono text-sm text-gold-warm">01.</span> Organizational Baseline
+                  </CardTitle>
+                  <CardDescription className="text-slate">
+                    Identify the operational context and primary data categories to be secured.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="companyName" className="text-ink font-semibold">Company Name *</Label>
+                      <Input
+                        id="companyName"
+                        value={formData.companyName}
+                        onChange={e => setFormData({ ...formData, companyName: e.target.value })}
+                        placeholder="e.g. Apex Global Logistics"
+                        required
+                        className="bg-white border-border"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="executiveSponsor" className="text-ink font-semibold">Executive Sponsor / Contact *</Label>
+                      <Input
+                        id="executiveSponsor"
+                        value={formData.executiveSponsor}
+                        onChange={e => setFormData({ ...formData, executiveSponsor: e.target.value })}
+                        placeholder="e.g. Chief Information Security Officer"
+                        required
+                        className="bg-white border-border"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="workEmail" className="text-ink font-semibold">Corporate Work Email *</Label>
+                      <Input
+                        id="workEmail"
+                        type="email"
+                        value={formData.workEmail}
+                        onChange={e => setFormData({ ...formData, workEmail: e.target.value })}
+                        placeholder="executive@company.com"
+                        required
+                        className="bg-white border-border"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="industry" className="text-ink font-semibold">Industry / Domain</Label>
+                      <Input
+                        id="industry"
+                        value={formData.industry}
+                        onChange={e => setFormData({ ...formData, industry: e.target.value })}
+                        placeholder="e.g. Defense, FinTech, Energy, Healthcare"
+                        className="bg-white border-border"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-3 pt-2">
+                    <Label className="text-ink font-semibold block">Primary Data Profile (Select all that apply)</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {DATA_PROFILES.map(dp => (
+                        <div key={dp.id} className="flex items-center space-x-3 rounded-lg border border-border p-3 hover:bg-mist/40 transition-colors">
+                          <Checkbox
+                            id={dp.id}
+                            checked={formData.dataProfile.includes(dp.label)}
+                            onCheckedChange={() => toggleDataProfile(dp.label)}
+                          />
+                          <Label htmlFor={dp.id} className="text-sm text-slate cursor-pointer">{dp.label}</Label>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Section 2: Security Threat Landscape */}
+              <Card className="border border-border bg-white shadow-none">
+                <CardHeader className="border-b border-border pb-4">
+                  <CardTitle className="text-xl font-bold text-ink flex items-center gap-2">
+                    <span className="font-mono text-sm text-gold-warm">02.</span> The Security Threat Landscape
+                  </CardTitle>
+                  <CardDescription className="text-slate">
+                    Evaluating vulnerability to "Harvest Now, Decrypt Later" (HNDL) data collection.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-6">
+                  <div className="space-y-3">
+                    <Label className="text-ink font-semibold">
+                      Has your leadership or C-suite formally assessed Post-Quantum Cryptography (PQC) migration?
+                    </Label>
+                    <RadioGroup 
+                      value={formData.pqcAwareness} 
+                      onValueChange={val => setFormData({ ...formData, pqcAwareness: val })}
+                      className="flex flex-col sm:flex-row gap-4"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="yes" id="pqc-yes" />
+                        <Label htmlFor="pqc-yes" className="cursor-pointer text-slate">Yes, Active Initiative</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="in_discussion" id="pqc-in_discussion" />
+                        <Label htmlFor="pqc-in_discussion" className="cursor-pointer text-slate">In Informal Discussion</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="no" id="pqc-no" />
+                        <Label htmlFor="pqc-no" className="cursor-pointer text-slate">Not Yet Addressed</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="unsure" id="pqc-unsure" />
+                        <Label htmlFor="pqc-unsure" className="cursor-pointer text-slate">Unsure</Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="currentEncryption" className="text-ink font-semibold">Current Encryption Baseline</Label>
+                      <Input
+                        id="currentEncryption"
+                        value={formData.currentEncryption}
+                        onChange={e => setFormData({ ...formData, currentEncryption: e.target.value })}
+                        placeholder="e.g. RSA-2048, ECC, AES-256"
+                        className="bg-white border-border"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="dataLifespan" className="text-ink font-semibold">Required Data Secrecy Lifespan</Label>
+                      <Input
+                        id="dataLifespan"
+                        value={formData.dataLifespan}
+                        onChange={e => setFormData({ ...formData, dataLifespan: e.target.value })}
+                        placeholder="e.g. 5 years, 15 years, 30+ years"
+                        className="bg-white border-border"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Section 3: Computational Bottlenecks */}
+              <Card className="border border-border bg-white shadow-none">
+                <CardHeader className="border-b border-border pb-4">
+                  <CardTitle className="text-xl font-bold text-ink flex items-center gap-2">
+                    <span className="font-mono text-sm text-gold-warm">03.</span> Computational Bottlenecks
+                  </CardTitle>
+                  <CardDescription className="text-slate">
+                    Where combinatorial explosion and classical compute limits restrict your growth.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="classicalLimitations" className="text-ink font-semibold">
+                      Where is traditional classical computing failing your organization today?
+                    </Label>
+                    <Textarea
+                      id="classicalLimitations"
+                      rows={3}
+                      value={formData.classicalLimitations}
+                      onChange={e => setFormData({ ...formData, classicalLimitations: e.target.value })}
+                      placeholder="e.g. Route optimization latency in supply chain, financial portfolio risk calculations, molecular docking simulations, prohibitive GPU cloud bills."
+                      className="bg-white border-border"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="aiArchitecture" className="text-ink font-semibold">
+                      Current AI & Agentic Architecture Deployment
+                    </Label>
+                    <Textarea
+                      id="aiArchitecture"
+                      rows={3}
+                      value={formData.aiArchitecture}
+                      onChange={e => setFormData({ ...formData, aiArchitecture: e.target.value })}
+                      placeholder="Describe existing autonomous agentic workflows, transformer inference pipelines, or proprietary foundational models."
+                      className="bg-white border-border"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Section 4: Engagement Objectives */}
+              <Card className="border border-border bg-white shadow-none">
+                <CardHeader className="border-b border-border pb-4">
+                  <CardTitle className="text-xl font-bold text-ink flex items-center gap-2">
+                    <span className="font-mono text-sm text-gold-warm">04.</span> Engagement Objectives
+                  </CardTitle>
+                  <CardDescription className="text-slate">
+                    Primary outcomes desired from Eve Count Quantum Systems.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6 space-y-4">
+                  <div className="space-y-3">
+                    {ENGAGEMENT_GOALS.map(goal => (
+                      <div key={goal.id} className="flex items-center space-x-3 rounded-lg border border-border p-3 hover:bg-mist/40 transition-colors">
+                        <Checkbox
+                          id={goal.id}
+                          checked={formData.immediateGoal.includes(goal.label)}
+                          onCheckedChange={() => toggleGoal(goal.label)}
+                        />
+                        <Label htmlFor={goal.id} className="text-sm text-slate cursor-pointer">{goal.label}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Submit Button */}
+              <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-2 text-xs text-slate">
+                  <Lock className="h-4 w-4 text-gold-warm" />
+                  <span>Confidential assessment under institutional NDA baseline.</span>
+                </div>
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto bg-gold-luminous hover:bg-gold-warm text-ink font-semibold px-8 py-3 text-base shadow-sm transition-all"
+                >
+                  {isSubmitting ? "Encrypting & Ingesting..." : "Transmit Diagnostic"}
+                </Button>
+              </div>
+            </form>
+          )}
         </div>
-    );
+      </main>
+
+      <Footer />
+    </div>
+  );
 }
