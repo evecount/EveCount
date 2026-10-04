@@ -42,7 +42,7 @@ export function QuantinuumShowcase() {
       {/* Subtle ambient light */}
       <div className="absolute top-1/2 left-0 -z-10 h-80 w-80 -translate-y-1/2 rounded-full bg-gold-wash/50 blur-3xl pointer-events-none" />
 
-      <div className="container max-w-[1280px] mx-auto px-6">
+      <div className="page-container">
         
         {/* Header Eyebrow & Headline */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-16">

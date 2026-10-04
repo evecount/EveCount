@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 680" role="img" aria-labelledby="title desc">
+<title id="title">Architectural study of a post-quantum system</title>
+<desc id="desc">A gold stippled architectural gateway with layered arches, geometric lattice, and orbital notation.</desc>
+<defs>
+  <pattern id="dots" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.15" fill="#B8872A" opacity=".66"/></pattern>
+  <pattern id="fine" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".7" fill="#16181D" opacity=".43"/></pattern>
+  <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#B8872A" stroke-width=".6" opacity=".3"/></pattern>
+  <clipPath id="arch"><path d="M215 547V253C215 137 292 77 379 77s164 60 164 176v294H215Z"/></clipPath>
+  <clipPath id="inner"><path d="M297 547V276c0-63 32-109 82-109s82 46 82 109v271H297Z"/></clipPath>
+</defs>
+<!-- technical field -->
+<path d="M87 583H672M103 111H630M85 144v435M674 144v435" fill="none" stroke="#16181D" stroke-width="1" opacity=".24"/>
+<path d="M112 106v10m-5-5h10M630 106v10m-5-5h10M80 583h10m-5-5v10m582-5h10m-5-5v10" stroke="#16181D" stroke-width="1"/>
+<circle cx="379" cy="325" r="269" fill="none" stroke="#D7AF55" stroke-width="1.2" stroke-dasharray="2 8" opacity=".8"/>
+<circle cx="379" cy="325" r="244" fill="none" stroke="#B8872A" stroke-width=".8" opacity=".35"/>
+<path d="M53 314h109m439 0h107M379 36v35m0 498v58" stroke="#B8872A" stroke-width="1" opacity=".75"/>
+<circle cx="109" cy="314" r="4" fill="#B8872A"/><circle cx="649" cy="314" r="4" fill="#B8872A"/>
+<circle cx="379" cy="57" r="5" fill="#D7AF55"/><circle cx="379" cy="594" r="5" fill="#D7AF55"/>
+<!-- ghosted architectural silhouette -->
+<path d="M199 547V250C199 124 282 61 379 61s180 63 180 189v297" fill="none" stroke="#B8872A" stroke-width="1.4"/>
+<path d="M188 547V250C188 119 277 50 379 50s191 69 191 200v297" fill="none" stroke="#B8872A" stroke-width=".7" opacity=".55"/>
+<path d="M215 547V253C215 137 292 77 379 77s164 60 164 176v294Z" fill="#F5EDDC" stroke="#16181D" stroke-width="2"/>
+<g clip-path="url(#arch)">
+<path d="M215 77h328v470H215Z" fill="url(#grid)"/>
+<path d="M215 87h328v460H215Z" fill="url(#dots)" opacity=".7"/>
+<path d="M215 547 379 77 543 547" fill="none" stroke="#B8872A" stroke-width="1" opacity=".35"/>
+<path d="M250 547 379 77 508 547M285 547 379 77 473 547" fill="none" stroke="#B8872A" stroke-width=".7" opacity=".28"/>
+<path d="M215 253h328M215 310h328M215 367h328M215 424h328M215 481h328" stroke="#B8872A" stroke-width=".8" opacity=".45"/>
+</g>
+<!-- ribs around central opening -->
+<path d="M246 547V266c0-92 51-159 133-159s133 67 133 159v281M270 547V273c0-77 42-135 109-135s109 58 109 135v274" fill="none" stroke="#16181D" stroke-width="1.4"/>
+<path d="M256 547V270c0-86 47-148 123-148s123 62 123 148v277" fill="none" stroke="#B8872A" stroke-width="1"/>
+<path d="M297 547V276c0-63 32-109 82-109s82 46 82 109v271Z" fill="#16181D" stroke="#16181D" stroke-width="2"/>
+<g clip-path="url(#inner)">
+<path d="M297 158h164v389H297Z" fill="url(#fine)" opacity=".66"/>
+<path d="M379 166v381M297 295h164M297 418h164" stroke="#D7AF55" stroke-width="1" opacity=".44"/>
+<path d="m379 192 67 94-67 111-67-111z" fill="none" stroke="#D7AF55" stroke-width="1" opacity=".88"/>
+<path d="m379 220 47 68-47 77-47-77z" fill="none" stroke="#D7AF55" stroke-width=".8" opacity=".8"/>
+<path d="M379 250 405 288 379 332 353 288Z" fill="#D7AF55"/>
+<circle cx="379" cy="288" r="7" fill="#16181D"/>
+<path d="M297 547 379 397l82 150" fill="none" stroke="#D7AF55" stroke-width="1" opacity=".65"/>
+</g>
+<!-- edges, plinth and keylines -->
+<path d="M172 547h414M157 559h444M142 573h474M246 537h51m164 0h51" fill="none" stroke="#16181D" stroke-width="1.4"/>
+<path d="M215 547h82m164 0h82" stroke="#B8872A" stroke-width="5"/>
+<path d="M124 585h510M182 599h394" fill="none" stroke="#B8872A" stroke-width="1" opacity=".65"/>
+<!-- signal nodes -->
+<g fill="none" stroke="#B8872A" stroke-width="1.2">
+<path d="M125 226h62l25 24M571 241l26-25h47M160 424h39l15-19M544 431l23 21h49"/>
+<circle cx="125" cy="226" r="4" fill="#FAF9F6"/><circle cx="644" cy="216" r="4" fill="#FAF9F6"/><circle cx="160" cy="424" r="4" fill="#FAF9F6"/><circle cx="616" cy="452" r="4" fill="#FAF9F6"/>
+</g>
+<g font-family="monospace" font-size="10" letter-spacing="1.5" fill="#827962">
+<text x="74" y="204">01 / PQC</text><text x="590" y="195">QPU / 02</text>
+<text x="78" y="407">03 / AGILITY</text><text x="594" y="478">FIPS 203</text>
+<text x="309" y="641">FIG. 01 — RESILIENCE ARCH</text>
+</g>
+</svg>
