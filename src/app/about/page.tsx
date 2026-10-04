@@ -31,24 +31,47 @@ export default function AboutPage() {
       <Header />
       <main className="flex-1">
         <section className="about-new-hero" ref={hero}>
+          {/* Background Cinematic Video Loop & Atmospheric Scrim */}
+          <div className="about-hero-backdrop" aria-hidden="true">
+            <video 
+              className="about-hero-video" 
+              src="/images/crypto-material-loop.mp4" 
+              autoPlay 
+              muted 
+              loop 
+              playsInline 
+              preload="auto" 
+            />
+            <img 
+              src="/images/crypto-material.jpg" 
+              alt="Crypto material background" 
+              className="about-hero-img-fallback" 
+              loading="eager" 
+            />
+            <div className="about-hero-scrim" />
+          </div>
+
           <div className="about-ring-field" aria-hidden="true">
             <motion.div className="about-rings" style={{ rotate: tilt, scale }}>
               <i /><i /><i /><i /><b />
             </motion.div>
           </div>
+
           <div className="about-new-copy">
-            <p className="new-kicker">ABOUT EVE COUNT</p>
-            <h1>
-              The adversary<br />
-              clarifies<br />
-              <em>the question.</em>
-            </h1>
-            <p>
-              We named the firm after Eve—the eavesdropper in every cryptography textbook—because security is only meaningful when measured against the person trying to break it.
-            </p>
-            <p className="about-ring-note text-xs font-mono text-[var(--ghost)] tracking-wider mt-4">
-              The rings are not decoration — <Link href="/#proof" className="underline underline-offset-4 text-[var(--ink)]">they are our method</Link>.
-            </p>
+            <div className="about-glass-card">
+              <p className="new-kicker">ABOUT EVE COUNT</p>
+              <h1>
+                The adversary<br />
+                clarifies<br />
+                <em>the question.</em>
+              </h1>
+              <p>
+                We named the firm after Eve—the eavesdropper in every cryptography textbook—because security is only meaningful when measured against the person trying to break it.
+              </p>
+              <p className="about-ring-note text-xs font-mono tracking-wider mt-4">
+                The rings are not decoration — <Link href="/#proof" className="underline underline-offset-4">they are our method</Link>.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -248,7 +271,7 @@ export default function AboutPage() {
         )}
 
         <section className="evidence">
-          <div className="evidence-image">
+          <div className="evidence-image relative overflow-hidden">
             <video 
               className="cinema-video" 
               src="/images/crypto-material-loop.mp4" 
