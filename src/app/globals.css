@@ -912,7 +912,7 @@ body {
 .proof-credits { position: relative; z-index: 1; width: min(100%, 1260px); margin: 12vh auto 0; border-top: 1px solid var(--line); padding-top: 30px; }
 .proof-credits p { margin: 0; font-size: 15px; color: color-mix(in oklab, var(--ink) 80%, transparent); }
 .proof-credits p strong { color: var(--ink); }
-.proof-credits ul { list-style: none; padding: 0; margin: 26px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.proof-credits ul { list-style: none; padding: 0; margin: 26px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
 .proof-credits li { font-size: 13px; color: var(--ghost); }
 .proof-credits li strong { display: block; font-family: "Instrument Serif", serif; font-weight: 400; font-size: 28px; color: var(--ink); margin-bottom: 4px; }
 .proof-credits a { color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in oklab, var(--gold-deep) 50%, transparent); padding-bottom: 2px; transition: color .2s, border-color .2s; }

@@ -147,7 +147,7 @@ export default function AboutPage() {
                 </p>
                 <p className="founder-team">
                   <span>WORKING WITH</span>
-                  Benjamin Lim, Co-founder &amp; Systems Architect · <a href="https://www.mambapartners.com/" target="_blank" rel="noreferrer">James Sun</a>, Venture Advisor, Mamba Partners
+                  Benjamin Lim, Co-founder &amp; Systems Architect
                 </p>
               </div>
 

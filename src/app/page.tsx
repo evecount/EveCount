@@ -449,10 +449,6 @@ function ProofSection({ reduced }: { reduced: boolean }) {
             <strong>Benjamin Lim</strong>
             Co-founder & Systems Architect · Constellation & interfaces
           </li>
-          <li>
-            <strong><a href="https://www.mambapartners.com/" target="_blank" rel="noreferrer">James Sun</a></strong>
-            Venture Advisor · <a href="https://www.mambapartners.com/" target="_blank" rel="noreferrer">Mamba Partners</a>
-          </li>
         </ul>
       </div>
     </section>
