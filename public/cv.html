@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gwendalynn Lim — Quantum Systems CV</title>
+  <style>
+    @page {
+      margin: 18mm 16mm 18mm 16mm;
+      size: A4 portrait;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1a1a1a;
+      background: #ffffff;
+      line-height: 1.45;
+      font-size: 10pt;
+      margin: 0;
+      padding: 24px;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    h1 {
+      font-size: 20pt;
+      letter-spacing: 0.5px;
+      margin: 0 0 4px 0;
+      font-weight: 700;
+      color: #000000;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      font-size: 11pt;
+      font-weight: 600;
+      color: #2b2b2b;
+      margin-bottom: 6px;
+    }
+    .contact-bar {
+      font-size: 9pt;
+      color: #555555;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid #000000;
+    }
+    .contact-bar a {
+      color: #111111;
+      text-decoration: none;
+    }
+    h2 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 14px 0 6px 0;
+      padding-bottom: 3px;
+      border-bottom: 1px solid #cccccc;
+      color: #000000;
+    }
+    h3 {
+      font-size: 10pt;
+      font-weight: 700;
+      margin: 8px 0 2px 0;
+      color: #111111;
+    }
+    .meta {
+      font-size: 8.5pt;
+      color: #666666;
+      margin-bottom: 4px;
+    }
+    p {
+      margin: 4px 0 6px 0;
+    }
+    ul {
+      margin: 3px 0 8px 0;
+      padding-left: 18px;
+    }
+    li {
+      margin-bottom: 3px;
+    }
+    .quote-box {
+      background: #f7f7f7;
+      border-left: 3px solid #000000;
+      padding: 8px 12px;
+      margin: 12px 0 6px 0;
+      font-style: italic;
+      font-size: 9.5pt;
+    }
+    code {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 9pt;
+      background: #f0f0f0;
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+    @media print {
+      body {
+        padding: 0;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Gwendalynn Lim</h1>
+  <div class="subtitle">Quantum Systems Architect & Applied Computing Engineer</div>
+  <div class="contact-bar">
+    Singapore &nbsp;•&nbsp; +65 8608 1377 &nbsp;•&nbsp; <a href="mailto:gwen@evecount.com">gwen@evecount.com</a> &nbsp;•&nbsp; <a href="https://linkedin.com/in/gwendalynnlim">linkedin.com/in/gwendalynnlim</a> &nbsp;•&nbsp; <a href="https://github.com/evecount">github.com/evecount</a>
+  </div>
+
+  <h2>Profile</h2>
+  <p>
+    Practical quantum systems engineer and computational researcher. Lead architect on <strong>Project Q-Rotate</strong> for the <strong>Quantinuum Singapore Grand Challenge 2026</strong>, compiling native Lie-algebra rotational synthesis and dynamic Repeat-Until-Success (RUS) circuits for trapped-ion hardware (<code>pytket</code>, Guppy). Strong foundation in lattice-based post-quantum cryptography (NIST CAVP A7970 validated systems), applied computing, and systems architecture. Proven endurance: 15 years of bootstrapped technical and operational execution before pivoting entirely to quantum and computational science.
+  </p>
+
+  <h2>Core Technical Skills</h2>
+  <ul>
+    <li><strong>Quantum Software & Compilers:</strong> <code>pytket</code>, TKET compilation passes, Quantinuum Guppy (mid-circuit measurement & dynamic control), Qiskit, OpenQASM.</li>
+    <li><strong>Hardware Architecture Familiarity:</strong> Trapped-ion (all-to-all connectivity, native <code>PhasedX</code> / <code>ZZPhase</code> gate sets), superconducting circuit topologies, qubit routing, error mitigation.</li>
+    <li><strong>Post-Quantum Cryptography:</strong> Lattice-based cryptography (ML-KEM / Kyber, ML-DSA / Dilithium), NIST CAVP A7970 validation, quantum-safe data architectures.</li>
+    <li><strong>Languages & Engineering:</strong> Python (NumPy, SciPy, PyTorch), C/C++, TypeScript, Rust (exploratory), Linux/Bash, Git, WebGL, CI/CD.</li>
+    <li><strong>Applied Mathematics:</strong> Lie Algebra (SU(2) / SO(3) rotations), Riemannian manifolds, Linear Algebra, Stochastic Processes, Fractional Calculus.</li>
+  </ul>
+
+  <h2>Recent Quantum & Deep Tech Work</h2>
+  
+  <h3>Quantinuum Singapore Grand Challenge 2026 — Lead Systems Architect & Co-Inventor</h3>
+  <div class="meta">Aug 2026 – Oct 2026 &nbsp;|&nbsp; Open-Source Repository: github.com/evecount/quantum_rotation</div>
+  <ul>
+    <li>Designed and benchmarked <strong>Project Q-Rotate</strong>, an agentic continuous Lie-algebra rotational solver replacing classical O(N³) Cartesian grid docking with continuous SU(2)<sup>⊗n</sup> phase synchronization.</li>
+    <li>Targeted Quantinuum H1/H2 trapped-ion hardware: compiled 9-qubit and 17-qubit registers directly to native <code>PhasedX</code> (62 gates) and <code>ZZPhase</code> (32 gates), executing with 0 SWAPs via trapped-ion all-to-all connectivity.</li>
+    <li>Implemented autonomous mid-circuit optical readout and adaptive phase-kick logic (<code>Ry(δθ)</code>) using Quantinuum’s <strong>Guppy</strong> Repeat-Until-Success (RUS) runtime.</li>
+    <li>Validated on 6 empirical experimental ligand structures (PDB 1U19, 1EMA, 7VH8, 3LN1, PubChem 2272, and H₂), locking onto deposited poses in 1–5 RUS iterations.</li>
+  </ul>
+
+  <h3>Cipherplus / EveCount — Quantum-Resistant Architecture Lead</h3>
+  <div class="meta">2024 – Present &nbsp;|&nbsp; Singapore</div>
+  <ul>
+    <li>Spearheaded systems architecture for Singapore’s first <strong>NIST CAVP (A7970)</strong> validated post-quantum cryptographic deployment in collaboration with lead researcher Dr. Andy Zhu.</li>
+    <li>Integrated lattice-based key encapsulation and digital signature standards (ML-KEM, ML-DSA) into low-latency transport layers for institutional data protection.</li>
+  </ul>
+
+  <h3>Mathematical Research: Double Sigmoid Mencius Function (DSMF)</h3>
+  <div class="meta">2024 – Present</div>
+  <ul>
+    <li>Formulated a continuous, probabilistic activation bridge incorporating fractional calculus and quantum state vectors: σ<sup>n</sup>(z, |ψ⟩) = σ(D<sup>α</sup>(σ<sup>n-1</sup>(z, |ψ⟩))).</li>
+    <li>Explored manifold stability to address the stability-plasticity dilemma in hybrid classical-quantum models.</li>
+  </ul>
+
+  <h2>Academic Talks, Jury & Community</h2>
+  <ul>
+    <li><strong>IEEE Guest Lecturer (2026):</strong> Delivered invited technical lecture on Quantum Systems, Compilation Passes, and Post-Quantum Cryptography transitions.</li>
+    <li><strong>Jury Member / Judge, NTU Deep Tech Hackathon (Oct 2026):</strong> Evaluated university engineering teams across machine learning pipelines, system scalability, and hardware feasibility.</li>
+    <li><strong>Mentor, Women in Tech @ NTU (WiT@NTU) (2026):</strong> Technical mentor for female undergraduates in Applied Computing and Data Science.</li>
+    <li><strong>Microsoft AICO Ideathon (Jan 2026):</strong> Gold Medal winner for dual-agent deterministic grounding architecture.</li>
+  </ul>
+
+  <h2>Formal Education</h2>
+  <p><strong>Singapore Institute of Technology (SIT)</strong> — B.Sc. (Honours) in Applied Computing <em>(Feb 2026 – Present, Expected 2029)</em><br>
+  <span class="meta">Focus: Distributed systems, quantum-resistant networking, computational complexity.</span></p>
+  
+  <p><strong>Nanyang Technological University (NTU)</strong> — Advanced Machine Learning & AI SCTP <em>(Dec 2025 – Jul 2026)</em><br>
+  <span class="meta">Focus: Mathematical foundations of deep learning, stochastic optimization, high-dimensional manifolds.</span></p>
+
+  <p><strong>National University of Singapore (NUS) & Univ. of Toronto</strong> — Continuing Studies in FinTech, Cryptography & Systems <em>(2021 – 2022)</em></p>
+
+  <h2>Prior Entrepreneurial & Operational Background</h2>
+  <p><strong>Founder & Managing Director | Motion and Still Inc.</strong> (2009 – 2021)<br>
+  Bootstrapped and operated a commercial production company over 12 consecutive years without external equity dilution, scaling across 9 production facilities. Managed balance sheets, high-stakes client delivery, and long-horizon operational sustainability before executing a planned wind-down to pivot full-time into computational science.</p>
+  
+  <p><strong>M&A Advisory Executive | BDO Stoy Hayward</strong> (2008 – 2009)<br>
+  Financial due diligence, quantitative risk valuation, and balance-sheet risk assessment.</p>
+
+  <div class="quote-box">
+    <strong>Note on Candidacy:</strong><br>
+    “The journey has been long and yet, I am not tired.”<br>
+    I bring mature operational grit (<em>sisu</em>), hands-on familiarity with modern quantum SDKs (<code>pytket</code>, Guppy, Qiskit), and a clear understanding of hardware constraints. Open to technical engineering, compiler, and applied research roles at IQM.
+  </div>
+
+</body>
+</html>
