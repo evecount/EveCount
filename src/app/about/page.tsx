@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowUpRight, Sparkles, Terminal, Award, BookOpen, ExternalLink, X } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { useRef, useState } from "react";
+import { PingPongVideo } from "@/components/ui/PingPongVideo";
 
 export default function AboutPage() {
   const hero = useRef<HTMLElement>(null);
@@ -33,14 +34,9 @@ export default function AboutPage() {
         <section className="about-new-hero" ref={hero}>
           {/* Background Cinematic Video Loop & Atmospheric Scrim */}
           <div className="about-hero-backdrop" aria-hidden="true">
-            <video 
+            <PingPongVideo 
               className="about-hero-video" 
               src="/images/crypto-material-loop.mp4" 
-              autoPlay 
-              muted 
-              loop 
-              playsInline 
-              preload="auto" 
             />
             <img 
               src="/images/crypto-material.jpg" 
@@ -272,14 +268,9 @@ export default function AboutPage() {
 
         <section className="evidence">
           <div className="evidence-image relative overflow-hidden">
-            <video 
+            <PingPongVideo 
               className="cinema-video" 
               src="/images/crypto-material-loop.mp4" 
-              autoPlay 
-              muted 
-              loop 
-              playsInline 
-              preload="auto" 
               aria-hidden="true" 
             />
             <img 

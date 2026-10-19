@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
 import { useEffect, useRef } from "react";
+import { PingPongVideo } from "@/components/ui/PingPongVideo";
 
 const questions = [
   { 
@@ -179,14 +180,9 @@ export default function Home() {
             <article className={`story story-${index + 1}`} key={item.number}>
               <motion.div className="story-image" {...reveal()}>
                 {item.video ? (
-                  <video 
+                  <PingPongVideo 
                     className="cinema-video" 
                     src={item.video} 
-                    autoPlay 
-                    muted 
-                    loop 
-                    playsInline 
-                    preload="auto" 
                     aria-hidden="true" 
                   />
                 ) : null}

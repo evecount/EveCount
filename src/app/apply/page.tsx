@@ -6,6 +6,7 @@ import { useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Check, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DiagnosticInterlude } from "@/components/diagnostic-interlude";
+import { PingPongVideo } from "@/components/ui/PingPongVideo";
 
 const executiveRoles = [
   "Chief Information Security Officer (CISO)",
@@ -211,15 +212,10 @@ export default function ApplyPage() {
     <main className="diagnostic-page">
       <section className="handoff-visual">
         <img src="/images/quantum-hardware.jpg" alt="Quantum computing chamber filled with golden light" width={1920} height={1088} />
-        <video 
+        <PingPongVideo 
           ref={visualRef} 
           className="cinema-video" 
           src="/images/quantum-hardware-loop.mp4" 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          preload="auto" 
           aria-hidden="true" 
         />
         <div className="handoff-overlay">
