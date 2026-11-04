@@ -141,10 +141,6 @@ export default function AboutPage() {
                 <p>
                   She sets the method and builds the evidence: the diagnostic questions, the Q-Rotate algorithm, and the benchmarks behind what we claim.
                 </p>
-                <p className="founder-team">
-                  <span>WORKING WITH</span>
-                  Benjamin Lim, Co-founder &amp; Systems Architect
-                </p>
               </div>
 
               <div className="founder-ledger">
@@ -195,6 +191,67 @@ export default function AboutPage() {
                       <span>WOMEN IN TECH @ NTU</span>
                       <b>Mentor</b>
                       <p>woMENTORS cohort.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* BENJAMIN LIM DOSSIER */}
+            <div className="founder-dossier mt-8">
+              <div className="founder-id">
+                <h2>
+                  Benjamin<br />
+                  <em>Lim.</em>
+                </h2>
+                <span>CO-FOUNDER &amp; SYSTEMS ARCHITECT · EVE COUNT</span>
+                <p>
+                  He architects the systems and interactive interfaces that make our research usable—from the Project Q-Rotate 3D Constellation to the Cybrdeck and Unity OS execution engines.
+                </p>
+                <p className="founder-team">
+                  <span>SYSTEMS &amp; INTERFACES</span>
+                  Quantum visualization · Agentic runtime · Enterprise prototyping
+                </p>
+              </div>
+
+              <div className="founder-ledger">
+                <p className="founder-ledger-label">SELECTED RECORD &amp; ARCHITECTURE</p>
+                <div className="founder-record">
+                  <div>
+                    <div>
+                      <span>01 / QUANTINUUM SG GRAND CHALLENGE 2026</span>
+                      <h3>Constellation &amp; Interfaces</h3>
+                    </div>
+                    <p>Co-architected the Project Q-Rotate interactive 3D molecular resonance and Bloch-sphere verification environment for the Chemistry &amp; Biomolecular Simulation track.</p>
+                  </div>
+                  <div>
+                    <div>
+                      <span>02 / CYBRDECK &amp; UNITY OS</span>
+                      <h3>Co-founder &amp; Systems Architect</h3>
+                    </div>
+                    <p>Leads full-stack systems engineering, hybrid attention orchestration, and the enterprise venture prototyping backbone powering Eve Count’s technical delivery.</p>
+                  </div>
+                  <div>
+                    <div>
+                      <span>03 / HER CODE, HER CAUSE (WOMEN DEVS SG × OGP)</span>
+                      <h3>AI Systems Engineer · BeTwin</h3>
+                    </div>
+                    <p>Engineered the multimodal clinical voice conduit and asynchronous care routing architecture built with Women Devs SG and Open Government Products.</p>
+                  </div>
+                </div>
+
+                <div className="founder-credentials-group">
+                  <p className="founder-ledger-label">CORE PRACTICE AREAS</p>
+                  <div className="founder-credentials">
+                    <div>
+                      <span>QUANTUM INTERFACES &amp; TELEMETRY</span>
+                      <b>3D State &amp; Circuit Visualization</b>
+                      <p>Translating trapped-ion circuit readouts, Hamiltonian landscapes, and molecular resonance states into inspectable operator interfaces.</p>
+                    </div>
+                    <div>
+                      <span>AUTONOMOUS SYSTEMS ENGINEERING</span>
+                      <b>Agentic Runtime &amp; Cloud Infrastructure</b>
+                      <p>Designing low-latency multimodal pipelines, distributed orchestration, and sovereign deployment environments for enterprise teams.</p>
                     </div>
                   </div>
                 </div>

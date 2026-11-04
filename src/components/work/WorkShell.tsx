@@ -401,31 +401,56 @@ export function InsideDeliverableSection() {
 export function PracticeLeadSection() {
   return (
     <WorkSection label="Delivery leadership" title="Accountable for the work.">
-      <article className="grid gap-10 border-y border-[var(--work-border)] py-9 md:grid-cols-[1fr_1.4fr]">
-        <div>
-          <ShieldCheck className="mb-6 h-9 w-9 text-[var(--work-primary)]" strokeWidth={1.25} />
-          <div className="work-eyebrow">Practice Lead</div>
-          <h3 className="mt-3 text-3xl">Gwendalynn Lim</h3>
-          <p className="mt-3 text-sm text-[var(--work-muted-fg)]">
-            Founder &amp; Technical Lead
-            <br />
-            Eve Count Quantum Systems
-          </p>
-        </div>
-        <div>
-          <h4 className="text-sm font-medium">Specialisation</h4>
-          <p className="mt-3 leading-relaxed text-[var(--work-muted-fg)]">
-            Combinatorial optimisation, Lie algebra parameterisations, and trapped-ion circuit synthesis via Quantinuum Nexus.
-          </p>
-          <h4 className="mt-6 text-sm font-medium">Track record</h4>
-          <p className="mt-3 leading-relaxed text-[var(--work-muted-fg)]">
-            Applied computing and advanced data systems specialist; contributor to competitive global quantum computing challenge frameworks; lead architect behind Eve Count’s discrete industrial optimisation pipelines.
-          </p>
-          <blockquote className="mt-8 border-l-2 border-[var(--work-primary)] pl-5 text-lg leading-relaxed">
-            “Enterprise quantum exploration fails when treated as academic theater. Our practice is built strictly around mathematical mapping, compiler efficiency, and validating whether a problem can beat classical heuristics on live hardware.”
-          </blockquote>
-        </div>
-      </article>
+      <div className="divide-y divide-[var(--work-border)] border-y border-[var(--work-border)]">
+        <article className="grid gap-10 py-9 md:grid-cols-[1fr_1.4fr]">
+          <div>
+            <ShieldCheck className="mb-6 h-9 w-9 text-[var(--work-primary)]" strokeWidth={1.25} />
+            <div className="work-eyebrow">Practice Lead · Founder &amp; CTO</div>
+            <h3 className="mt-3 text-3xl">Gwendalynn Lim</h3>
+            <p className="mt-3 text-sm text-[var(--work-muted-fg)]">
+              Founder &amp; Technical Lead
+              <br />
+              Eve Count Quantum Systems
+            </p>
+          </div>
+          <div>
+            <h4 className="text-sm font-medium">Specialisation</h4>
+            <p className="mt-3 leading-relaxed text-[var(--work-muted-fg)]">
+              Combinatorial optimisation, Lie algebra parameterisations, and trapped-ion circuit synthesis via Quantinuum Nexus.
+            </p>
+            <h4 className="mt-6 text-sm font-medium">Track record</h4>
+            <p className="mt-3 leading-relaxed text-[var(--work-muted-fg)]">
+              Applied computing and advanced data systems specialist; contributor to competitive global quantum computing challenge frameworks; lead architect behind Eve Count’s discrete industrial optimisation pipelines.
+            </p>
+            <blockquote className="mt-8 border-l-2 border-[var(--work-primary)] pl-5 text-lg leading-relaxed">
+              “Enterprise quantum exploration fails when treated as academic theater. Our practice is built strictly around mathematical mapping, compiler efficiency, and validating whether a problem can beat classical heuristics on live hardware.”
+            </blockquote>
+          </div>
+        </article>
+
+        <article className="grid gap-10 py-9 md:grid-cols-[1fr_1.4fr]">
+          <div>
+            <Compass className="mb-6 h-9 w-9 text-[var(--work-primary)]" strokeWidth={1.25} />
+            <div className="work-eyebrow">Co-founder &amp; Systems Architect</div>
+            <h3 className="mt-3 text-3xl">Benjamin Lim</h3>
+            <p className="mt-3 text-sm text-[var(--work-muted-fg)]">
+              Co-founder &amp; Systems Architect
+              <br />
+              Eve Count Quantum Systems
+            </p>
+          </div>
+          <div>
+            <h4 className="text-sm font-medium">Specialisation</h4>
+            <p className="mt-3 leading-relaxed text-[var(--work-muted-fg)]">
+              Interactive 3D quantum state and circuit visualisation, agentic runtime orchestration, and enterprise systems architecture.
+            </p>
+            <h4 className="mt-6 text-sm font-medium">Track record</h4>
+            <p className="mt-3 leading-relaxed text-[var(--work-muted-fg)]">
+              Co-architect of the Project Q-Rotate 3D Constellation and verification interfaces for the Quantinuum SG Grand Challenge 2026; leads full-stack systems engineering across Cybrdeck, Unity OS, and Eve Count’s technical delivery pipelines.
+            </p>
+          </div>
+        </article>
+      </div>
     </WorkSection>
   );
 }
