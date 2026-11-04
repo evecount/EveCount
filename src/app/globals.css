@@ -1265,38 +1265,53 @@ body {
 .sg-demo-interlude .diagnostic-interlude { margin: 0; }
 
 
-/* ---- Work Department Sub-Site Skinpack (Industrial Combinatorics / FinLab Riff) ---- */
+/* ---- Work Department Sub-Site Skinpack (Eve Count Editorial Look × Lovable Structural Architecture) ---- */
 .work-subsite {
-  --work-bg: #fcfcfc;
-  --work-surface: #f2f4f3;
-  --work-fg: #131c1b;
-  --work-primary: #17545a;
-  --work-primary-glow: #9ce063;
-  --work-primary-fg: #fcfcfc;
-  --work-muted: #f1f3f6;
-  --work-muted-fg: #546070;
-  --work-accent: #e5eef8;
-  --work-border: #dfe3e8;
-  --work-ink: #0f1b1a;
-  --work-ink-fg: #f5f6f8;
-  --work-success: #22945e;
-  --lattice-glow: #0ca6b5;
+  --work-bg: var(--canvas);
+  --work-surface: color-mix(in oklab, var(--canvas-soft) 78%, var(--moss) 5%);
+  --work-fg: var(--ink);
+  --work-primary: var(--moss);
+  --work-primary-glow: var(--signal);
+  --work-primary-fg: var(--canvas);
+  --work-muted: var(--canvas-soft);
+  --work-muted-fg: var(--ghost);
+  --work-accent: color-mix(in oklab, var(--signal) 18%, var(--canvas));
+  --work-border: var(--line);
+  --work-ink: var(--ink);
+  --work-ink-fg: var(--canvas);
+  --work-success: var(--moss);
+  --lattice-glow: var(--gold-deep);
   background-color: var(--work-bg);
   color: var(--work-fg);
-  font-family: "Geist", -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  font-family: "Manrope", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.work-subsite h1,
+.work-subsite h2,
+.work-subsite h3 {
+  font-family: "Instrument Serif", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.work-subsite h1 em,
+.work-subsite h2 em,
+.work-subsite h3 em {
+  color: var(--moss);
+  font-style: italic;
 }
 
 .work-subsite .font-mono,
 .work-subsite .work-eyebrow {
-  font-family: "Geist Mono", "JetBrains Mono", monospace;
+  font-family: "JetBrains Mono", "Geist Mono", monospace;
 }
 
 .work-subsite .work-eyebrow {
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--work-primary);
-  font-size: 0.72rem;
-  font-weight: 500;
+  color: var(--gold-deep);
+  font-size: 0.68rem;
+  font-weight: 600;
 }
 
 @media (min-width: 768px) {

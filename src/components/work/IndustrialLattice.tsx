@@ -138,8 +138,8 @@ export function IndustrialLattice({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const primaryColor = '#17545a';
-    const glowColor = '#0ca6b5';
+    const primaryColor = '#27392b';
+    const glowColor = '#c89d32';
 
     const layers = morph
       ? [
