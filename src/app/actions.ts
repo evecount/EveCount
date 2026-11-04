@@ -103,3 +103,59 @@ export async function submitEnterpriseDiagnosticAction(input: EnterpriseDiagnost
     }
 }
 
+export interface WorkInquiryInput {
+    kind: string;
+    name: string;
+    title?: string;
+    org?: string;
+    email: string;
+    sector?: string;
+    message?: string;
+    details?: Record<string, unknown>;
+}
+
+export async function submitWorkInquiryAction(input: WorkInquiryInput) {
+    try {
+        const timestamp = new Date().toISOString();
+        const referenceId = `EC-WORK-${Date.now().toString(36).toUpperCase()}`;
+        console.log(`[Eve Count Work Practice] Registered ${referenceId} (${input.kind}) from ${input.name} <${input.email}> at ${timestamp}:`, input);
+
+        // Also forward to the Lovable Supabase leads table if reachable
+        try {
+            const supabaseUrl = 'https://owghtvyaaimfsojmklwj.supabase.co/rest/v1/leads';
+            const supabaseKey = 'sb_publishable_8a-VDj4n4jghAZLlUnNDqQ_x_nEWncy';
+            await fetch(supabaseUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': supabaseKey,
+                    'Authorization': `Bearer ${supabaseKey}`,
+                    'Prefer': 'return=minimal',
+                },
+                body: JSON.stringify({
+                    kind: input.kind,
+                    name: input.name,
+                    title: input.title ?? '',
+                    org: input.org ?? '',
+                    email: input.email,
+                    sector: input.sector ?? '',
+                    message: input.message ?? '',
+                    details: input.details ?? {},
+                }),
+            });
+        } catch (forwardErr) {
+            console.warn("Optional Supabase forward skipped:", forwardErr);
+        }
+
+        return {
+            success: true,
+            referenceId,
+        };
+    } catch (error) {
+        console.error("Work inquiry submission failed:", error);
+        const message = error instanceof Error ? error.message : "An unexpected error occurred.";
+        return { success: false, message };
+    }
+}
+
+

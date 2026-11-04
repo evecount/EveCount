@@ -36,9 +36,9 @@ export function Header() {
           <Link href="/about" className="text-xs font-semibold tracking-wider text-[var(--ink)] opacity-60 hover:opacity-100 transition-opacity">
             About
           </Link>
-          <a href="/#expertise" className="text-xs font-semibold tracking-wider text-[var(--ink)] opacity-60 hover:opacity-100 transition-opacity">
+          <Link href="/work" className="text-xs font-semibold tracking-wider text-[var(--ink)] opacity-60 hover:opacity-100 transition-opacity">
             Work
-          </a>
+          </Link>
           <a href="/#approach" className="text-xs font-semibold tracking-wider text-[var(--ink)] opacity-60 hover:opacity-100 transition-opacity">
             The Method
           </a>
@@ -104,9 +104,9 @@ export function Header() {
                 <Link href="/about" onClick={() => setSheetOpen(false)} className="text-sm font-semibold text-[var(--ink)]">
                   About
                 </Link>
-                <a href="/#expertise" onClick={() => setSheetOpen(false)} className="text-sm font-semibold text-[var(--ink)]">
+                <Link href="/work" onClick={() => setSheetOpen(false)} className="text-sm font-semibold text-[var(--ink)]">
                   Work
-                </a>
+                </Link>
                 <a href="/#approach" onClick={() => setSheetOpen(false)} className="text-sm font-semibold text-[var(--ink)]">
                   The Method
                 </a>
