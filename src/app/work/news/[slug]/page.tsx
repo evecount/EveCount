@@ -61,10 +61,10 @@ export default function WorkNewsDetailPage() {
           </blockquote>
 
           <h2 className="pt-4 text-2xl font-medium tracking-tight">
-            The November 2026 Executive Technical Intensive
+            10 December 2026 Open Session: &ldquo;Quantum at Work: Where Enterprises Can Actually Use Quantum Today&rdquo;
           </h2>
           <p className="text-sm leading-relaxed text-[var(--work-muted-fg)]">
-            Designed for Chief Operating Officers, VPs of Fleet and Mine Planning, and Lead Operations Research Architects, the upcoming November intensive will guide technical leaders through a structured curriculum:
+            Open to enterprise leaders, operations managers, engineers, and curious builders (and cross-listed on Luma, Eventbrite, and Meetup), the December 10 session covers three core themes:
           </p>
 
           <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-3">
@@ -88,7 +88,7 @@ export default function WorkNewsDetailPage() {
               href="/work/events/executive-intensive-cohort-nov-2026"
               className="inline-flex h-10 items-center justify-center gap-2 rounded-sm bg-[var(--work-primary)] px-5 text-xs font-medium text-[var(--work-primary-fg)] shadow-sm transition hover:opacity-90"
             >
-              <span>Apply for the November cohort</span>
+              <span>Reserve a spot for 10 December (Open RSVP)</span>
               <ArrowUpRight className="h-4 w-4" />
             </Link>
             <Link

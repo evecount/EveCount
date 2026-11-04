@@ -22,14 +22,14 @@ export default function WorkInsightsPage() {
           >
             <div>
               <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--work-muted-fg)]">
-                <span>Newsroom · Nexus Access &amp; Cohort</span>
+                <span>Newsroom · Nexus Access &amp; 10 Dec Open Session</span>
                 <span>4 November 2026</span>
               </div>
               <h3 className="mt-4 text-2xl font-medium leading-snug tracking-tight group-hover:text-[var(--work-primary)]">
-                Eve Count Quantum Systems Provisioned on Nexus Cloud; Launches Industrial Combinatorics Advisory &amp; November 2026 Executive Cohort
+                Eve Count Provisioned on Nexus Cloud; Announces 10 December Open Session: &ldquo;Quantum at Work: Where Enterprises Can Actually Use Quantum Today&rdquo;
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-[var(--work-muted-fg)]">
-                Following its Singapore Quantum Grand Challenge 2026 submission, Eve Count transitions Project Q-Rotate and heavy-asset combinatorial benchmarks onto the Nexus compilation and emulation environment alongside academic and enterprise partners.
+                Following its Singapore Quantum Grand Challenge 2026 submission, Eve Count opens registration for its December 10 public executive &amp; technical session alongside Q1 2027 enterprise cohort intakes.
               </p>
             </div>
             <div className="mt-8 inline-flex items-center gap-1.5 text-xs font-medium text-[var(--work-primary)]">

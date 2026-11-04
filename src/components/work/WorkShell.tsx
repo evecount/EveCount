@@ -327,27 +327,27 @@ export function NextCohortBanner() {
       <div className="mx-auto grid max-w-[1440px] gap-10 px-6 py-12 md:grid-cols-[1.2fr_1fr] md:px-10">
         <div>
           <div className="font-mono text-xs uppercase text-[var(--work-primary-glow)]">
-            Next executive intensive cohort
+            Upcoming open session · <time dateTime={NEXT_COHORT.date}>{NEXT_COHORT.label}</time>
           </div>
-          <h2 className="mt-5 text-3xl md:text-4xl">
-            <time dateTime={NEXT_COHORT.date}>{NEXT_COHORT.label}</time>
+          <h2 className="mt-4 text-3xl md:text-4xl">
+            {NEXT_COHORT.title}
           </h2>
           <p className="mt-4 text-[var(--work-ink-fg)]/80">{NEXT_COHORT.format}</p>
         </div>
         <div className="flex flex-col items-start justify-center gap-5">
           <p className="flex items-center gap-3 text-sm">
             <span className="h-2 w-2 bg-[var(--work-primary-glow)]" />
-            {NEXT_COHORT.status} · Up to {NEXT_COHORT.teamLimit} enterprise teams
+            {NEXT_COHORT.status} · Open to operators, engineers &amp; enterprise teams
           </p>
           <Link
             href="/work/contact?interest=cohort"
             className="inline-flex h-11 items-center justify-center gap-2 rounded-sm bg-[var(--work-primary)] px-8 text-sm font-medium text-[var(--work-primary-fg)] transition hover:opacity-90"
           >
-            <span>Apply for the cohort</span>
+            <span>Reserve a spot (Open RSVP)</span>
             <ArrowUpRight className="h-4 w-4" />
           </Link>
           <p className="max-w-md text-xs leading-relaxed text-[var(--work-ink-fg)]/70">
-            Cohort fees, timings and attendance arrangements confirmed before acceptance. Private team delivery is scheduled separately.
+            Accessible executive framing with a live look under the hood on Nexus. Cross-listed on Luma, Eventbrite &amp; Meetup; closed-door Q1 2027 enterprise cohorts scheduled separately.
           </p>
         </div>
       </div>

@@ -16,12 +16,16 @@ function ContactContent() {
 
   return (
     <WorkPageShell
-      eyebrow={isCohort ? 'Cohort application' : 'Start a conversation'}
-      title={isCohort ? 'Apply for the November 2026 cohort.' : 'Discuss your next session.'}
+      eyebrow={isCohort ? 'Open Session RSVP · 10 December 2026' : 'Start a conversation'}
+      title={
+        isCohort
+          ? 'RSVP for "Quantum at Work" (10 December 2026).'
+          : 'Discuss your next session.'
+      }
       intro={
         isCohort
-          ? `${NEXT_COHORT.label} (${NEXT_COHORT.format}) — ${NEXT_COHORT.status}, limited to ${NEXT_COHORT.teamLimit} enterprise teams. Tell us about your team and the bottleneck you want to examine.`
-          : 'Tell us whether you are exploring an executive briefing, a corporate intensive, an upcoming event or a sector-specific question.'
+          ? `${NEXT_COHORT.title} runs on ${NEXT_COHORT.label} (${NEXT_COHORT.format}). Reserve your spot below or let us know what question you’d like covered during the live session.`
+          : 'Tell us whether you are joining the 10 December open session, exploring an executive briefing, or scoping a Q1 2027 corporate intensive.'
       }
     >
       <section className="mx-auto max-w-[1440px] px-6 py-16 md:px-10 md:py-24">
