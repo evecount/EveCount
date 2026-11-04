@@ -7,35 +7,35 @@ import {
   WorkPageShell,
   WorkSection,
 } from '@/components/work/WorkShell';
-import { EXECUTIVE_SERIES_SESSIONS, WORK_OFFER } from '@/lib/work-content';
+import { EXECUTIVE_SERIES_SESSIONS, NEXT_COHORT, WORK_OFFER } from '@/lib/work-content';
 
 export default function WorkBriefingsPage() {
   return (
     <WorkPageShell
-      eyebrow="Executive briefing series"
+      eyebrow={`Open Executive & Technical Session · ${NEXT_COHORT.label}`}
       title={
         <>
-          Heavy Assets,
+          Quantum at Work:
           <br />
-          Hard Combinatorics.
+          <em>Where Enterprises Can Actually Use Quantum Today.</em>
         </>
       }
-      intro="Trapped-ion quantum computing for mining and maritime fleet operations. A closed-door series for leaders who need an informed investment decision, not another technology pitch."
+      intro="An open session designed for enterprise leaders, founders, operators, and curious technical teams—accessible enough for decision-makers, backed by a live look under the hood on Nexus. Cross-listed on Luma, Eventbrite, and Meetup."
     >
       <NextCohortBanner />
 
       <WorkSection
-        label="The programme"
-        title="Breaking down the classical limits. Testing the quantum possibilities."
+        label="Inside the 10 December open session"
+        title="Accessible clarity up front. Real technical proof under the hood."
       >
         <div className="divide-y divide-[var(--work-border)] border-y border-[var(--work-border)]">
           {EXECUTIVE_SERIES_SESSIONS.map((session, idx) => (
             <article
               key={session.name}
-              className="grid gap-4 py-8 md:grid-cols-[80px_1fr_1fr]"
+              className="grid gap-4 py-8 md:grid-cols-[90px_1fr_1.1fr]"
             >
               <span className="font-mono text-xs text-[var(--work-primary)]">
-                SESSION 0{idx + 1}
+                PART 0{idx + 1}
               </span>
               <div>
                 <h3 className="text-2xl">{session.name}</h3>
@@ -51,22 +51,22 @@ export default function WorkBriefingsPage() {
 
       <section className="bg-[var(--work-surface)]">
         <WorkSection
-          label="From your problem to a next step"
-          title={`A private ${WORK_OFFER.diagnosticMinutes}-minute feasibility diagnostic.`}
+          label="Want to go deeper after the open session?"
+          title={`Follow up with a private ${WORK_OFFER.diagnosticMinutes}-minute feasibility diagnostic.`}
         >
           <div className="grid gap-10 md:grid-cols-3">
             {[
               [
-                'Bring the bottleneck',
-                'Share your current optimisation challenge, problem scale and solver runtime—without disclosing sensitive datasets.',
+                'Bring your question',
+                'Share the scheduling, routing, molecular search or security question your team is evaluating—no proprietary datasets required.',
               ],
               [
-                'Map the candidate',
-                'Discuss constraints, dependency graphs and whether a trapped-ion exploration is worth investigating.',
+                'Test where quantum fits',
+                'We map whether your problem benefits from hybrid solvers, trapped-ion compilation on Nexus, or post-quantum cryptographic migration today.',
               ],
               [
-                'Define the decision',
-                'Identify useful baselines and an appropriate next step. A diagnostic is not proof of quantum advantage.',
+                'Leave with a clear decision',
+                'Walk away with a concrete recommendation on what to do now, what to watch, and whether a Q1 2027 pilot is warranted.',
               ],
             ].map(([title, body]) => (
               <div key={title} className="border-t border-[var(--work-border)] pt-6">
@@ -79,24 +79,24 @@ export default function WorkBriefingsPage() {
       </section>
 
       <WorkSection
-        label="Apply for the series"
-        title="For the people accountable for the operational roadmap."
+        label="Open RSVP · 10 December 2026"
+        title="Reserve your spot for the open session."
       >
         <div className="grid gap-12 lg:grid-cols-[1fr_1.5fr]">
           <div className="space-y-5 text-[var(--work-muted-fg)]">
             <p>
-              Designed for VPs of Operations Research, Chief Digital Officers and Heads of Resource Planning.
+              Open to enterprise leaders, operations managers, engineers, researchers, and founders exploring where quantum computing and hybrid workflows fit into real-world roadmaps.
             </p>
             <p>
-              Applications are reviewed for fit. Dates, format and any participation terms are confirmed directly; no payment is taken here.
+              Register directly below to receive the calendar invite and Singapore / live-stream joining details (also cross-listed on Luma, Eventbrite, and Meetup).
             </p>
             <p className="text-sm">
-              Prefer a private session for your team? Ask about the corporate intensive.
+              Prefer a closed-door session tailored to your organisation? Ask about our private corporate intensive or the Q1 2027 enterprise cohort.
             </p>
           </div>
           <InquiryForm
-            kind="eve-executive-series"
-            cta="Apply for the executive series"
+            kind="open-session-rsvp-dec-10"
+            cta="Reserve a spot for 10 December"
           />
         </div>
       </WorkSection>
@@ -105,4 +105,3 @@ export default function WorkBriefingsPage() {
     </WorkPageShell>
   );
 }
-

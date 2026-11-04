@@ -76,24 +76,24 @@ export const formatUsd = (amount: number) => `US$${amount.toLocaleString('en-US'
 
 export const EXECUTIVE_SERIES_SESSIONS: WorkSession[] = [
   {
-    name: 'The asymptotic wall',
-    topic: 'Industrial combinatorics',
-    text: 'Examine where problem size, dense dependencies and time limits constrain classical mining schedules and fleet dispatch.',
+    name: 'Beyond the hype: what works now',
+    topic: 'Part 01 · Executive Framing',
+    text: 'Separate long-horizon speculation from the quantum, hybrid-solver and post-quantum security workflows enterprises can actually evaluate and deploy today.',
   },
   {
-    name: 'Topology meets architecture',
-    topic: 'Trapped-ion systems',
-    text: 'Explore all-to-all connectivity, native interaction gates and the routing overhead of different hardware architectures.',
+    name: 'Where classical computing hits a wall',
+    topic: 'Part 02 · Real Bottlenecks',
+    text: 'Why complex scheduling, fleet routing, molecular search and cryptographic exposure stall classical pipelines—and how to spot a good candidate problem inside your organisation.',
   },
   {
-    name: 'From formulation to compilation',
-    topic: 'Nexus Cloud · pytket',
-    text: 'Follow a problem through circuit compilation, realistic noise emulation and resource measurement.',
+    name: 'Under the hood: live Nexus walkthrough',
+    topic: 'Part 03 · Technical Proof',
+    text: 'See a real operational problem mapped and compiled on Nexus cloud emulators—giving both technical and non-technical attendees a clear look at how feasibility is measured.',
   },
   {
-    name: 'A roadmap, not a leap of faith',
-    topic: 'Industrial feasibility',
-    text: 'Design classical baselines, hybrid workflows and decision gates for a measured quantum exploration programme.',
+    name: 'Your 2027 roadmap without the guesswork',
+    topic: 'Part 04 · Open Q&A & Next Steps',
+    text: 'How to scope a practical exploration or post-quantum readiness step without overcommitting budget—followed by open Q&A and optional private diagnostics.',
   },
 ];
 
