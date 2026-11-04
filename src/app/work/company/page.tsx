@@ -56,10 +56,10 @@ export default function WorkCompanyPage() {
         >
           <div className="grid gap-10 md:grid-cols-2">
             <p className="leading-relaxed text-[var(--work-muted-fg)]">
-              The programme explores constrained optimisation, QUBO and Hamiltonian formulations, all-to-all connectivity, native trapped-ion interactions and compiler-level resource trade-offs. Hands-on work uses pytket and Quantinuum Nexus emulators.
+              The programme explores constrained optimisation, QUBO and Hamiltonian formulations, all-to-all connectivity, native trapped-ion interactions and compiler-level resource trade-offs. Hands-on work uses pytket and Nexus cloud emulators.
             </p>
             <p className="leading-relaxed text-[var(--work-muted-fg)]">
-              Platform references describe the curriculum, not a claimed partnership or endorsement. Standard compiler optimisation and noise emulation passes on Quantinuum Nexus are absorbed in the engagement fee; additional live-hardware work or expanded compute scope is agreed before it is commissioned. We do not promise speedups, cost savings or production quantum advantage.
+              Platform references describe the curriculum, not a claimed partnership or endorsement. Standard compiler optimisation and noise emulation passes on Nexus are absorbed in the engagement fee; additional live-hardware work or expanded compute scope is agreed before it is commissioned. We do not promise speedups, cost savings or production quantum advantage.
             </p>
           </div>
         </WorkSection>

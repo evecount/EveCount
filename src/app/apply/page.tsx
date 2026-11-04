@@ -29,7 +29,7 @@ const organizationScales = [
 const objectives = [
   ["Post-Quantum Cryptography (PQC) Audit & HNDL Defense", "Comprehensive cipher discovery and NIST FIPS 203/204/205 migration planning."],
   ["Accelerated Molecular Docking / Candidate Drug Discovery", "Quantum resonance screening of therapeutic compounds with zero-knowledge coordinate privacy."],
-  ["Frontier Hardware Benchmarking & Algorithmic Compilation", "Trapped-ion circuit synthesis and fidelity validation on Quantinuum and IonQ backends."],
+  ["Frontier Hardware Benchmarking & Algorithmic Compilation", "Trapped-ion circuit synthesis and fidelity validation on Nexus and trapped-ion QPU backends."],
   ["Cryptographic Agility Architecture & Governance", "Modular abstraction layers to prevent future hardware and algorithmic lock-in."],
 ] as const;
 
@@ -242,7 +242,7 @@ export default function ApplyPage() {
             <p>A clear first picture of your post-quantum readiness, research objective, or hardware question. No documents needed to begin.</p>
             <div>
               <span>NIST FIPS 203 / 204 / 205</span>
-              <span>QUANTINUUM · IONQ</span>
+              <span>TRAPPED-ION · NEXUS</span>
               <span>4–6 MINUTES</span>
             </div>
           </div>

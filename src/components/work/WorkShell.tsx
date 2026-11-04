@@ -35,7 +35,13 @@ export function WorkSubHeader() {
           href="/work"
           className="inline-flex items-center gap-2.5 text-sm font-medium text-[var(--work-fg)] no-underline"
         >
-          <Compass className="h-5 w-5 text-[var(--work-primary)]" strokeWidth={1.5} />
+          <img
+            src="/icon.png"
+            alt="Eve Count"
+            width={26}
+            height={26}
+            className="h-6 w-6 rounded-full object-cover ring-1 ring-[var(--work-border)]"
+          />
           <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-[var(--work-fg)]">
             Work · Quantum / Industry
           </span>
@@ -115,10 +121,23 @@ export function WorkFooter() {
       <div className="mx-auto max-w-[1440px] px-6 py-16 md:px-10">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="flex items-center gap-2.5 text-xl font-medium">
-              <Compass className="h-6 w-6 text-[var(--work-primary)]" strokeWidth={1.5} />
-              <span>eve count</span>
-            </div>
+            <Link href="/" className="inline-flex items-center gap-3 no-underline group">
+              <img
+                src="/icon.png"
+                alt="Eve Count"
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full shrink-0 object-cover ring-1 ring-[var(--work-border)]"
+              />
+              <div className="flex flex-col text-left select-none">
+                <span className="text-[16px] font-black tracking-tight text-[var(--work-fg)] leading-none uppercase font-sans">
+                  EVE COUNT
+                </span>
+                <span className="text-[8.5px] font-extrabold tracking-[0.24em] text-[var(--work-primary)] uppercase mt-1 leading-none font-mono">
+                  QUANTUM SYSTEMS
+                </span>
+              </div>
+            </Link>
             <p className="mt-4 text-sm leading-relaxed text-[var(--work-muted-fg)]">
               Quantum feasibility for the industries
               <br />
@@ -416,7 +435,7 @@ export function PracticeLeadSection() {
           <div>
             <h4 className="text-sm font-medium">Specialisation</h4>
             <p className="mt-3 leading-relaxed text-[var(--work-muted-fg)]">
-              Combinatorial optimisation, Lie algebra parameterisations, and trapped-ion circuit synthesis via Quantinuum Nexus.
+              Combinatorial optimisation, Lie algebra parameterisations, and trapped-ion circuit synthesis via Nexus cloud compilation.
             </p>
             <h4 className="mt-6 text-sm font-medium">Track record</h4>
             <p className="mt-3 leading-relaxed text-[var(--work-muted-fg)]">
@@ -446,7 +465,7 @@ export function PracticeLeadSection() {
             </p>
             <h4 className="mt-6 text-sm font-medium">Track record</h4>
             <p className="mt-3 leading-relaxed text-[var(--work-muted-fg)]">
-              Co-architect of the Project Q-Rotate 3D Constellation and verification interfaces for the Quantinuum SG Grand Challenge 2026; leads full-stack systems engineering across Cybrdeck, Unity OS, and Eve Count’s technical delivery pipelines.
+              Co-architect of the Project Q-Rotate 3D Constellation and verification interfaces for the SG Quantum Grand Challenge 2026; leads full-stack systems engineering across Cybrdeck, Unity OS, and Eve Count’s technical delivery pipelines.
             </p>
           </div>
         </article>

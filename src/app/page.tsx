@@ -43,8 +43,8 @@ const capabilities = [
     number: "02", 
     thought: "What is possible now—not someday?", 
     title: "Real hardware, measured", 
-    body: "We run and optimise circuits on Quantinuum and IonQ systems, replacing speculation with evidence from the machines that exist today.", 
-    meta: "QUANTINUUM · IONQ · CIRCUIT FIDELITY", 
+    body: "We compile and benchmark circuits on all-to-all trapped-ion systems and Nexus cloud emulators, replacing speculation with evidence from the machines that exist today.", 
+    meta: "TRAPPED-ION · NEXUS CLOUD · CIRCUIT FIDELITY", 
     image: "/images/quantum-hardware.jpg",
     video: "/images/quantum-hardware-loop.mp4"
   },
@@ -374,7 +374,7 @@ function ProofSection({ reduced }: { reduced: boolean }) {
   const stats = [
     ["6 / 6", "real protein targets locked", "RCSB PDB & PubChem structures"],
     ["9–17", "qubits per register", "compact, fixed-size"],
-    ["0", "SWAP gates", "native Quantinuum H2 compilation"],
+    ["0", "SWAP gates", "native trapped-ion compilation"],
   ];
 
   return (
@@ -400,7 +400,7 @@ function ProofSection({ reduced }: { reduced: boolean }) {
             ))}
           </div>
           <p className="proof-note">
-            Benchmarks are simulations of Quantinuum H-Series circuits with estimated hardware costs, not billed hardware runs. The matching reduces what is shared; it is not a formal zero-knowledge proof.
+            Benchmarks are simulations of trapped-ion circuits compiled via Nexus with estimated hardware costs, not billed hardware runs. The matching reduces what is shared; it is not a formal zero-knowledge proof.
           </p>
           <div className="proof-actions">
             <a 
@@ -434,7 +434,7 @@ function ProofSection({ reduced }: { reduced: boolean }) {
       </div>
       <div className="proof-credits">
         <p>
-          Built for the <strong>Quantinuum SG Grand Challenge 2026</strong> · Chemistry & Biomolecular Simulation track
+          Built for the <strong>SG Quantum Grand Challenge 2026</strong> · Chemistry &amp; Biomolecular Simulation track · Provisioned on Nexus
         </p>
         <ul>
           <li>

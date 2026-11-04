@@ -57,7 +57,7 @@ const enterpriseTiers: Tier[] = [
     badge: "Hardware Validation",
     deliverables: [
       "Circuit synthesis & error mitigation modeling",
-      "Quantinuum trapped-ion & IonQ hardware execution",
+      "Trapped-ion & neutral-atom hardware execution",
       "Classical vs. quantum benchmark report",
       "Hardware-agnostic SDK integration code"
     ],
@@ -156,7 +156,7 @@ export default function PricingPage() {
             {/* Bottom info */}
             <div className="mt-16 text-center max-w-2xl mx-auto">
               <p className="text-xs text-slate leading-relaxed">
-                All engagements are protected under strict bilateral non-disclosure agreements (NDA). Retained partnerships include priority scheduling for Quantinuum and IonQ hardware batch executions.
+                All engagements are protected under strict bilateral non-disclosure agreements (NDA). Retained partnerships include priority scheduling for Trapped-Ion and Neutral-Atom hardware batch executions.
               </p>
               <div className="mt-6">
                 <Button size="lg" asChild className="bg-gold-luminous hover:bg-gold-warm text-ink font-semibold rounded-xl px-8 shadow-sm">

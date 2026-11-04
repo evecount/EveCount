@@ -219,7 +219,7 @@ export default function AboutPage() {
                 <div className="founder-record">
                   <div>
                     <div>
-                      <span>01 / QUANTINUUM SG GRAND CHALLENGE 2026</span>
+                      <span>01 / SG QUANTUM GRAND CHALLENGE 2026</span>
                       <h3>Constellation &amp; Interfaces</h3>
                     </div>
                     <p>Co-architected the Project Q-Rotate interactive 3D molecular resonance and Bloch-sphere verification environment for the Chemistry &amp; Biomolecular Simulation track.</p>
@@ -346,7 +346,7 @@ export default function AboutPage() {
             </h2>
             {[
               ['NIST PQC standards', 'FIPS 203 · 204 · 205'],
-              ['Real quantum hardware', 'Quantinuum · IonQ'],
+              ['Real quantum hardware', 'Trapped-Ion · Nexus Cloud'],
               ['Hybrid migration', 'TLS · PKI · keys · certificates'],
               ['Crypto inventory', 'discovery · classification · governance']
             ].map(([a, b]) => (

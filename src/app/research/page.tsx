@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 
 const researchPapers = [
   {
-    badge: "Quantinuum Challenge",
+    badge: "SG Quantum Challenge",
     title: "Fault-Tolerant Rotation Synthesis on Trapped-Ion Architectures",
-    description: "Algorithmic synthesis of arbitrary single- and multi-qubit rotations with minimal circuit depth and gate infidelity. Benchmarked on Quantinuum H-Series trapped-ion QPU noise models.",
+    description: "Algorithmic synthesis of arbitrary single- and multi-qubit rotations with minimal circuit depth and gate infidelity. Benchmarked on Trapped-Ion QPU trapped-ion QPU noise models.",
     link: "https://github.com/evecount/quantum_rotation",
     tags: ["Trapped-Ion", "TKET", "Circuit Synthesis", "Error Mitigation"],
   },

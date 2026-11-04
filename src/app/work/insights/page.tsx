@@ -22,14 +22,14 @@ export default function WorkInsightsPage() {
           >
             <div>
               <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--work-muted-fg)]">
-                <span>Newsroom · Press Release</span>
-                <span>26 October 2026</span>
+                <span>Newsroom · Nexus Access &amp; Cohort</span>
+                <span>4 November 2026</span>
               </div>
               <h3 className="mt-4 text-2xl font-medium leading-snug tracking-tight group-hover:text-[var(--work-primary)]">
-                Eve Count Quantum Systems Launches Industrial Combinatorics Advisory Practice; Opens Applications for November 2026 Executive Cohort
+                Eve Count Quantum Systems Provisioned on Nexus Cloud; Launches Industrial Combinatorics Advisory &amp; November 2026 Executive Cohort
               </h3>
               <p className="mt-4 text-sm leading-relaxed text-[var(--work-muted-fg)]">
-                New executive practice bridges classical Mixed-Integer Linear Programming limits and trapped-ion hardware execution via Quantinuum Nexus for heavy asset industries.
+                Following its Singapore Quantum Grand Challenge 2026 submission, Eve Count transitions Project Q-Rotate and heavy-asset combinatorial benchmarks onto the Nexus compilation and emulation environment alongside academic and enterprise partners.
               </p>
             </div>
             <div className="mt-8 inline-flex items-center gap-1.5 text-xs font-medium text-[var(--work-primary)]">

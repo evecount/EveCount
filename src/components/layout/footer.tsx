@@ -4,9 +4,9 @@ import { ArrowUpRight, Github } from "lucide-react";
 const quantumRepos = [
   { 
     href: "https://github.com/evecount/quantum_rotation", 
-    label: "Project Q-Rotate (Quantinuum SG Challenge)", 
+    label: "Project Q-Rotate (SG Quantum Challenge)", 
     isExternal: true,
-    badge: "Trapped-Ion"
+    badge: "Trapped-Ion · Nexus"
   },
   { 
     href: "https://evecount.github.io/quantum_rotation/constellation.html", 

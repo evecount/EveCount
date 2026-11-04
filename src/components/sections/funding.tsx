@@ -50,7 +50,7 @@ const enterpriseTiers: Tier[] = [
     badge: "Hardware Validation",
     deliverables: [
       "Circuit synthesis & error mitigation",
-      "Quantinuum & IonQ execution",
+      "Trapped-Ion & Neutral-Atom execution",
       "Classical vs. quantum benchmark report",
       "Hardware-agnostic SDK integration"
     ],

@@ -36,7 +36,7 @@ export default function WorkSecurityPage() {
               ],
               [
                 'Platform access',
-                'Where hands-on sessions use Quantinuum Nexus or pytket, access and data handling follow the agreed engagement scope and platform terms.',
+                'Where hands-on sessions use Nexus or pytket, access and data handling follow the agreed engagement scope and platform terms.',
               ],
               [
                 'Deliverables & IP',

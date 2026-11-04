@@ -87,7 +87,7 @@ export const EXECUTIVE_SERIES_SESSIONS: WorkSession[] = [
   },
   {
     name: 'From formulation to compilation',
-    topic: 'Quantinuum Nexus · pytket',
+    topic: 'Nexus Cloud · pytket',
     text: 'Follow a problem through circuit compilation, realistic noise emulation and resource measurement.',
   },
   {
@@ -146,7 +146,7 @@ export const MONTHLY_BRIEFING = {
 export const BUYER_CLARITY_CLAUSES = {
   ip: 'All proprietary operational datasets, mine block models, logistics graphs and company-specific objective functions remain 100% your exclusive property under a bilateral MNDA. Ownership and licensing of any reusable tools or newly developed deliverables are documented separately in the engagement agreement.',
   infrastructure:
-    'Standard compiler optimisation and noise emulation passes on Quantinuum Nexus are fully absorbed in the engagement fee. Additional live-hardware work or expanded compute scope is agreed before it is commissioned.',
+    'Standard compiler optimisation and noise emulation passes on Nexus are fully absorbed in the engagement fee. Additional live-hardware work or expanded compute scope is agreed before it is commissioned.',
   deliveryScope:
     'Feasibility pilots definitively evaluate circuit depth, noise scaling and algorithmic crossover thresholds against classical solvers. They do not require altering live production systems.',
   dataSecurity:
@@ -164,7 +164,7 @@ export const BUYER_FAQS: { question: string; answer: string }[] = [
     answer: BUYER_CLARITY_CLAUSES.ip,
   },
   {
-    question: 'How are Quantinuum Nexus compute and platform costs handled?',
+    question: 'How are Nexus compute and platform costs handled?',
     answer: BUYER_CLARITY_CLAUSES.infrastructure,
   },
   {
@@ -202,7 +202,7 @@ export const WORK_EVENTS: WorkEvent[] = [
     format: NEXT_COHORT.format,
     status: NEXT_COHORT.status,
     summary:
-      'The one-day corporate intensive delivered as a shared cohort: map a target operational bottleneck, compile a sandbox benchmark on Quantinuum Nexus and leave with a documented feasibility position.',
+      'The one-day corporate intensive delivered as a shared cohort: map a target operational bottleneck, compile a sandbox benchmark on Nexus and leave with a documented feasibility position.',
     agenda: [
       'Morning — combinatorial reformulation: from solver models to high-density Hamiltonians',
       'Midday — trapped-ion topology and native ZZ(θ) gate interactions',
@@ -427,7 +427,7 @@ export const MINING_BLUEPRINT_SECTIONS: [string, string, string][] = [
   ],
   [
     'The Nexus benchmark',
-    'Compile via pytket to a Quantinuum H-Series emulator. The supplied blueprint sets a 62% circuit-depth reduction against a planar swap-mapping baseline as a comparison figure to validate.',
+    'Compile via pytket to a trapped-ion emulator on Nexus. The supplied blueprint sets a 62% circuit-depth reduction against a planar swap-mapping baseline as a comparison figure to validate.',
     'Verification required: matched circuits, compiler versions, optimisation settings, gate counts and noise assumptions. Emulator compilation cannot substantiate the supplied claim of zero gate-fidelity degradation on live hardware.',
   ],
   [
@@ -441,17 +441,17 @@ export const WORK_NEWS: WorkNewsRelease[] = [
   {
     slug: 'launch-executive-cohort-nov-2026',
     title:
-      'Eve Count Quantum Systems Launches Industrial Combinatorics Advisory Practice; Opens Applications for November 2026 Executive Cohort',
-    dek: 'New executive practice bridges classical Mixed-Integer Linear Programming limits and trapped-ion hardware execution via Quantinuum Nexus for heavy asset industries.',
-    dateLabel: '26 October 2026',
+      'Eve Count Quantum Systems Provisioned on Nexus Cloud; Launches Industrial Combinatorics Advisory & November 2026 Executive Cohort',
+    dek: 'Following its Singapore Quantum Grand Challenge 2026 submission, Eve Count transitions Project Q-Rotate and heavy-asset combinatorial benchmarks onto the Nexus compilation and emulation environment alongside academic and enterprise partners.',
+    dateLabel: '4 November 2026',
     location: 'Singapore',
     paragraphs: [
-      'Eve Count Quantum Systems today announced the formal launch of its enterprise advisory practice dedicated to solving high-stakes combinatorial bottlenecks in mineral extraction and maritime fleet logistics. Alongside the practice launch, Eve Count opened applications for its inaugural Executive Technical Intensive, scheduled for November 26, 2026.',
-      'As global resource extraction and shipping networks face unprecedented operational complexity, classical mathematical solvers—such as Mixed-Integer Linear Programming (MILP) running on high-performance compute clusters—increasingly encounter exponential scaling walls. Operations research teams are frequently forced to rely on macro-block aggregations and rigid scheduling buffers, leaving significant Net Present Value (NPV) unrecovered and burning excess bunker fuel.',
-      'Eve Count addresses these computational ceilings by reformulating non-local precedence graphs and dynamic routing matrices natively for trapped-ion quantum architectures. Utilizing the Quantinuum Nexus platform and pytket compiler toolchains, the advisory practice focuses on mapping complex objective functions directly to native trapped-ion interaction gates (ZZ couplings), bypassing the heavy SWAP-gate overhead characteristic of planar chip topologies.',
+      'Eve Count Quantum Systems today announced that its research and engineering team has been provisioned with dedicated access to the Nexus quantum cloud environment following the Singapore Quantum Grand Challenge 2026, alongside the formal launch of its enterprise advisory practice for mineral extraction and maritime fleet logistics. Applications are now open for the inaugural Executive Technical Intensive on November 26, 2026.',
+      'As global resource extraction, molecular screening and shipping networks face unprecedented operational complexity, classical mathematical solvers—such as Mixed-Integer Linear Programming (MILP) and 3D Cartesian grid search—increasingly encounter exponential scaling walls. Operations research teams are frequently forced to rely on macro-block aggregations and rigid scheduling buffers.',
+      'Eve Count addresses these computational ceilings by reformulating non-local precedence graphs, continuous Lie-algebraic pose flows (Project Q-Rotate) and dynamic routing matrices natively for all-to-all trapped-ion quantum architectures. Utilizing the Nexus platform and pytket compiler toolchains, the practice maps complex objective functions directly to native trapped-ion interaction gates (ZZ couplings), bypassing the heavy SWAP-gate overhead characteristic of planar chip topologies.',
     ],
     quote: {
-      text: 'Enterprise quantum exploration has suffered from an excess of academic abstraction and a deficit of operational proof. Our practice is built to deliver mathematical verification. We take the exact constrained formulations that cause classical solvers to terminate prematurely and benchmark their circuit depth, noise resilience, and crossover thresholds on realistic trapped-ion emulators.',
+      text: 'Enterprise quantum exploration has suffered from an excess of academic abstraction and a deficit of operational proof. With our team now provisioned on Nexus and engaging directly with Singapore academic faculty and industry operators, our focus is strict mathematical verification—taking the exact constrained formulations that stall classical solvers and benchmarking their circuit depth, noise resilience, and crossover thresholds on trapped-ion emulators.',
       attribution: 'Gwendalynn Lim, Founder and Technical Lead, Eve Count Quantum Systems',
     },
     intensiveTopics: [
@@ -461,11 +461,11 @@ export const WORK_NEWS: WorkNewsRelease[] = [
       },
       {
         title: 'Native Gate Architecture',
-        text: 'Formulating high-density dependency graphs directly into native trapped-ion parameterizations.',
+        text: 'Formulating high-density dependency graphs and continuous Lie-algebraic flows directly into native trapped-ion parameterizations.',
       },
       {
         title: 'Hands-On Nexus Emulation',
-        text: 'Compiling and benchmarking parameterized circuits against hardware noise profiles to evaluate real error-budget scaling.',
+        text: 'Compiling and benchmarking parameterized circuits on Nexus against hardware noise profiles to evaluate real error-budget scaling.',
       },
     ],
     capNote:
@@ -474,7 +474,7 @@ export const WORK_NEWS: WorkNewsRelease[] = [
       'Eve Count Quantum Systems is an applied quantum computing advisory and systems practice based in Singapore. The firm specializes in discrete industrial optimization, trapped-ion algorithmic mapping, and hardware-level emulation for capital-intensive global sectors.',
     contact: {
       label: 'Advisory Practice Lead, Eve Count Quantum Systems',
-      email: 'contact@evecount.com',
+      email: 'gwen@evecount.com',
       website: 'https://evecount.com',
     },
   },
@@ -485,11 +485,11 @@ export const getNewsBySlug = (slug: string) =>
 
 export const getWorkHighlights = () => [
   {
-    type: 'News release',
-    dateLabel: '26 October 2026',
-    title: 'Eve Count Launches Industrial Combinatorics Advisory Practice',
+    type: 'News release · Nexus Access',
+    dateLabel: '4 November 2026',
+    title: 'Eve Count Provisioned on Nexus Cloud & Opens November 2026 Executive Cohort',
     summary:
-      'Applications are open for the inaugural Executive Technical Intensive on 26 November 2026, capped at four enterprise teams.',
+      'Following the Singapore Quantum Grand Challenge 2026, Eve Count advances Project Q-Rotate and industrial combinatorics benchmarks on Nexus alongside academic and industry partners.',
     href: '/work/news/launch-executive-cohort-nov-2026',
   },
   {

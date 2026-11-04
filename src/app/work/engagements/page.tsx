@@ -67,7 +67,7 @@ export default function WorkEngagementsPage() {
             ],
             [
               'Sandbox benchmark',
-              'A compilation benchmark using Quantinuum Nexus emulators, with resource metrics and a classical comparison plan.',
+              'A compilation benchmark using Nexus trapped-ion emulators, with resource metrics and a classical comparison plan.',
             ],
           ].map(([title, body]) => (
             <div key={title} className="border-t border-[var(--work-border)] pt-6">
@@ -148,7 +148,7 @@ export default function WorkEngagementsPage() {
           <div>
             <h3 className="text-xl">What the fee already covers.</h3>
             <p className="mt-4 max-w-3xl leading-relaxed text-[var(--work-muted-fg)]">
-              Standard compiler optimisation and noise emulation passes on Quantinuum Nexus are absorbed in the engagement fee. Client datasets, block models and objective functions stay client property under a bilateral MNDA.
+              Standard compiler optimisation and noise emulation passes on Nexus are absorbed in the engagement fee. Client datasets, block models and objective functions stay client property under a bilateral MNDA.
             </p>
           </div>
         </div>

@@ -14,8 +14,8 @@ const capabilities = [
     number: "02",
     label: "TEST THE POSSIBLE",
     title: "Hardware Benchmarking",
-    description: "Move beyond simulations. We benchmark and optimize real circuit execution on Quantinuum and IonQ hardware to understand what works today.",
-    detail: "Quantinuum · IonQ · Circuit fidelity",
+    description: "Move beyond simulations. We benchmark and optimize real circuit execution on Trapped-Ion and Neutral-Atom hardware to understand what works today.",
+    detail: "Trapped-Ion · Nexus · Circuit fidelity",
   },
   {
     number: "03",

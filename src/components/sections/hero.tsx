@@ -81,7 +81,7 @@ export function Hero() {
         <div className="baseline-items">
           <span>NIST PQC STANDARDS</span>
           <span className="baseline-dot" />
-          <span>QUANTINUUM &amp; IONQ</span>
+          <span>TRAPPED-ION &amp; NEXUS</span>
           <span className="baseline-dot" />
           <span>BUILT FOR AGILITY</span>
         </div>

@@ -11,7 +11,7 @@ export default function WorkInsightDetailPage() {
     <WorkPageShell
       eyebrow="Report blueprint · Illustrative preview"
       title="3D Stope Sequencing & Grade Blending."
-      intro="A five-part blueprint showing how an Eve Count engagement documents an industrial problem, a classical baseline, a Hamiltonian mapping, a Quantinuum Nexus compilation and the executive decision gates."
+      intro="A five-part blueprint showing how an Eve Count engagement documents an industrial problem, a classical baseline, a Hamiltonian mapping, a Nexus trapped-ion compilation and the executive decision gates."
     >
       <section className="relative overflow-hidden border-b border-[var(--work-border)]">
         <div className="pointer-events-none absolute inset-0 opacity-75">
