@@ -12,7 +12,6 @@ const SUBNAV_LINKS: [string, string][] = [
   ['Overview', '/work'],
   ['Executive series', '/work/briefings'],
   ['Corporate intensive', '/work/engagements'],
-  ['Industries', '/work/industries'],
   ['Events', '/work/events'],
   ['Our approach', '/work/company'],
   ['Insights', '/work/insights'],
@@ -176,18 +175,6 @@ export function WorkFooter() {
           <div>
             <h3 className="work-eyebrow">Focus</h3>
             <div className="mt-5 grid gap-3.5 text-sm">
-              <Link href="/work/industries/mining" className="text-[var(--work-muted-fg)] hover:text-[var(--work-primary)]">
-                Mining &amp; resources
-              </Link>
-              <Link href="/work/industries/maritime" className="text-[var(--work-muted-fg)] hover:text-[var(--work-primary)]">
-                Maritime &amp; fleets
-              </Link>
-              <Link href="/work/industries/banking" className="text-[var(--work-muted-fg)] hover:text-[var(--work-primary)]">
-                Banking &amp; financial operations
-              </Link>
-              <Link href="/work/industries/compliance" className="text-[var(--work-muted-fg)] hover:text-[var(--work-primary)]">
-                Compliance &amp; regtech
-              </Link>
               <Link href="/work/company" className="text-[var(--work-muted-fg)] hover:text-[var(--work-primary)]">
                 Our approach
               </Link>
