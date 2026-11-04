@@ -118,9 +118,10 @@ export async function submitWorkInquiryAction(input: WorkInquiryInput) {
     try {
         const timestamp = new Date().toISOString();
         const referenceId = `EC-WORK-${Date.now().toString(36).toUpperCase()}`;
-        console.log(`[Eve Count Work Practice] Registered ${referenceId} (${input.kind}) from ${input.name} <${input.email}> at ${timestamp}:`, input);
+        const notifyRecipients = ['gwen@evecount.com', 'ben@evecount.com', 'one@evecount.com'];
+        console.log(`[Eve Count Work Practice] Registered ${referenceId} (${input.kind}) from ${input.name} <${input.email}> at ${timestamp} -> routing to ${notifyRecipients.join(', ')}:`, input);
 
-        // Also forward to the Lovable Supabase leads table if reachable
+        // 1. Forward to Lovable Supabase leads table
         try {
             const supabaseUrl = 'https://owghtvyaaimfsojmklwj.supabase.co/rest/v1/leads';
             const supabaseKey = 'sb_publishable_8a-VDj4n4jghAZLlUnNDqQ_x_nEWncy';
@@ -140,16 +141,49 @@ export async function submitWorkInquiryAction(input: WorkInquiryInput) {
                     email: input.email,
                     sector: input.sector ?? '',
                     message: input.message ?? '',
-                    details: input.details ?? {},
+                    details: {
+                        ...(input.details ?? {}),
+                        referenceId,
+                        notifyRecipients,
+                    },
                 }),
             });
         } catch (forwardErr) {
             console.warn("Optional Supabase forward skipped:", forwardErr);
         }
 
+        // 2. Dispatch email notification to gwen@evecount.com, ben@evecount.com, and one@evecount.com
+        try {
+            await fetch('https://formsubmit.co/ajax/gwen@evecount.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    _subject: `[Eve Count Work · ${referenceId}] ${input.kind} — ${input.org || input.name}`,
+                    _cc: 'ben@evecount.com,one@evecount.com',
+                    _replyto: input.email,
+                    referenceId,
+                    kind: input.kind,
+                    name: input.name,
+                    title: input.title ?? 'Not specified',
+                    organisation: input.org ?? 'Not specified',
+                    email: input.email,
+                    sector: input.sector ?? 'Not specified',
+                    message: input.message ?? '',
+                    details: JSON.stringify(input.details ?? {}),
+                    submittedAt: timestamp,
+                }),
+            });
+        } catch (mailErr) {
+            console.warn("Optional email webhook dispatch skipped:", mailErr);
+        }
+
         return {
             success: true,
             referenceId,
+            notifyRecipients,
         };
     } catch (error) {
         console.error("Work inquiry submission failed:", error);

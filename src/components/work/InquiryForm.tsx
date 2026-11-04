@@ -38,6 +38,8 @@ export function InquiryForm({
 }) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [docketRef, setDocketRef] = useState<string | null>(null);
+  const [mailtoHref, setMailtoHref] = useState<string | null>(null);
 
   async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();
@@ -88,6 +90,26 @@ export function InquiryForm({
         return;
       }
 
+      const refId = res.referenceId ?? `EC-WORK-${Date.now().toString(36).toUpperCase()}`;
+      setDocketRef(refId);
+      if (!emailOnly) {
+        const subject = `[Eve Count Work · ${refId}] ${kind} — ${parsed.data.org || parsed.data.name}`;
+        const bodyLines = [
+          `Reference ID: ${refId}`,
+          `Enquiry Type: ${kind}`,
+          `Name: ${parsed.data.name}`,
+          `Title: ${parsed.data.title || 'Not specified'}`,
+          `Organisation: ${parsed.data.org || 'Not specified'}`,
+          `Work Email: ${parsed.data.email}`,
+          `Sector: ${parsed.data.sector || 'Not specified'}`,
+          '',
+          'Scoping Notes:',
+          parsed.data.message || 'Not provided',
+        ];
+        setMailtoHref(
+          `mailto:gwen@evecount.com?cc=${encodeURIComponent('ben@evecount.com,one@evecount.com')}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`
+        );
+      }
       setStatus('sent');
       onDone?.();
     } catch {
@@ -106,9 +128,18 @@ export function InquiryForm({
           </h3>
           <p className="mt-2 text-[var(--work-muted-fg)]">
             {emailOnly
-              ? 'Your subscription request for the monthly industrial combinatorics memo has been saved.'
-              : 'The Eve Count team will follow up to discuss fit and next steps.'}
+              ? 'Your subscription request for the monthly industrial combinatorics memo has been saved and routed to the Eve Count practice.'
+              : `Your enquiry (${docketRef}) has been logged and routed to gwen@evecount.com, ben@evecount.com and one@evecount.com.`}
           </p>
+          {mailtoHref && (
+            <a
+              href={mailtoHref}
+              className="mt-4 inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.14em] text-[var(--work-primary)] underline underline-offset-4"
+            >
+              <span>Open direct email thread ({docketRef})</span>
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </a>
+          )}
         </div>
       </div>
     );

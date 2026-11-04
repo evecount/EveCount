@@ -163,7 +163,7 @@ function diagnosticEmail(form: FormState) {
     ? `Enterprise Diagnostic & MNDA — ${form.companyName.trim()} [${form.executiveSponsor.trim()}]`
     : `Enterprise Diagnostic — ${form.companyName.trim()} [${form.executiveSponsor.trim()}]`;
 
-  return `mailto:gwen@evecount.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+  return `mailto:gwen@evecount.com?cc=${encodeURIComponent("ben@evecount.com,one@evecount.com")}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
 }
 
 export default function ApplyPage() {
