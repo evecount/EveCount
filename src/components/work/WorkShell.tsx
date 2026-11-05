@@ -327,7 +327,7 @@ export function NextCohortBanner() {
       <div className="mx-auto grid max-w-[1440px] gap-10 px-6 py-12 md:grid-cols-[1.2fr_1fr] md:px-10">
         <div>
           <div className="font-mono text-xs uppercase text-[var(--work-primary-glow)]">
-            Upcoming open session · <time dateTime={NEXT_COHORT.date}>{NEXT_COHORT.label}</time>
+            Open session &amp; cohort intake · {NEXT_COHORT.label}
           </div>
           <h2 className="mt-4 text-3xl md:text-4xl">
             {NEXT_COHORT.title}
@@ -339,15 +339,26 @@ export function NextCohortBanner() {
             <span className="h-2 w-2 bg-[var(--work-primary-glow)]" />
             {NEXT_COHORT.status} · Open to operators, engineers &amp; enterprise teams
           </p>
-          <Link
-            href="/work/contact?interest=cohort"
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-sm bg-[var(--work-primary)] px-8 text-sm font-medium text-[var(--work-primary-fg)] transition hover:opacity-90"
-          >
-            <span>Reserve a spot (Open RSVP)</span>
-            <ArrowUpRight className="h-4 w-4" />
-          </Link>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/work/contact?interest=cohort"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-sm bg-[var(--work-primary)] px-7 text-sm font-medium text-[var(--work-primary-fg)] transition hover:opacity-90"
+            >
+              <span>Register interest / Sign up</span>
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+            <a
+              href="https://evecount.github.io/quantum-at-work/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-sm border border-[var(--work-ink-fg)]/25 px-6 text-sm font-medium text-[var(--work-ink-fg)] transition hover:bg-[var(--work-ink-fg)]/10"
+            >
+              <span>Open Technical Companion</span>
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </div>
           <p className="max-w-md text-xs leading-relaxed text-[var(--work-ink-fg)]/70">
-            Accessible executive framing with a live look under the hood on Nexus. Cross-listed on Luma, Eventbrite &amp; Meetup; closed-door Q1 2027 enterprise cohorts scheduled separately.
+            Accessible executive framing with a live look under the hood on Nexus and our open-source Python feasibility harness. Register to receive the next session invite or request a closed-door corporate cohort.
           </p>
         </div>
       </div>

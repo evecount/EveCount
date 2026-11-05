@@ -25,7 +25,7 @@ export default function WorkBriefingsPage() {
       <NextCohortBanner />
 
       <WorkSection
-        label="Inside the 10 December open session"
+        label="Inside the open session & companion"
         title="Accessible clarity up front. Real technical proof under the hood."
       >
         <div className="divide-y divide-[var(--work-border)] border-y border-[var(--work-border)]">
@@ -66,7 +66,7 @@ export default function WorkBriefingsPage() {
               ],
               [
                 'Leave with a clear decision',
-                'Walk away with a concrete recommendation on what to do now, what to watch, and whether a Q1 2027 pilot is warranted.',
+                'Walk away with a concrete recommendation on what to do now, what to watch, and whether a feasibility pilot is warranted.',
               ],
             ].map(([title, body]) => (
               <div key={title} className="border-t border-[var(--work-border)] pt-6">
@@ -79,8 +79,8 @@ export default function WorkBriefingsPage() {
       </section>
 
       <WorkSection
-        label="Open RSVP · 10 December 2026"
-        title="Reserve your spot for the open session."
+        label="Open Session & Cohort Registration"
+        title="Sign up for the next open session or cohort intake."
       >
         <div className="grid gap-12 lg:grid-cols-[1fr_1.5fr]">
           <div className="space-y-5 text-[var(--work-muted-fg)]">
@@ -88,15 +88,24 @@ export default function WorkBriefingsPage() {
               Open to enterprise leaders, operations managers, engineers, researchers, and founders exploring where quantum computing and hybrid workflows fit into real-world roadmaps.
             </p>
             <p>
-              Register directly below to receive the calendar invite and Singapore / live-stream joining details (also cross-listed on Luma, Eventbrite, and Meetup).
+              Register below to receive the invitation and Singapore / live-stream joining details as soon as the next session cohort is locked in, plus immediate access to our{' '}
+              <a
+                href="https://evecount.github.io/quantum-at-work/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--work-primary)] underline underline-offset-4"
+              >
+                Quantum at Work Technical Companion
+              </a>
+              .
             </p>
             <p className="text-sm">
-              Prefer a closed-door session tailored to your organisation? Ask about our private corporate intensive or the Q1 2027 enterprise cohort.
+              Prefer a closed-door session tailored to your organisation? Ask about our private corporate intensive or upcoming enterprise cohort.
             </p>
           </div>
           <InquiryForm
-            kind="open-session-rsvp-dec-10"
-            cta="Reserve a spot for 10 December"
+            kind="open-session-signup"
+            cta="Register for the open session"
           />
         </div>
       </WorkSection>

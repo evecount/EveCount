@@ -61,10 +61,10 @@ export default function WorkNewsDetailPage() {
           </blockquote>
 
           <h2 className="pt-4 text-2xl font-medium tracking-tight">
-            10 December 2026 Open Session: &ldquo;Quantum at Work: Where Enterprises Can Actually Use Quantum Today&rdquo;
+            Open Session &amp; Companion: &ldquo;Quantum at Work: Where Enterprises Can Actually Use Quantum Today&rdquo;
           </h2>
           <p className="text-sm leading-relaxed text-[var(--work-muted-fg)]">
-            Open to enterprise leaders, operations managers, engineers, and curious builders (and cross-listed on Luma, Eventbrite, and Meetup), the December 10 session covers three core themes:
+            Open to enterprise leaders, operations managers, engineers, and curious builders (and cross-listed on Luma, Eventbrite, and Meetup), the session and its open-source technical companion cover three core themes:
           </p>
 
           <div className="grid grid-cols-1 gap-4 pt-2 md:grid-cols-3">
@@ -85,12 +85,21 @@ export default function WorkNewsDetailPage() {
 
           <div className="flex flex-wrap gap-3 pt-2 print:hidden">
             <Link
-              href="/work/events/executive-intensive-cohort-nov-2026"
+              href="/work/contact?interest=cohort"
               className="inline-flex h-10 items-center justify-center gap-2 rounded-sm bg-[var(--work-primary)] px-5 text-xs font-medium text-[var(--work-primary-fg)] shadow-sm transition hover:opacity-90"
             >
-              <span>Reserve a spot for 10 December (Open RSVP)</span>
+              <span>Register for the Open Session</span>
               <ArrowUpRight className="h-4 w-4" />
             </Link>
+            <a
+              href="https://evecount.github.io/quantum-at-work/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-sm border border-[var(--work-fg)]/20 bg-transparent px-5 text-xs font-medium text-[var(--work-fg)] transition hover:border-[var(--work-fg)]/50 hover:bg-[var(--work-muted)]/60"
+            >
+              <span>Open Technical Companion</span>
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
             <Link
               href="/work/insights/mining-feasibility-blueprint"
               className="inline-flex h-10 items-center justify-center gap-2 rounded-sm border border-[var(--work-fg)]/20 bg-transparent px-5 text-xs font-medium text-[var(--work-fg)] transition hover:border-[var(--work-fg)]/50 hover:bg-[var(--work-muted)]/60"
@@ -112,7 +121,7 @@ export default function WorkNewsDetailPage() {
         </div>
       </article>
 
-      <WorkClosingBand title="Discuss the November cohort or a private team engagement." />
+      <WorkClosingBand title="Register for the open session or discuss a private team engagement." />
     </WorkPageShell>
   );
 }

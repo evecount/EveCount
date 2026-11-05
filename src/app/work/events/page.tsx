@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
+import { InquiryForm } from '@/components/work/InquiryForm';
 import {
   WorkClosingBand,
   WorkPageShell,
@@ -15,10 +16,10 @@ export default function WorkEventsPage() {
   return (
     <WorkPageShell
       eyebrow="Events & cohorts"
-      title="Confirmed dates first. Everything else labelled honestly."
-      intro="The November 2026 executive intensive cohort is confirmed and open for applications. Future webinars and cohorts are listed as placeholders until dates are fixed — register interest and we confirm details with you directly."
+      title="Open sessions & enterprise cohorts — scheduled around registered teams."
+      intro="Register below to join our next 'Quantum at Work' open session or express interest in an upcoming four-team executive intensive cohort. We confirm session timing directly with registered participants and provide immediate access to our interactive technical companion."
     >
-      <WorkSection label="01 / Upcoming" title="The calendar as it stands.">
+      <WorkSection label="01 / Sessions & tracks" title="Available sessions and cohort tracks.">
         <div className="grid gap-x-12 gap-y-10 md:grid-cols-2">
           {events.map((ev) => (
             <article
@@ -41,23 +42,65 @@ export default function WorkEventsPage() {
               <p className="mt-5 max-w-lg text-sm leading-relaxed text-[var(--work-muted-fg)]">
                 {ev.summary}
               </p>
-              <div className="mt-auto pt-7">
+              <div className="mt-auto flex flex-wrap items-center gap-5 pt-7">
                 <Link
                   href={`/work/events/${ev.slug}`}
                   className="inline-flex items-center gap-2 text-sm text-[var(--work-primary)] hover:underline"
                 >
-                  <span>View details</span>
+                  <span>View details &amp; register</span>
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
+                {ev.slug === 'executive-intensive-cohort-nov-2026' && (
+                  <a
+                    href="https://evecount.github.io/quantum-at-work/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 font-mono text-xs text-[var(--work-muted-fg)] hover:text-[var(--work-primary)] hover:underline"
+                  >
+                    <span>Technical Companion</span>
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  </a>
+                )}
               </div>
             </article>
           ))}
         </div>
       </WorkSection>
 
+      <section className="border-t border-[var(--work-border)] bg-[var(--work-surface)]">
+        <WorkSection
+          label="02 / Direct Signup"
+          title="Register for the next open session or enterprise cohort."
+        >
+          <div className="grid gap-12 lg:grid-cols-[1fr_1.5fr]">
+            <div className="space-y-5 text-[var(--work-muted-fg)]">
+              <p>
+                Tell us whether you are signing up for the public <strong>Quantum at Work</strong> open session, the four-team Executive Intensive Cohort, or one of our sector webinars.
+              </p>
+              <p>
+                While your cohort slot is being coordinated, you can explore the 8-chapter{' '}
+                <a
+                  href="https://evecount.github.io/quantum-at-work/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[var(--work-primary)] underline underline-offset-4"
+                >
+                  Quantum at Work Technical Companion &amp; Python Harness
+                </a>{' '}
+                right now.
+              </p>
+            </div>
+            <InquiryForm
+              kind="events-cohort-signup"
+              cta="Sign up / Register interest"
+            />
+          </div>
+        </WorkSection>
+      </section>
+
       <WorkClosingBand
-        title="Want a date held for your team?"
-        label="Register interest"
+        title="Want a private corporate intensive held for your team?"
+        label="Request a private session"
       />
     </WorkPageShell>
   );

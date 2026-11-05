@@ -131,12 +131,12 @@ export const INTENSIVE_SYLLABUS: [string, string, string, string][] = [
 ];
 
 export const NEXT_COHORT = {
-  date: '2026-12-10',
-  label: '10 December 2026',
+  date: '2026-12-01',
+  label: 'Rolling Registration · Singapore & Live Stream',
   title: 'Quantum at Work: Where Enterprises Can Actually Use Quantum Today',
   format: 'Open Session · Singapore & Live Stream (Luma / Eventbrite / Meetup)',
   teamLimit: 4,
-  status: 'Open RSVP',
+  status: 'Registration Open',
 };
 
 export const MONTHLY_BRIEFING = {
@@ -182,9 +182,9 @@ export const BUYER_FAQS: { question: string; answer: string }[] = [
       'We do not sell speculative production supremacy on current-generation hardware. A pilot measures mathematical compatibility, compiled circuit depth, noise sensitivity and resource requirements within the agreed benchmark scope. Physical-qubit requirements and crossover horizons are estimates subject to assumptions—not definitive proof that your dataset will outperform classical solvers. Emulator results alone cannot establish live-hardware fidelity or quantum advantage.',
   },
   {
-    question: 'How does the 10 December open session differ from a private intensive?',
+    question: 'How does the open session differ from a private corporate intensive?',
     answer:
-      'The 10 December 2026 open session ("Quantum at Work: Where Enterprises Can Actually Use Quantum Today") is open to operators, engineers, founders and enterprise teams via direct RSVP as well as Luma, Eventbrite and Meetup. Closed-door corporate intensives and Q1 2027 working cohorts are scheduled separately for teams ready to benchmark a specific operational model.',
+      'The "Quantum at Work: Where Enterprises Can Actually Use Quantum Today" open session is open to operators, engineers, founders and enterprise teams via direct registration on evecount.com as well as Luma, Eventbrite and Meetup. Closed-door corporate intensives and working cohorts are scheduled directly with participating enterprise teams ready to benchmark a specific operational model.',
   },
   {
     question: 'How are cancellations and changes handled?',
@@ -217,11 +217,11 @@ export const WORK_EVENTS: WorkEvent[] = [
     kind: 'Executive cohort',
     title: 'Executive Intensive Cohort — Heavy Assets, Hard Combinatorics',
     date: '2027-02-25',
-    dateLabel: '25 February 2027 · Q1 Cohort',
+    dateLabel: 'Rolling Cohort Intake · Scheduled with registered teams',
     format: 'Virtual & Singapore Hybrid',
     status: 'Expressions of interest open',
     summary:
-      'The one-day corporate intensive delivered as a shared cohort (capped at four enterprise teams): map a target operational bottleneck, compile a sandbox benchmark on Nexus and leave with a documented feasibility position.',
+      'The corporate intensive delivered as a shared cohort (capped at four enterprise teams): map a target operational bottleneck, compile a sandbox benchmark on Nexus and leave with a documented feasibility position.',
     agenda: [
       'Morning — combinatorial reformulation: from solver models to high-density Hamiltonians',
       'Midday — trapped-ion topology and native ZZ(θ) gate interactions',
@@ -234,10 +234,10 @@ export const WORK_EVENTS: WorkEvent[] = [
     slug: 'mining-combinatorics-webinar-2027',
     kind: 'Technical webinar',
     title: 'Stope Sequencing on Trapped-Ion Hardware',
-    date: '2027-02-01',
-    dateLabel: 'Q1 2027 · date to be confirmed',
+    date: '2027-03-01',
+    dateLabel: 'Register interest · Scheduled on demand',
     format: 'Virtual',
-    status: 'Dates to be confirmed',
+    status: 'Registration open',
     summary:
       'A technical walkthrough of reformulating extraction precedence and grade-blending constraints for all-to-all trapped-ion connectivity, based on the Eve Count mining feasibility blueprint.',
     agenda: [
@@ -252,9 +252,9 @@ export const WORK_EVENTS: WorkEvent[] = [
     kind: 'Technical webinar',
     title: 'Fleet Recovery and Port Bottlenecks — a Quantum Feasibility Lens',
     date: '2027-05-01',
-    dateLabel: 'Q2 2027 · date to be confirmed',
+    dateLabel: 'Register interest · Scheduled on demand',
     format: 'Virtual',
-    status: 'Dates to be confirmed',
+    status: 'Registration open',
     summary:
       'How dynamic vessel routing and port congestion problems map onto trapped-ion circuit structures, and what emulator benchmarks can and cannot tell a fleet operator today.',
     agenda: [
@@ -267,16 +267,16 @@ export const WORK_EVENTS: WorkEvent[] = [
   {
     slug: 'executive-intensive-cohort-2027',
     kind: 'Executive cohort',
-    title: 'Executive Intensive Cohort — Second 2027 Cohort',
+    title: 'Private Enterprise Intensive — Custom Team Track',
     date: '2027-09-01',
-    dateLabel: 'Q3 2027 · date to be confirmed',
+    dateLabel: 'Scheduled directly with your engineering & operations team',
     format: 'Virtual & Singapore Hybrid',
-    status: 'Dates to be confirmed',
+    status: 'Available on enquiry',
     summary:
-      'A second delivery of the one-day executive intensive cohort, following the November 2026 edition. Format, seat allocation and fees are confirmed with registered interest before applications open.',
+      'A dedicated delivery of the executive and technical intensive tailored around your organisation’s proprietary scheduling, routing or allocation constraints under mutual NDA.',
     agenda: [
-      'Programme mirrors the November 2026 cohort',
-      'Seat allocation and fees confirmed before applications open',
+      'Pre-session intake and classical baseline alignment',
+      'Hands-on QUBO/Hamiltonian formulation and release-gate governance',
     ],
     placeholder: true,
   },
@@ -460,17 +460,17 @@ export const WORK_NEWS: WorkNewsRelease[] = [
   {
     slug: 'launch-executive-cohort-nov-2026',
     title:
-      'Eve Count Quantum Systems Provisioned on Nexus Cloud; Announces 10 December Open Session: "Quantum at Work: Where Enterprises Can Actually Use Quantum Today"',
-    dek: 'Following its Singapore Quantum Grand Challenge 2026 submission, Eve Count opens registration for its December 10 public executive & technical session alongside Q1 2027 enterprise cohort intakes.',
-    dateLabel: '4 November 2026',
+      'Eve Count Quantum Systems Provisioned on Nexus Cloud; Opens Registration for "Quantum at Work: Where Enterprises Can Actually Use Quantum Today"',
+    dek: 'Following its Singapore Quantum Grand Challenge 2026 submission, Eve Count opens registration for its public executive & technical session and interactive companion alongside rolling enterprise cohort intakes.',
+    dateLabel: 'Press Release',
     location: 'Singapore',
     paragraphs: [
-      'Eve Count Quantum Systems today announced that its research and engineering team has been provisioned with dedicated access to the Nexus quantum cloud environment following the Singapore Quantum Grand Challenge 2026. To mark the milestone, Eve Count is hosting an open session on December 10, 2026—"Quantum at Work: Where Enterprises Can Actually Use Quantum Today"—available via direct RSVP as well as Luma, Eventbrite, and Meetup.',
-      'Designed for enterprise leaders, operations architects, engineers, and technical teams who want substance without impenetrable academic jargon, the December 10 session bridges executive clarity with the promise of real technical proof—showing where classical solvers hit a wall and how hybrid quantum workflows, continuous pose search (Project Q-Rotate), and post-quantum readiness can be applied pragmatically today.',
-      'Following the December 10 open session, teams ready for hands-on benchmarking can join Eve Count’s Q1 2027 Executive Technical Intensive Cohort (February 25, 2027) or commission a private corporate intensive.',
+      'Eve Count Quantum Systems announced that its research and engineering team has been provisioned with dedicated access to the Nexus quantum cloud environment following the Singapore Quantum Grand Challenge 2026. To mark the milestone, Eve Count has opened registration for its open session—"Quantum at Work: Where Enterprises Can Actually Use Quantum Today"—alongside a hands-on open-source technical companion.',
+      'Designed for enterprise leaders, operations architects, engineers, and technical teams who want substance without impenetrable academic jargon, the session bridges executive clarity with real technical proof—showing where classical solvers hit a wall and how hybrid quantum workflows, continuous pose search (Project Q-Rotate), and post-quantum readiness can be applied pragmatically today.',
+      'Alongside the open session, teams ready for hands-on benchmarking can register for Eve Count’s Executive Technical Intensive Cohort or commission a private corporate intensive.',
     ],
     quote: {
-      text: 'Most enterprise leaders are tired of hearing either that quantum will solve everything tomorrow or that nothing is usable for ten years. Our December 10 open session is built to show exactly what works now—giving decision-makers a clear lens on where quantum fits today, backed by a live look under the hood on Nexus.',
+      text: 'Most enterprise leaders are tired of hearing either that quantum will solve everything tomorrow or that nothing is usable for ten years. Our "Quantum at Work" session and companion harness are built to show exactly what works now—giving decision-makers a clear lens on where quantum fits today, backed by a live look under the hood on Nexus.',
       attribution: 'Gwendalynn Lim, Founder and Technical Lead, Eve Count Quantum Systems',
     },
     intensiveTopics: [
@@ -488,7 +488,7 @@ export const WORK_NEWS: WorkNewsRelease[] = [
       },
     ],
     capNote:
-      'The December 10 session is open for public RSVP (Singapore & Live Stream). Closed-door Q1 2027 enterprise cohort seats remain capped at four teams.',
+      'The "Quantum at Work" session is open for registration (Singapore & Live Stream). Closed-door enterprise cohort seats remain capped at four teams per intake.',
     about:
       'Eve Count Quantum Systems is an applied quantum computing advisory and systems practice based in Singapore. The firm specializes in discrete industrial optimization, trapped-ion algorithmic mapping, and hardware-level emulation for capital-intensive global sectors.',
     contact: {
@@ -505,10 +505,10 @@ export const getNewsBySlug = (slug: string) =>
 export const getWorkHighlights = () => [
   {
     type: 'News release · Open Session',
-    dateLabel: '4 November 2026',
-    title: 'Eve Count Provisioned on Nexus Cloud & Opens 10 December "Quantum at Work" Session',
+    dateLabel: 'Open Registration',
+    title: 'Eve Count Provisioned on Nexus Cloud & Opens "Quantum at Work" Session Registration',
     summary:
-      'Registration is open for the 10 December 2026 open session ("Quantum at Work: Where Enterprises Can Actually Use Quantum Today"), cross-listed on Luma, Eventbrite and Meetup.',
+      'Register interest for the upcoming open session ("Quantum at Work: Where Enterprises Can Actually Use Quantum Today") and explore the interactive technical companion.',
     href: '/work/news/launch-executive-cohort-nov-2026',
   },
   {

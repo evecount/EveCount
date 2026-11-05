@@ -44,7 +44,7 @@ export default function WorkEventDetailPage() {
           <div className="mt-8 flex flex-wrap gap-10 border-t border-[var(--work-border)] pt-6">
             <div>
               <div className="font-mono text-[10px] uppercase text-[var(--work-muted-fg)]">
-                Date
+                Intake
               </div>
               <div className="mt-2 text-lg">{ev.dateLabel}</div>
             </div>
@@ -110,24 +110,27 @@ export default function WorkEventDetailPage() {
               href="/work/contact?interest=cohort"
               className="inline-flex h-12 items-center justify-center gap-2 rounded-sm bg-[var(--work-primary)] px-8 text-sm font-medium text-[var(--work-primary-fg)] transition hover:opacity-90"
             >
-              <span>Apply for this cohort</span>
+              <span>Sign up for this session</span>
               <ArrowUpRight className="h-4 w-4" />
             </Link>
           ) : (
             <Link
-              href="/work/contact"
+              href="/work/contact?interest=cohort"
               className="inline-flex h-12 items-center justify-center gap-2 rounded-sm bg-[var(--work-primary)] px-8 text-sm font-medium text-[var(--work-primary-fg)] transition hover:opacity-90"
             >
               <span>Register interest</span>
               <ArrowUpRight className="h-4 w-4" />
             </Link>
           )}
-          <Link
-            href="/work/briefings"
+          <a
+            href="https://evecount.github.io/quantum-at-work/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex h-12 items-center justify-center gap-2 rounded-sm border border-[var(--work-border)] px-8 text-sm font-medium text-[var(--work-fg)] transition hover:bg-[var(--work-accent)]"
           >
-            <span>Explore the executive series</span>
-          </Link>
+            <span>Open Technical Companion</span>
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
         </div>
       </WorkSection>
 
