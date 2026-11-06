@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Layers, MoveUpRight, ScanLine } from 'lucide-react';
 import { Header } from '@/components/layout/header';
 import { IndustrialLattice } from '@/components/work/IndustrialLattice';
+import { QuantumRepoRail } from '@/components/work/QuantumRepoRail';
 import {
   InsideDeliverableSection,
   MonthlyMemoSection,
@@ -214,6 +215,9 @@ export default function WorkOverviewPage() {
 
       {/* Inside the Deliverable */}
       <InsideDeliverableSection />
+
+      {/* Encharge-Style Open Quantum & Mathematical Repositories Rail */}
+      <QuantumRepoRail />
 
       {/* Practice Lead */}
       <PracticeLeadSection />
