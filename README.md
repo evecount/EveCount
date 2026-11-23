@@ -6,14 +6,30 @@ Eve Count builds sovereign AI infrastructure, NIST-validated post-quantum crypto
 
 ---
 
-## Featured Quantum & Deep-Tech Repositories
+## Featured Repositories
+
+### Quantum Systems & Applied Mathematics
 - **[`q-rotate-drf`](https://github.com/evecount/q-rotate-drf)** — *Rotational Born Machines and Amplitude Estimation for Joint-Loss Modelling* (ADB Quantum Innovation Challenge: Kyrgyz Republic / Tajikistan US$160M Disaster Relief Bond benchmark, MPS/QCBM copula, QUBO trigger optimiser, IQAE).
 - **[`evecount_qrotate`](https://github.com/evecount/evecount_qrotate)** / **[`quantum_rotation`](https://github.com/evecount/quantum_rotation)** — *Project Q-Rotate*: Continuous Lie-algebra rotational synthesis & `Guppy` Repeat-Until-Success (RUS) blind parity checking (simulation-only; no physical hardware run; classical baseline wins in-repo).
 - **[`dsmf`](https://github.com/evecount/dsmf)** — *Double Sigmoid Mencius Function*: Continuous probabilistic activation bridge incorporating fractional calculus and quantum state vectors.
 - **[`friendshore`](https://github.com/evecount/friendshore)** — *Shor's Algorithm & Post-Quantum Cryptography Workshop* (interactive Shor's algorithm exploration).
+- **[`AdversarialMath`](https://github.com/evecount/AdversarialMath)** — Adversarial mathematics research.
+
+### Deep Learning, Machine Learning & NLP
 - **[`Coordinate_Index-Based-Sparse-Adapter-Compression`](https://github.com/evecount/Coordinate_Index-Based-Sparse-Adapter-Compression)** — Sparse adapter weight-matrix compression by coordinate index.
-- **[`flightpath`](https://github.com/evecount/flightpath)** — Vector planes in space for rotating identities within agentic processes.
+- **[`diffusion_model_oops_britney`](https://github.com/evecount/diffusion_model_oops_britney)** — Advanced diffusion model techniques workbook.
+- **[`expansive_tokenization`](https://github.com/evecount/expansive_tokenization)** — Context-driven tokenization architecture.
+- **[`blackswan`](https://github.com/evecount/blackswan)** — *BlackSwan Lab*: Embedding + CNN for sentiment analysis.
+- **[`DeepLearning_SIT`](https://github.com/evecount/DeepLearning_SIT)** — Deep Learning modules & implementations (SIT B.Sc. Hons Applied Computing).
+- **[`ConversationalPathRAG`](https://github.com/evecount/ConversationalPathRAG)** — Conversational path retrieval-augmented generation.
+- **[`ICT3506C_NLP_GwenLim_ProjectVanguard`](https://github.com/evecount/ICT3506C_NLP_GwenLim_ProjectVanguard)** & **[`BadTattoos_NLP_workbook`](https://github.com/evecount/BadTattoos_NLP_workbook)** — Applied NLP parsing, stylometrics, and text-processing labs.
+- **[`klingon_LLM`](https://github.com/evecount/klingon_LLM)** — Low-resource language LLM experimentation.
+
+### Agentic Systems & Engineering
 - **[`jellobean_demo`](https://github.com/evecount/jellobean_demo)** — *UNITY OS / Jellobean*: Hands-free local edge AI co-founder workflow.
+- **[`flightpath`](https://github.com/evecount/flightpath)** — Vector planes in space for rotating identities within agentic processes.
+- **[`AWS-aif-c01-pocket-trainer`](https://github.com/evecount/AWS-aif-c01-pocket-trainer)** — Interactive drill deck for the AWS Certified AI Practitioner (`AIF-C01`) exam.
+- **[`algorithmic-thinking-starter`](https://github.com/evecount/algorithmic-thinking-starter)** — Data structures & algorithms from first principles.
 
 ---
 
