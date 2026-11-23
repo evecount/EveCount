@@ -6,10 +6,14 @@ Eve Count builds sovereign AI infrastructure, NIST-validated post-quantum crypto
 
 ---
 
-## Featured Quantum & Systems Repositories
+## Featured Quantum & Deep-Tech Repositories
 - **[`q-rotate-drf`](https://github.com/evecount/q-rotate-drf)** — *Rotational Born Machines and Amplitude Estimation for Joint-Loss Modelling* (ADB Quantum Innovation Challenge: Kyrgyz Republic / Tajikistan US$160M Disaster Relief Bond benchmark, MPS/QCBM copula, QUBO trigger optimiser, IQAE).
-- **[`quantum_rotation`](https://github.com/evecount/quantum_rotation)** — *Project Q-Rotate*: Continuous Lie-algebra rotational synthesis & `Guppy` Repeat-Until-Success (RUS) blind parity checking (simulation-only; no physical hardware run; classical baseline wins in-repo).
-- **[`build-your-own-x`](https://github.com/evecount/build-your-own-x)** — Curated *Build Your Own Quantum & Systems X* engineering index.
+- **[`evecount_qrotate`](https://github.com/evecount/evecount_qrotate)** / **[`quantum_rotation`](https://github.com/evecount/quantum_rotation)** — *Project Q-Rotate*: Continuous Lie-algebra rotational synthesis & `Guppy` Repeat-Until-Success (RUS) blind parity checking (simulation-only; no physical hardware run; classical baseline wins in-repo).
+- **[`dsmf`](https://github.com/evecount/dsmf)** — *Double Sigmoid Mencius Function*: Continuous probabilistic activation bridge incorporating fractional calculus and quantum state vectors.
+- **[`friendshore`](https://github.com/evecount/friendshore)** — *Shor's Algorithm & Post-Quantum Cryptography Workshop* (interactive Shor's algorithm exploration).
+- **[`Coordinate_Index-Based-Sparse-Adapter-Compression`](https://github.com/evecount/Coordinate_Index-Based-Sparse-Adapter-Compression)** — Sparse adapter weight-matrix compression by coordinate index.
+- **[`flightpath`](https://github.com/evecount/flightpath)** — Vector planes in space for rotating identities within agentic processes.
+- **[`jellobean_demo`](https://github.com/evecount/jellobean_demo)** — *UNITY OS / Jellobean*: Hands-free local edge AI co-founder workflow.
 
 ---
 
