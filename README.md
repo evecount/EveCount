@@ -1,62 +1,42 @@
-# EveCount.com - AI Venture Studio
+# Eve Count — Quantum Systems & AI Venture Studio (Singapore)
 
-This repository contains the source code for the official website of Eve Count, a Singapore-based venture studio that invests Code, AI, and Architecture into new ventures.
+**Digital HQ:** [evecount.com](https://evecount.com) · **Contact:** `gwen@evecount.com`
 
-## About Eve Count
+Eve Count builds sovereign AI infrastructure, post-quantum cryptographic defenses, and honest, simulation-grounded quantum algorithms.
 
-Eve Count specializes in building deep-tech companies with a focus on Quantum technologies (Post-Quantum Cryptography, Quantum Key Distribution) and Artificial Intelligence. We partner with founders to take ideas from vision to a market-ready MVP.
+---
 
-This website serves as our digital headquarters. It's where potential partners can learn about our philosophy, view our portfolio, and submit their ideas.
+## Featured Quantum & Systems Repositories
+- **[`q-rotate-drf`](https://github.com/evecount/q-rotate-drf)** — *Rotational Born Machines and Amplitude Estimation for Joint-Loss Modelling* (ADB Quantum Innovation Challenge: Kyrgyz Republic / Tajikistan US$160M Disaster Relief Bond benchmark, MPS/QCBM copula, QUBO trigger optimiser, IQAE).
+- **[`quantum_rotation`](https://github.com/evecount/quantum_rotation)** — *Q-Rotate*: Lie-algebraic dimensional rotation operators & blind parity checking (simulation-only prior work; no physical hardware run; classical baseline wins in-repo).
+- **[`build-your-own-x`](https://github.com/evecount/build-your-own-x)** — Curated *Build Your Own Quantum & Systems X* engineering index.
 
-## Tech Stack
+---
 
-This project is built with a modern, scalable tech stack:
+## Founder Resume — Gwendalynn (Gwen) Lim
 
-- **Framework:** [Next.js](https://nextjs.org/) (with App Router)
-- **Language:** [TypeScript](https://www.typescriptlang.org/)
-- **UI:** [React](https://react.dev/), [ShadCN UI](https://ui.shadcn.com/), and [Tailwind CSS](https://tailwindcss.com/)
-- **Backend:** [Firebase](https://firebase.google.com/) (Firestore for database, Firebase Authentication)
-- **Generative AI:** [Genkit](https://firebase.google.com/docs/genkit) for Traceable AI Operations
+**Founder & Venture CTO, Eve Count** · **Quantum AI System Architect**  
+**Education:** B.Sc. (Hons) Applied Computing, Singapore Institute of Technology (SIT) · Advanced ML & AI, Nanyang Technological University (NTU)
 
-## Key Features
+### Industry & Engineering Experience
+- **Founder & Venture CTO — Eve Count & Unity OS (Singapore):** Architecting sovereign on-device AI systems, post-quantum security, and reproducible quantum-classical benchmarking pipelines (`QShift Lab`).
+- **Co-Founder — Cybrdeck:** Deep-tech systems & product engineering.
+- **Former Corporate Risk Transfer & EB Partnerships Lead — HSBC Life:** Actuarial & corporate risk-transfer domain experience; CMFAS Certified.
 
-- **Dynamic Content:** Pages for About, Ventures, Incubator, Research, and more.
-- **Clear-Box Command Center:** An admin dashboard that provides a transparent, auditable view into our autonomous agent operations. Every decision is logged with its "Birth-Logic" for true Explainable AI (XAI).
-- **AI Partner Chatbot:** An integrated AI chatbot (`/src/components/chatbot.tsx`) that engages with visitors, captures venture pitches, and saves them directly to Firestore.
-- **Universal Application Form:** A comprehensive form at `/apply` that handles various inquiry types (Venture Pitches, Incubator Applications, Career Inquiries, and Partnerships).
-- **Protected Ventures Page:** A password-protected section at `/ventures` to showcase portfolio companies.
-- **SEO Optimized:** Includes dynamic page titles, a `sitemap.ts`, and `robots.ts` for improved search engine visibility.
+### Awards & Recognition (3x Hackathon / Ideation Winner)
+- **Gold Winner — Microsoft AICO 2026 Ideation:** Dual-agent autonomous ecosystem built on Microsoft Copilot Studio with HSBC Fund Centre.
+- **Winner (Golden Ticket) — Build Voice Agents with Speechmatics Hackathon:** Real-time voice cognitive overlay for Unity OS / Sovereignty OS with SGInnovate & The Generative Beings.
+- **1st Place (Perfect 5/5 Score) — QDay Summit Learnathon:** Interactive Shor's Algorithm implementation addressing post-quantum cryptography vulnerabilities and "Harvest Now, Decrypt Later" threats.
 
-## Getting Started
+### Academic & Community Leadership
+- **Guest Lecturer & Technical Instructor — IEEE NTU Student Branch & NTU Women in Tech:** *"Coding Nights: Data Structures & Algorithms from First Principles"*.
+- **Mentor — Women in Tech @ NTU:** Supporting the 3-month `woMENTORS` cohort.
 
-To run the project locally:
+---
 
-1.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+## About `evecount.com` (Web App in This Repo)
+This repository also hosts the Next.js / TypeScript / Firebase / Genkit source code for `evecount.com`.
 
-2.  **Run the development server:**
-    ```bash
-    npm run dev
-    ```
-
-The application will be available at `http://localhost:9002`.
-
-## Project Structure
-
-- **`src/app`**: Contains all the pages and layouts for the Next.js App Router.
-- **`src/components`**: Reusable React components, including UI components from ShadCN and custom layout/section components.
-- **`src/firebase`**: Firebase configuration, providers, and custom hooks (`useCollection`, `useUser`, etc.).
-- **`src/ai`**: Genkit flows that power our agentic clusters.
-- **`src/lib`**: Helper functions, data definitions (e.g., `ventures.ts`), and schemas.
-- **`docs/backend.json`**: The data blueprint defining the application's entities and Firestore structure, designed for traceable AI operations.
-- **`firestore.rules`**: Security rules for the Firestore database.
-
-## Future Vision: Project BroadcastPeople
-
-The next evolution is **Project BroadcastPeople**. This future build will focus on creating a system for synthetic human data designed for agentic augmentation.
-
-The core concept is to bridge the gap between machine logic and human intuition. It involves creating an "incomplete archive" of human expertise which is then augmented by the best-of-class agentic thought processes we are developing. The system will broadcast these fused data points via an API (e.g., `api.whatwould.work`), providing our agentic systems with a constant stream of common-sense reasoning and nuanced decision-making capabilities.
-
-This represents the next step in our mission: creating not just Autonomous AI, but **Wise AI (AGI + Human)**.
+- **Stack:** Next.js (App Router), TypeScript, React, ShadCN UI, Tailwind CSS, Firebase (Firestore + Auth), Genkit.
+- **Run Locally:** `npm install && npm run dev` (`http://localhost:9002`).
+- **Structure:** `src/app` (routes), `src/components` (UI), `src/firebase` (providers/hooks), `src/ai` (Genkit flows), `src/lib` (schemas/helpers), `docs/backend.json`, `firestore.rules`.
